@@ -1,0 +1,50 @@
+<template>
+  <div id="app">
+    <div class="dqbz-header" />
+    <router-view />
+  </div>
+</template>
+
+
+<style lang="scss">
+@import "./assets/doqubiz/main.scss";
+</style>
+
+
+<style>
+body {
+  margin: 0;
+}
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: left;
+  color: #2c3e50;
+}
+
+.dqbz-header {
+  width: 100vw;
+  height: 35px;
+  border-bottom: 1px groove;
+}
+
+.splitpanes {
+  background: #fff;
+}
+
+.splitpanes__pane {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Helvetica, Arial, sans-serif;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 5em;
+}
+
+.splitpanes--vertical > .splitpanes__splitter {
+  width: 3px;
+  background: rgb(226, 223, 223);
+}
+</style>

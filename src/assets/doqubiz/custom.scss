@@ -1,0 +1,30 @@
+.dqbz-btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 2rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  height: 3rem;
+  padding: 1rem 1rem;
+}
+
+p {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #000;
+  line-height: 0.1em;
+  margin: 10px 0 20px;
+}
+
+p span {
+  background: #fff;
+  padding: 0 10px;
+}
+
+.input-group-icon{
+  width: 50%;
+  // background-image: url("/../account@2x.png") ;
+background: url("/../account@2x.png") no-repeat scroll 0.35rem center
+  transparent;
+
+}
