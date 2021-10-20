@@ -1,5 +1,44 @@
 .login_pic{
-  height: 100%;
-  background-image: url("/../Group.png") no-repeat;
-  // transform: translate(10px) rotate(20deg);
+  background: url("~@/assets/Group.png") no-repeat;
+  transform: translate(120px, 0%) ;
+  background-size: cover;
+  position: absolute;
+  z-index: -1;
+
 }
+
+
+
+.login-form{
+  border: solid 1px #d8d8d8;
+  border-radius :5%;
+  width: 500px;
+  height: 664px;
+  z-index: 40;
+}
+
+.login-icon{
+  width: 50px;
+  height: 50px;
+}
+
+// .ab {
+//   position: relative;
+//   display: inline-block;
+//   color: #000000;
+// }
+
+
+// .ab::before{
+//   background-image: url("~@/assets/view@2x.png");
+//   font-weight: 900;
+//   width: 20px;
+// height: 20px;
+// z-index: 100;
+//   content: "";
+//   font-size: 14px;
+//   position: absolute;
+//   left: 4px;
+//   top: 50%;
+// color: #000;
+// }

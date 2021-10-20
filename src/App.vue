@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <div class="dqbz-header" />
     <router-view />
   </div>
 </template>

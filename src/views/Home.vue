@@ -1,194 +1,429 @@
 <template>
-  <div class="dqbz-body">
-    <div class="dqbz-fnlist">
-      <div class="fn-box">
-        <div class="d-flex fn-w-100">
-          <div class="d-flex flex-column">
-            <img
-              src="@/assets/copy@2x.png"
-              alt="copy"
+  <div>
+    <Navbar />
+    <div class="dqbz-body">
+      <div class="dqbz-fnlist">
+        <div class="fn-box bg-gray">
+          <div class="d-flex fn-w-150 align-items-center">
+            <div
+              class="d-flex flex-column"
+              style="width:30%;"
             >
-            <span class="text-center">Copy</span>
-          </div>
-          <div class="d-flex flex-column">
-            <img
-              src="@/assets/paste@2x.png"
-              alt="paste"
+              <img
+                src="@/assets/copy@2x.png"
+                alt="copy"
+              >
+              <span class="nav-text text-center">Copy</span>
+            </div>
+            <div
+              class="d-flex flex-column"
+              style="width:30%;"
             >
-            <span class="text-center">Paste</span>
-          </div>
-          <div class="d-flex flex-column">
-            <img
-              src="@/assets/cut@2x.png"
-              alt=""
+              <img
+                src="@/assets/paste@2x.png"
+                alt="paste"
+              >
+              <span class="nav-text text-center">Paste</span>
+            </div>
+            <div
+              class="d-flex flex-column"
+              style="width:30%;"
             >
-            <span class="text-center">Cut</span>
-          </div>
+              <img
+                src="@/assets/cut@2x.png"
+                alt=""
+              >
+              <span class=" nav-text text-center">Cut</span>
+            </div>
 
           
-          <div class="paste nav-icon">
-            <p>Paste</p>
+         
+            <span class="text-center">Clipboard</span>
           </div>
-          <div class="cut ">
-            <p>Cut</p>
-          </div>
-          <span>Clipboard</span>
-        </div>
-        <div class="divider" />
-        <div class="fn-w-100">
-          <span>Organize</span>
-        </div>
-        <div class="divider" />
-        <div class="fn-w-50">
-          <div class="d-flex flex-column">
-            <img
-              src="@/assets/new folder@2x.png"
-              alt=""
-            >
-            <span class="text-center">New</span>
-          </div>
-        </div>
-        <div class="divider" />
-        <div class="fn-w-75 d-flex">
-          <div class="d-flex flex-column w-50">
-            <img
-              src="@/assets/download@2x.png"
-              alt=""
-            >
-            <span class="text-center">Download</span>
-          </div>
-          <div class="d-flex flex-column w-50">
-            <img
-              src="@/assets/upload@2x.png"
-              alt=""
-            >
-            <span class="text-center">Upload</span>
-          </div>
+          <div class="divider" />
+          <div class="fn-w-100 d-flex">
+            <div class="d-flex flex-column w-50">
+              <img
+                src="@/assets/delete@2x-2.png"
+                alt=""
+              >
+              <span class="nav-text text-center">Delete</span>
+            </div>
+            <div class="d-flex flex-column w-50">
+              <img
+                src="@/assets/rename@2x.png"
+                alt=""
+              >
+              <span class="nav-text text-center">Rename</span>
+            </div>
 
-          <span>Transfer</span>
-        </div>
-        <div class="divider" />
-        <div class="fn-w-100 d-flex">
-          <div class="d-flex flex-column w-50">
-            <img
-              src="@/assets/add to zip@2x.png"
-              alt=""
-            >
-            <span class="text-center">add to zip</span>
+            <span class="text-center">Organize</span>
           </div>
-<div class="d-flex flex-column w-50">
-            <img
-              src="@/assets/extract all files@2x.png"
-              alt=""
-            >
-            <span class="text-center">extract all files</span>
+          <div class="divider" />
+          <div class="fn-w-50">
+            <div class="d-flex flex-column">
+              <img
+                src="@/assets/new folder@2x.png"
+                alt=""
+              >
+              <span class="nav-text text-center">New</span>
+            </div>
           </div>
+          <div class="divider" />
+          <div class="fn-w-100 d-flex">
+            <div class="d-flex flex-column w-50">
+              <img
+                src="@/assets/download@2x.png"
+                alt=""
+              >
+              <span class="nav-text text-center">Download</span>
+            </div>
+            <div class="d-flex flex-column w-50">
+              <img
+                src="@/assets/upload@2x.png"
+                alt=""
+              >
+              <span class="nav-text text-center">Upload</span>
+            </div>
 
-          <span>Compression</span>
-        </div>
-        <div class="divider" />
-        <div class="fn-w-150">
-          <span>Share</span>
-        </div>
-        <div class="divider" />
-        <div class="fn-w-120">
-          <span>Select</span>
-        </div>
-        <div class="divider" />
-        <div class="fn-w-210">
-          <h6>Example heading <span class="badge bg-secondary">New</span></h6>
-
-          <span>Layout</span>
-        </div>
-        <div class="divider" />
-        <div class="fn-w-120">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="Item check boxes"
-            >
-            <label
-              class="form-check-label"
-              for="Item check boxes"
-            >
-              Item check boxes
-            </label>
+            <span class="text-center">Transfer</span>
           </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="File extensions"
-            >
-            <label
-              class="form-check-label"
-              for="File extensions"
-            >
-              File extensions
-            </label>
-          </div>
+          <div class="divider" />
+          <div class="fn-w-100 d-flex">
+            <div class="d-flex flex-column w-50">
+              <img
+                src="@/assets/add to zip@2x.png"
+                alt=""
+              >
+              <span class="nav-text text-center">add to zip</span>
+            </div>
+            <div class="d-flex flex-column w-50">
+              <img
+                src="@/assets/extract all files@2x.png"
+                alt=""
+              >
+              <span class="nav-text text-center">extract all files</span>
+            </div>
 
-          <span>Show/Hide</span>
+            <span class="text-center">Compression</span>
+          </div>
+          <div class="divider" />
+          <div class="fn-w-150">
+            <h6>
+              <img
+                src="@/assets/select all@2x.png"
+                class="nav-icon"
+              >
+              Select all
+            </h6>
+            <h6>
+              <img
+                src="@/assets/select all@2x.png"
+                class="nav-icon"
+              >
+              Select all
+            </h6>
+
+            <span class="text-center">Share</span>
+          </div>
+          <div class="divider" />
+          <div class="fn-w-120">
+            <h6>
+              <img
+                src="@/assets/select all@2x.png"
+                class="nav-icon"
+              >
+              Select all
+            </h6>
+            <h6>
+              <img
+                src="@/assets/select none@2x.png"
+                class="nav-icon"
+              >
+              Select none
+            </h6>
+            <h6>
+              <img
+                src="@/assets/invert selection@2x.png"
+                class="nav-icon"
+              >
+              Invert Selection
+            </h6>
+
+
+            <span class="text-center">Select</span>
+          </div>
+          <div class="divider" />
+          <div class="fn-w-210">
+            <div class="d-flex">
+              <h6>
+                <img
+                  src="@/assets/large icons@2x.png"
+                  class="nav-icon"
+                >
+                Large icons
+              </h6>
+              <h6>
+                <img
+                  src="@/assets/icons@2x.png"
+                  class="nav-icon"
+                >
+                icons
+              </h6>
+            </div>
+            <div class="d-flex">
+              <h6>
+                <img
+                  src="@/assets/tile@2x.png"
+                  class="nav-icon"
+                >
+                Tiles
+              </h6>
+              <h6>
+                <img
+                  src="@/assets/details@2x.png"
+                  class="nav-icon"
+                >
+                Details
+              </h6>
+            </div>
+          
+
+
+            <span class="text-center">Layout</span>
+          </div>
+          <div class="divider" />
+          <div class="fn-w-150">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="Item check boxes"
+              >
+              <label
+                class="form-check-label"
+                for="Item check boxes"
+              >
+                Item check boxes
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="File extensions"
+              >
+              <label
+                class="form-check-label"
+                for="File extensions"
+              >
+                File extensions
+              </label>
+            </div>
+
+            <span class="text-center">Show/Hide</span>
+          </div>
+          <div class="divider" />
         </div>
-        <div class="divider" />
       </div>
-    </div>
-    <div class="dqbz-path-block">
-      <button class="dqbz-previous">
-        1
-      </button>
-      <b-form-input
-        type="text"
-        placeholder="Search"
-      />
-      <b-button>S</b-button>
-      <select
-        class="form-select"
-        aria-label="Default select example"
-      >
-        <option selected />
-      </select>
+      <div class="dqbz-path-block">
+        <button class="dqbz-previous">
+          <img
+            src="@/assets/arrow-left@2x.png"
+            class="nav-icon"
+          >
+        </button>
+        <button class="dqbz-previous">
+          <img
+            src="@/assets/arrow-right@2x.png"
+            class="nav-icon"
+          >
+        </button>
+        <button class="dqbz-previous">
+          <img
+            src="@/assets/down@2x.png"
+            class="nav-icon"
+          >
+        </button>
+        <button class="dqbz-previous">
+          <img
+            src="@/assets/arrow-up@2x.png"
+            class="nav-icon"
+          >
+        </button>
 
-      <b-button>S</b-button>
-    </div>
-    <div />
-    <div class="dqbz-main">
-      <Splitpanes style="height: 100%">
-        <Pane
-          :size="paneSize"
-          min-size="10"
-          max-size="25"
+        <b-form-input
+          type="text"
+          placeholder="Search"
+        />
+        <button class="dqbz-previous">
+          <img
+            src="@/assets/refresh@2x.png"
+            class="nav-icon"
+          >
+        </button>
+        <select
+          class="form-select"
+          aria-label="Default select example"
         >
-          <Sidebar />
-          <span>1</span>
-        </Pane>
-        <Pane :size="100 - paneSize">
-          <span>2</span>
-        </Pane>
-      </Splitpanes>
+          <option selected />
+        </select>
+
+        <b-button
+          class="text-white"
+          style="background-color:#66ACEC;"
+        >
+          <img
+            src="@/assets/arrow-right@2x.png" 
+            class="nav-icon"
+          >
+        </b-button>
+      </div>
+      <div />
+      <!-- main -->
+    
+
+      <div class="dqbz-main">
+        <Splitpanes style="height: 100%">
+          <Pane
+            :size="paneSize"
+            min-size="10"
+            max-size="25"
+          >
+            <div
+              class="treeview text-dark d-flex align-items-start"
+            >
+              <ul class="mb-1 list-unstyled">
+                <li class="">
+                  <ul class="nested list-unstyled">
+                    <li><h6>Folder One</h6></li>
+                    <li><h6>Folder Two</h6></li>
+                    <li>
+                      <span><h6>7Z Archive</h6></span>
+                      <ul class="list-unstyled">
+                        <li><h6>Deadlines</h6></li>
+                      </ul>
+                    </li>
+                    <li>
+                      <span><h6>RAR Archive</h6></span>
+                      <ul class="list-unstyled">
+                        <li><h6>Deadlines</h6></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+        
+                <li>
+                  <h6>Favourites</h6>
+                </li>
+                <li>
+                  <h6>Feature Tests</h6>
+                </li>
+                <li>
+                  <h6>Another Root Folder</h6>
+                </li>
+              </ul>
+            </div>
+          </Pane>
+          <Pane
+            :size="100 - paneSize"
+            class="d-flex align-items-start justify-content-start"
+          >
+            <div class="d-flex flex-column">
+              <img
+                src="@/assets/folder@2x.png"
+                class="folder-icon"
+              >
+              <h6 class="text-dark ">
+                Folder One
+              </h6>
+            </div>
+            <div class="d-flex flex-column">
+              <img
+                src="@/assets/folder@2x.png"
+                class="folder-icon"
+              >
+              <h6 class="text-dark ">
+                Folder Two
+              </h6>
+            </div>
+            <div class="d-flex flex-column">
+              <img
+                src="@/assets/7zip@2x.png"
+                class="folder-icon"
+              >
+              <h6 class="text-dark ">
+                7Z Archive
+              </h6>
+            </div>
+            <div class="d-flex flex-column">
+              <img
+                src="@/assets/ppt@2x.png"
+                class="folder-icon"
+              >
+              <h6 class="text-dark ">
+                PPTX Sample File
+              </h6>
+            </div>
+            <div class="d-flex flex-column">
+              <img
+                src="@/assets/rar@2x.png"
+                class="folder-icon"
+              >
+              <h6 class="text-dark ">
+                RAR Archive
+              </h6>
+            </div>
+            <div class="d-flex flex-column">
+              <img
+                src="@/assets/tar@2x.png"
+                class="folder-icon"
+              >
+              <h6 class="text-dark ">
+                TAR Archive
+              </h6>
+            </div>
+            <div class="d-flex flex-column">
+              <img
+                src="@/assets/word@2x.png"
+                class="folder-icon"
+              >
+              <h6 class="text-dark text-center">
+                Word
+              </h6>
+            </div>
+          </Pane>
+        </Splitpanes>
+      </div>
+      <div class="dqbz-footer" />
     </div>
-    <div class="dqbz-footer" />
   </div>
 </template>
 
 <script>
 import { Splitpanes, Pane } from "splitpanes";
-import Sidebar from "../components/Sidebar.vue";
+// import Sidebar from "@/components/Sidebar.vue";
+import Navbar from "@/components/Navbar.vue";
+
 
 export default {
   name: "Home",
   components: {
     Splitpanes,
     Pane,
-    Sidebar
+    Navbar
+    // Sidebar
   },
   data: () => ({
+    
+
     paneSize: 15,
   }),
-  mounted() {},
+  mounted() {
+
+  },
 };
 </script>
 
@@ -219,7 +454,7 @@ export default {
 .dqbz-footer {
   width: 100vw;
   height: 30px;
-  background-color: rgb(52, 153, 236);
+  background-color: #fff;
   position: absolute;
   bottom: 0;
 }
@@ -287,6 +522,7 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: row;
+  background: rgb(253, 253, 253);
 }
 
 .divider {
@@ -357,4 +593,6 @@ export default {
   margin-left: 10px;
   width: 270px;
 }
+
+
 </style>

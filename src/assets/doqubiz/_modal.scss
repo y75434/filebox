@@ -3,6 +3,11 @@
 // .modal-dialog    - positioning shell for the actual modal
 // .modal-content   - actual modal w/ bg and corners and stuff
 
+.modal-btn{
+	color: white;
+	
+}
+
 // Container that the modal scrolls within
 .modal {
 	position: fixed;
@@ -24,6 +29,8 @@
 
 // Shell div to position the modal with bottom padding
 .modal-dialog {
+	border-radius: 5%;
+
 	position: relative;
 	width: auto;
 	margin: $modal-dialog-margin;

@@ -8,15 +8,15 @@
   padding: 1rem 1rem;
 }
 
-p {
+.login-form p {
   width: 100%;
   text-align: center;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #d8d8d8;
   line-height: 0.1em;
   margin: 10px 0 20px;
 }
 
-p span {
+.login-form p span {
   background: #fff;
   padding: 0 10px;
 }
@@ -27,4 +27,19 @@ p span {
 background: url("/../account@2x.png") no-repeat scroll 0.35rem center
   transparent;
 
+}
+
+
+.folder-icon{
+  width: 100px;
+  height: 100px;
+}
+
+
+.bg-gray{
+  background-color: #f0f0f0;
+}
+
+.bg-blue{
+  background-color: #C0D9F1;
 }
