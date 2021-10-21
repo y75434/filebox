@@ -5,8 +5,20 @@
 
 .modal-btn{
 	color: white;
+	background-color: #66acec;
+	border-color: #66acec;
+}
+.cancel-btn{
+	color: #666;
+	background-color: #F0F0F0;
+	border-color: #999;
+
+}
+.form-select{
 	
 }
+
+
 
 // Container that the modal scrolls within
 .modal {
@@ -58,10 +70,16 @@
 	.modal-content {
 		max-height: 100%;
 		overflow: hidden;
+		
+
 	}
 
 	.modal-body {
 		overflow-y: auto;
+		border-bottom-right-radius: 10px;
+		border-bottom-left-radius: 10px;
+		border-radius: 30px;
+
 	}
 }
 

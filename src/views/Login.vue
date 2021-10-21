@@ -3,7 +3,7 @@
     <div class="col-lg-12 d-none d-md-block  login_pic bg-cover vh-100" />
     <div class="row  justify-content-center align-items-center vh-100 pb-4">
       <div class="col-lg-4 col-md-6 col-10 p-5  form">
-        <form class="text-muted login-form p-5">
+        <form class="text-muted login-form  p-5">
           <h1
             class=""
             style="color:#2066B0;"
@@ -16,31 +16,20 @@
           
           <div class="form-group border-info">
             <label for="email" class="my-2">User name</label>
-            <!-- <img
-              class="login-icon"
-              src="@/assets/view@2x.png"
-            > -->
+            
             <input
-              class="form-control"
+              class="form-control user-icon"
               type="text"
               id="email"
               placeholder="jeff@doqubiz.com"
             >
-            <!-- <label for="email">
-              <div class="ab" />
-              <input
-                class="form-control"
-                type="text"
-                id="email"
-                placeholder="jeff@doqubiz.com"
-              >
-
-            </label> -->
+            
           </div>
           <div class="form-group">
             <label for="passwords" class="my-2">Password</label>
+            
             <input
-              class="form-control"
+              class="form-control password-icon position-relative"
               type="text"
               id="passwords"
               placeholder="********"

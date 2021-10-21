@@ -1,9 +1,6 @@
 
 
-.test{
-  background-image: url("~@/assets/user setting@2x.png");
 
-}
 
 .nav-icon{
   width: 20px;
@@ -14,3 +11,171 @@
 .nav-text{
   font-size: 5px;
 }
+
+.dqbz-body {
+  width: 100vw;
+  height: calc(100vh - 35px);
+  position: relative;
+}
+
+.dqbz-fnlist {
+  width: 100vw;
+  height: 120px;
+}
+
+.dqbz-path-block {
+  width: 100vw;
+  height: 40px;
+  padding: 4px 10px;
+  display: flex;
+  background-color: #f3f5f6;
+}
+
+.dqbz-main {
+  width: 100vw;
+  height: calc(100vh - 225px);
+}
+
+.dqbz-footer {
+  width: 100vw;
+  height: 30px;
+  background-color: #fff;
+  position: absolute;
+  bottom: 0;
+}
+
+.tabs,
+.tabs > div {
+  line-height: 0.5;
+}
+
+.tab-content,
+.tab-pane {
+  height: 90px;
+}
+
+.fn-w-50,
+.fn-w-75,
+.fn-w-100,
+.fn-w-120,
+.fn-w-150,
+.fn-w-210 {
+  height: 100%;
+  position: relative;
+}
+
+.fn-w-50 > span,
+.fn-w-75 > span,
+.fn-w-100 > span,
+.fn-w-120 > span,
+.fn-w-150 > span,
+.fn-w-210 > span {
+  position: absolute;
+  display: block;
+  width: 100%;
+  bottom: 8px;
+  font-size: 5px;
+  color: rgb(172, 174, 175);
+}
+
+.fn-w-50 {
+  width: 50px;
+}
+
+.fn-w-75 {
+  width: 75px;
+}
+
+.fn-w-100 {
+  width: 100px;
+}
+
+.fn-w-120 {
+  width: 120px;
+}
+
+.fn-w-150 {
+  width: 150px;
+}
+
+.fn-w-210 {
+  width: 210px;
+}
+
+.fn-box {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  background: rgb(253, 253, 253);
+}
+
+.divider {
+  height: 90%;
+  border-right: 1px solid rgb(216, 218, 219);
+  margin-top: 4px;
+}
+
+.dqbz-previous {
+  width: 32px;
+  height: 32px;
+  background-color: #f3f5f6;
+  border: none;
+  margin-right: 5px;
+}
+
+.dqbz-previous:hover {
+  border: 1px solid rgb(52, 153, 236);
+  background-color: rgba(114, 170, 216, 0.2);
+}
+
+.input-group {
+  border: 1px solid rgb(225, 226, 228);
+
+  position: relative;
+}
+
+.input-group:hover,
+.input-group:focus {
+  border: 1px solid rgb(52, 153, 236);
+}
+
+.input-group > input.form-control {
+  border-style: none;
+  height: 30px;
+}
+
+.input-group > input.form-control:focus {
+  box-shadow: none;
+}
+
+.input-group-prepend {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.input-group-prepend > button {
+  border-top-style: solid;
+  border-right-style: solid;
+  border-bottom-style: solid;
+  color: #000;
+  border-color: transparent;
+  height: 100%;
+  width: 36px;
+  text-align: center;
+  vertical-align: middle;
+  background-color: transparent;
+}
+
+.input-group-prepend > button:focus,
+.input-group-prepend > button:hover {
+  box-shadow: none;
+  background-color: transparent;
+}
+
+#input-search {
+  margin-left: 10px;
+  width: 270px;
+}
+

@@ -72,9 +72,10 @@ $secondary: #28d4ca !default;
 $success: #756c69!default;
 $info: $cyan !default;
 $warning: $yellow !default;
-$danger: $red !default;
-$light: $gray-100 !default;
+$danger: #EB5757 !default;
+$light:  #F3F5F6 !default;
 $dark: $gray-900 !default;
+// $border: !default;
 // scss-docs-end theme-color-variables
 
 // scss-docs-start theme-colors-map

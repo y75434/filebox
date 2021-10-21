@@ -3,9 +3,10 @@
 
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/mixins';
+@import "~bootstrap/scss/bootstrap";
+
 @import '../doqubiz/variables';
-@import '../doqubiz/modal';
-@import '~bootstrap/scss/bootstrap';
+@import '../doqubiz/_modal';
 @import "../doqubiz/_login";
 @import "../doqubiz/_home";
 
