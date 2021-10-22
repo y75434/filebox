@@ -21,6 +21,12 @@ const routes = [
     name: 'modal',
     component: () => import('../views/Modal.vue')
 
+  },
+  {
+		path: '/admin',
+    name: 'admin',
+    component: () => import('../views/Admin.vue')
+
 	},
 ]
 

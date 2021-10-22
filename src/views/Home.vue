@@ -228,7 +228,7 @@
           <div class="divider" />
         </div>
       </div>
-      <Search/>
+      <Search />
       <div />
       <!-- main -->
     
@@ -240,6 +240,37 @@
             min-size="10"
             max-size="25"
           >
+            <ul class="list-unstyled">
+              <li
+                class="btn-links text-dark"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseExample"
+                aria-expanded="false"
+                aria-controls="collapseExample"
+              >
+                Root Folder
+              </li>
+              <li
+                class="collapse"
+                id="collapseExample"
+              >
+                <h6 class="text-dark">
+                  Folder One
+                </h6>
+              </li>
+              <li
+                class="collapse"
+                id="collapseExample"
+              >
+                <h6 class="text-dark">
+                  Folder Two
+                </h6>
+              </li>
+            </ul>
+            
+
+
+            
             <div
               class="treeview text-dark d-flex align-items-start h-100"
             >
