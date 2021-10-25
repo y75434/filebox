@@ -71,7 +71,7 @@
         </Pane>
         <Pane
           :size="100 - paneSize"
-          class="d-flex align-items-start justify-content-start flex-column"
+          class=" flex-column"
         >
           <Title />
           <Table />

@@ -1,17 +1,17 @@
 <template>
-  <div
-    class="w-100
-"
-  >
+  <div class="w-100">
     <Splitpanes
-      class=""
-      style="height: 10%"
+      class="text-dark"
+      style="height: 100%"
     >
-      <!-- <Pane
+      <Pane
         :size="paneSize"
-        
+        style="background: #FAFAFA;"
       >
-        <p class="text-dark fw-bold" style="background: #FAFAFA;">
+        <p
+          class="text-dark fw-bold"
+          style="background: #FAFAFA;"
+        >
           Name
         </p>
         <ul>
@@ -106,69 +106,24 @@
             </p>
           </li>
         </ul>
-      </Pane> -->
-    
-    
-    
-    
-      <table class="table text-dark">
-        <thead>
-          <tr>
-            <th scope="col">
-              #
-            </th>
-            <th scope="col">
-              First
-            </th>
-            <th scope="col">
-              Last
-            </th>
-            <th scope="col">
-              Handle
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">
-              1
-            </th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">
-              2
-            </th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">
-              3
-            </th>
-            <td colspan="2">
-              Larry the Bird
-            </td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-      </table>
+      </Pane>
     </Splitpanes>
+
+
+
+    
   </div>
 </template>
 
 <script>
-import { Splitpanes } from "splitpanes";
+import { Splitpanes,Pane } from "splitpanes";
 
 
 export default {
   name: "Home",
   components: {
     Splitpanes,
-    // Pane
+    Pane
   },
   data: () => ({
     
