@@ -1,117 +1,154 @@
 <template>
   <div class="w-100">
     <Splitpanes
-      class="text-dark"
+      class="text-dark table"
       style="height: 100%"
     >
       <Pane
         :size="paneSize"
-        style="background: #FAFAFA;"
+        class="d-flex align-items-start flex-column"
+        min-size="10"
+        max-size="25"
       >
-        <p
-          class="text-dark fw-bold"
+        <div
+          class="text-dark fw-bold w-100"
           style="background: #FAFAFA;"
         >
-          Name
-        </p>
-        <ul>
-          <li>
-            <p class="text-dark">
-              Rachel
-            </p>
-          </li>
-        </ul>
+          <p class="text-center ">
+            Name
+          </p>
+        </div>
+        <div class="w-100">
+          <p class="text-dark text-center">
+            Rachel
+          </p>
+        </div>
       </Pane>
       <Pane
         :size="paneSize"
-        
-
-        class=""
+        class="d-flex align-items-start flex-column"
+        min-size="10"
+        max-size="25"
       >
-        <p class="text-dark fw-bold">
-          Full Name
-        </p>
-        <ul>
-          <li>
-            <p class="text-dark">
-              Rachel Lee
-            </p>
-          </li>
-        </ul>
+        <div
+          class="text-dark fw-bold w-100"
+          style="background: #FAFAFA;"
+        >
+          <p class="text-center ">
+            Full Name
+          </p>
+        </div>
+        <div class="w-100">
+          <p class="text-dark text-center">
+            Rachel Lee
+          </p>
+        </div>
       </Pane>
       <Pane
         :size="paneSize"
-       
-
-        class=""
+        class="d-flex align-items-start flex-column"
+        min-size="10"
+        max-size="25"
       >
-        <p class="text-dark fw-bold">
-          Login Count
-        </p>
-        <ul>
-          <li>
-            <p class="text-dark">
-              Rachel Lee
-            </p>
-          </li>
-        </ul>
+        <div
+          class="text-dark fw-bold w-100"
+          style="background: #FAFAFA;"
+        >
+          <p class="text-center ">
+            Login Count
+          </p>
+        </div>
+        <div class="w-100">
+          <p class="text-dark text-center">
+            Rachel Lee
+          </p>
+        </div>
       </Pane>
       <Pane
         :size="paneSize"
-        
-
-        class=""
+        class="d-flex align-items-start flex-column"
+        min-size="10"
+        max-size="25"
       >
-        <p class="text-dark fw-bold">
-          Last Login Time
-        </p>
-        <ul>
-          <li>
-            <p class="text-dark">
-              25/02/2007 10:52 AM
-            </p>
-          </li>
-        </ul>
+        <div
+          class="text-dark fw-bold w-100"
+          style="background: #fafafa"
+        >
+          <p class="text-center ">
+            Last Login Time
+          </p>
+        </div>
+        <div class="w-100">
+          <p class="text-dark text-center">
+            25/02/2007 10:52 AM
+          </p>
+        </div>
       </Pane>
       <Pane
         :size="paneSize"
-        
-
-        class=""
+        class="d-flex align-items-start flex-column"
+        min-size="10"
+        max-size="25"
       >
-        <p class="text-dark fw-bold">
-          Date Created
-        </p>
-        <ul>
-          <li>
-            <p class="text-dark">
-              25/02/2007 10:52 AM
-            </p>
-          </li>
-        </ul>
+        <div
+          class="text-dark fw-bold w-100"
+          style="background: #fafafa"
+        >
+          <p class="text-center ">
+            Date Created
+          </p>
+        </div>
+        <div class="w-100">
+          <p class="text-dark text-center">
+            25/02/2007 10:52 AM
+          </p>
+        </div>
       </Pane>
       <Pane
         :size="paneSize" 
-       
-
-        class=""
+        class="d-flex align-items-start flex-column"
+        min-size="10"
+        max-size="25"
       >
-        <p class="text-dark fw-bold">
-          Date Modified
-        </p>
-        <ul>
-          <li>
-            <p class="text-dark">
-              25/02/2007 10:52 AM
-            </p>
-          </li>
-        </ul>
+        <div
+          class="text-dark fw-bold w-100"
+          style="background: #fafafa"
+        >
+          <p class="text-center ">
+            Date Modified
+          </p>
+        </div>
+        <div class="w-100">
+          <p class="text-dark text-center">
+            25/02/2007 10:52 AM
+          </p>
+        </div>
+      </Pane>
+      <Pane
+        :size="paneSize"
+        min-size="10"
+        max-size="25"
+        class="d-flex align-items-start flex-column"
+      >
+        <div
+          class="text-dark fw-bold w-100"
+          style="background: #fafafa"
+        >
+          <p class="text-center ">
+            Status
+          </p>
+        </div>
+        <div class="w-100">
+          <!-- <img
+            src=""
+            class=""
+          > -->
+          <p class="text-dark text-center">
+            active
+          </p>
+        </div>
       </Pane>
     </Splitpanes>
-
-
-
-    
   </div>
 </template>
 

@@ -1,5 +1,8 @@
 <template>
-  <div class="dqbz-header d-flex justify-content-between bg-light">
+  <div
+    class="dqbz-header d-flex justify-content-between"
+    style="background-color:#E6F0FA;"
+  >
     <li class="nav-item d-flex align-items-center">
       <button class="dqbz-previous">
         <img
@@ -10,7 +13,7 @@
 
       
       <p
-        class=""
+        class="m-0"
       >
         FileVista- Administration
       </p>

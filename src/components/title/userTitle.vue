@@ -1,31 +1,30 @@
 <template>
-  <div class=" align-items-center">
-    <div class="d-flex justify-content-start">
+  <div class="title d-flex w-100 justify-content-between align-items-center">
+    <div class="d-flex ">
       <div class="d-flex align-items-center">
         <img src="@/assets/user@2x.png">
-        <h5 class="text-dark fw-bold">
+        <h5 class="light-blue fw-bold">
           Users Management
         </h5>
-      </div>
-
-      <div class="">
+      
         <button
           type="button"
-          class="cancel-btn btn d-flex align-items-center"
-          style="background-color:#66acec;"
+          class="title-btn btn d-flex align-items-center m-3"
+          style="background-color: #66acec"
         > 
           <img
             class="nav-icon"
             src="@/assets/add@2x.png"
             alt=""
           >
-          <h5>Add new users</h5>
+          <h5 class="m-0">
+            Add new
+          </h5>
         </button>
-      </div>
-      <div class="d-flex align-items-center">
+
         <button
           type="button"
-          class="cancel-btn btn d-flex align-items-center"
+          class="title-btn btn d-flex align-items-center m-3"
           style="background-color:#6AC1A2;"
         > 
           <img
@@ -33,24 +32,24 @@
             src="@/assets/add@2x.png"
             alt=""
           >
-          <h5>
+          <h5 class="m-0">
             import user
           </h5>
         </button>
 
-        <div class="input-group d-flex align-items-center">
-          <div class="input-group mb-3">
+        <div class="input-group border-0 d-flex align-items-center">
+          <div class="input-group ">
             <button
               class="btn btn-outline-secondary"
               type="button"
               id="button-addon1"
             >
-              Button
+              Search
             </button>
             <input
               type="text"
-              class="form-control"
-              placeholder=""
+              class="form-control h-0"
+              placeholder="search name"
               aria-label="Example text with button addon"
               aria-describedby="button-addon1"
             >
@@ -73,24 +72,55 @@
           </div>
         </div>
       </div>
-    
-
+    </div>
+    <div
+      class="d-flex flex-column "
+    >
       <div
-        class="d-flex align-items-end border"
-        style="border-color:#999;"
+        class="border d-flex group align-items-end justify-content-between" 
+        style="border-color: #999"
       >
-        <h5 style="color:#666;">
+        <h5 style="color: #666">
           Total
         </h5>
         <h3
-          class=" fw-bold"
-          style="color:#007fa9;"
+          class="fw-bold"
+          style="color: #007fa9"
         >
           3
         </h3>
-        <h5 class="text-dark fw-bold">
-          users
+        <h5 class="text-dark">
+          Groups
         </h5>
+      </div>
+      <div class="d-flex">
+        <button
+          type="button"
+          class="user-btn btn d-flex align-items-center mr-3"
+        > 
+          <img
+            class="nav-icon"
+            src="@/assets/refresh@2x.png"
+            alt=""
+          >
+          <h5 class="m-0">
+            Refresh
+          </h5>
+        </button>
+
+        <button
+          type="button"
+          class="user-btn btn d-flex align-items-center"
+        > 
+          <img
+            class="nav-icon"
+            src="@/assets/add@2x.png"
+            alt=""
+          >
+          <h5 class="m-0">
+            Show all
+          </h5>
+        </button>
       </div>
     </div>
   </div>

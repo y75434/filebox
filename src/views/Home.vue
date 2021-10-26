@@ -111,17 +111,17 @@
           <div class="fn-w-150 ">
             <h6>
               <img
-                src="@/assets/select all@2x.png"
+                src="@/assets/publiclink@2x.png"
                 class="nav-icon"
               >
-              Select all
+              Create public link...
             </h6>
             <h6>
               <img
-                src="@/assets/select all@2x.png"
+                src="@/assets/managepubliclink@2x.png"
                 class="nav-icon"
               >
-              Select all
+              Manage public links...
             </h6>
 
             <span class="text-center">Share</span>
@@ -248,6 +248,7 @@
                 aria-expanded="false"
                 aria-controls="collapseExample"
               >
+              <img src="" alt="">
                 Root Folder
               </li>
               <li

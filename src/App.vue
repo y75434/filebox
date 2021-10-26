@@ -36,7 +36,7 @@ body {
 
 .splitpanes__pane {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   font-family: Helvetica, Arial, sans-serif;
   color: rgba(255, 255, 255, 0.6);

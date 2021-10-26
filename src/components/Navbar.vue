@@ -7,11 +7,9 @@
         src="@/assets/folder@2x.png"
         class="nav-icon"
       >
-      <a
-        class="nav-link active"
-        aria-current="page"
-        href="#"
-      >FileVista</a>
+      <p
+        class="p-0 m-0"
+      >FileVista</p>
     </li>
 
     <ul class="navbar-nav d-flex mb-2 mb-lg-0">

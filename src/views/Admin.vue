@@ -11,69 +11,110 @@
           min-size="10"
           max-size="25"
         >
-          <div class="treeview text-dark d-flex align-items-start h-100">
-            <ul class="mb-1 list-unstyled">
-              <li class="">
-                <h6>Favourites</h6>
+          <div class="w-100 text-dark d-flex align-items-start h-100">
+            <ul class=" list-unstyled w-100">
+              <li class="d-flex align-items-center w-100">
+                <img
+                  class="adminsidebar-icon"
+                  src="@/assets/usermanagement@2x.png"
+                >
+                <p class="m-0">
+                  User Management
+                </p>
               </li>
         
-              <li>
-                <h6>Favourites</h6>
+              <li class="d-flex align-items-center">
+                <img
+                  class="adminsidebar-icon"
+                  src="@/assets/group management@2x.png"
+                >
+
+                <p class="m-0">
+                  Group Management
+                </p>
               </li>
-              <li>
-                <h6>Feature Tests</h6>
+              <li class="d-flex align-items-center">
+                <img
+                  class="adminsidebar-icon"
+                  src="@/assets/root folder@2x.png"
+                >
+
+                <p class="m-0">
+                  Root Folders
+                </p>
               </li>
-              <li>
-                <h6>Another Root Folder</h6>
+              <li class="d-flex align-items-center">
+                <img
+                  class="adminsidebar-icon"
+                  src="@/assets/publiclink@2x.png"
+                >
+
+                <p class="m-0">
+                  Public Links
+                </p>
               </li>
             </ul>
           </div>
           <button
-            class="btn btn-primary"
+            style="background-color:#F4F4F4;width:30px; height:30px;"
+            class=""
             type="button"
             data-bs-toggle="offcanvas"
             data-bs-target="#offcanvasBottom"
             aria-controls="offcanvasBottom"
           >
-            Toggle bottom offcanvas
+            <img
+              src="@/assets/arrow-down@2x.png"
+              style=""
+            >
           </button>
 
           <div
-            :size="paneSize"
-
+            style=" max-width: 25%; background-color:#F4F4F4;"
             class="offcanvas offcanvas-bottom"
             tabindex="-1"
             id="offcanvasBottom"
             aria-labelledby="offcanvasBottomLabel"
           >
-            <div
-              class="offcanvas-body text-dark small"
+            <ul
+              class="text-dark small"
               :size="paneSize"
+              style=""
             >
-              <div class="">
+              <li class="d-flex align-items-center">
+                <img src="@/assets/app setting@2x.png">
                 <h5
                   class="offcanvas-title"
-                  id="offcanvasBottomLabel"
                 >
                   Application Settings
                 </h5>
-              </div>
-              <div class="">
+              </li>
+              <li class="d-flex align-items-center">
+                <img src="@/assets/license info@2x.png">
+
                 <h5
                   class="offcanvas-title"
-                  id="offcanvasBottomLabel"
                 >
-                  Application Settings
+                  License Information
                 </h5>
-              </div>
-            </div>
+              </li>
+              <li class="d-flex align-items-center">
+                <img src="@/assets/about@2x.png">
+
+                <h5
+                  class="offcanvas-title"
+                >
+                  About FileVista
+                </h5>
+              </li>
+            </ul>
           </div>
         </Pane>
         <Pane
           :size="100 - paneSize"
           class=" flex-column"
         >
-          <Title />
+          <userTitle />
           <Table />
         </Pane>
       </Splitpanes>
@@ -85,7 +126,7 @@
 import { Splitpanes, Pane } from "splitpanes";
 import AdminNav from "@/components/AdminNav.vue";
 import Table from '../components/Table.vue';
-import Title from '../components/Title.vue'
+import userTitle from '../components/title/userTitle.vue'
 
 
 
@@ -96,7 +137,7 @@ name: "Admin",
     Pane,
     AdminNav,
     Table,
-    Title
+    userTitle
   },
   data: () => ({
     
