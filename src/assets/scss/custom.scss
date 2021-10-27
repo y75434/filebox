@@ -1,0 +1,127 @@
+.dqbz-btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 2rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  height: 3rem;
+  padding: 1rem 1rem;
+}
+
+.login-form p {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #d8d8d8;
+  line-height: 0.1em;
+  margin: 10px 0 20px;
+}
+
+.login-form p span {
+  background: #fff;
+  padding: 0 10px;
+}
+
+.input-group-icon{
+  width: 50%;
+  // background-image: url("/../account@2x.png") ;
+background: url("/../account@2x.png") no-repeat scroll 0.35rem center
+  transparent;
+
+}
+
+
+.folder-icon{
+  width: 100px;
+  height: 100px;
+}
+
+
+.bg-gray{
+  background-color: #f0f0f0;
+}
+
+.bg-blue{
+  background-color: #C0D9F1;
+}
+
+.light-blue{
+  color: #66acec;
+}
+
+.dark-blue{
+  color: #007fa9;
+}
+
+p{
+  font-size: 14px;
+}
+
+.nav-link{
+  color: #000000;
+}
+
+
+.text-gray{
+  color: #666666;
+}
+
+
+.btn-gray{
+  background-color: #c4c4c4;
+  border-top-left-radius: 36px;
+border-bottom-left-radius: 36px;
+
+}
+
+.btn-blue{
+  background-color:  #66acec;
+  border-top-right-radius: 36px;
+  border-bottom-right-radius: 36px;
+
+}
+
+.icon32px {
+  width: 32px;
+  height: 32px;
+}
+
+.icon24px {
+  width: 24px;
+  height: 24px;
+}
+
+body {
+  margin: 0;
+}
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: left;
+  color: #2c3e50;
+}
+
+.dqbz-header {
+  width: 100vw;
+  height: 35px;
+  border-bottom: 1px groove;
+}
+
+.splitpanes {
+  background: #fff;
+}
+
+.splitpanes__pane {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  font-family: Helvetica, Arial, sans-serif;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 5em;
+}
+
+.splitpanes--vertical > .splitpanes__splitter {
+  width: 3px;
+  background: rgb(226, 223, 223);
+}

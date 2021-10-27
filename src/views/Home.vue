@@ -10,7 +10,7 @@
               style="width:30%;"
             >
               <img
-                src="@/assets/copy@2x.png"
+                src="@/assets/images/cmd/copy@2x.png"
                 alt="copy"
               >
               <span class="nav-text text-center">Copy</span>
@@ -20,7 +20,7 @@
               style="width:30%;"
             >
               <img
-                src="@/assets/paste@2x.png"
+                src="@/assets/images/cmd/paste@2x.png"
                 alt="paste"
               >
               <span class="nav-text text-center">Paste</span>
@@ -30,7 +30,7 @@
               style="width:30%;"
             >
               <img
-                src="@/assets/cut@2x.png"
+                src="@/assets/images/cmd/cut@2x.png"
                 alt=""
               >
               <span class=" nav-text text-center">Cut</span>
@@ -44,14 +44,14 @@
           <div class="fn-w-100 d-flex align-items-center">
             <div class="d-flex flex-column w-50">
               <img
-                src="@/assets/delete@2x-2.png"
+                src="@/assets/images/cmd/delete@2x-2.png"
                 alt=""
               >
               <span class="nav-text text-center">Delete</span>
             </div>
             <div class="d-flex flex-column w-50">
               <img
-                src="@/assets/rename@2x.png"
+                src="@/assets/images/cmd/rename@2x.png"
                 alt=""
               >
               <span class="nav-text text-center">Rename</span>
@@ -63,7 +63,7 @@
           <div class="fn-w-60 align-items-center d-flex">
             <div class="d-flex flex-column ">
               <img
-                src="@/assets/new folder@2x.png"
+                src="@/assets/images/file/new folder@2x.png"
                 alt=""
               >
               <span class="nav-text text-center">New</span>
@@ -73,14 +73,14 @@
           <div class="fn-w-100 d-flex align-items-center">
             <div class="d-flex flex-column w-50">
               <img
-                src="@/assets/download@2x.png"
+                src="@/assets/images/cmd/download@2x.png"
                 alt=""
               >
               <span class="nav-text text-center">Download</span>
             </div>
             <div class="d-flex flex-column w-50">
               <img
-                src="@/assets/upload@2x.png"
+                src="@/assets/images/cmd/upload@2x.png"
                 alt=""
               >
               <span class="nav-text text-center">Upload</span>
@@ -92,14 +92,14 @@
           <div class="fn-w-100 d-flex align-items-center">
             <div class="d-flex flex-column w-50">
               <img
-                src="@/assets/add to zip@2x.png"
+                src="@/assets/images/file/add to zip@2x.png"
                 alt=""
               >
               <span class="nav-text text-center">add to zip</span>
             </div>
             <div class="d-flex flex-column w-50">
               <img
-                src="@/assets/extract all files@2x.png"
+                src="@/assets/images/file/extract all files@2x.png"
                 alt=""
               >
               <span class="nav-text text-center">extract all files</span>
@@ -111,14 +111,14 @@
           <div class="fn-w-150 ">
             <h6>
               <img
-                src="@/assets/publiclink@2x.png"
+                src="@/assets/images/file/publiclink@2x.png"
                 class="nav-icon"
               >
               Create public link...
             </h6>
             <h6>
               <img
-                src="@/assets/managepubliclink@2x.png"
+                src="@/assets/images/icon/managepubliclink@2x.png"
                 class="nav-icon"
               >
               Manage public links...
@@ -130,21 +130,21 @@
           <div class="fn-w-150">
             <h6>
               <img
-                src="@/assets/select all@2x.png"
+                src="@/assets/images/cmd/select all@2x.png"
                 class="nav-icon"
               >
               Select all
             </h6>
             <h6>
               <img
-                src="@/assets/select none@2x.png"
+                src="@/assets/images/cmd/select none@2x.png"
                 class="nav-icon"
               >
               Select none
             </h6>
             <h6>
               <img
-                src="@/assets/invert selection@2x.png"
+                src="@/assets/images/icon/invert selection@2x.png"
                 class="nav-icon"
               >
               Invert Selection
@@ -158,14 +158,14 @@
             <div class="d-flex">
               <h6>
                 <img
-                  src="@/assets/large icons@2x.png"
+                  src="@/assets/images/icon/large icons@2x.png"
                   class="nav-icon"
                 >
                 Large icons
               </h6>
               <h6>
                 <img
-                  src="@/assets/icons@2x.png"
+                  src="@/assets/images/icon/icons@2x.png"
                   class="nav-icon"
                 >
                 icons
@@ -174,14 +174,14 @@
             <div class="d-flex">
               <h6>
                 <img
-                  src="@/assets/tile@2x.png"
+                  src="@/assets/images/file/tile@2x.png"
                   class="nav-icon"
                 >
                 Tiles
               </h6>
               <h6>
                 <img
-                  src="@/assets/details@2x.png"
+                  src="@/assets/images/icon/details@2x.png"
                   class="nav-icon"
                 >
                 Details
@@ -240,73 +240,113 @@
             min-size="10"
             max-size="25"
           >
-            <ul class="list-unstyled">
-              <li
-                class="btn-links text-dark"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseExample"
-                aria-expanded="false"
-                aria-controls="collapseExample"
-              >
-              <img src="" alt="">
-                Root Folder
-              </li>
-              <li
-                class="collapse"
-                id="collapseExample"
-              >
-                <h6 class="text-dark">
-                  Folder One
-                </h6>
-              </li>
-              <li
-                class="collapse"
-                id="collapseExample"
-              >
-                <h6 class="text-dark">
-                  Folder Two
-                </h6>
-              </li>
-            </ul>
-            
-
-
             
             <div
-              class="treeview text-dark d-flex align-items-start h-100"
+              class="accordion accordion-flush d-flex flex-column justify-content-start"
+              id="accordionFlushExample"
             >
-              <ul class="mb-1 list-unstyled">
-                <li class="">
-                  <ul class="nested list-unstyled">
-                    <li>
-                      <h6>Folder One</h6>
-                    </li>
-                    <li><h6>Folder Two</h6></li>
-                    <li>
-                      <span><h6>7Z Archive</h6></span>
-                      <ul class="list-unstyled">
-                        <li><h6>Deadlines</h6></li>
-                      </ul>
-                    </li>
-                    <li>
-                      <span><h6>RAR Archive</h6></span>
-                      <ul class="list-unstyled">
-                        <li><h6>Deadlines</h6></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-        
-                <li>
-                  <h6>Favourites</h6>
-                </li>
-                <li>
-                  <h6>Feature Tests</h6>
-                </li>
-                <li>
-                  <h6>Another Root Folder</h6>
-                </li>
-              </ul>
+              <div class="accordion-item">
+                <h2
+                  class="accordion-header"
+                  id="flush-headingOne"
+                >
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseOne"
+                    aria-expanded="false"
+                    aria-controls="flush-collapseOne"
+                  >
+                    Root Folder
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseOne"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="flush-headingOne"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    <h6 class="text-dark">
+                      Folder One
+                    </h6>
+                    <h6 class="text-dark">
+                      Folder Two
+                    </h6>
+                    <h6 class="text-dark">
+                      7Z Archive
+                    </h6>
+                    <h6 class="text-dark">
+                      Deadlines
+                    </h6>
+                    <h6 class="text-dark">
+                      RAR Archive
+                    </h6>
+                    <h6 class="text-dark">
+                      Deadlines
+                    </h6>
+                    <h6 class="text-dark">
+                      Favourites
+                    </h6>
+               
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2
+                  class="accordion-header"
+                  id="flush-headingTwo"
+                >
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseTwo"
+                    aria-expanded="false"
+                    aria-controls="flush-collapseTwo"
+                  >
+                    Feature Tests
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseTwo"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="flush-headingTwo"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    Placeholder   actual content.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2
+                  class="accordion-header"
+                  id="flush-headingThree"
+                >
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseThree"
+                    aria-expanded="false"
+                    aria-controls="flush-collapseThree"
+                  >
+                    Another Root Folder
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseThree"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="flush-headingThree"
+                  data-bs-parent="#accordionFlushExample"
+                >
+                  <div class="accordion-body">
+                    Placeholder 
+                  </div>
+                </div>
+              </div>
             </div>
           </Pane>
           <Pane
@@ -315,7 +355,7 @@
           >
             <div class="d-flex flex-column">
               <img
-                src="@/assets/folder@2x.png"
+                src="@/assets/images/file/folder@2x.png"
                 class="folder-icon"
               >
               <h6 class="text-dark ">
@@ -324,7 +364,7 @@
             </div>
             <div class="d-flex flex-column">
               <img
-                src="@/assets/folder@2x.png"
+                src="@/assets/images/file/folder@2x.png"
                 class="folder-icon"
               >
               <h6 class="text-dark ">
@@ -333,7 +373,7 @@
             </div>
             <div class="d-flex flex-column">
               <img
-                src="@/assets/7zip@2x.png"
+                src="@/assets/images/file/7zip@2x.png"
                 class="folder-icon"
               >
               <h6 class="text-dark ">
@@ -342,7 +382,7 @@
             </div>
             <div class="d-flex flex-column">
               <img
-                src="@/assets/ppt@2x.png"
+                src="@/assets/images/file/ppt@2x.png"
                 class="folder-icon"
               >
               <h6 class="text-dark ">
@@ -351,7 +391,7 @@
             </div>
             <div class="d-flex flex-column">
               <img
-                src="@/assets/rar@2x.png"
+                src="@/assets/images/file/rar@2x.png"
                 class="folder-icon"
               >
               <h6 class="text-dark ">
@@ -360,7 +400,7 @@
             </div>
             <div class="d-flex flex-column">
               <img
-                src="@/assets/tar@2x.png"
+                src="@/assets/images/file/tar@2x.png"
                 class="folder-icon"
               >
               <h6 class="text-dark ">
@@ -369,7 +409,7 @@
             </div>
             <div class="d-flex flex-column">
               <img
-                src="@/assets/word@2x.png"
+                src="@/assets/images/file/word@2x.png"
                 class="folder-icon"
               >
               <h6 class="text-dark text-center">

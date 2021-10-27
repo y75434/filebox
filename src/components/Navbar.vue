@@ -4,7 +4,7 @@
     <!-- <div class="container-fluid"> -->
     <li class="nav-item d-flex align-items-center">
       <img
-        src="@/assets/folder@2x.png"
+        src="@/assets/images/file/folder@2x.png"
         class="nav-icon"
       >
       <p
@@ -23,7 +23,7 @@
           aria-expanded="false"
         >
           <img
-            src="@/assets/user@2x.png"
+            src="@/assets/images/icon/user@2x.png"
             class="nav-icon"
           >
           Administration
@@ -34,7 +34,7 @@
         >
           <li class="d-flex align-items-center">
             <img
-              src="@/assets/user setting@2x.png"
+              src="@/assets/images/icon/user setting@2x.png"
               class="nav-icon"
             >
             <a
@@ -44,7 +44,7 @@
           </li>
           <li class="d-flex align-items-center">
             <img
-              src="@/assets/administrator@2x.png"
+              src="@/assets/images/icon/administrator@2x.png"
               class="nav-icon"
             >
             <a
@@ -56,7 +56,7 @@
       </li>
       <li class="nav-item d-flex align-items-center">
         <img
-          src="@/assets/logout@2x.png"
+          src="@/assets/images/cmd/logout@2x.png"
           class="nav-icon"
         >
         <a

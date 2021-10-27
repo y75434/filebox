@@ -16,7 +16,7 @@
               <li class="d-flex align-items-center w-100">
                 <img
                   class="adminsidebar-icon"
-                  src="@/assets/usermanagement@2x.png"
+                  src="@/assets/images/icon/usermanagement@2x.png"
                 >
                 <p class="m-0">
                   User Management
@@ -26,7 +26,7 @@
               <li class="d-flex align-items-center">
                 <img
                   class="adminsidebar-icon"
-                  src="@/assets/group management@2x.png"
+                  src="@/assets/images/icon/group management@2x.png"
                 >
 
                 <p class="m-0">
@@ -36,7 +36,7 @@
               <li class="d-flex align-items-center">
                 <img
                   class="adminsidebar-icon"
-                  src="@/assets/root folder@2x.png"
+                  src="@/assets/images/file/root folder@2x.png"
                 >
 
                 <p class="m-0">
@@ -46,7 +46,7 @@
               <li class="d-flex align-items-center">
                 <img
                   class="adminsidebar-icon"
-                  src="@/assets/publiclink@2x.png"
+                  src="@/assets/images/file/publiclink@2x.png"
                 >
 
                 <p class="m-0">
@@ -64,7 +64,7 @@
             aria-controls="offcanvasBottom"
           >
             <img
-              src="@/assets/arrow-down@2x.png"
+              src="@/assets/images/arrow/arrow-down@2x.png"
               style=""
             >
           </button>
@@ -82,7 +82,7 @@
               style=""
             >
               <li class="d-flex align-items-center">
-                <img src="@/assets/app setting@2x.png">
+                <img src="@/assets/images/file/app setting@2x.png">
                 <h5
                   class="offcanvas-title"
                 >
@@ -90,7 +90,7 @@
                 </h5>
               </li>
               <li class="d-flex align-items-center">
-                <img src="@/assets/license info@2x.png">
+                <img src="@/assets/images/icon/license info@2x.png">
 
                 <h5
                   class="offcanvas-title"
@@ -99,7 +99,7 @@
                 </h5>
               </li>
               <li class="d-flex align-items-center">
-                <img src="@/assets/about@2x.png">
+                <img src="@/assets/images/icon/about@2x.png">
 
                 <h5
                   class="offcanvas-title"

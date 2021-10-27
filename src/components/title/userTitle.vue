@@ -2,7 +2,7 @@
   <div class="title d-flex w-100 justify-content-between align-items-center">
     <div class="d-flex ">
       <div class="d-flex align-items-center">
-        <img src="@/assets/user@2x.png">
+        <img src="@/assets/images/icon/user@2x.png">
         <h5 class="light-blue fw-bold">
           Users Management
         </h5>
@@ -14,7 +14,7 @@
         > 
           <img
             class="nav-icon"
-            src="@/assets/add@2x.png"
+            src="@/assets/images/cmd/add@2x.png"
             alt=""
           >
           <h5 class="m-0">
@@ -29,7 +29,7 @@
         > 
           <img
             class="nav-icon"
-            src="@/assets/add@2x.png"
+            src="@/assets/images/cmd/add@2x.png"
             alt=""
           >
           <h5 class="m-0">
@@ -100,7 +100,7 @@
         > 
           <img
             class="nav-icon"
-            src="@/assets/refresh@2x.png"
+            src="@/assets/images/cmd/refresh@2x.png"
             alt=""
           >
           <h5 class="m-0">
@@ -114,7 +114,7 @@
         > 
           <img
             class="nav-icon"
-            src="@/assets/add@2x.png"
+            src="@/assets/images/cmd/add@2x.png"
             alt=""
           >
           <h5 class="m-0">
