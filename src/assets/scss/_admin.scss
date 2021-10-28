@@ -4,21 +4,27 @@
 
 .title-btn{
   color: #fff;
-  width: 15rem;
-  padding: .8rem;
+  width: 7.5rem;
+  padding: .6rem;
+  border-radius: 10px;
 }
 
 .user-btn{
-  background-color: transparent;
+  background-color: #DFE4EA;
   color: #666;
+  border-radius: 0;
 }
 
 .group{
   width: 252px;
   height: 62px;
+  border-color: #999;
+
 }
 
-.adminsidebar-icon{
-  width: 28px;
-  height: 28px;
+.slash::before{
+  content: "/";
+  height: 2rem;
 }
+
+

@@ -40,6 +40,11 @@ background: url("/../account@2x.png") no-repeat scroll 0.35rem center
   background-color: #f0f0f0;
 }
 
+
+.bg-f4gray{
+  background-color: #f4f4f4;
+}
+
 .bg-blue{
   background-color: #C0D9F1;
 }
@@ -54,6 +59,7 @@ background: url("/../account@2x.png") no-repeat scroll 0.35rem center
 
 p{
   font-size: 14px;
+  margin: 0;
 }
 
 .nav-link{
@@ -63,6 +69,10 @@ p{
 
 .text-gray{
   color: #666666;
+}
+
+.hr-gray{
+  color: #999;
 }
 
 
@@ -84,6 +94,12 @@ border-bottom-left-radius: 36px;
   width: 32px;
   height: 32px;
 }
+
+.icon28px {
+  width: 28px;
+  height: 28px;
+}
+
 
 .icon24px {
   width: 24px;
