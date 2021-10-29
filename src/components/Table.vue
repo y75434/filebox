@@ -1,13 +1,11 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <b-table
-          hover
-          :items="items"
-          class="h5"
-        />
-      </div>
+  <div class="row w-100">
+    <div class="col-12">
+      <b-table
+        hover
+        :items="items"
+        class="h5"
+      />
     </div>
   </div>
 </template>
@@ -36,4 +34,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+thead{
+  background-color: #fafafa;
+}
+
+</style>

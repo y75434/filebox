@@ -6,8 +6,7 @@
         <div class="fn-box bg-light">
           <div class="d-flex fn-w-150 align-items-center">
             <div
-              class="d-flex flex-column"
-              style="width:30%;"
+              class="d-flex flex-column w-30"
             >
               <img
                 src="@/assets/images/cmd/copy@2x.png"
@@ -16,8 +15,7 @@
               <span class="nav-text text-center">Copy</span>
             </div>
             <div
-              class="d-flex flex-column"
-              style="width:30%;"
+              class="d-flex flex-column w-30"
             >
               <img
                 src="@/assets/images/cmd/paste@2x.png"
@@ -26,8 +24,7 @@
               <span class="nav-text text-center">Paste</span>
             </div>
             <div
-              class="d-flex flex-column"
-              style="width:30%;"
+              class="d-flex flex-column w-30"
             >
               <img
                 src="@/assets/images/cmd/cut@2x.png"
@@ -108,7 +105,7 @@
             <span class="text-center">Compression</span>
           </div>
           <div class="divider" />
-          <div class="fn-w-150 ">
+          <div class="fn-w-160 ">
             <h6>
               <img
                 src="@/assets/images/file/publiclink@2x.png"
@@ -234,15 +231,15 @@
     
 
       <div class="dqbz-main">
-        <Splitpanes style="height: 100%">
+        <Splitpanes class="h-100">
           <Pane
             :size="paneSize"
             min-size="10"
             max-size="25"
+            class="d-flex align-items-start"
           >
-            
             <div
-              class="accordion accordion-flush d-flex flex-column justify-content-start"
+              class="accordion accordion-flush d-flex flex-column w-100"
               id="accordionFlushExample"
             >
               <div class="accordion-item">
@@ -289,7 +286,6 @@
                     <h6 class="text-dark">
                       Favourites
                     </h6>
-               
                   </div>
                 </div>
               </div>
@@ -451,6 +447,3 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>

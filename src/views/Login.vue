@@ -6,7 +6,6 @@
         <form class="text-muted login-form  p-5">
           <h1
             class=""
-            style="color:#2066B0;"
           >
             Hello,Welcome to FileVista.Please enter your credentials
           </h1>
@@ -42,7 +41,7 @@
             </span>
             <a
               href="#"
-              class=" float-end text-primary"
+              class=" float-end light-blue"
             >Forgot Password</a>
           </div>
           
@@ -56,10 +55,9 @@
 
           <a
             href="#"
-            style="background-color:#28d4ca; color:white;"
-            class=" dqbz-btn btn col-12"
+            class="login-btn dqbz-btn btn col-12"
           >Use Secure Dongle Login</a>
-          <a class="float-end my-3 text-primary ">Lost USB Token?</a>
+          <a class="float-end my-3 light-blue">Lost USB Token?</a>
         </form>
       </div>
     </div>
@@ -75,6 +73,4 @@ export default {
 };
 </script>
 
-<style scoped>
 
-</style>

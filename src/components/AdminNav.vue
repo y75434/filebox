@@ -1,7 +1,6 @@
 <template>
   <div
-    class="dqbz-header d-flex justify-content-between"
-    style="background-color:#E6F0FA;"
+    class="dqbz-header d-flex justify-content-between bg-lightblue"
   >
     <li class="nav-item d-flex align-items-center">
       <button class="dqbz-previous">
@@ -65,10 +64,13 @@
     <!-- </div> -->
     <!-- </nav> -->
   </div>
+
+
+
+  
 </template>
 
 <script>
 export default {};
 </script>
 
-<style></style>

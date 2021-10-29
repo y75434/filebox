@@ -622,7 +622,6 @@
             >
               <img
                 class="mx-auto  m-0"
-                style="width:73px; height:73px;"
                 src="@/assets/images/cmd/alarm@2x.png"
               >
               <h5 class="text-center m-0">
@@ -704,8 +703,7 @@
 
               <div class="bg-white p-5 text-center">
                 <p
-                  class="m-5"
-                  style="color:#999;"
+                  class="m-5 hr-gray"
                 >
                   Drag and drop files and folders here.
                 </p>
@@ -756,8 +754,9 @@
     <h1 class="text-dark">
       admin 9個
     </h1>
-
-    <div class="admin d-flex flex-wrap">
+      
+    <h2>user 3個</h2>
+    <div class="d-flex">
       <!-- Add New User-->
       <button
         type="button"
@@ -804,9 +803,8 @@
                   >User name</label>
                   <input
                     type="Username"
-                    class="form-control inline-block"
+                    class="form-control inline-block width-320"
                     id="Username"
-                    style="width:320px;"
                   >
                 </div>
 
@@ -818,9 +816,8 @@
                   >Full name</label>
                   <input
                     type="Fullname"
-                    class="form-control"
+                    class="form-control width-320"
                     id="Fullname"
-                    style="width:320px;"
                   >
                 </div>
                 <div class="w-100 d-flex align-items-center justify-content-between mb-2">
@@ -832,8 +829,7 @@
                   <input
                     type="Email"
                     id="Email"
-                    class="form-control "
-                    style="width:320px;"
+                    class="form-control width-320"
                   >
                 </div>
                 <div class="w-100 d-flex align-items-center justify-content-between mb-2">
@@ -845,8 +841,7 @@
                   <input
                     type="Description"
                     id="Description"
-                    class="form-control "
-                    style="width:320px;"
+                    class="form-control width-320"
                   >
                 </div>
               </form>
@@ -869,7 +864,34 @@
                   >
                     Change user password
                   </label>
-                  <div class="d-flex  mb-2">
+                  <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+                    <label
+                      for="Password"
+                      class="form-label"
+                    >Password</label>
+                    <input
+                      type="Password"
+                      class="form-control width-220"
+                      id="Password"
+                      placeholder="******"
+                    >
+                  </div>
+                  <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+                    <label
+                      for="ConfirmPassword"
+                      class="form-label"
+                    >Confirm Password</label>
+                    <input
+                      type="Password"
+                      class="form-control width-220"
+                      id="ConfirmPassword"
+                      placeholder="******"
+                    >
+                  </div>
+
+
+
+                  <!-- <div class="d-flex  mb-2">
                     <span class="text-dark">
                       Password
                     </span>
@@ -884,7 +906,7 @@
                     <p class=" m-0 text-gray">
                       ********
                     </p>
-                  </div>
+                  </div> -->
                 </div>
                 <div class="form-check">
                   <input
@@ -988,213 +1010,6 @@
 
 
 
-      <!-- New Group Properties-->
-      <button
-        type="button"
-        class="btn modal-btn"
-        data-bs-toggle="modal"
-        data-bs-target="#NewGroupProperties"
-      >
-        New Group Properties + Edit Group Properties
-      </button>
-
-      <!-- Modal -->
-      <div
-        class="modal fade"
-        id="NewGroupProperties"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header bg-blue p-3">
-              <h5
-                class="modal-title"
-                id="EditGroupProperties"
-              >
-                New Group Properties
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              />
-            </div>
-            <div
-              class="modal-body bg-gray p-0"
-            >
-              <hr class="">
-
-
-              <div class="input-group border-0 align-items-center p-3">
-                <label
-                  for="Member users"
-                  class="form-label m-0"
-                >Member users</label>
-
-                <input
-                  type="text"
-                  class="form-control h-100"
-                  placeholder="Name, full name, email"
-                >
-                <button
-                  class="btn bg-blue"
-                  type="button"
-                  id="button-addon2"
-                >
-                  Button
-                </button>
-              </div>
-
-              <div class="d-flex justify-content-end">
-                <span>Selected<span class="dark-blue">4</span></span>
-                <span>Total<span class="">500</span></span>
-              </div>
-
-
-              <div class="w-100 p-3">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col ">
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id="flexCheckDefault"
-                        >
-                      </th>
-                      <th scope="col">
-                        Name
-                      </th>
-                      <th scope="col">
-                        Fulll name
-                      </th>
-                      <th scope="col">
-                        Email
-                      </th>
-                      <th scope="col">
-                        Role
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody class="bg-white">
-                    <tr>
-                      <th scope="row">
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id="flexCheckDefault"
-                        >
-                      </th>
-                      <td>Mark</td>
-                      <td>Otto</td>
-                      <td>Rachellee@doqubiz.com</td>
-                      <td />
-                    </tr>
-                    <tr>
-                      <th scope="row">
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id="flexCheckDefault"
-                        >
-                      </th>
-                      <td>Jacob</td>
-                      <td>Thornton</td>
-                      <td>Davidkang@doqubiz.com</td>
-                      <td />
-                    </tr>
-                    <tr>
-                      <th scope="row">
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          value=""
-                          id="flexCheckDefault"
-                        >
-                      </th>
-                      <td colspan="2">
-                        Peter
-                      </td>
-                      <td>Peterlin@doqubiz.com</td>
-                      <td />
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-
-
-
-           
-
-              <div class="d-flex justify-content-between p-3">
-                <hr class="">
-
-                <span>Permissions</span>
-
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="Passwordneverexpires"
-                  >
-                  <label
-                    class="form-check-label"
-                    for="Passwordneverexpires"
-                  >
-                    As Group Members
-
-                  </label>
-                  <img
-                    src=""
-                    class="nav-icon"
-                  >
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="Passwordneverexpires"
-                  >
-                  <label
-                    class="form-check-label"
-                    for="Passwordneverexpires"
-                  >
-                    As Group Manager
-                  </label>
-                </div>
-              </div>
-
-            
-
-              <div class="modal-footer bg-white">
-                <div class="d-flex bg-white">
-                  <button
-                    type="button"
-                    class="cancel-btn btn sm-btn me-2"
-                  >
-                    Cancel
-                  </button>
-
-                  <button
-                    type="button"
-                    class="modal-btn btn sm-btn"
-                  >
-                    Ok
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
       <!-- Import User-->
       <button
         type="button"
@@ -1213,7 +1028,7 @@
       >
         <div class="modal-dialog">
           <div
-            class="modal-content"
+            class="modal-content "
             style="width:1000px"
           >
             <div class="modal-header bg-blue p-3">
@@ -1233,109 +1048,114 @@
             <div
               class="modal-body bg-gray p-5"
             >
-              <div class="w-50 d-flex align-items-center justify-content-between mb-2">
+              <div class="w-50 d-flex align-items-center justify-content-center mb-2">
                 <label
                   for="Connectto"
-                  class=""
+                  class="m-2"
                 >Connect to</label>
                 <input
                   type="Connect to"
-                  class="form-control inline-block disable"
+                  class="form-control inline-block disable width-320"
                   id="Connectto"
-                  style="width:320px;"
                 >
               </div>
 
 
               <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-                <div class="w-50 d-flex align-items-center justify-content-between">
+                <div class="w-50 d-flex align-items-center justify-content-center">
                   <label
-                    for="Username"
-                    class=""
+                    for="Connectas"
+                    class="m-2"
                   >Connect as</label>
                   <input
-                    type="Username"
-                    class="form-control inline-block"
-                    id="Username"
-                    style="width:320px;"
-                    placeholder="admin"
+                    type="Connectas"
+                    class="form-control inline-block width-320"
+                    id="Connectas"
+                    placeholder=""
                   >
                 </div>
-                <div class="w-50 d-flex align-items-center justify-content-between">
-                  <label
-                    for="Username"
-                    class=""
-                  >Password</label>
-                  <input
-                    type="Username"
-                    class="form-control inline-block"
-                    id="Username"
-                    placeholder="********"
-                    style="width:320px;"
-                  >
-                </div>
-              </div>
-            
-
-
-
-              <div
-                class="input-group mb-2 mt-4 border-0"
-              >
-                <button
-                  type="button"
-                  id="button-addon1"
-                  class="btn btn-gray m-0"
-                  style=""
-                >
-                  Search
-                </button>
-                <div class="">
-                  <!-- <label
-                  for="Name"
-                  class="form-label"
-                >Name</label> -->
                 
-                  <input
-                    type="text"
-                    placeholder="Please fill out this field"
-                    class="form-control "
-                  >
-                </div>
-                <div class="">
-                  <input
-                    type="text"
-                    placeholder="Please fill out this field"
-                    class="form-control h-100"
-                  >
-                </div>
-                <div class="">
-                  <input
-                    type="text"
-                    placeholder="Please fill out this field"
-                    class="form-control h-100"
-                  >
-                </div>
-              
-              
-              
-                <button
-                  type="button"
-                  id="button-addon2"
-                  class="btn btn-blue"
+                <div
+                  class="w-50 d-flex align-items-center justify-content-center"
                 >
-                  Button
-                </button>
+                  <label
+                    for="Password"
+                    class="m-2"
+                  >Password</label><input
+                    type="Password"
+                    id="Password"
+                    placeholder="********"
+                    class="form-control inline-block width-320"
+                  >
+                </div>
               </div>
+            
+
+
+              <div class="">
+                <div
+                  class="input-group mb-2 mt-4 border-0"
+                >
+                  <div class="d-flex flex-column">
+                    <label
+                      for="Name"
+                      class="m-2"
+                    >Name</label>
+
+                    <input
+                      type="text"
+                      placeholder="Please fill out this field"
+                      class="form-control "
+                    >
+                  </div>
+                  <div class="d-flex flex-column">
+                    <label
+                      for="Full name"
+                      class="m-2"
+                    >Full name</label>
+
+                    <input
+                      type="text"
+                      placeholder="Please fill out this field"
+                      class="form-control h-100"
+                    >
+                  </div>
+                  <div class="d-flex flex-column">
+                    <label
+                      for="Email"
+                      class="m-2"
+                    >Email</label>
+
+
+                    <input
+                      type="text"
+                      placeholder="Please fill out this field"
+                      class="form-control h-100"
+                    >
+                  </div>
+              
+                  <div class="d-flex flex-column">
+                    <div class="h-50" />
+                    <button
+                      type="button"
+                      id="button-addon2"
+                      class="btn btn-blue"
+                    >
+                      Button
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
 
 
             
 
 
-              <div class="w-100 p-3">
+              <div class="w-100 mt-4">
                 <table class="table">
                   <thead>
-                    <tr>
+                    <tr class="modal-tr">
                       <th scope="col ">
                         <input
                           class="form-check-input"
@@ -1426,10 +1246,274 @@
           </div>
         </div>
       </div>
+    </div>
 
 
+    <h2>group 2個</h2>
+
+    <div class=" d-flex flex-wrap">
+      <!-- New Group Properties-->
+      <button
+        type="button"
+        class="btn modal-btn"
+        data-bs-toggle="modal"
+        data-bs-target="#NewGroupProperties"
+      >
+        New Group Properties + Edit Group Properties
+      </button>
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="NewGroupProperties"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header bg-blue p-3">
+              <h5
+                class="modal-title"
+                id="EditGroupProperties"
+              >
+                New Group Properties
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              />
+            </div>
+            <div
+              class="modal-body bg-gray p-3"
+            >
+              <div
+                class="p-3 w-100 d-flex align-items-center justify-content-between mb-2"
+              >
+                <label for="Username">User name</label><input
+                  type="Username"
+                  id="Username"
+                  class="form-control inline-block width-320"
+                >
+              </div>
+              <div
+                class="p-3 w-100 d-flex align-items-center justify-content-between mb-2"
+              >
+                <label for="Username">User name</label><input
+                  type="Username"
+                  id="Username"
+                  class="form-control inline-block width-320"
+                >
+              </div>
 
 
+              <hr class="">
+
+
+              
+
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                  <span>Select group member</span>
+                  <img
+                    src="@/assets/images/cmd/Group.png"
+                    class="ms-2 icon20px"
+                  >
+                </div>
+                <div class="border-0">
+                  <div class="d-flex ">
+                    <input
+                      type="text"
+                      placeholder="Please fill out this field"
+                      class="form-control h-100"
+                    >
+                  
+                    <button
+                      type="button"
+                      id="button-addon2"
+                      class="btn btn-blue"
+                    >
+                      Button
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-8 p-3">
+                  <table class="table border">
+                    <thead>
+                      <tr>
+                        <th scope="col">
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="flexCheckDefault"
+                            >
+                            <label
+                              class="form-check-label"
+                              for="flexCheckDefault"
+                            >
+                              <img
+                                src="@/assets/images/icon/Union.png"
+                                class="icon-16px"
+                              >
+                            </label>
+                          </div>
+                        </th>
+                        <th scope="col">
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="flexCheckDefault"
+                            >
+                            <label
+                              class="form-check-label"
+                              for="flexCheckDefault"
+                            >
+                              <img
+                                src="@/assets/images/icon/admin-solid.png"
+                                class="icon-16px"
+                              >
+                            </label>
+                          </div>
+                        </th>
+                        <th scope="col">
+                          Name
+                        </th>
+                        <th scope="col">
+                          Fulll name
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                      <tr>
+                        <th scope="row">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="flexCheckDefault"
+                          >
+                        </th>
+                        <td>
+                          <input
+                            type="checkbox" 
+                            class="form-check-input"
+                          >
+                        </td>
+                        <td>Otto</td>
+                        <td>Rachel Lee</td>
+                        <td />
+                      </tr>
+                      <tr>
+                        <th scope="row">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="flexCheckDefault"
+                          >
+                        </th>
+                        <td>
+                          <input
+                            type="checkbox" 
+                            class="form-check-input"
+                          >
+                        </td>
+
+                        <td>Thornton</td>
+                        <td>Rachel Lee</td>
+                        <td />
+                      </tr>
+                      <tr>
+                        <th scope="row">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="flexCheckDefault"
+                          >
+                        </th>
+                        <td>
+                          <input
+                            type="checkbox" 
+                            class="form-check-input"
+                          >
+                        </td>
+                        <td>Rachel Lee</td>
+                        <td>Rachel Lee</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <ul class="list-group border-0 col-4 p-3  border">
+                  <li class="list-group-item  bg-white d-flex align-items-center border-0" />
+                  <li class="list-group-item bg-white  border-0">
+                    <button
+                      type="button"
+                      class="table-btn btn  d-flex align-items-center"
+                    >
+                      <img
+                        src="@/assets/images/icon/admin-solid.png"
+                        class="icon-16px"
+                      >
+                      David
+                      <img
+                        src="@/assets/images/cmd/del.png"
+                        class="icon-20px"
+                      >
+                    </button>
+                  </li>
+                </ul>
+              </div>
+
+
+           
+
+              <div class="d-flex justify-content-end p-3">
+                <p>
+                  <span>Total
+                  </span>
+                  <span class=" fw-bold">500</span>
+                </p>
+                <p class="ms-3">
+                  <span class="dark-blue fw-bold">4
+                  </span>
+                  <span>Selected</span>
+                </p>
+              </div>
+            </div>
+
+            <div class="modal-footer bg-white">
+              <div class="d-flex bg-white">
+                <button
+                  type="button"
+                  class="cancel-btn btn sm-btn me-2"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  class="modal-btn btn sm-btn"
+                >
+                  Ok
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
+
+    <h2>folder public</h2>
+
+    <div class="d-flex">
       <!-- New Root Folder Properties-->
       <button
         type="button"
@@ -1476,9 +1560,8 @@
                   >Name</label>
                   <input
                     type="Name"
-                    class="form-control inline-block"
+                    class="form-control inline-block width-320"
                     id="Name"
-                    style="width:320px;"
                     placeholder="Design Team"
                   >
                 </div>
@@ -1489,10 +1572,9 @@
                   >Description</label>
                   <input
                     type="Description"
-                    class="form-control inline-block"
+                    class="form-control inline-block width-320"
                     id="Description"
                     placeholder=""
-                    style="width:320px;"
                   >
                 </div>
               </div>
@@ -1527,8 +1609,7 @@
                 </div>
                 <div class="col-8 ">
                   <div
-                    class="d-flex flex-column"
-                    style="height:70px;"
+                    class="d-flex flex-column height-70px"
                   >
                     <h5 class="m-0 fw-bold">
                       Access Control for
@@ -1716,9 +1797,8 @@
                               placeholder="enter code"
                               type="text"
                               id="promoCode"
-                              class="form-control"
+                              class="form-control m-0"
                               value=""
-                              style="margin: 0px; background-color: white; font-size: 12px; border-width: 1px; border-color: rgb(238, 238, 238);"
                             >
                             <p class="fw-bold">
                               File Type
@@ -1739,8 +1819,7 @@
                               </label>
                             </div>
                             <div
-                              class="d-flex"
-                              style="width:350px;"
+                              class="d-flex width-350"
                             >
                               <div class="form-check">
                                 <input
@@ -1894,54 +1973,13 @@
               <form class=" p-3">
                 <div class="w-100 d-flex align-items-center justify-content-between mb-2">
                   <label
-                    for="Username"
+                    for="Name in link"
                     class=""
-                  >User name</label>
+                  >Name in link</label>
                   <input
-                    type="Username"
-                    class="form-control inline-block"
-                    id="Username"
-                    style="width:320px;"
-                  >
-                </div>
-
-                
-                <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-                  <label
-                    for="Fullname"
-                    class="form-label"
-                  >Full name</label>
-                  <input
-                    type="Fullname"
-                    class="form-control"
-                    id="Fullname"
-                    style="width:320px;"
-                  >
-                </div>
-                <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-                  <label
-                    for="Email"
-                    class="col-form-label"
-                  >Email</label>
-                  
-                  <input
-                    type="Email"
-                    id="Email"
-                    class="form-control "
-                    style="width:320px;"
-                  >
-                </div>
-                <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-                  <label
-                    for="Description"
-                    class="col-form-label"
-                  >Description</label>
-                  
-                  <input
-                    type="Description"
-                    id="Description"
-                    class="form-control "
-                    style="width:320px;"
+                    type="Name in link"
+                    class="form-control inline-block width-320"
+                    id="Name in link"
                   >
                 </div>
               </form>
@@ -1956,43 +1994,13 @@
                     class="form-check-input"
                     type="checkbox"
                     value=""
-                    id="Changeuserpassword"
-                  >
-                  <label
-                    class="form-check-label"
-                    for="Changeuserpassword"
-                  >
-                    Change user password
-                  </label>
-                  <div class="d-flex  mb-2">
-                    <span class="text-dark">
-                      Password
-                    </span>
-                    <p class="mx-5 m-0 text-gray">
-                      ********
-                    </p>
-                  </div>
-                  <div class="d-flex mb-2">
-                    <span class="text-dark">
-                      Confirm Password
-                    </span>
-                    <p class=" m-0 text-gray">
-                      ********
-                    </p>
-                  </div>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
                     id="Usermustchangepasswordatnexttime"
                   >
                   <label
                     class="form-check-label"
                     for="Usermustchangepasswordatnexttime"
                   >
-                    User must change password at next time
+                    Open linked file in the brower
                   </label>
                 </div>
                 <div class="form-check">
@@ -2003,10 +2011,14 @@
                     id="Usercannotchangepassword"
                   >
                   <label
-                    class="form-check-label"
-                    for="Usercannotchangepassword"
+                    class="form-check-label align-items-center d-flex"
+                    for=""
                   >
-                    User cannot change password
+                    Link expires <input
+                      type="text"
+                      class=" form-control w-25"
+                    >in days
+
                   </label>
                 </div>
                 <div class="form-check">
@@ -2014,48 +2026,75 @@
                     class="form-check-input"
                     type="checkbox"
                     value=""
-                    id="Passwordneverexpires"
+                    id="Usercannotchangepassword"
+                  >
+                  <label
+                    class="form-check-label align-items-center d-flex"
+                    for=""
+                  >
+                    Link can be opened only <input
+                      type="text"
+                      class=" form-control w-25"
+                    >times
+
+                  </label>
+                </div>
+
+
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="Changeuserpassword"
                   >
                   <label
                     class="form-check-label"
-                    for="Passwordneverexpires"
+                    for="Changeuserpassword"
                   >
-                    Password never expires
+                    Protect link with password
                   </label>
+                  <div
+                    class="w-100 d-flex align-items-center justify-content-between mb-2"
+                  >
+                    <label
+                      for="Password"
+                      class="form-label"
+                    >Password</label><input
+                      type="Password"
+                      id="Password"
+                      placeholder="******"
+                      class="form-control width-220"
+                    >
+                  </div>
+                  <div
+                    class="w-100 d-flex align-items-center justify-content-between mb-2"
+                  >
+                    <label
+                      for="Confirmpassword"
+                      class="form-label"
+                    >Confirm password</label><input
+                      type="Confirmpassword"
+                      id="Confirmpassword"
+                      placeholder="******"
+                      class="form-control width-220"
+                    >
+                  </div>
                 </div>
+                
 
                 <hr class="">
 
-
-
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="Passwordneverexpires"
-                  >
+                <div class="mb-3">
                   <label
-                    class="form-check-label"
-                    for="Passwordneverexpires"
-                  >
-                    Account is disabled
-
-                  </label>
-                </div>
-                <div class="form-check">
+                    for="Public link"
+                    class="form-label"
+                  >Public link</label>
                   <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="Passwordneverexpires"
+                    type="password"
+                    class="form-control"
+                    id="Public link"
                   >
-                  <label
-                    class="form-check-label"
-                    for="Passwordneverexpires"
-                  >
-                    Account is locked out
-                  </label>
                 </div>
               </div>
 
@@ -2211,5 +2250,9 @@
         </div>
       </div>
     </div>
+
+
+
+    <h1>app setting 3個</h1>
   </div>
 </template>

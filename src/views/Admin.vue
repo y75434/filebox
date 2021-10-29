@@ -10,7 +10,7 @@
 
       <Splitpanes
         class="h-100"
-        @contextmenu="showMenu(null, $event)"
+        @contextmenu="showMenu()"
       >
         <Pane
           :size="paneSize"
@@ -120,6 +120,7 @@
           <li>Delete</li>
         </ul>
       </ContextMenu>
+      <NewUser />
     </div>
   </div>
 </template>
@@ -130,7 +131,7 @@ import AdminNav from "@/components/AdminNav.vue";
 import Table from '../components/Table.vue';
 import userTitle from '../components/title/AdminTitle.vue'
 import ContextMenu from '@/components/ContextMenu.vue';
-// import NewUser from '@/components/Modals/NewUser.vue';
+import NewUser from '@/components/Modals/NewUser.vue';
 
 
 
@@ -144,6 +145,7 @@ name: "Admin",
     Table,
     userTitle,
     ContextMenu,
+NewUser
 
   },
   data: () => ({
@@ -160,35 +162,37 @@ name: "Admin",
 		handler(event) {
 			event.preventDefault();
     },
+    showMenu(e) { this.$emit("show-contextmenu", e)
+    },
+
     //顯示彈窗
-		showMenu(itemId, event) {
-			const type = itemId === null ? this.currentSelected : itemId;
-			switch (type) {
-				case 1:
-					this.$refs.menuForUser.open(event);
-					break;
+		// showMenu(itemId, event) {
+		// 	const type = itemId === null ? this.currentSelected : itemId;
+		// 	switch (type) {
+		// 		case 1:
+		// 			this.$refs.menuForUser.open(event);
+		// 			break;
 				// case 2:
 				// 	this.$refs.menuForGroup.open(event);
 				// 	break;
 				// case 3:
 				// 	this.$refs.menuForFolder.open(event);
 				// 	break;
-				default:
-					break;
-			}
-    },
+			// 	default:
+			// 		break;
+			// }
+    
     operational(event) {
 			event.preventDefault();
 			event.stopPropagation();
 			this.$refs.menuForOperational.open(event);
     },
-    getRowClass(index) { return index === this.selectedRow ? 'row-selected' : ''; },
+    getRowClass(index) { return index === this.selectedRow ? 'row-selected' : ''; 
+    },
 
   }
 };
 
 </script>
 
-<style>
 
-</style>

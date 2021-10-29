@@ -20,6 +20,17 @@
 
 }
 
+.login-form h1{
+  color: #2066b0;
+
+}
+
+.login-btn{
+  background-color: #28d4ca;
+  color: white;
+
+}
+
 .user-icon{
   display: inline-block;
   color: #000000;
@@ -58,4 +69,26 @@
 }
 
 
+.dqbz-btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 2rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  height: 3rem;
+  padding: 1rem 1rem;
+}
+
+.login-form p {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #d8d8d8;
+  line-height: 0.1em;
+  margin: 10px 0 20px;
+}
+
+.login-form p span {
+  background: #fff;
+  padding: 0 10px;
+}
 
