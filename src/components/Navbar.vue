@@ -13,7 +13,7 @@
     </li>
 
     <div class="d-flex">
-      <ul class="navbar-nav d-flex mb-2 mb-lg-0">
+      <ul class="navbar-nav d-flex mb-2 px-1">
         <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle"
@@ -56,13 +56,13 @@
           </ul>
         </li>
       </ul>
-      <li class="nav-item d-flex align-items-center">
+      <li class="border-start px-1 nav-item d-flex align-items-center">
         <img
           src="@/assets/images/cmd/logout@2x.png"
           class="nav-icon"
         >
         <a
-          class="nav-link "
+          class="nav-link py-0 px-1"
           aria-current="page"
           href="#"
         >Log out</a>

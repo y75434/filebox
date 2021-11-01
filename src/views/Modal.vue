@@ -2273,7 +2273,10 @@
       aria-hidden="true"
     >
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div
+          class="modal-content"
+          style="border-radius:50px"
+        >
           <div class="modal-header bg-blue p-3">
             <h5
               class="modal-title"

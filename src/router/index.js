@@ -27,6 +27,12 @@ const routes = [
     name: 'admin',
     component: () => import('../views/Admin.vue')
 
+  },
+  {
+		path: '/reset',
+    name: 'reset',
+    component: () => import('../views/Reset.vue')
+
 	},
 ]
 

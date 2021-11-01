@@ -19,7 +19,20 @@
           class="d-flex flex-column"
         >
           <ul class=" list-unstyled w-100 text-dark d-flex flex-column  align-items-start h-100">
-            <li class="d-flex align-items-center text-center">
+            <li 
+              v-for="(item, index) in menuItems"
+              :key="index"
+              :class="getMenuItemClass(item.id)"
+              @contextmenu="showMenu(item.id, $event)"
+              @click="redirect(item.id)"
+              class="d-flex align-items-center text-center"
+            >
+              <img src="">
+              <p class="m-0">
+                {{ item.name }}
+              </p>
+            </li>
+            <!-- <li class="d-flex align-items-center text-center">
               <img
                 class="icon28px"
                 src="@/assets/images/icon/usermanagement@2x.png"
@@ -58,7 +71,7 @@
               <p class="m-0">
                 Public Links
               </p>
-            </li>
+            </li> -->
           </ul>
         
 
@@ -89,7 +102,14 @@
                 License Information
               </h5>
             </li>
-            <li class="d-flex align-items-center py-2">
+
+            <li
+              data-bs-toggle="modal"
+              data-bs-target="#c"
+
+              @click="AboutFileVista"
+              class="d-flex align-items-center py-2"
+            >
               <img
                 src="@/assets/images/icon/about@2x.png"
                 class="icon28px"
@@ -107,20 +127,47 @@
           :size="100 - paneSize"
           class=" flex-column"
         >
-          <userTitle />
+          <AdminTitle />
           <Table />
         </Pane>
       </Splitpanes>
       <ContextMenu ref="menuForUser">
         <ul>
+          <li>New User</li>
+          <li>Import Users</li>
+          <li>Refresh</li>
+        </ul>
+      </ContextMenu>
+      <ContextMenu ref="menuForGroup">
+        <ul>
+          <li>
+            New Group
+          </li>
+          <li>Refresh</li>
+        </ul>
+      </ContextMenu>
+      <ContextMenu ref="menuForFolder">
+        <ul>
+          <li>
+            New Folder
+          </li>
+          <li>Refresh</li>
+        </ul>
+      </ContextMenu>
+      <ContextMenu ref="menuForOperational">
+        <ul>
+          <li>Delete</li>
           <li>
             Rename
           </li>
           <li>Properties</li>
-          <li>Delete</li>
         </ul>
       </ContextMenu>
+
       <NewUser />
+      <AboutFileVista
+        ref="modal"
+      />
     </div>
   </div>
 </template>
@@ -129,10 +176,10 @@
 import { Splitpanes, Pane } from "splitpanes";
 import AdminNav from "@/components/AdminNav.vue";
 import Table from '../components/Table.vue';
-import userTitle from '../components/title/AdminTitle.vue'
+import AdminTitle from '../components/title/AdminTitle.vue'
 import ContextMenu from '@/components/ContextMenu.vue';
 import NewUser from '@/components/Modals/NewUser.vue';
-
+import AboutFileVista from '@/components/Modals/AboutFileVista.vue';
 
 
 
@@ -143,14 +190,23 @@ name: "Admin",
     Pane,
     AdminNav,
     Table,
-    userTitle,
+    AdminTitle,
     ContextMenu,
-NewUser
+    NewUser,
+    AboutFileVista
+
 
   },
   data: () => ({
     selectedRow: null,
     currentSelected: 1,
+    menuItems: [
+        { id: 1, name: 'User Management' },
+        { id: 2, name: 'Group Management' },
+        { id: 3, name: 'Root Folders' },
+        { id: 4, name: 'Public Links' },
+
+      ],
 
 
     paneSize: 15,
@@ -162,26 +218,31 @@ NewUser
 		handler(event) {
 			event.preventDefault();
     },
-    showMenu(e) { this.$emit("show-contextmenu", e)
-    },
 
     //顯示彈窗
-		// showMenu(itemId, event) {
-		// 	const type = itemId === null ? this.currentSelected : itemId;
-		// 	switch (type) {
-		// 		case 1:
-		// 			this.$refs.menuForUser.open(event);
-		// 			break;
-				// case 2:
-				// 	this.$refs.menuForGroup.open(event);
-				// 	break;
-				// case 3:
-				// 	this.$refs.menuForFolder.open(event);
-				// 	break;
+		showMenu() {
+      // const type = itemId === null ? this.currentSelected : itemId;
+      console.log('22222');
+      
+			// switch (type) {
+			// 	case 1:
+			// 		this.$refs.menuForUser.open(event);
+			// 		break;
+			// 	case 2:
+			// 		this.$refs.menuForGroup.open(event);
+			// 		break;
+			// 	case 3:
+			// 		this.$refs.menuForFolder.open(event);
+			// 		break;
 			// 	default:
 			// 		break;
-			// }
-    
+      // }
+    },
+    // 重置
+    redirect(index) {
+			this.currentSelected = index;
+			this.selectedRow = null;
+		},
     operational(event) {
 			event.preventDefault();
 			event.stopPropagation();
@@ -189,6 +250,11 @@ NewUser
     },
     getRowClass(index) { return index === this.selectedRow ? 'row-selected' : ''; 
     },
+    getMenuItemClass(index) {
+			return index === this.currentSelected ? 'menu-item menu-item-selected' : 'menu-item';
+		},
+    
+    AboutFileVista() { this.$refs.modal.show() }
 
   }
 };

@@ -11,6 +11,10 @@
       
       <div class="d-flex">
         <button
+          data-bs-toggle="modal"
+          data-bs-target="#AddNewUser"
+          @click="AddNewUser"
+
           type="button"
           class="title-btn btn d-flex align-items-center m-3"
           style="background-color: #66acec"
@@ -117,14 +121,19 @@
         </button>
       </div>
     </div>
+    <add-new-user />
   </div>
 </template>
 
 <script>
+import AddNewUser from '../Modals/user/AddNewUser.vue';
+
+
 export default {
 name: "Title",
   components: {
-  
+  AddNewUser
+
     
   },
   data: () => ({
@@ -135,6 +144,11 @@ name: "Title",
   mounted() {
 
   },
+  methods:{
+    AddNewUser(){
+      this.$refs.modal.show()
+    }
+  }
 };
 </script>
 
