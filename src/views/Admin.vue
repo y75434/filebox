@@ -26,7 +26,7 @@
               class="d-flex align-items-center text-center"
             >
               <img
-                :src="item.pic"
+                :src="`${item.pic}`"
                 class="icon28px"
               >
               <p class="m-0">
@@ -92,11 +92,11 @@
           <div class="title d-flex w-100 justify-content-between align-items-center">
             <div class="">
               <div class="d-flex align-items-center">
-                <img src="@/assets/images/icon/usermanagement@2x.png">
-                <h4 class="light-blue fw-bold">
-                  <!-- Users Management -->
-                  {{ this.menuItems[0].name }}
-                </h4>
+                <img :src="src">
+                <h4
+                  v-text="this.title"
+                  class="light-blue fw-bold"
+                />
               </div>
         
       
@@ -104,7 +104,7 @@
                 <button
                   data-bs-toggle="modal"
                   data-bs-target="#AddNewUser"
-
+                  @click="AddNewUser"
                   type="button"
                   class="title-btn btn d-flex align-items-center m-3"
                   style="background-color: #66acec"
@@ -123,6 +123,9 @@
                   type="button"
                   class="title-btn btn d-flex align-items-center m-3"
                   style="background-color: #6ac1a2"
+                  @click="ImportUser"
+                  data-bs-toggle="modal" 
+                  data-bs-target="#ImportUser"
                 > 
                   <img
                     class="nav-icon"
@@ -229,20 +232,20 @@
       </Splitpanes>
       <ContextMenu ref="menuForUser">
         <ul>
-          <li>
+          <li @click="Rename">
             <img
               src="@/assets/images/cmd/rename@2x.png"
               class="icon24px"
             >
             Rename
           </li>
-          <li>
+          <li @click="AddNewUser">
             <img
               src="@/assets/images/icon/user setting@2x.png"
               class="icon24px"
             >Properties
           </li>
-          <li>
+          <li @click="DeleteUser">
             <img
               src="@/assets/images/cmd/delete@2x-2.png"
               class="icon24px"
@@ -252,7 +255,7 @@
       </ContextMenu>
       <ContextMenu ref="menuForGroup">
         <ul>
-          <li>
+          <li @click="NewGroupProperties">
             <img
               src="@/assets/images/cmd/rename@2x.png"
               class="icon24px"
@@ -276,23 +279,38 @@
       <ContextMenu ref="menuForFolder">
         <ul>
           <li>
-            New Folder
-          </li>
-          <li>Refresh</li>
-        </ul>
-      </ContextMenu>
-      <!-- table個別檔案刪除 -->
-      <ContextMenu ref="menuForOperational">
-        <ul>
-          <li>Delete</li>
-          <li>
+            <img
+              src="@/assets/images/cmd/rename@2x.png"
+              class="icon24px"
+            >
             Rename
           </li>
-          <li>Properties</li>
+          <li>
+            <img
+              src="@/assets/images/icon/user setting@2x.png"
+              class="icon24px"
+            >Properties
+          </li>
+          <li>
+            <img
+              src="@/assets/images/cmd/delete@2x-2.png"
+              class="icon24px"
+            >Delete
+          </li>
         </ul>
       </ContextMenu>
+    
+      <rename ref="EditUserProperties" />
+      <!-- user -->
+      <AddNewUser ref="AddNewUser" />
+      <ImportUser ref="ImportUser" />
+      <delete-user ref="DeleteUser" />
+      <!-- group -->
+      <NewGroupProperties
+        ref="NewGroupProperties"
+        :title="msg"
+      />
 
-      <NewUser />
       <AboutFileVista
         ref="modal"
       />
@@ -303,13 +321,13 @@
 <script>
 import { Splitpanes, Pane } from "splitpanes";
 import AdminNav from "@/components/AdminNav.vue";
-// import Table from '../components/Table.vue';
-// import AdminTitle from '../components/title/AdminTitle.vue'
 import ContextMenu from '@/components/ContextMenu.vue';
-import NewUser from '@/components/Modals/NewUser.vue';
+import ImportUser from '@/components/Modals/user/ImportUser.vue';
 import AboutFileVista from '@/components/Modals/AboutFileVista.vue';
-
-
+import AddNewUser from '@/components/Modals/user/AddNewUser.vue'
+import Rename from '@/components/Modals/user/Rename.vue'
+import DeleteUser from '../components/Modals/user/DeleteUser.vue';
+import NewGroupProperties from '../components/Modals/group/NewGroupProperties.vue';
 
 export default {
 name: "Admin",
@@ -317,22 +335,29 @@ name: "Admin",
     Splitpanes,
     Pane,
     AdminNav,
-    // Table,
-    // AdminTitle,
     ContextMenu,
-    NewUser,
-    AboutFileVista
+    ImportUser,
+    AboutFileVista,
+    AddNewUser,
+    Rename,
+    DeleteUser,
+    NewGroupProperties
+
+
 
 
   },
   data: () => ({
+    msg: 'Edit Group Properties',
+    title:'User Management',
+    src: require('@/assets/images/icon/usermanagement@2x.png'),
     selectedRow: null,
     currentSelected: 1,
     menuItems: [
-        { id: 1, name: 'User Management',pic: '@/assets/images/icon/usermanagement@2x.png' },
-        { id: 2, name: 'Group Management', pic: '@/assets/images/icon/group management@2x.png'},
-        { id: 3, name: 'Root Folders', pic: '@/assets/images/file/root folder@2x.png' },
-        { id: 4, name: 'Public Links' , pic: '@/assets/images/file/publiclink@2x.png'},
+        { id: 1, name: 'User Management',pic: require('@/assets/images/icon/usermanagement@2x.png') },
+        { id: 2, name: 'Group Management', pic: require('@/assets/images/icon/group management@2x.png')},
+        { id: 3, name: 'Root Folders', pic: require('@/assets/images/file/root folder@2x.png') },
+        { id: 4, name: 'Public Links' , pic: require('@/assets/images/file/publiclink@2x.png')},
 
       ],
     
@@ -367,7 +392,7 @@ name: "Admin",
 			event.preventDefault();
     },
 
-    //顯示彈窗
+    //顯示各頁選單
 		showMenu(itemId, event) {
       const type = itemId === null ? this.currentSelected : itemId;
       console.log('showMenu');
@@ -394,12 +419,21 @@ name: "Admin",
 			const type = this.currentSelected;
 			switch (type) {
 				case 1:
+          this.$set(this,'title', 'User Management')
+          this.$set(this,'src', require('@/assets/images/icon/usermanagement@2x.png'))
 					return this.items;
 				case 2:
+          this.$set(this,'title', 'Group Management')
+          this.$set(this,'src', require('@/assets/images/icon/group management@2x.png'))
 					return this.groupitems;
 				case 3:
+          this.$set(this,'title', 'Root Folders')
+          this.$set(this,'src', require('@/assets/images/file/root folder@2x.png'))
           return this.folderitems;
+          
         case 4: 
+          this.$set(this,'title', 'Public Links')
+          this.$set(this,'src', require('@/assets/images/file/publiclink@2x.png'))
           return this.linkitems;
 
 				default:
@@ -410,7 +444,6 @@ name: "Admin",
    
     // 跳轉到該頁
     redirect(index) {
-      console.log('redirect');
       
 			this.currentSelected = index;
 			this.selectedRow = null;
@@ -418,8 +451,9 @@ name: "Admin",
     // 表格資料設定
     operational(event) {
 			event.preventDefault();
-			event.stopPropagation();
-			// this.$refs.menuForOperational.open(event);
+      event.stopPropagation();
+      this.$refs.menuForUser.open(event);
+
     },
   
     //選取哪一個資料
@@ -427,7 +461,33 @@ name: "Admin",
 			this.selectedRow = index;
 		},
     
-    AboutFileVista() { this.$refs.modal.show() }
+    AboutFileVista() { this.$refs.modal.show() },
+    AddNewUser() {
+      this.$refs.menuForUser.close();
+
+        this.$bvModal.show('AddNewUser');
+      },
+      Rename(){
+        
+        this.$refs.menuForUser.close();
+
+        this.$bvModal.show('EditUserProperties');
+
+      },
+     
+      
+      ImportUser(){
+        this.$refs.modal.show()
+
+      },
+      DeleteUser(){
+        this.$bvModal.show('modal-delete-user');
+
+      },
+      NewGroupProperties(){
+        this.$bvModal.show('NewGroupProperties');
+
+      }
 
   }
 };

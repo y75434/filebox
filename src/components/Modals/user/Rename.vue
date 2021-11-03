@@ -1,12 +1,12 @@
 <template>
   <b-modal
-    id="AddNewUser"
+    id="EditUserProperties"
     class="modal-content"
     centered
     :title="title"
     size="lg"
-    header-bg-variant="mheader" 
-    header-text-variant="light"
+    header-bg-variant="m"
+    header-text-variant="mtext"
     @ok="save"
   >
     <!-- <form
@@ -26,7 +26,6 @@
       >
     </div>
 
-
     <div class="w-100 d-flex align-items-center justify-content-between mb-2">
       <div class="w-50 d-flex align-items-center justify-content-center">
         <label
@@ -40,10 +39,8 @@
           placeholder=""
         >
       </div>
-                
-      <div
-        class="w-50 d-flex align-items-center justify-content-center"
-      >
+
+      <div class="w-50 d-flex align-items-center justify-content-center">
         <label
           for="Password"
           class="m-2"
@@ -55,13 +52,9 @@
         >
       </div>
     </div>
-            
-
 
     <div class="">
-      <div
-        class="input-group mb-2 mt-4 border-0"
-      >
+      <div class="input-group mb-2 mt-4 border-0">
         <div class="d-flex flex-column">
           <label
             for="Name"
@@ -71,7 +64,7 @@
           <input
             type="text"
             placeholder="Please fill out this field"
-            class="form-control "
+            class="form-control"
           >
         </div>
         <div class="d-flex flex-column">
@@ -92,14 +85,13 @@
             class="m-2"
           >Email</label>
 
-
           <input
             type="text"
             placeholder="Please fill out this field"
             class="form-control h-100"
           >
         </div>
-              
+
         <div class="d-flex flex-column">
           <div class="h-50" />
           <button
@@ -112,11 +104,6 @@
         </div>
       </div>
     </div>
-              
-
-
-            
-
 
     <div class="w-100 mt-4">
       <table class="table">
@@ -207,31 +194,28 @@
 
 <script>
 export default {
-name: 'AddNewUser',
-props: { title: { type: String, default: 'Add New User' }, 
-},
+  name: "EditUserProperties",
+  props: { title: { type: String, default: "Edit User Properties" } },
 
- data() {
-     return {
-      showModal: false
-     }
-   },
-   methods: {
-     show() {
-      this.showModal = true
-     },
-     hide(){
-      this.showModal = false
-     },
-     handleSubmit() {
-			// this.$nextTick(() => {
-        this.showModal = false
-			// });
-		},
-   }
-}
+  data() {
+    return {
+      showModal: false,
+    };
+  },
+  methods: {
+    show() {
+      this.showModal = true;
+    },
+    hide() {
+      this.showModal = false;
+    },
+    handleSubmit() {
+      // this.$nextTick(() => {
+      this.showModal = false;
+      // });
+    },
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

@@ -1,14 +1,14 @@
 <template>
   <div class="">
     <!-- Import User-->
-    <button
+    <!-- <button
       type="button"
       class="btn modal-btn"
       data-bs-toggle="modal"
       data-bs-target="#ImportUser"
     >
       Import User
-    </button>
+    </button> -->
 
     <!-- Modal -->
     <div
@@ -241,7 +241,20 @@
 
 <script>
 export default {
-
+name: "ImportUser",
+data() {
+     return {
+      showModal: false
+     }
+   },
+   methods: {
+     show() {
+      this.showModal = true
+     },
+     hide(){
+      this.showModal = false
+     }
+   }
 }
 </script>
 

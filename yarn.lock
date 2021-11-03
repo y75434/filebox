@@ -6362,7 +6362,7 @@
   "resolved" "https://registry.npmmirror.com/node-releases/download/node-releases-2.0.0.tgz?cache=0&sync_timestamp=1634124919232&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fnode-releases%2Fdownload%2Fnode-releases-2.0.0.tgz"
   "version" "2.0.0"
 
-"node-sass@^4.0.0", "node-sass@4.14.1":
+"node-sass@^4.0.0", "node-sass@^4.14.1":
   "integrity" "sha512-sjCuOlvGyCJS40R8BscF5vhVlQjNN069NtQ1gSxyK1u9iqvn6tf7O1R4GNowVZfiZUCRt5MmMs1xd+4V/7Yr0g=="
   "resolved" "https://registry.npmjs.org/node-sass/-/node-sass-4.14.1.tgz"
   "version" "4.14.1"
@@ -7994,7 +7994,7 @@
     "scss-tokenizer" "^0.2.3"
     "yargs" "^13.3.2"
 
-"sass-loader@8.0.0":
+"sass-loader@^8.0.0":
   "integrity" "sha512-+qeMu563PN7rPdit2+n5uuYVR0SSVwm0JsOUsaJXzgYcClWSlmX0iHDnmeOobPkf5kUglVot3QS6SyLyaQoJ4w=="
   "resolved" "https://registry.npmjs.org/sass-loader/-/sass-loader-8.0.0.tgz"
   "version" "8.0.0"
