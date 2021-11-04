@@ -88,7 +88,6 @@
           :size="100 - paneSize"
           class=" flex-column"
         >
-          <!-- <AdminTitle /> -->
           <div class="title d-flex w-100 justify-content-between align-items-center">
             <div class="">
               <div class="d-flex align-items-center">
@@ -102,9 +101,8 @@
       
               <div class="d-flex">
                 <button
-                  data-bs-toggle="modal"
-                  data-bs-target="#AddNewUser"
-                  @click="AddNewUser"
+                 
+                  @click="addnew()"
                   type="button"
                   class="title-btn btn d-flex align-items-center m-3"
                   style="background-color: #66acec"
@@ -120,6 +118,7 @@
                 </button>
 
                 <button
+                  v-if="this.currentSelected === 1"
                   type="button"
                   class="title-btn btn d-flex align-items-center m-3"
                   style="background-color: #6ac1a2"
@@ -239,7 +238,7 @@
             >
             Rename
           </li>
-          <li @click="AddNewUser">
+          <li @click="Rename">
             <img
               src="@/assets/images/icon/user setting@2x.png"
               class="icon24px"
@@ -255,7 +254,10 @@
       </ContextMenu>
       <ContextMenu ref="menuForGroup">
         <ul>
-          <li @click="NewGroupProperties">
+          <li
+            @click="NewGroupProperties"
+            title="Edit Group Properties"
+          >
             <img
               src="@/assets/images/cmd/rename@2x.png"
               class="icon24px"
@@ -278,7 +280,7 @@
       </ContextMenu>
       <ContextMenu ref="menuForFolder">
         <ul>
-          <li>
+          <li @click="RootFolderProperties">
             <img
               src="@/assets/images/cmd/rename@2x.png"
               class="icon24px"
@@ -301,19 +303,18 @@
       </ContextMenu>
     
       <rename ref="EditUserProperties" />
-      <!-- user -->
-      <AddNewUser ref="AddNewUser" />
+      
       <ImportUser ref="ImportUser" />
       <delete-user ref="DeleteUser" />
-      <!-- group -->
-      <NewGroupProperties
-        ref="NewGroupProperties"
-        :title="msg"
-      />
+      
 
       <AboutFileVista
         ref="modal"
       />
+ 
+      <NewGroupProperties ref="NewGroupProperties" />
+      <AddNewUser ref="AddNewUser" />
+      <RootFolderProperties ref="RootFolderProperties" />
     </div>
   </div>
 </template>
@@ -328,6 +329,7 @@ import AddNewUser from '@/components/Modals/user/AddNewUser.vue'
 import Rename from '@/components/Modals/user/Rename.vue'
 import DeleteUser from '../components/Modals/user/DeleteUser.vue';
 import NewGroupProperties from '../components/Modals/group/NewGroupProperties.vue';
+import RootFolderProperties from '../components/Modals/folder/RootFolderProperties.vue';
 
 export default {
 name: "Admin",
@@ -341,7 +343,9 @@ name: "Admin",
     AddNewUser,
     Rename,
     DeleteUser,
-    NewGroupProperties
+    NewGroupProperties,
+    RootFolderProperties
+
 
 
 
@@ -384,9 +388,7 @@ name: "Admin",
 
     paneSize: 15,
   }),
-  mounted() {
-
-  },
+  
   methods: {
 		handler(event) {
 			event.preventDefault();
@@ -423,6 +425,7 @@ name: "Admin",
           this.$set(this,'src', require('@/assets/images/icon/usermanagement@2x.png'))
 					return this.items;
 				case 2:
+          this.pagename === 'Group'
           this.$set(this,'title', 'Group Management')
           this.$set(this,'src', require('@/assets/images/icon/group management@2x.png'))
 					return this.groupitems;
@@ -477,7 +480,7 @@ name: "Admin",
      
       
       ImportUser(){
-        this.$refs.modal.show()
+        this.$bvModal.show('ImportUser');
 
       },
       DeleteUser(){
@@ -487,7 +490,22 @@ name: "Admin",
       NewGroupProperties(){
         this.$bvModal.show('NewGroupProperties');
 
-      }
+      },
+      RootFolderProperties(){
+        this.$bvModal.show('RootFolderProperties');
+
+      },
+       addnew(){
+        if (this.currentSelected === 1) {
+          this.$bvModal.show('AddNewUser');
+
+        }
+        if (this.currentSelected === 2) {
+          this.$bvModal.show('NewGroupProperties');
+
+        }
+
+    }
 
   }
 };

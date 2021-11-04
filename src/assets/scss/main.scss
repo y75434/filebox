@@ -3,12 +3,14 @@
 
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/mixins';
+@import "../scss/_variables";
+@import "../scss/_modal";
+@import "../scss/_buttons";
 
 @import "~bootstrap/scss/bootstrap";
 
 
 @import '../scss/utils';
-@import '../scss/_modal';
 @import "../scss/_login";
 @import "../scss/_home";
 @import "../scss/_admin";
@@ -16,6 +18,5 @@
 
 @import "../scss/custom";
 
-@import "../scss/_variables";
 
 

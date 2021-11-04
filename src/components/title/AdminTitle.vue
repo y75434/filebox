@@ -126,7 +126,7 @@
 </template>
 
 <script>
-import AddNewUser from '../Modals/user/AddNewUser.vue';
+import AddNewUser from '../Modals/user/ImportUser.vue';
 
 
 export default {
