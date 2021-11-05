@@ -75,13 +75,13 @@
               >
               <span class="nav-text text-center">Download</span>
             </div>
-            <div class="d-flex flex-column w-50">
+            <li @click="UploadFiles" class="d-flex flex-column w-50">
               <img
                 src="@/assets/images/cmd/upload@2x.png"
                 alt=""
               >
               <span class="nav-text text-center">Upload</span>
-            </div>
+            </li>
 
             <span class="text-center">Transfer</span>
           </div>
@@ -354,7 +354,7 @@
                 src="@/assets/images/file/folder@2x.png"
                 class="folder-icon"
               >
-              <h6 class="text-dark ">
+              <h6 class="text-dark text-center">
                 Folder One
               </h6>
             </div>
@@ -363,7 +363,7 @@
                 src="@/assets/images/file/folder@2x.png"
                 class="folder-icon"
               >
-              <h6 class="text-dark ">
+              <h6 class="text-dark text-center">
                 Folder Two
               </h6>
             </div>
@@ -372,7 +372,7 @@
                 src="@/assets/images/file/7zip@2x.png"
                 class="folder-icon"
               >
-              <h6 class="text-dark ">
+              <h6 class="text-dark text-center">
                 7Z Archive
               </h6>
             </div>
@@ -381,7 +381,7 @@
                 src="@/assets/images/file/ppt@2x.png"
                 class="folder-icon"
               >
-              <h6 class="text-dark ">
+              <h6 class="text-dark text-center">
                 PPTX Sample File
               </h6>
             </div>
@@ -390,7 +390,7 @@
                 src="@/assets/images/file/rar@2x.png"
                 class="folder-icon"
               >
-              <h6 class="text-dark ">
+              <h6 class="text-dark text-center">
                 RAR Archive
               </h6>
             </div>
@@ -399,7 +399,7 @@
                 src="@/assets/images/file/tar@2x.png"
                 class="folder-icon"
               >
-              <h6 class="text-dark ">
+              <h6 class="text-dark text-center">
                 TAR Archive
               </h6>
             </div>
@@ -416,16 +416,16 @@
         </Splitpanes>
       </div>
       <div class="dqbz-footer" />
+      <UploadFiles ref="UploadFiles" />
     </div>
   </div>
 </template>
 
 <script>
 import { Splitpanes, Pane } from "splitpanes";
-// import Sidebar from "@/components/Sidebar.vue";
 import Navbar from "@/components/Navbar.vue";
 import Search from '../components/Search.vue';
-
+import UploadFiles from '../components/Modals/home/UploadFiles.vue';
 
 export default {
   name: "Home",
@@ -433,15 +433,16 @@ export default {
     Splitpanes,
     Pane,
     Navbar,
-    Search
-    // Sidebar
+    Search,
+    UploadFiles
   },
   data: () => ({
     
 
     paneSize: 15,
   }),
-  mounted() {
+  methods: {
+    UploadFiles(){ this.$bvModal.show('UploadFiles'); },
 
   },
 };

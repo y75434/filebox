@@ -11,20 +11,25 @@
     @ok="handleOk"
     @cancel="cancel"
   >
-    <h5 class="text-dark mb-3">
-      Delete
-      <!-- <strong class="text-danger"> {{ dataSource.name }}</strong> -->
-      , are you sure?
-    </h5>
-    <h5 class="text-dark mb-3">Please type the following to confirm:</h5>
-    <p>
+    <div class="p-3">
+      <h5 class="text-dark mb-3">
+        Delete
+        <!-- <strong class="text-danger"> {{ dataSource.name }}</strong> -->
+        , are you sure?
+      </h5>
+      <h5 class="text-dark mb-3">
+        Please type the following to confirm:
+      </h5>
+      <p>
       <!-- <code>{{ dataSource.name }}</code> -->
-    </p>
-    <input
-      class="form-control"
-      type="text"
-      v-model="userInput"
-    >
+      </p>
+      <input
+        class="form-control"
+        type="text"
+        v-model="userInput"
+      >
+    </div>
+    
     <template #modal-ok>
       Yes
     </template>

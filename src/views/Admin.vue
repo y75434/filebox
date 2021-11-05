@@ -17,13 +17,12 @@
           max-size="25"
           class="d-flex flex-column"
         >
-          <ul class=" list-unstyled w-100 text-dark d-flex flex-column  align-items-start h-100">
+          <ul class=" list-unstyled w-75 text-dark d-flex flex-column  align-items-start h-100">
             <li 
               v-for="(item, index) in menuItems"
               :key="index"
-              @contextmenu="showMenu(item.id, $event)"
               @click="redirect(item.id)"
-              class="d-flex align-items-center text-center"
+              class="d-flex align-items-center text-left mb-2"
             >
               <img
                 :src="`${item.pic}`"
@@ -40,7 +39,7 @@
           <ul
             class="text-dark small bg-f4gray w-100 align-items-start d-flex flex-column m-0 "
           >
-            <li class="d-flex align-items-center py-2">
+            <li @click="ApplicationSettings" class="d-flex align-items-center py-2">
               <img
                 src="@/assets/images/file/app setting@2x.png"
                 class="icon28px"
@@ -101,7 +100,7 @@
       
               <div class="d-flex">
                 <button
-                 
+                  v-if="this.currentSelected != 4"
                   @click="addnew()"
                   type="button"
                   class="title-btn btn d-flex align-items-center m-3"
@@ -199,6 +198,7 @@
               </div>
               <div class="d-flex">
                 <button
+                  @click="reloadPage"
                   type="button"
                   class="user-btn  btn d-flex align-items-center mr-3"
                 > 
@@ -301,6 +301,30 @@
           </li>
         </ul>
       </ContextMenu>
+      <ContextMenu ref="menuForLink">
+        <ul>
+          <li @click="EditPublicLink">
+            <img
+              src="@/assets/images/cmd/rename@2x.png"
+              class="icon24px"
+            >
+            Rename
+          </li>
+          <li @click="EditPublicLink">
+            <img
+              src="@/assets/images/icon/user setting@2x.png"
+              class="icon24px"
+            >Properties
+          </li>
+          <li>
+            <img
+              src="@/assets/images/cmd/delete@2x-2.png"
+              class="icon24px"
+            >Delete
+          </li>
+        </ul>
+      </ContextMenu>
+
     
       <rename ref="EditUserProperties" />
       
@@ -311,10 +335,12 @@
       <AboutFileVista
         ref="modal"
       />
+      <ApplicationSettings ref="ApplicationSettings" />
  
       <NewGroupProperties ref="NewGroupProperties" />
       <AddNewUser ref="AddNewUser" />
       <RootFolderProperties ref="RootFolderProperties" />
+      <EditPublicLink ref="EditPublicLink" />
     </div>
   </div>
 </template>
@@ -330,6 +356,8 @@ import Rename from '@/components/Modals/user/Rename.vue'
 import DeleteUser from '../components/Modals/user/DeleteUser.vue';
 import NewGroupProperties from '../components/Modals/group/NewGroupProperties.vue';
 import RootFolderProperties from '../components/Modals/folder/RootFolderProperties.vue';
+import EditPublicLink from'../components/Modals/link/EditPublicLink.vue';
+import ApplicationSettings from '../components/Modals/ApplicationSettings.vue'
 
 export default {
 name: "Admin",
@@ -344,7 +372,11 @@ name: "Admin",
     Rename,
     DeleteUser,
     NewGroupProperties,
-    RootFolderProperties
+    RootFolderProperties,
+    EditPublicLink,
+    ApplicationSettings
+
+
 
 
 
@@ -357,6 +389,17 @@ name: "Admin",
     src: require('@/assets/images/icon/usermanagement@2x.png'),
     selectedRow: null,
     currentSelected: 1,
+    // fields: [
+    //     {
+    //       key: 'Name',
+    //       sortable: true,
+    //     },
+    //     'FullName',
+    //     'LoginCount',
+    //     'LastLoginTime',
+    //     'DateCreated',
+
+    //   ],
     menuItems: [
         { id: 1, name: 'User Management',pic: require('@/assets/images/icon/usermanagement@2x.png') },
         { id: 2, name: 'Group Management', pic: require('@/assets/images/icon/group management@2x.png')},
@@ -366,9 +409,9 @@ name: "Admin",
       ],
     
     items: [
-        { Name: 'Rachel',FullName:'rrrrr', LoginCount: 'Rachel Lee',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM', DateModified:'25/02/2007 10:52 AM',Status:'active'},
-        { Name: 'Rachel',FullName:'rrrrr', LoginCount: 'RachelLee',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM',Status:'active'},
-        { Name: 'Rachel',FullName:'rrrrr', LoginCount: 'RachelLee',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM',Status:'active'}
+        { Name: 'Rachel',FullName:'Rachel Lee', LoginCount: '5',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM', DateModified:'25/02/2007 10:52 AM',Status:'active'},
+        { Name: 'David',FullName:'David Kang', LoginCount: '33',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM',Status:'active'},
+        { Name: 'Peter',FullName:'Peter Lin', LoginCount: '1',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM',Status:'active'}
 
       ],
       groupitems: [
@@ -377,8 +420,8 @@ name: "Admin",
 
       ],
       folderitems: [
-        { Name: 'Rachel',DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
-        { Name: 'chel',DateCreated:'25/02/2022 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
+        { Name: '1.Root Folder',DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
+        { Name: '2. Features Test Folder',DateCreated:'25/02/2022 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
 
       ],
       linkitems: [
@@ -393,12 +436,12 @@ name: "Admin",
 		handler(event) {
 			event.preventDefault();
     },
+    reloadPage() { window.location.reload(); },
+
 
     //顯示各頁選單
 		showMenu(itemId, event) {
-      const type = itemId === null ? this.currentSelected : itemId;
-      console.log('showMenu');
-      
+      const type = itemId === null ? this.currentSelected : itemId;      
 			switch (type) {
 				case 1:
 					this.$refs.menuForUser.open(event);
@@ -408,7 +451,10 @@ name: "Admin",
 					break;
 				case 3:
 					this.$refs.menuForFolder.open(event);
-					break;
+          break;
+        case 4: this.$refs.menuForLink.open(event); 
+          break;
+
 				default:
 					break;
       }
@@ -465,6 +511,9 @@ name: "Admin",
 		},
     
     AboutFileVista() { this.$refs.modal.show() },
+    ApplicationSettings(){
+      this.$bvModal.show('ApplicationSettings');
+    },
     AddNewUser() {
       this.$refs.menuForUser.close();
 
@@ -495,6 +544,10 @@ name: "Admin",
         this.$bvModal.show('RootFolderProperties');
 
       },
+      EditPublicLink(){
+        this.$bvModal.show('EditPublicLink');
+
+      },
        addnew(){
         if (this.currentSelected === 1) {
           this.$bvModal.show('AddNewUser');
@@ -504,6 +557,11 @@ name: "Admin",
           this.$bvModal.show('NewGroupProperties');
 
         }
+        if (this.currentSelected === 3) {
+          this.$bvModal.show('RootFolderProperties');
+
+        }
+
 
     }
 

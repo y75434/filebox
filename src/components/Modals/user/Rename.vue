@@ -1,12 +1,13 @@
 <template>
   <b-modal
     id="EditUserProperties"
-    style="padding: 0"
-    class="modal-content p-0"
+    class="modal-content"
     body-text-variant="warning"
     centered
     :title="title"
     header-bg-variant="info"
+    cancel-variant="outline-secondary"
+    ok-variant="primary"
   >
     <!-- <form
       class="container"

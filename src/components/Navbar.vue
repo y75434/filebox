@@ -39,6 +39,7 @@
                 class="nav-icon"
               >
               <a
+              @click="usersetting"
                 class="dropdown-item p-0"
                 href="#"
               >User setting</a>
@@ -48,31 +49,62 @@
                 src="@/assets/images/icon/administrator@2x.png"
                 class="nav-icon"
               >
-              <a
-                class="dropdown-item p-0"
-                href="#"
-              >Administration</a>
+              <router-link :to="{ path: '/admin' }" class="text-decoration-none">
+                <a
+                  class="dropdown-item p-0"
+                >Administration</a>
+              </router-link>
             </li>
           </ul>
         </li>
       </ul>
-      <li class="border-start px-1 nav-item d-flex align-items-center">
+      <router-link
+        to="/login"
+        class="border-start px-1 nav-item d-flex align-items-center text-decoration-none"
+      >
+        <!-- <li class="border-start px-1 nav-item d-flex align-items-center"> -->
         <img
           src="@/assets/images/cmd/logout@2x.png"
           class="nav-icon"
         >
         <a
-          class="nav-link py-0 px-1"
+          class="nav-link py-0 px-1 "
           aria-current="page"
           href="#"
         >Log out</a>
-      </li>
+      <!-- </li> -->
+      </router-link>
     </div>
+    <UserSetting />
   </div>
 </template>
 
 <script>
+import UserSetting from
+'../components/Modals/UserSetting.vue';
+
 export default {
+name: "Navbar",
+  components: {
+    UserSetting
+
+
+
+  },
+  data: () => ({
+    
+      
+     
+      
+      
+      
+
+  }),
+  methods: {
+    usersetting(){ this.$bvModal.show('UserSetting'); },
+
+  }
+
 
 }
 </script>

@@ -3,12 +3,12 @@
     class="dqbz-header d-flex justify-content-between bg-lightblue"
   >
     <li class="nav-item d-flex align-items-center">
-      <button class="dqbz-previous">
+      <router-link :to="{ path: '/' }" class="dqbz-previous">
         <img
           src="@/assets/images/arrow/arrow-left@2x.png"
           class="nav-icon"
         >
-      </button>
+      </router-link>
 
       
       <p
@@ -66,11 +66,11 @@
           src="@/assets/images/cmd/logout@2x.png"
           class="nav-icon"
         >
-        <a
-          class="nav-link py-0 px-1"
-          aria-current="page"
-          href="#"
-        >Log out</a>
+        <router-link :to="{ path: '/login' }" class="text-decoration-none">
+          <a
+            class="nav-link py-0 px-1"
+          >Log out</a>
+        </router-link>
       </li>
     </div>
   </div>

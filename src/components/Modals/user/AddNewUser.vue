@@ -6,6 +6,8 @@
     centered
     :title="title"
     header-bg-variant="info"
+    cancel-variant="outline-secondary"
+    ok-variant="primary"
   >
     <!-- <form
       class="container"
@@ -184,21 +186,21 @@
           </label>
         </div>
       </div>
-
     </div>
 
-      <!-- </form> -->
-      <!-- <template
-        #modal-cancel
-        variant="danger"
-        class="cancel-btn"
-      >
-        Cancel
-      </template>
+    <!-- </form> -->
+    <template
+      #modal-cancel
+      variant="outline-primary"
 
-      <template #modal-ok>
-        ok
-      </template> -->
+      class="cancel-btn"
+    >
+      Cancel
+    </template>
+
+    <template #modal-ok>
+      ok
+    </template>
   </b-modal>
 </template>
 

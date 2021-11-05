@@ -6,28 +6,32 @@
     centered
     :title="title"
     header-bg-variant="info"
-    size="lg"
+    cancel-variant="outline-secondary"
+    ok-variant="primary"
+
+    size="xl"
   >
     <!-- <form
       class="container"
       ref="form"
       @submit.stop.prevent="handleSubmit"
     > -->
-    <div class="modal-popout-bg p-0">
+    <div class="modal-popout-bg ">
       <div
-        class="modal-body bg-gray "
+        class="modal-body bg-gray p-3"
       >
         <div class="w-100 d-flex align-items-center justify-content-between mb-2">
           <div class="w-50 d-flex align-items-center justify-content-center">
             <label
-              for="Name"
+              for="Foldername"
               class="m-2"
-            >Name</label>
+            >Folder name</label>
             <input
               type="Name"
               class="form-control inline-block width-320"
               id="Name"
               placeholder="Design Team"
+              disabled
             >
           </div>
           <div class="w-50 d-flex align-items-center justify-content-center">
@@ -63,7 +67,7 @@
                 <li class="list-group-item d-flex align-items-center border-0">
                   <img
                     src="@/assets/images/file/folder@2x.png"
-                    class="icon32px px-3"
+                    class="icon32px px-1"
                   >
                   <p class="text-dark m-0">
                     Subfolder
@@ -80,14 +84,17 @@
                 Access Control for
               </h5>
 
-              <div class="d-flex justify-content-start align-items-center">
-                <img
-                  src="@/assets/images/file/single folder@2x.png"
-                  class="icon32px"
-                >
-                <p class="fw-bold m-0">
-                  3. Another Root Folder
-                </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                  <img
+                    src="@/assets/images/file/single folder@2x.png"
+                    class="icon32px"
+                  >
+                  <p class="fw-bold m-0">
+                    3. Another Root Folder
+                  </p>
+                </div>
+                
                 <div class=" form-check">
                   <input
                     type="checkbox"
@@ -103,73 +110,88 @@
             </div>
 
             <div class="row modal-selectuser">
-              <ul class="list-group bg-white col-3 p-0 h-100 border">
-                <li class="form-check list-group-item border-0 p-0">
-                  <input
-                    type="text"
-                    placeholder="Selected Groups/users"
-                    class="form-control"
-                    id=""
-                  >
-                </li>
-                      
-                <li class="list-group-item border-0 p-0">
-                  <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
+              <ul class="list-group d-flex flex-column justify-content-between bg-white col-3 p-0 h-100 border">
+                <div class="">
+                  <li class="form-check list-group-item border-0 p-0">
                     <input
-                      class="form-check-input m-0"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckDefault"
+                      type="text"
+                      placeholder="Selected Groups/users"
+                      class="form-control"
+                      id=""
                     >
-                    <img
-                      src="@/assets/images/icon/user@2x.png"
-                      class="icon24px"
-                    >
-                    <label
-                      class="form-check-label"
-                      for="flexCheckDefault"
-                    >
-                      <!-- <p class="text-dark m-0"> -->
-                      Design group
+                  </li>
+
+                  <li class="list-group-item border-0 p-0">
+                    <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
+                      <input
+                        class="form-check-input m-0"
+                        type="checkbox"
+                        value=""
+                        id="flexCheckDefault"
+                      >
+                      <img
+                        src="@/assets/images/icon/Union.png"
+                        class="icon24px"
+                      >
+                      <label
+                        class="form-check-label"
+                        for="flexCheckDefault"
+                      >
+                        <!-- <p class="text-dark m-0"> -->
+                        Design group
 
                       <!-- </p> -->
-                    </label>
-                  </div>
-                </li>
-              </ul>
-              <ul class="list-group bg-white col-3 p-0 h-100 border">
-                <li class="form-check list-group-item border-0 p-0">
-                  <p
-                    type="text"
-                    class="form-control fw-bold"
-                    id=""
-                  >
-                    Selected Groups/users
+                      </label>
+                    </div>
+                  </li>
+                </div>
+              
+                <li class="list-group-item d-flex justify-content-end border p-2">
+                  <p>
+                    <span>Total
+                    </span>
+                    <span class=" fw-bold">500</span>
                   </p>
                 </li>
+              </ul>
+              <ul class="list-group d-flex flex-column justify-content-between bg-white col-3 p-0 h-100 border">
+                <div class="">
+                  <li class="form-check list-group-item border-0 p-0">
+                    <p
+                      type="text"
+                      class="form-control fw-bold"
+                      id=""
+                    >
+                      Selected Groups/users
+                    </p>
+                  </li>
+
+                  <li class="list-group-item border-0 p-0">
+                    <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
                       
-                <li class="list-group-item border-0 p-0">
-                  <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
-                    <input
-                      class="form-check-input m-0"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckDefault"
-                    >
-                    <img
-                      src="@/assets/images/icon/user@2x.png"
-                      class="icon24px"
-                    >
-                    <label
-                      class="form-check-label"
-                      for="flexCheckDefault"
-                    >
-                      <!-- <p class="text-dark m-0"> -->
-                      Design group
+                      <img
+                        src="@/assets/images/icon/Union.png"
+                        class="icon24px"
+                      >
+                      <label
+                        class="form-check-label"
+                        for="flexCheckDefault"
+                      >
+                        <!-- <p class="text-dark m-0"> -->
+                        Design group
 
                       <!-- </p> -->
-                    </label>
-                  </div>
+                      </label>
+                    </div>
+                  </li>
+                </div>
+                
+                <li class="list-group-item d-flex justify-content-end border p-2">
+                  <p class="ms-3 justify-content-end d-flex align-items-center">
+                    <span class="dark-blue fw-bold">4
+                    </span>
+                    <span>Selected</span>
+                  </p>
                 </li>
               </ul>
 
@@ -209,15 +231,36 @@
                   id="nav-tabContent"
                 >
                   <div
-                    class="tab-pane fade show active"
+                    class="tab-pane fade show active justify-content-center flex-column d-flex align-items-center"
                     id="nav-home"
                     role="tabpanel"
                     aria-labelledby="nav-home-tab"
                   >
-                    <li class="list-group-item border-0 p-0 justify-content-between d-flex">
+                    <li class="list-group-item w-50 border-0 p-0 justify-content-between d-flex">
                       <div class="justify-content-center align-items-center p-0  d-flex">
                         <label
-                          class="form-check-label"
+                          class="form-check-label w-50"
+                          for="flexCheckDefault"
+                        >
+                          <!-- <p class="text-dark m-0"> -->
+                          Full
+
+                          <!-- </p> -->
+                        </label>
+                      </div>
+                      <div class="">
+                        <input
+                          class="form-check-input m-0"
+                          type="checkbox"
+                          value=""
+                          id="flexCheckDefault"
+                        >
+                      </div>
+                    </li>
+                    <li class="list-group-item w-50 border-0 p-0 justify-content-between d-flex">
+                      <div class="justify-content-center align-items-center p-0  d-flex">
+                        <label
+                          class="form-check-label w-50"
                           for="flexCheckDefault"
                         >
                           <!-- <p class="text-dark m-0"> -->
@@ -400,6 +443,7 @@ export default {
   data() {
     return {
       showModal: false,
+
     };
   },
   methods: {
@@ -413,7 +457,8 @@ export default {
       // this.$nextTick(() => {
       this.showModal = false;
       // });
-    },
+    }
+
   },
 };
 </script>

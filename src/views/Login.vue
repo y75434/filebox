@@ -14,7 +14,10 @@
           </div>
           
           <div class="form-group border-info">
-            <label for="email" class="my-2">User name</label>
+            <label
+              for="email"
+              class="my-2"
+            >User name</label>
             
             <input
               class="form-control user-icon"
@@ -22,10 +25,12 @@
               id="email"
               placeholder="jeff@doqubiz.com"
             >
-            
           </div>
           <div class="form-group">
-            <label for="passwords" class="my-2">Password</label>
+            <label
+              for="passwords"
+              class="my-2"
+            >Password</label>
             
             <input
               class="form-control password-icon position-relative"
@@ -45,13 +50,15 @@
             >Forgot Password</a>
           </div>
           
+          <router-link :to="{ path: '/' }">
+            <a
+              class="dqbz-btn btn btn-primary col-12"
+            >Login</a>
+          </router-link>
 
-          <a
-            href="#"
-            class="dqbz-btn btn btn-primary col-12"
-          >Login</a>
-          
-          <p class="my-4"><span>or</span></p>
+          <p class="my-4">
+            <span>or</span>
+          </p>
 
           <a
             href="#"

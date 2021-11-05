@@ -2,6 +2,65 @@
 // Base styles
 //
 
+.modal-btn {
+  color: white;
+  background-color: #66acec;
+  border-color: #66acec;
+}
+.cancel-btn {
+  color: #666;
+  background-color: #f0f0f0;
+  border-color: #999;
+}
+.sm-btn {
+  width: 84px;
+  height: 38px;
+}
+
+.table-btn {
+  background-color: #ffffff;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid #007fa9;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+}
+
+.close {
+  background: #a7c3de;
+  border: 0;
+}
+
+.cancel-variant {
+  border-color: #999;
+  color: #666666;
+  background-color: #fff;
+}
+
+
+.pill-btn {
+  border-radius: 10px;
+}
+
+.btn-outline-secondary {
+  color: #666;
+  background-color: transparent;
+  border-color: #999;
+
+}
+
+.btn-primary {
+  color: #fff !important;
+  background-color: #66acec;
+  border-color: #66acec;
+
+}
+
+
 .btn {
   display: inline-block;
   font-family: $btn-font-family;
@@ -14,7 +73,7 @@
   vertical-align: middle;
   cursor: if($enable-button-pointers, pointer, null);
   user-select: none;
-  background-color: transparent;
+  // background-color: transparent;
   border: $btn-border-width solid transparent;
   @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-border-radius);
   @include transition($btn-transition);

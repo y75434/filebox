@@ -6,6 +6,8 @@
     :title="title"
     body-text-variant="warning"
     header-bg-variant="info"
+    cancel-variant="outline-secondary"
+    ok-variant="primary"
 
     @ok="Ok"
   >

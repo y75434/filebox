@@ -6,190 +6,204 @@
     centered
     :title="title"
     header-bg-variant="info"
+    cancel-variant="outline-secondary"
+    ok-variant="primary"
+    size="lg"
   >
     <!-- <form
       class="container"
       ref="form"
       @submit.stop.prevent="handleSubmit"
     > -->
-    <div class="modal-popout-bg p-0">
-      <form class=" p-3">
-        <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+    <div class="modal-popout-bg p-3">
+      <div class="w-50 d-flex align-items-center justify-content-center mb-2">
+        <label
+          for="Connectto"
+          class="m-2"
+        >Connect to</label>
+        <input
+          type="Connect to"
+          class="form-control inline-block disable width-320"
+          id="Connectto"
+        >
+      </div>
+
+
+      <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+        <div class="w-50 d-flex align-items-center justify-content-center">
           <label
-            for="Username"
-            class=""
-          >User name</label>
+            for="Connectas"
+            class="m-2"
+          >Connect as</label>
           <input
-            type="Username"
+            type="Connectas"
             class="form-control inline-block width-320"
-            id="Username"
+            id="Connectas"
+            placeholder=""
           >
         </div>
-
                 
-        <div class="w-100 d-flex align-items-center justify-content-between mb-2 ">
+        <div
+          class="w-50 d-flex align-items-center justify-content-center"
+        >
           <label
-            for="Fullname"
-            class="form-label"
-          >Full name</label>
-          <input
-            type="Fullname"
-            class="form-control width-320"
-            id="Fullname"
+            for="Password"
+            class="m-2"
+          >Password</label><input
+            type="Password"
+            id="Password"
+            placeholder="********"
+            class="form-control inline-block width-320"
           >
         </div>
-        <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-          <label
-            for="Email"
-            class="col-form-label"
-          >Email</label>
-                  
-          <input
-            type="Email"
-            id="Email"
-            class="form-control width-320"
-          >
-        </div>
-        <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-          <label
-            for="Description"
-            class="col-form-label"
-          >Description</label>
-                  
-          <input
-            type="Description"
-            id="Description"
-            class="form-control width-320"
-          >
-        </div>
-      </form>
-      <!-- </div> -->
+      </div>
             
-      <hr class="">
 
 
-      <div class="d-flex flex-column justify-content-between p-3">
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="Changeuserpassword"
-          >
-          <label
-            class="form-check-label"
-            for="Changeuserpassword"
-          >
-            Change user password
-          </label>
-          <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+      <div class="">
+        <div
+          class="input-group mb-2 mt-4 border-0"
+        >
+          <div class="d-flex flex-column">
             <label
-              for="Password"
-              class="form-label"
-            >Password</label>
+              for="Name"
+              class="m-2"
+            >Name</label>
+
             <input
-              type="Password"
-              class="form-control width-220"
-              id="Password"
-              placeholder="******"
+              type="text"
+              placeholder="Please fill out this field"
+              class="form-control "
             >
           </div>
-          <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+          <div class="d-flex flex-column">
             <label
-              for="ConfirmPassword"
-              class="form-label"
-            >Confirm Password</label>
+              for="Full name"
+              class="m-2"
+            >Full name</label>
+
             <input
-              type="Password"
-              class="form-control width-220"
-              id="ConfirmPassword"
-              placeholder="******"
+              type="text"
+              placeholder="Please fill out this field"
+              class="form-control h-100"
             >
           </div>
-        </div>
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="Usermustchangepasswordatnexttime"
-          >
-          <label
-            class="form-check-label"
-            for="Usermustchangepasswordatnexttime"
-          >
-            User must change password at next time
-          </label>
-        </div>
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="Usercannotchangepassword"
-          >
-          <label
-            class="form-check-label"
-            for="Usercannotchangepassword"
-          >
-            User cannot change password
-          </label>
-        </div>
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="Passwordneverexpires"
-          >
-          <label
-            class="form-check-label"
-            for="Passwordneverexpires"
-          >
-            Password never expires
-          </label>
-        </div>
-
-        <hr class="">
+          <div class="d-flex flex-column">
+            <label
+              for="Email"
+              class="m-2"
+            >Email</label>
 
 
-
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="Passwordneverexpires"
-          >
-          <label
-            class="form-check-label"
-            for="Passwordneverexpires"
-          >
-            Account is disabled
-
-          </label>
+            <input
+              type="text"
+              placeholder="Please fill out this field"
+              class="form-control h-100"
+            >
+          </div>
+              
+          <div class="d-flex flex-column">
+            <div class="h-50" />
+            <button
+              type="button"
+              id="button-addon2"
+              class="btn btn-blue"
+            >
+              Button
+            </button>
+          </div>
         </div>
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="Passwordneverexpires"
-          >
-          <label
-            class="form-check-label"
-            for="Passwordneverexpires"
-          >
-            Account is locked out
-          </label>
-        </div>
+      </div>
+              
+
+
+            
+
+
+      <div class="w-100 mt-4">
+        <table class="table">
+          <thead>
+            <tr class="modal-tr">
+              <th scope="col ">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+                >
+              </th>
+              <th scope="col">
+                Name
+              </th>
+              <th scope="col">
+                Fulll name
+              </th>
+              <th scope="col">
+                Email
+              </th>
+              <th scope="col">
+                Description
+              </th>
+              <th scope="col">
+                Import result
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr>
+              <th scope="row">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+                >
+              </th>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>Rachellee@doqubiz.com</td>
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <th scope="row">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+                >
+              </th>
+              <td>Jacob</td>
+              <td>Thornton</td>
+              <td>Davidkang@doqubiz.com</td>
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <th scope="row">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+                >
+              </th>
+              <td colspan="2">
+                Peter
+              </td>
+              <td>Peterlin@doqubiz.com</td>
+              <td />
+              <td />
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
     <!-- </form> -->
     <template
       #modal-cancel
-      
     >
       Cancel
     </template>
