@@ -17,7 +17,7 @@
           max-size="25"
           class="d-flex flex-column"
         >
-          <ul class=" list-unstyled w-75 text-dark d-flex flex-column  align-items-start h-100">
+          <!-- <ul class=" list-unstyled w-75 text-dark d-flex flex-column  align-items-start h-100">
             <li 
               v-for="(item, index) in menuItems"
               :key="index"
@@ -33,13 +33,16 @@
               </p>
             </li>
           </ul>
-        
-
+         -->
+          <Sidebar />
           
           <ul
             class="text-dark small bg-f4gray w-100 align-items-start d-flex flex-column m-0 "
           >
-            <li @click="ApplicationSettings" class="d-flex align-items-center py-2">
+            <li
+              @click="ApplicationSettings"
+              class="d-flex align-items-center py-2"
+            >
               <img
                 src="@/assets/images/file/app setting@2x.png"
                 class="icon28px"
@@ -87,7 +90,8 @@
           :size="100 - paneSize"
           class=" flex-column"
         >
-          <div class="title d-flex w-100 justify-content-between align-items-center">
+          <Content />
+          <!-- <div class="title d-flex w-100 justify-content-between align-items-center">
             <div class="">
               <div class="d-flex align-items-center">
                 <img :src="src">
@@ -226,121 +230,11 @@
                 hover
               />
             </div>
-          </div>
+          </div> -->
         </Pane>
       </Splitpanes>
-      <ContextMenu ref="menuForUser">
-        <ul>
-          <li @click="Rename">
-            <img
-              src="@/assets/images/cmd/rename@2x.png"
-              class="icon24px"
-            >
-            Rename
-          </li>
-          <li @click="Rename">
-            <img
-              src="@/assets/images/icon/user setting@2x.png"
-              class="icon24px"
-            >Properties
-          </li>
-          <li @click="DeleteUser">
-            <img
-              src="@/assets/images/cmd/delete@2x-2.png"
-              class="icon24px"
-            >Delete
-          </li>
-        </ul>
-      </ContextMenu>
-      <ContextMenu ref="menuForGroup">
-        <ul>
-          <li
-            @click="NewGroupProperties"
-            title="Edit Group Properties"
-          >
-            <img
-              src="@/assets/images/cmd/rename@2x.png"
-              class="icon24px"
-            >
-            Rename
-          </li>
-          <li>
-            <img
-              src="@/assets/images/icon/user setting@2x.png"
-              class="icon24px"
-            >Properties
-          </li>
-          <li>
-            <img
-              src="@/assets/images/cmd/delete@2x-2.png"
-              class="icon24px"
-            >Delete
-          </li>
-        </ul>
-      </ContextMenu>
-      <ContextMenu ref="menuForFolder">
-        <ul>
-          <li @click="RootFolderProperties">
-            <img
-              src="@/assets/images/cmd/rename@2x.png"
-              class="icon24px"
-            >
-            Rename
-          </li>
-          <li>
-            <img
-              src="@/assets/images/icon/user setting@2x.png"
-              class="icon24px"
-            >Properties
-          </li>
-          <li>
-            <img
-              src="@/assets/images/cmd/delete@2x-2.png"
-              class="icon24px"
-            >Delete
-          </li>
-        </ul>
-      </ContextMenu>
-      <ContextMenu ref="menuForLink">
-        <ul>
-          <li @click="EditPublicLink">
-            <img
-              src="@/assets/images/cmd/rename@2x.png"
-              class="icon24px"
-            >
-            Rename
-          </li>
-          <li @click="EditPublicLink">
-            <img
-              src="@/assets/images/icon/user setting@2x.png"
-              class="icon24px"
-            >Properties
-          </li>
-          <li>
-            <img
-              src="@/assets/images/cmd/delete@2x-2.png"
-              class="icon24px"
-            >Delete
-          </li>
-        </ul>
-      </ContextMenu>
-
-    
-      <rename ref="EditUserProperties" />
-      
-      <ImportUser ref="ImportUser" />
-      <delete-user ref="DeleteUser" />
-      
-
-      <AboutFileVista
-        ref="modal"
-      />
+      <AboutFileVista ref="modal" />
       <ApplicationSettings ref="ApplicationSettings" />
- 
-      <NewGroupProperties ref="NewGroupProperties" />
-      <AddNewUser ref="AddNewUser" />
-      <RootFolderProperties ref="RootFolderProperties" />
-      <EditPublicLink ref="EditPublicLink" />
     </div>
   </div>
 </template>
@@ -348,16 +242,11 @@
 <script>
 import { Splitpanes, Pane } from "splitpanes";
 import AdminNav from "@/components/AdminNav.vue";
-import ContextMenu from '@/components/ContextMenu.vue';
-import ImportUser from '@/components/Modals/user/ImportUser.vue';
 import AboutFileVista from '@/components/Modals/AboutFileVista.vue';
-import AddNewUser from '@/components/Modals/user/AddNewUser.vue'
-import Rename from '@/components/Modals/user/Rename.vue'
-import DeleteUser from '../components/Modals/user/DeleteUser.vue';
-import NewGroupProperties from '../components/Modals/group/NewGroupProperties.vue';
-import RootFolderProperties from '../components/Modals/folder/RootFolderProperties.vue';
-import EditPublicLink from'../components/Modals/link/EditPublicLink.vue';
-import ApplicationSettings from '../components/Modals/ApplicationSettings.vue'
+
+import ApplicationSettings from '../components/Modals/ApplicationSettings.vue';
+import Sidebar from '../components/Sidebar.vue'
+import Content from '../components/Content.vue'
 
 export default {
 name: "Admin",
@@ -365,23 +254,10 @@ name: "Admin",
     Splitpanes,
     Pane,
     AdminNav,
-    ContextMenu,
-    ImportUser,
     AboutFileVista,
-    AddNewUser,
-    Rename,
-    DeleteUser,
-    NewGroupProperties,
-    RootFolderProperties,
-    EditPublicLink,
-    ApplicationSettings
-
-
-
-
-
-
-
+    ApplicationSettings,
+    Sidebar,
+    Content
   },
   data: () => ({
     msg: 'Edit Group Properties',
@@ -389,17 +265,7 @@ name: "Admin",
     src: require('@/assets/images/icon/usermanagement@2x.png'),
     selectedRow: null,
     currentSelected: 1,
-    // fields: [
-    //     {
-    //       key: 'Name',
-    //       sortable: true,
-    //     },
-    //     'FullName',
-    //     'LoginCount',
-    //     'LastLoginTime',
-    //     'DateCreated',
-
-    //   ],
+  
     menuItems: [
         { id: 1, name: 'User Management',pic: require('@/assets/images/icon/usermanagement@2x.png') },
         { id: 2, name: 'Group Management', pic: require('@/assets/images/icon/group management@2x.png')},
@@ -407,89 +273,11 @@ name: "Admin",
         { id: 4, name: 'Public Links' , pic: require('@/assets/images/file/publiclink@2x.png')},
 
       ],
-    
-    items: [
-        { Name: 'Rachel',FullName:'Rachel Lee', LoginCount: '5',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM', DateModified:'25/02/2007 10:52 AM',Status:'active'},
-        { Name: 'David',FullName:'David Kang', LoginCount: '33',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM',Status:'active'},
-        { Name: 'Peter',FullName:'Peter Lin', LoginCount: '1',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM',Status:'active'}
-
-      ],
-      groupitems: [
-        { GroupName: 'RD',Members:5,DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
-        { GroupName: 'HR',Members:5,DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
-
-      ],
-      folderitems: [
-        { Name: '1.Root Folder',DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
-        { Name: '2. Features Test Folder',DateCreated:'25/02/2022 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
-
-      ],
-      linkitems: [
-        { Name: 'Rachel',LinkedItem:'https://demos.google.com/admin/public...', CreatedBy:'admin', HitCount:'2',LastHitTime:'25/02/2007 10:52 AM',Expiration:'25/02/2007 10:52 AM'},
-      
-      ],
-
     paneSize: 15,
   }),
   
   methods: {
-		handler(event) {
-			event.preventDefault();
-    },
-    reloadPage() { window.location.reload(); },
-
-
-    //顯示各頁選單
-		showMenu(itemId, event) {
-      const type = itemId === null ? this.currentSelected : itemId;      
-			switch (type) {
-				case 1:
-					this.$refs.menuForUser.open(event);
-					break;
-				case 2:
-					this.$refs.menuForGroup.open(event);
-					break;
-				case 3:
-					this.$refs.menuForFolder.open(event);
-          break;
-        case 4: this.$refs.menuForLink.open(event); 
-          break;
-
-				default:
-					break;
-      }
-    },
-   
-    //顯示sidebar的頁面資料
-    getData() {
-      console.log('getData');
-      
-			const type = this.currentSelected;
-			switch (type) {
-				case 1:
-          this.$set(this,'title', 'User Management')
-          this.$set(this,'src', require('@/assets/images/icon/usermanagement@2x.png'))
-					return this.items;
-				case 2:
-          this.pagename === 'Group'
-          this.$set(this,'title', 'Group Management')
-          this.$set(this,'src', require('@/assets/images/icon/group management@2x.png'))
-					return this.groupitems;
-				case 3:
-          this.$set(this,'title', 'Root Folders')
-          this.$set(this,'src', require('@/assets/images/file/root folder@2x.png'))
-          return this.folderitems;
-          
-        case 4: 
-          this.$set(this,'title', 'Public Links')
-          this.$set(this,'src', require('@/assets/images/file/publiclink@2x.png'))
-          return this.linkitems;
-
-				default:
-          return [];
-
-      }
-    },
+    
    
     // 跳轉到該頁
     redirect(index) {
@@ -497,13 +285,7 @@ name: "Admin",
 			this.currentSelected = index;
 			this.selectedRow = null;
     },
-    // 表格資料設定
-    operational(event) {
-			event.preventDefault();
-      event.stopPropagation();
-      this.$refs.menuForUser.open(event);
-
-    },
+  
   
     //選取哪一個資料
     rowSelected(index) {
@@ -514,56 +296,12 @@ name: "Admin",
     ApplicationSettings(){
       this.$bvModal.show('ApplicationSettings');
     },
-    AddNewUser() {
-      this.$refs.menuForUser.close();
-
-        this.$bvModal.show('AddNewUser');
-      },
-      Rename(){
-        
-        this.$refs.menuForUser.close();
-
-        this.$bvModal.show('EditUserProperties');
-
-      },
-     
-      
-      ImportUser(){
-        this.$bvModal.show('ImportUser');
-
-      },
-      DeleteUser(){
-        this.$bvModal.show('modal-delete-user');
-
-      },
-      NewGroupProperties(){
-        this.$bvModal.show('NewGroupProperties');
-
-      },
-      RootFolderProperties(){
-        this.$bvModal.show('RootFolderProperties');
-
-      },
-      EditPublicLink(){
-        this.$bvModal.show('EditPublicLink');
-
-      },
-       addnew(){
-        if (this.currentSelected === 1) {
-          this.$bvModal.show('AddNewUser');
-
-        }
-        if (this.currentSelected === 2) {
-          this.$bvModal.show('NewGroupProperties');
-
-        }
-        if (this.currentSelected === 3) {
-          this.$bvModal.show('RootFolderProperties');
-
-        }
+    
+    
+       
 
 
-    }
+    
 
   }
 };
