@@ -14,8 +14,16 @@
       ref="form"
       @submit.stop.prevent="handleSubmit"
     > -->
-    <div class="modal-popout-bg p-0" />
-
+    <div class="modal-popout-bg p-5">
+      <p class=" m-0">
+        Enter a name for the new item
+      </p>
+      <input
+        type="email"
+        class="form-control"
+        placeholder="Please fill out this field"
+      >
+    </div>
     <!-- </form> -->
     <template
       #modal-cancel

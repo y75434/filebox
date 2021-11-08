@@ -1,7 +1,6 @@
 <template>
-  <div class="container">
-    <ul
-      class="
+  <ul
+    class="
       list-unstyled
       w-75
       text-dark
@@ -10,23 +9,22 @@
       align-items-start
       h-100
     "
-    >//TODO 只能點擊一次
-      <li 
-        v-for="(item, index) in menuItems"
-        :key="index"
-        @click="redirect(item.id)"
-        class="d-flex align-items-center text-left mb-2"
+  >
+    <li 
+      v-for="(item, index) in menuItems"
+      :key="index"
+      @click="redirect(item.id)"
+      class="d-flex align-items-center text-left mb-2"
+    >
+      <img
+        :src="`${item.pic}`"
+        class="icon28px"
       >
-        <img
-          :src="`${item.pic}`"
-          class="icon28px"
-        >
-        <p class="m-0">
-          {{ item.name }}
-        </p>
-      </li>
-    </ul>
-  </div>
+      <p class="m-0">
+        {{ item.name }}
+      </p>
+    </li>
+  </ul>
 </template>
 
 <script>
@@ -43,13 +41,16 @@ export default {
         { id: 4, name: 'Public Links' , pic: require('@/assets/images/file/publiclink@2x.png')},
       ],
       selectedRow: null, 
-      currentSelected: 1,
+      // currentSelected: 1,
    };
   },
   methods:{
      // 跳轉到該頁
     redirect(index) {    
       eventBus.$emit('menuItems', this.menuItems[index-1]);
+      // this.currentSelected === index;
+      // console.log(this.currentSelected);
+      
     },
   }
 }

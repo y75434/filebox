@@ -14,7 +14,41 @@
       ref="form"
       @submit.stop.prevent="handleSubmit"
     > -->
-    <div class="modal-popout-bg p-0" />
+    <div class="modal-popout-bg p-0">
+      <img
+        class="mx-auto  m-0"
+        src="@/assets/images/cmd/alarm@2x.png"
+      >
+      <h5 class="text-center m-0">
+        Are you sure you want to delete this folder?
+      </h5>
+           
+            
+      <h5 class="text-center m-0 font-weight-bold">
+        “Folder One (2)”
+      </h5>
+
+          
+
+
+
+
+      <div class="w-100 d-flex justify-content-center mt-5">
+        <button
+          type="button"
+          class="sm-btn cancel-btn mx-3 px-5 btn justify-content-center d-flex"
+        >
+          No
+        </button>
+
+        <button
+          type="button"
+          class="sm-btn px-5 btn btn-danger justify-content-center d-flex "
+        >
+          Delete
+        </button>
+      </div>
+    </div>
 
     <!-- </form> -->
     <template

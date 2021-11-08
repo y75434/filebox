@@ -39,32 +39,41 @@
           </div>
           <div class="divider" />
           <div class="fn-w-100 d-flex align-items-center">
-            <div class="d-flex flex-column w-50">
+            <li 
+              @click="DeleteFolder"
+              class="d-flex flex-column w-50"
+            >
               <img
                 src="@/assets/images/cmd/delete@2x-2.png"
                 alt=""
               >
               <span class="nav-text text-center">Delete</span>
-            </div>
-            <div class="d-flex flex-column w-50">
+            </li>
+            <li 
+              @click="RenameItem"
+              class="d-flex flex-column w-50"
+            >
               <img
                 src="@/assets/images/cmd/rename@2x.png"
                 alt=""
               >
               <span class="nav-text text-center">Rename</span>
-            </div>
+            </li>
 
             <span class="text-center">Organize</span>
           </div>
           <div class="divider" />
           <div class="fn-w-60 align-items-center d-flex">
-            <div class="d-flex flex-column ">
+            <li
+              @click="CreateFolder"
+              class="d-flex flex-column "
+            >
               <img
                 src="@/assets/images/file/new folder@2x.png"
                 alt=""
               >
               <span class="nav-text text-center">New</span>
-            </div>
+            </li>
           </div>
           <div class="divider" />
           <div class="fn-w-100 d-flex align-items-center">
@@ -75,7 +84,10 @@
               >
               <span class="nav-text text-center">Download</span>
             </div>
-            <li @click="UploadFiles" class="d-flex flex-column w-50">
+            <li
+              @click="UploadFiles"
+              class="d-flex flex-column w-50"
+            >
               <img
                 src="@/assets/images/cmd/upload@2x.png"
                 alt=""
@@ -417,6 +429,9 @@
       </div>
       <div class="dqbz-footer" />
       <UploadFiles ref="UploadFiles" />
+      <create-folder ref="CreateFolder" />
+      <rename-item ref="RenameItem" />
+      <delete-folder ref="DeleteFolder" />
     </div>
   </div>
 </template>
@@ -426,6 +441,10 @@ import { Splitpanes, Pane } from "splitpanes";
 import Navbar from "@/components/Navbar.vue";
 import Search from '../components/Search.vue';
 import UploadFiles from '../components/Modals/home/UploadFiles.vue';
+import CreateFolder from '../components/Modals/home/CreateFolder.vue';
+import DeleteFolder from '../components/Modals/home/DeleteFolder.vue';
+import RenameItem from '../components/Modals/home/RenameItem.vue';
+
 
 export default {
   name: "Home",
@@ -434,7 +453,11 @@ export default {
     Pane,
     Navbar,
     Search,
-    UploadFiles
+    UploadFiles,
+    CreateFolder,
+    RenameItem,
+    DeleteFolder,
+
   },
   data: () => ({
     
@@ -443,6 +466,9 @@ export default {
   }),
   methods: {
     UploadFiles(){ this.$bvModal.show('UploadFiles'); },
+    CreateFolder(){ this.$bvModal.show('CreateFolder'); },
+    RenameItem(){ this.$bvModal.show('RenameItem'); },
+    DeleteFolder(){ this.$bvModal.show('DeleteFolder'); },
 
   },
 };

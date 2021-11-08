@@ -1,8 +1,13 @@
 <template>
-  <div @contextmenu="handler($event)">
+  <div
+    class="w-100"
+    @contextmenu="handler($event)"
+  >
     <div 
-    class="title d-flex w-100 justify-content-between align-items-center">
-      <div class="">
+
+      class="title d-flex w-100 justify-content-between align-items-center my-3"
+    >
+      <div class=" col-4">
         <div class="d-flex align-items-center">
           <img :src="this.src">
           <h4
@@ -15,11 +20,9 @@
         <div class="d-flex">
           <button
             @click="addnew()"
-
             v-if="this.currentSelected != 4"
             type="button"
-            class="title-btn btn d-flex align-items-center m-3"
-            style="background-color: #66acec"
+            class="modal-btn title-btn btn d-flex align-items-center m-3"
           > 
             <img
               class="nav-icon"
@@ -32,7 +35,7 @@
           </button>
 
           <button
-          @click="ImportUser"
+            @click="ImportUser"
             v-if="this.currentSelected === 1"
             type="button"
             class="title-btn btn d-flex align-items-center m-3"
@@ -52,52 +55,54 @@
         </div>
       </div>
 
+      <div class="col-6 d-none d-sm-none d-md-block">
+        <div
+          class="input-group mb-2 mt-4 border-0 align-items-end "
+        >
+          <div class="d-flex flex-column">
+            <label
+              for="GroupName"
+              class="m-2 text-dark"
+            >Group Name</label>
 
-      <div
-        class="input-group mb-2 mt-4 border-0 align-items-end"
-      >
-        <div class="d-flex flex-column">
-          <label
-            for="GroupName"
-            class="m-2 text-dark"
-          >Group Name</label>
-
-          <input
-            type="text"
-            placeholder="search name"
-            class="form-control "
-          >
-        </div>
+            <input
+              type="text"
+              placeholder="search name"
+              class="form-control "
+            >
+          </div>
         
-        <div class="d-flex flex-column">
-          <label
-            for="MemberName"
-            class="m-2 text-dark"
-          >Member Name</label>
+          <div class="d-flex flex-column">
+            <label
+              for="MemberName"
+              class="m-2 text-dark"
+            >Member Name</label>
 
 
-          <input
-            type="text"
-            placeholder="Please fill out this field"
-            class="form-control"
-          >
-        </div>
+            <input
+              type="text"
+              placeholder="Please fill out this field"
+              class="form-control"
+            >
+          </div>
               
-        <div class="d-flex flex-column">
-          <div class="h-50" />
-          <button
-            type="button"
-            id="button-addon2"
-            class="btn btn-blue"
-          >
-            Button
-          </button>
+          <div class="d-flex flex-column">
+            <div class="h-50" />
+            <button
+              type="button"
+              id="button-addon2"
+              class="btn btn-blue"
+            >
+              Button
+            </button>
+          </div>
         </div>
       </div>
+      
 
 
       <div
-        class="d-flex flex-column "
+        class="d-flex flex-column"
       >
         <div
           class=" d-flex group align-items-end " 
@@ -113,7 +118,7 @@
         </div>
         <div class="d-flex">
           <button
-          @click="reloadPage"
+            @click="reloadPage"
 
             type="button"
             class="user-btn  btn d-flex align-items-center mr-3"
@@ -134,117 +139,120 @@
       class="row w-100"
       @contextmenu="showMenu(null, $event)"
     >
-      <div class="col-12">
-        <b-table
-          :items="getTable()"
-          class="grid-row h5"
-          @contextmenu="operational($event)"
-          hover
-        />
+      <div class="">
+        <b-col xs="12">
+          <b-table
+            responsive="true"
+            :items="getTable()"
+            class="col-12 b-col"
+            @contextmenu="operational($event)"
+            hover
+          />
+        </b-col>
       </div>
+      <ContextMenu ref="menuForUser">
+        <ul class="text-dark">
+          <li @click="Rename">
+            <img
+              src="@/assets/images/cmd/rename@2x.png"
+              class="icon24px"
+            >
+            Rename
+          </li>
+          <li @click="Rename">
+            <img
+              src="@/assets/images/icon/user setting@2x.png"
+              class="icon24px"
+            >Properties
+          </li>
+          <li @click="DeleteUser">
+            <img
+              src="@/assets/images/cmd/delete@2x-2.png"
+              class="icon24px"
+            >Delete
+          </li>
+        </ul>
+      </ContextMenu>
+      <ContextMenu ref="menuForGroup">
+        <ul class="text-dark">
+          <li
+            @click="NewGroupProperties"
+            title="Edit Group Properties"
+          >
+            <img
+              src="@/assets/images/cmd/rename@2x.png"
+              class="icon24px"
+            >
+            Rename
+          </li>
+          <li @click="NewGroupProperties">
+            <img
+              src="@/assets/images/icon/user setting@2x.png"
+              class="icon24px"
+            >Properties
+          </li>
+          <li>
+            <img
+              src="@/assets/images/cmd/delete@2x-2.png"
+              class="icon24px"
+            >Delete
+          </li>
+        </ul>
+      </ContextMenu>
+      <ContextMenu ref="menuForFolder">
+        <ul class="text-dark">
+          <li @click="RootFolderProperties">
+            <img
+              src="@/assets/images/cmd/rename@2x.png"
+              class="icon24px"
+            >
+            Rename
+          </li>
+          <li @click="RootFolderProperties">
+            <img
+              src="@/assets/images/icon/user setting@2x.png"
+              class="icon24px"
+            >Properties
+          </li>
+          <li>
+            <img
+              src="@/assets/images/cmd/delete@2x-2.png"
+              class="icon24px"
+            >Delete
+          </li>
+        </ul>
+      </ContextMenu>
+      <ContextMenu ref="menuForLink">
+        <ul class="text-dark">
+          <li @click="EditPublicLink">
+            <img
+              src="@/assets/images/cmd/rename@2x.png"
+              class="icon24px"
+            >
+            Rename
+          </li>
+          <li @click="EditPublicLink">
+            <img
+              src="@/assets/images/icon/user setting@2x.png"
+              class="icon24px"
+            >Properties
+          </li>
+          <li>
+            <img
+              src="@/assets/images/cmd/delete@2x-2.png"
+              class="icon24px"
+            >Delete
+          </li>
+        </ul>
+      </ContextMenu>
+      <rename ref="EditUserProperties" />
+      <ImportUser ref="ImportUser" />
+      <delete-user ref="DeleteUser" />
+      <NewGroupProperties ref="NewGroupProperties" />
+      <AddNewUser ref="AddNewUser" />
+      <RootFolderProperties ref="RootFolderProperties" />
+      <EditPublicLink ref="EditPublicLink" />
     </div>
-    <ContextMenu ref="menuForUser">
-      <ul>
-        <li @click="Rename">
-          <img
-            src="@/assets/images/cmd/rename@2x.png"
-            class="icon24px"
-          >
-          Rename
-        </li>
-        <li @click="Rename">
-          <img
-            src="@/assets/images/icon/user setting@2x.png"
-            class="icon24px"
-          >Properties
-        </li>
-        <li @click="DeleteUser">
-          <img
-            src="@/assets/images/cmd/delete@2x-2.png"
-            class="icon24px"
-          >Delete
-        </li>
-      </ul>
-    </ContextMenu>
-    <ContextMenu ref="menuForGroup">
-      <ul>
-        <li
-          @click="NewGroupProperties"
-          title="Edit Group Properties"
-        >
-          <img
-            src="@/assets/images/cmd/rename@2x.png"
-            class="icon24px"
-          >
-          Rename
-        </li>
-        <li>
-          <img
-            src="@/assets/images/icon/user setting@2x.png"
-            class="icon24px"
-          >Properties
-        </li>
-        <li>
-          <img
-            src="@/assets/images/cmd/delete@2x-2.png"
-            class="icon24px"
-          >Delete
-        </li>
-      </ul>
-    </ContextMenu>
-    <ContextMenu ref="menuForFolder">
-      <ul>
-        <li @click="RootFolderProperties">
-          <img
-            src="@/assets/images/cmd/rename@2x.png"
-            class="icon24px"
-          >
-          Rename
-        </li>
-        <li>
-          <img
-            src="@/assets/images/icon/user setting@2x.png"
-            class="icon24px"
-          >Properties
-        </li>
-        <li>
-          <img
-            src="@/assets/images/cmd/delete@2x-2.png"
-            class="icon24px"
-          >Delete
-        </li>
-      </ul>
-    </ContextMenu>
-    <ContextMenu ref="menuForLink">
-      <ul>
-        <li @click="EditPublicLink">
-          <img
-            src="@/assets/images/cmd/rename@2x.png"
-            class="icon24px"
-          >
-          Rename
-        </li>
-        <li @click="EditPublicLink">
-          <img
-            src="@/assets/images/icon/user setting@2x.png"
-            class="icon24px"
-          >Properties
-        </li>
-        <li>
-          <img
-            src="@/assets/images/cmd/delete@2x-2.png"
-            class="icon24px"
-          >Delete
-        </li>
-      </ul>
-    </ContextMenu> 
-    <rename ref="EditUserProperties" />
-    <ImportUser ref="ImportUser" />
-    <delete-user ref="DeleteUser" />
-    <NewGroupProperties ref="NewGroupProperties" />
-    <AddNewUser ref="AddNewUser" />
-    <RootFolderProperties ref="RootFolderProperties" />
-    <EditPublicLink ref="EditPublicLink" />
   </div>
 </template>
 
@@ -307,14 +315,15 @@ methods: {
   reloadPage() {window.location.reload(); },
   getData() {
     eventBus.$on('menuItems',(item)=>{
-    console.log(item.name);
     this.currentSelected = item.id;
     this.src = item.pic;
     this.title = item.name;
+    this.getTable(this.currentSelected);
+
     this.selectedRow = null;
     });			
   },
-  getTable(){
+  getTable(){    
     switch (this.currentSelected) {
       case 1:
         return this.items;
@@ -342,7 +351,8 @@ methods: {
       case 3:
         this.$refs.menuForFolder.open(event);
         break;
-      case 4: this.$refs.menuForLink.open(event); 
+      case 4: 
+        this.$refs.menuForLink.open(event); 
         break;
       default:
         break;
@@ -358,30 +368,38 @@ methods: {
   rowSelected(index) {
     this.selectedRow = index;
   },
-    Rename(){      
-      this.$refs.menuForUser.close();
-      this.$bvModal.show('EditUserProperties');
-    },
-    ImportUser(){
-      this.$bvModal.show('ImportUser');
-    },
-    DeleteUser(){
-      this.$bvModal.show('modal-delete-user');
-    },
-    EditPublicLink(){
-      this.$bvModal.show('EditPublicLink');
-    },
-    addnew(){
-      if (this.currentSelected === 1) {
-        this.$bvModal.show('AddNewUser');
-      }
-      if (this.currentSelected === 2) {
-        this.$bvModal.show('NewGroupProperties');
-      }
-      if (this.currentSelected === 3) {
-        this.$bvModal.show('RootFolderProperties');
-      }
+  Rename(){      
+    this.$refs.menuForUser.close();
+    this.$bvModal.show('EditUserProperties');
+  },
+  ImportUser(){
+    this.$bvModal.show('ImportUser');
+  },
+  DeleteUser(){
+    this.$bvModal.show('modal-delete-user');
+  },
+  EditPublicLink(){
+    this.$bvModal.show('EditPublicLink');
+  },
+  addnew(){
+    if (this.currentSelected === 1) {
+      this.$bvModal.show('AddNewUser');
     }
+    if (this.currentSelected === 2) {
+      this.$bvModal.show('NewGroupProperties');
+    }
+    if (this.currentSelected === 3) {
+      this.$bvModal.show('RootFolderProperties');
+    }
+  },
+  NewGroupProperties(){
+      this.$bvModal.show('NewGroupProperties');
+
+    },
+    RootFolderProperties(){
+      this.$bvModal.show('RootFolderProperties');
+
+    },
 }
 }
 </script>

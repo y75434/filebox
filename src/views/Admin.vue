@@ -15,7 +15,7 @@
           :size="paneSize"
           min-size="10"
           max-size="25"
-          class="d-flex flex-column"
+          class="d-flex flex-column d-xs-none"
         >
           <!-- <ul class=" list-unstyled w-75 text-dark d-flex flex-column  align-items-start h-100">
             <li 
@@ -88,7 +88,7 @@
         </Pane>
         <Pane
           :size="100 - paneSize"
-          class=" flex-column"
+          class=" flex-column content"
         >
           <Content />
           <!-- <div class="title d-flex w-100 justify-content-between align-items-center">
