@@ -8,6 +8,8 @@
     header-bg-variant="info"
     cancel-variant="outline-secondary"
     ok-variant="primary"
+    body-bg-variant="light"
+    content-bg-variant="bgmodal"
   >
     <!-- <form
       class="container"

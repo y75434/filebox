@@ -6,6 +6,7 @@
     centered
     :title="title"
     header-bg-variant="info"
+    footer-bg-variant="bgmodal"
     cancel-variant="outline-secondary"
     ok-variant="primary"
   >

@@ -97,7 +97,8 @@
 
             <span class="text-center">Transfer</span>
           </div>
-          <div class="divider" />
+          <!-- 留著 -->
+          <!-- <div class="divider" />
           <div class="fn-w-100 d-flex align-items-center">
             <div class="d-flex flex-column w-50">
               <img
@@ -115,49 +116,73 @@
             </div>
 
             <span class="text-center">Compression</span>
-          </div>
+          </div> -->
           <div class="divider" />
-          <div class="fn-w-160 ">
-            <h6>
+          <div class="fn-w-150 d-flex align-items-center flex-column">
+            <b-button
+              v-b-tooltip.hover
+              title="Create public link..."
+              class="bg-light text-dark border-0 p-0 d-flex"
+            >
               <img
                 src="@/assets/images/file/publiclink@2x.png"
-                class="nav-icon"
+                class="nav-icon pe-1 "
               >
-              Create public link...
-            </h6>
-            <h6>
+              <span class="d-sm-none d-md-block d-lg-block">Create public link...
+              </span>
+            </b-button>
+
+            <b-button
+              v-b-tooltip.hover
+              title="Manage public links..."
+              class="bg-light text-dark border-0 p-0 d-flex"
+            >
               <img
                 src="@/assets/images/icon/managepubliclink@2x.png"
-                class="nav-icon"
+                class="nav-icon pe-1 "
               >
-              Manage public links...
-            </h6>
+              <span class="d-sm-none d-md-block d-lg-block">Manage public links...</span>
+            </b-button>
 
             <span class="text-center">Share</span>
           </div>
           <div class="divider" />
-          <div class="fn-w-150">
-            <h6>
+          <div class="fn-w-150 d-flex flex-column">
+            <b-button
+              v-b-tooltip.hover
+              title="Select all"
+              class="bg-light text-dark border-0 p-0 d-flex"
+            >
               <img
                 src="@/assets/images/cmd/select all@2x.png"
-                class="nav-icon"
+                class="nav-icon pe-1 "
               >
-              Select all
-            </h6>
-            <h6>
+              <span class="d-sm-none d-md-block">Select all</span>
+            </b-button>
+
+            <b-button
+              v-b-tooltip.hover
+              title="Select none"
+              class="bg-light text-dark border-0 p-0 d-flex"
+            >
               <img
                 src="@/assets/images/cmd/select none@2x.png"
-                class="nav-icon"
+                class="nav-icon pe-1 "
               >
-              Select none
-            </h6>
-            <h6>
+              <span class="d-sm-none d-md-block">Select none</span>
+            </b-button>
+
+            <b-button
+              v-b-tooltip.hover
+              title="Invert Selection"
+              class="bg-light text-dark border-0 p-0 d-flex"
+            >
               <img
                 src="@/assets/images/icon/invert selection@2x.png"
-                class="nav-icon"
+                class="nav-icon pe-1 "
               >
-              Invert Selection
-            </h6>
+              <span class="d-sm-none d-md-block">Invert Selection</span>
+            </b-button>
 
 
             <span class="text-center">Select</span>
@@ -165,44 +190,64 @@
           <div class="divider" />
           <div class="fn-w-210">
             <div class="d-flex">
-              <h6>
+              <b-button
+                v-b-tooltip.hover
+                title="Large icons"
+                class="bg-light text-dark border-0 p-0"
+              >
                 <img
                   src="@/assets/images/icon/large icons@2x.png"
-                  class="nav-icon"
+                  class="nav-icon pe-1"
                 >
-                Large icons
-              </h6>
-              <h6>
+                <span class="">Large icons</span>
+              </b-button>
+              <b-button
+                v-b-tooltip.hover
+                title="icons"
+                class="bg-light text-dark border-0 p-0"
+              >
                 <img
                   src="@/assets/images/icon/icons@2x.png"
-                  class="nav-icon"
+                  class="nav-icon pe-1"
                 >
-                icons
-              </h6>
+                <span class="">icons</span>
+              </b-button>
             </div>
             <div class="d-flex">
-              <h6>
+              <b-button
+                v-b-tooltip.hover
+                title="Tiles"
+                class="bg-light text-dark border-0 p-0"
+              >
                 <img
                   src="@/assets/images/file/tile@2x.png"
-                  class="nav-icon"
-                >
-                Tiles
-              </h6>
-              <h6>
+                  class="nav-icon pe-1"
+                >  
+                <span class="">Tiles</span>
+              </b-button>
+              <b-button
+                v-b-tooltip.hover
+                title="Details"
+                class="bg-light text-dark border-0 p-0"
+              >
                 <img
                   src="@/assets/images/icon/details@2x.png"
-                  class="nav-icon"
+                  class="nav-icon pe-1 "
                 >
-                Details
-              </h6>
+                <span class="">Details</span>
+              </b-button>
             </div>
-          
+            
+
+           
+
+
 
 
             <span class="text-center">Layout</span>
           </div>
           <div class="divider" />
-          <div class="fn-w-150">
+          <div class="fn-w-150 d-md-none d-lg-block">
             <div class="form-check">
               <input
                 class="form-check-input"
@@ -351,7 +396,101 @@
                   data-bs-parent="#accordionFlushExample"
                 >
                   <div class="accordion-body">
-                    Placeholder 
+                    <!-- new -->
+
+                    <div
+                      class="accordion"
+                      id="accordionExample"
+                    >
+                      <div class="accordion-item">
+                        <h2
+                          class="accordion-header"
+                          id="headingOne"
+                        >
+                          <button
+                            class="accordion-button"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne"
+                            aria-expanded="true"
+                            aria-controls="collapseOne"
+                          >
+                            #1
+                          </button>
+                        </h2>
+                        <div
+                          id="collapseOne"
+                          class="accordion-collapse collapse show"
+                          aria-labelledby="headingOne"
+                          data-bs-parent="#accordionExample"
+                        >
+                          <div class="accordion-body">
+                            <h6 class="text-dark">
+                              ccc
+                            </h6>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="accordion-item">
+                        <h2
+                          class="accordion-header"
+                          id="headingTwo"
+                        >
+                          <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseTwo"
+                            aria-expanded="false"
+                            aria-controls="collapseTwo"
+                          >
+                            #2
+                          </button>
+                        </h2>
+                        <div
+                          id="collapseTwo"
+                          class="accordion-collapse collapse"
+                          aria-labelledby="headingTwo"
+                          data-bs-parent="#accordionExample"
+                        >
+                          <div class="accordion-body">
+                            <h6 class="text-dark">
+                              aaaa
+                            </h6>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="accordion-item">
+                        <h2
+                          class="accordion-header"
+                          id="headingThree"
+                        >
+                          <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseThree"
+                            aria-expanded="false"
+                            aria-controls="collapseThree"
+                          >
+                            #3
+                          </button>
+                        </h2>
+                        <div
+                          id="collapseThree"
+                          class="accordion-collapse collapse"
+                          aria-labelledby="headingThree"
+                          data-bs-parent="#accordionExample"
+                        >
+                          <div class="accordion-body">
+                            <h6 class="text-dark">
+                              ddddd
+                            </h6>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- new -->
                   </div>
                 </div>
               </div>
@@ -432,6 +571,10 @@
       <create-folder ref="CreateFolder" />
       <rename-item ref="RenameItem" />
       <delete-folder ref="DeleteFolder" />
+    </div>
+    <div class="dqbz-footer">
+      <p>32 items</p>
+      <p>1 item selected</p>
     </div>
   </div>
 </template>

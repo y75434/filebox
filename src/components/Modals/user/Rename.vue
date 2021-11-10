@@ -205,7 +205,10 @@
 <script>
 export default {
   name: "EditUserProperties",
-  props: { title: { type: String, default: "Edit User Properties" } },
+  props: { 
+    title: { type: String, default: "Edit User Properties" } ,
+
+  },
 
   data() {
     return {
@@ -213,6 +216,25 @@ export default {
     };
   },
   methods: {
+    getUser (id) {
+      const url = `${id}`
+      this.$http.get(url).then(res => {
+        this.user = res.data.data   
+      }).catch((err) => {
+        console.log(err);
+      })
+    },
+    // update() {
+    //   let url = `product`
+    
+    //   this.$http.post(url, this.user).then(() => {
+    //     this.$emit('update')
+        
+    //   }).catch(err => {
+    //     console.log(err);
+        
+    //   })
+    // },
     show() {
       this.showModal = true;
     },

@@ -52,6 +52,8 @@
   background-color: #fff;
   position: absolute;
   bottom: 0;
+  display: flex;
+  align-items: center;
 }
 
 .tabs,
@@ -79,6 +81,7 @@
 .fn-w-100 > span,
 .fn-w-120 > span,
 .fn-w-150 > span,
+.fn-w-160 > span,
 .fn-w-210 > span {
   position: absolute;
   display: block;

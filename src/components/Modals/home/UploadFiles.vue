@@ -8,6 +8,7 @@
     header-bg-variant="info"
     cancel-variant="outline-secondary"
     ok-variant="primary"
+    hide-footer
   >
     <!-- <form
       class="container"
@@ -27,7 +28,7 @@
           Drag and drop files and folders here.
         </p>
       </div>
-      <div class="w-100 d-flex mt-5">
+      <div class="w-100 d-flex my-2">
         <button
           type="button"
           class="cancel-btn btn me-2"
@@ -61,19 +62,11 @@
         </button>
       </div>
     </div>
+   
+
 
     <!-- </form> -->
-    <template
-      #modal-cancel
-      variant="outline-primary"
-      class="cancel-btn"
-    >
-      Cancel
-    </template>
-
-    <template #modal-ok>
-      ok
-    </template>
+    
   </b-modal>
 </template>
 

@@ -72,18 +72,29 @@
             >
           </div>
         
-          <div class="d-flex flex-column">
+          <div
+            v-if="this.currentSelected === 1"
+            class="d-flex flex-column"
+          >
             <label
               for="MemberName"
               class="m-2 text-dark"
-            >Member Name</label>
+            > Status</label>
 
-
-            <input
-              type="text"
-              placeholder="Please fill out this field"
-              class="form-control"
+            <select
+              class="form-select"
+              aria-label="Default select example"
             >
+              <option selected>
+                All
+              </option>
+              <option value="1">
+                active
+              </option>
+              <option value="2">
+                disabled
+              </option>
+            </select>
           </div>
               
           <div class="d-flex flex-column">
@@ -245,6 +256,7 @@
           </li>
         </ul>
       </ContextMenu>
+      <!-- @update="getUserTable" -->
       <rename ref="EditUserProperties" />
       <ImportUser ref="ImportUser" />
       <delete-user ref="DeleteUser" />
@@ -400,6 +412,16 @@ methods: {
       this.$bvModal.show('RootFolderProperties');
 
     },
+    //用戶table更新
+    // getUserTable(){
+    //   const url = ``
+    //   this.$http.get(url).then(res => {
+    //     this.user = res.data.data
+    //   }).catch(err => {
+    //    console.log(err);
+       
+    //   })
+    // }
 }
 }
 </script>

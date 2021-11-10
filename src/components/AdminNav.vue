@@ -44,6 +44,8 @@
                 class="nav-icon"
               >
               <a
+              @click="usersetting"
+
                 class="dropdown-item p-0"
                 href="#"
               >User setting</a>
@@ -73,10 +75,34 @@
         </router-link>
       </li>
     </div>
+    <UserSetting />
   </div>
 </template>
 
 <script>
-export default {};
+import UserSetting from '../components/Modals/UserSetting.vue';
+
+export default {
+  name: "AdminNav",
+  components: {
+    UserSetting
+
+
+
+  },
+  data: () => ({
+    
+      
+     
+      
+      
+      
+
+  }),
+  methods: {
+    usersetting(){ this.$bvModal.show('UserSetting'); },
+
+  }
+};
 </script>
 

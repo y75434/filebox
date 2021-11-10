@@ -4,5 +4,5 @@ module.exports = {
 		compress: true,
 		disableHostCheck: true, 
 	},
-	
+
 }

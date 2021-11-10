@@ -1,6 +1,6 @@
 <template>
   <div class="dqbz-path-block">
-    <button class="dqbz-previous">
+    <!-- <button class="dqbz-previous">
       <img
         src="@/assets/images/arrow/arrow-left@2x.png"
         class="nav-icon"
@@ -17,13 +17,37 @@
         src="@/assets/images/arrow/down@2x.png"
         class="nav-icon"
       >
-    </button>
+    </button> -->
     <button class="dqbz-previous">
       <img
         src="@/assets/images/arrow/arrow-up@2x.png"
         class="nav-icon"
       >
     </button>
+    <div class="btn-group dropend">
+      <button
+        type="button"
+        class="btn dqbz-previous dropdown-toggle"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      />
+      <ul class="dropdown-menu">
+        <li>
+          <a
+            class="dropdown-item"
+            href="#"
+          >Another action</a>
+        </li>
+        <li>
+          <a
+            class="dropdown-item"
+            href="#"
+          >Something else here</a>
+        </li>
+      </ul>
+    </div>
+
+
     <select
       class="form-select"
       aria-label="Default select example"
@@ -37,13 +61,14 @@
         class="nav-icon"
       >
     </button>
+    <!-- @change -->
     <b-form-input
       type="text"
       placeholder="Search"
     />
 
 
-    <b-button
+    <!-- <b-button
       class="text-white"
       style="background-color:#66ACEC;"
     >
@@ -51,7 +76,7 @@
         src="@/assets/images/arrow/arrow-right@2x.png" 
         class="nav-icon"
       >
-    </b-button>
+    </b-button> -->
   </div>
 </template>
 

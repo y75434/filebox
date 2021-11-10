@@ -8,13 +8,14 @@
     header-bg-variant="info"
     cancel-variant="outline-secondary"
     ok-variant="primary"
+    hide-footer
   >
     <!-- <form
       class="container"
       ref="form"
       @submit.stop.prevent="handleSubmit"
     > -->
-    <div class="modal-popout-bg p-0">
+    <div class="modal-popout-bg p-5 justify-content-center d-flex flex-column">
       <img
         class="mx-auto  m-0"
         src="@/assets/images/cmd/alarm@2x.png"
@@ -24,11 +25,15 @@
       </h5>
            
             
-      <h5 class="text-center m-0 font-weight-bold">
+      <h5 class="text-center my-2 font-weight-bold">
         “Folder One (2)”
       </h5>
 
           
+      <input
+        type="text"
+        class="form-control"
+      >
 
 
 
@@ -38,12 +43,12 @@
           type="button"
           class="sm-btn cancel-btn mx-3 px-5 btn justify-content-center d-flex"
         >
-          No
+          Cancel
         </button>
 
         <button
           type="button"
-          class="sm-btn px-5 btn btn-danger justify-content-center d-flex "
+          class="sm-btn px-5 btn btn-danger text-white justify-content-center d-flex "
         >
           Delete
         </button>
@@ -51,7 +56,7 @@
     </div>
 
     <!-- </form> -->
-    <template
+    <!-- <template
       #modal-cancel
       variant="outline-primary"
       class="cancel-btn"
@@ -61,7 +66,7 @@
 
     <template #modal-ok>
       ok
-    </template>
+    </template> -->
   </b-modal>
 </template>
 

@@ -55,7 +55,7 @@
           <div class="d-flex ">
             <input
               type="text"
-              placeholder="Please fill out this field"
+              placeholder="Name, Fullname"
               class="form-control "
             >
                   
@@ -64,7 +64,10 @@
               id="button-addon2"
               class="btn btn-blue"
             >
-              Button
+              <img
+                src="@/assets/images/icon/magnifier.png"
+                class="nav-icon"
+              >
             </button>
           </div>
         </div>
