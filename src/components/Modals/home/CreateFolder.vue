@@ -5,10 +5,12 @@
     body-text-variant="warning"
     centered
     :title="title"
-    header-bg-variant="info"
+    header-bg-variant="bgheader"
     footer-bg-variant="bgmodal"
     cancel-variant="outline-secondary"
     ok-variant="primary"
+   body-bg-variant="bgmodal"
+
   >
     <!-- <form
       class="container"

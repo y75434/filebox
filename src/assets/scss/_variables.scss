@@ -48,6 +48,7 @@ $teal: #20c997 !default;
 $cyan: #0dcaf0 !default;
 $mheader: #A7C3DE !default;
 $bgmodal: rgba(240, 240, 240, 0.5) !default;
+$bgheader: #c0d9f1 !default;
 
 // scss-docs-end color-variables
 
@@ -66,7 +67,8 @@ $colors: (
 	'white': $white,
 	'gray': $gray-600,
 	'gray-dark': $gray-800,
-	'bgmodal': $bgmodal
+	'bgmodal': $bgmodal,
+	'bgheader': $bgheader,
 ) !default;
 // scss-docs-end colors-map
 
@@ -80,6 +82,8 @@ $danger: #EB5757 !default;
 $light:  #F3F5F6 !default;
 $dark: $gray-900 !default;
 $bgmodal: rgba(240, 240, 240, 0.5) !default;
+$bgheader: #C0D9F1 !default;
+
 // $mheader: $mheader !default;
 // $border: !default;
 // scss-docs-end theme-color-variables
@@ -94,7 +98,8 @@ $theme-colors: (
 	'danger': $danger,
 	'light': $light,
 	'dark': $dark,
-	'bg-modal': $bgmodal
+	'bgmodal': $bgmodal,
+	'bgheader': $bgheader
 ) !default;
 // scss-docs-end theme-colors-map
 

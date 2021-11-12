@@ -5,9 +5,11 @@
     centered
     :title="title"
     body-text-variant="warning"
-    header-bg-variant="info"
+    header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"
+    footer-bg-variant="bgmodal"
+    body-bg-variant="bgmodal"
 
     @ok="Ok"
   >
@@ -75,7 +77,7 @@
 
       <div class="row p-4">
         <div class="col-8 ">
-          <table class="table border h-100">
+          <table class="table border h-100 overflow-auto">
             <thead>
               <tr>
                 <th scope="col">
@@ -187,7 +189,7 @@
           </table>
         </div>
 
-        <ul class="list-group col-4 p-3  bg-white border">
+        <ul class="list-group col-4 p-0  bg-white border overflow-auto">
           <li class="list-group-item  d-flex align-items-center border-0" />
           <li class="list-group-item bg-white  border-0">
             <button

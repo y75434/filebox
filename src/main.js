@@ -4,7 +4,8 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import 'bootstrap';
-
+// import api from './apis;'
+import i18n from './common/plugins/vue-i18n'
 
 import 'splitpanes/dist/splitpanes.css';
 
@@ -15,7 +16,7 @@ window.$ = $;
 
 
 
-
+// Vue.prototype.$api = api; //掛載api到原型
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
@@ -25,5 +26,6 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(App)
 }).$mount('#app')

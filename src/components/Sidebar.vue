@@ -9,6 +9,7 @@
       align-items-start
       h-100
     "
+    @contextmenu="handler($event)"
   >
     <li 
       v-for="(item, index) in menuItems"
@@ -45,6 +46,7 @@ export default {
    };
   },
   methods:{
+    handler(event) { event.preventDefault(); },
      // 跳轉到該頁
     redirect(index) {    
       eventBus.$emit('menuItems', this.menuItems[index-1]);

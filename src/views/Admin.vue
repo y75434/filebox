@@ -277,7 +277,7 @@ name: "Admin",
   }),
   
   methods: {
-    
+    handler(event) { event.preventDefault(); },
    
     // 跳轉到該頁
     redirect(index) {

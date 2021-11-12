@@ -5,9 +5,10 @@
     body-text-variant="warning"
     centered
     :title="title"
-    header-bg-variant="info"
+    header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"
+    body-bg-variant="bgmodal"
   >
     <!-- <form
       class="container"
@@ -145,8 +146,8 @@
           role="tabpanel"
           aria-labelledby="profile-tab"
         >
-          <div class="">
-            <p>Log Events</p>
+          <div class="mt-3">
+            <p class="my-1">Log Events</p>
             <div class="form-check">
               <input
                 class="form-check-input"

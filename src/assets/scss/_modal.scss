@@ -27,8 +27,12 @@
 
 
 .modal-content .modal-popout-bg{
-	background: rgba(240, 240, 240, 0.5);
+	background-color: rgba(240, 240, 240, 0.5) !important;
 
+}
+
+.close{
+	background: #C0D9F1 !important;
 }
 
 .modal-body{

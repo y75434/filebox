@@ -15,14 +15,26 @@
             class="light-blue fw-bold"
           />
         </div>
-        
+        <!-- i18n test -->
+        <!-- <div class="hello text-dark">
+          <h1 class="text-dark">
+            {{ msg }}
+          </h1>
+          <h1 class="">
+            {{ $t('GENERAL.OK') }}
+          </h1>
+          <h1>{{ $t('GENERAL.CONTINUE') }}</h1>
+          <h1>{{ $t('GENERAL.CANCEL') }}</h1>
+          <h1>{{ $t('GENERAL.GUEST') }}</h1>
+        </div> -->
+
       
         <div class="d-flex">
           <button
             @click="addnew()"
             v-if="this.currentSelected != 4"
             type="button"
-            class="modal-btn title-btn btn d-flex align-items-center m-3"
+            class="modal-btn border title-btn d-flex align-items-center m-3"
           > 
             <img
               class="nav-icon"
@@ -104,7 +116,10 @@
               id="button-addon2"
               class="btn btn-blue"
             >
-              Button
+              <img
+                src="@/assets/images/icon/magnifier.png"
+                class="nav-icon"
+              >
             </button>
           </div>
         </div>
@@ -157,6 +172,10 @@
             :items="getTable()"
             class="col-12 b-col"
             @contextmenu="operational($event)"
+            @row-selected="rowSelected"
+            ref="selectableTable"
+            :select-mode="selectMode"
+            selectable
             hover
           />
         </b-col>
@@ -256,8 +275,8 @@
           </li>
         </ul>
       </ContextMenu>
-      <!-- @update="getUserTable" -->
-      <rename ref="EditUserProperties" />
+      <!-- @update="getUserTable" --> //todo
+      <rename ref="EditUserProperties" :tab-data="selected[0]" />
       <ImportUser ref="ImportUser" />
       <delete-user ref="DeleteUser" />
       <NewGroupProperties ref="NewGroupProperties" />
@@ -316,6 +335,10 @@ data() {
         { Name: 'Rachel',LinkedItem:'https://demos.google.com/admin/public...', CreatedBy:'admin', HitCount:'2',LastHitTime:'25/02/2007 10:52 AM',Expiration:'25/02/2007 10:52 AM'}, 
       ],
       selectedRow : null,
+      selected: {},
+      selectMode: 'single',
+
+
   };
 },
 created(){
@@ -376,9 +399,14 @@ methods: {
     event.stopPropagation();
     this.$refs.menuForUser.open(event);
   }, 
-  //選取哪一個資料
-  rowSelected(index) {
-    this.selectedRow = index;
+  //選取一個資料 並將資料傳遞子層 
+  rowSelected(items) {
+    // this.selectedRow = index;
+    this.selected[0] = items
+    console.log(this.selected[0]);
+    //todo ddddd
+    // this.$refs.selectableTable.selectRow(index) 
+    
   },
   Rename(){      
     this.$refs.menuForUser.close();

@@ -5,9 +5,11 @@
     body-text-variant="warning"
     centered
     :title="title"
-    header-bg-variant="info"
+    header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"
+    body-bg-variant="bgmodal"
+    footer-bg-variant="bgmodal"
   >
     <!-- <form
       class="container"
@@ -53,7 +55,7 @@
 <script>
 export default {
   name: "CreateFolder",
-  props: { title: { type: String, default: "Create Folder" } },
+  props: { title: { type: String, default: "Forgot Password" } },
 
   data() {
     return {

@@ -5,9 +5,11 @@
     body-text-variant="warning"
     centered
     :title="title"
-    header-bg-variant="info"
+    header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"
+    footer-bg-variant="bgmodal"
+    body-bg-variant="bgmodal"
 
     size="xl"
   >
@@ -168,7 +170,6 @@
 
                   <li class="list-group-item border-0 p-0">
                     <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
-                      
                       <img
                         src="@/assets/images/icon/Union.png"
                         class="icon24px"
@@ -231,53 +232,49 @@
                   id="nav-tabContent"
                 >
                   <div
-                    class="tab-pane fade show active justify-content-center flex-column d-flex align-items-center"
+                    class="tab-pane fade show active "
                     id="nav-home"
                     role="tabpanel"
                     aria-labelledby="nav-home-tab"
                   >
-                    <li class="list-group-item w-50 border-0 p-0 justify-content-between d-flex">
-                      <div class="justify-content-center align-items-center p-0  d-flex">
-                        <label
-                          class="form-check-label w-50"
-                          for="flexCheckDefault"
-                        >
-                          <!-- <p class="text-dark m-0"> -->
-                          Full
-
-                          <!-- </p> -->
-                        </label>
-                      </div>
-                      <div class="">
-                        <input
-                          class="form-check-input m-0"
-                          type="checkbox"
-                          value=""
-                          id="flexCheckDefault"
-                        >
-                      </div>
-                    </li>
-                    <li class="list-group-item w-50 border-0 p-0 justify-content-between d-flex">
-                      <div class="justify-content-center align-items-center p-0  d-flex">
-                        <label
-                          class="form-check-label w-50"
-                          for="flexCheckDefault"
-                        >
-                          <!-- <p class="text-dark m-0"> -->
-                          Full
-
-                          <!-- </p> -->
-                        </label>
-                      </div>
-                      <div class="">
-                        <input
-                          class="form-check-input m-0"
-                          type="checkbox"
-                          value=""
-                          id="flexCheckDefault"
-                        >
-                      </div>
-                    </li>
+                    <ul class="justify-content-center flex-column d-flex align-items-center">
+                      <li class="list-group-item w-50 border-0 p-0 justify-content-between d-flex">
+                        <div class="justify-content-center align-items-center p-0  d-flex">
+                          <label
+                            class="form-check-label w-50"
+                            for="flexCheckDefault"
+                          >
+                            Full
+                          </label>
+                        </div>
+                        <div class="">
+                          <input
+                            class="form-check-input m-0"
+                            type="checkbox"
+                            value=""
+                            id="flexCheckDefault"
+                          >
+                        </div>
+                      </li>
+                      <li class="list-group-item w-50 border-0 p-0 justify-content-between d-flex">
+                        <div class="justify-content-center align-items-center p-0  d-flex">
+                          <label
+                            class="form-check-label w-50"
+                            for="flexCheckDefault"
+                          >
+                            Full
+                          </label>
+                        </div>
+                        <div class="">
+                          <input
+                            class="form-check-input m-0"
+                            type="checkbox"
+                            value=""
+                            id="flexCheckDefault"
+                          >
+                        </div>
+                      </li>
+                    </ul>
                   </div>
                   <div
                     class="tab-pane fade"

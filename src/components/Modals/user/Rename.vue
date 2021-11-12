@@ -1,13 +1,16 @@
 <template>
+  <!-- :form="form" -->
   <b-modal
     id="EditUserProperties"
     class="modal-content"
     body-text-variant="warning"
     centered
     :title="title"
-    header-bg-variant="info"
+    header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"
+    footer-bg-variant="bgmodal"
+    body-bg-variant="bgmodal"
   >
     <!-- <form
       class="container"
@@ -27,7 +30,9 @@
             id="Username"
           >
         </div>
-
+        <h1 class="text-dark">
+          {{ tabData }}
+        </h1>
                 
         <div class="w-100 d-flex align-items-center justify-content-between mb-2 ">
           <label
@@ -207,14 +212,17 @@ export default {
   name: "EditUserProperties",
   props: { 
     title: { type: String, default: "Edit User Properties" } ,
+    tabData: { type: Object , default() { return {} }}
 
   },
 
   data() {
     return {
       showModal: false,
+      personData: this.tabData
     };
   },
+  
   methods: {
     getUser (id) {
       const url = `${id}`

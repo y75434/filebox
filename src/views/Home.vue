@@ -128,7 +128,7 @@
                 src="@/assets/images/file/publiclink@2x.png"
                 class="nav-icon pe-1 "
               >
-              <span class="d-sm-none d-md-block d-lg-block">Create public link...
+              <span class="d-sm-none d-md-block d-lg-block text-truncate">Create public link...
               </span>
             </b-button>
 
@@ -141,7 +141,7 @@
                 src="@/assets/images/icon/managepubliclink@2x.png"
                 class="nav-icon pe-1 "
               >
-              <span class="d-sm-none d-md-block d-lg-block">Manage public links...</span>
+              <span class="d-sm-none d-md-block d-lg-block ">Manage public links...</span>
             </b-button>
 
             <span class="text-center">Share</span>
@@ -395,7 +395,7 @@
                   aria-labelledby="flush-headingThree"
                   data-bs-parent="#accordionFlushExample"
                 >
-                  <div class="accordion-body">
+                  <div class="accordion-body p-1">
                     <!-- new -->
 
                     <div
@@ -424,7 +424,7 @@
                           aria-labelledby="headingOne"
                           data-bs-parent="#accordionExample"
                         >
-                          <div class="accordion-body">
+                          <div class="accordion-body ">
                             <h6 class="text-dark">
                               ccc
                             </h6>

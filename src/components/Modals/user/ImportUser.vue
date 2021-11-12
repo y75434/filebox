@@ -3,19 +3,21 @@
     id="ImportUser"
     class="modal-content"
     body-text-variant="warning"
+    body-bg-variant="bgmodal"
     centered
     :title="title"
-    header-bg-variant="info"
+    header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"
     size="lg"
+    footer-bg-variant="bgmodal"
   >
     <!-- <form
       class="container"
       ref="form"
       @submit.stop.prevent="handleSubmit"
     > -->
-    <div class="modal-popout-bg p-3">
+    <div class="modal-popout-bg bg-bgmodal p-3">
       <div class="w-50 d-flex align-items-center justify-content-center mb-2">
         <label
           for="Connectto"
@@ -109,7 +111,10 @@
               id="button-addon2"
               class="btn btn-blue"
             >
-              Button
+              <img
+                src="@/assets/images/icon/magnifier.png"
+                class="nav-icon"
+              >
             </button>
           </div>
         </div>
