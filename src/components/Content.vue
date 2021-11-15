@@ -276,7 +276,10 @@
         </ul>
       </ContextMenu>
       <!-- @update="getUserTable" --> //todo
-      <rename ref="EditUserProperties" :tab-data="selected[0]" />
+      <rename
+        ref="EditUserProperties"
+        :tab-data="selected"
+      />
       <ImportUser ref="ImportUser" />
       <delete-user ref="DeleteUser" />
       <NewGroupProperties ref="NewGroupProperties" />
@@ -402,8 +405,8 @@ methods: {
   //選取一個資料 並將資料傳遞子層 
   rowSelected(items) {
     // this.selectedRow = index;
-    this.selected[0] = items
-    console.log(this.selected[0]);
+    this.selected = items[0]
+    console.log(this.selected);
     //todo ddddd
     // this.$refs.selectableTable.selectRow(index) 
     

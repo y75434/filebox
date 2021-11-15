@@ -19,11 +19,11 @@ var instance = axios.create({
   baseURL: '/api'
 })
 
-instance.interceptors.request.use((config) => {
+instance.interceptors.request.use((request) => {
   //檢查本端目前有無token
   const token = this.$store.state.auth.token;
-  token && (config.header.Authorization = 'Bearer' + token)
-  return config;
+  token && (request.header.Authorization = 'Bearer' + token)
+  return request;
 }, (err) => {
   return Promise.reject(err)
 })

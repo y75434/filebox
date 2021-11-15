@@ -71,7 +71,7 @@
         <router-link :to="{ path: '/login' }" class="text-decoration-none">
           <a
             class="nav-link py-0 px-1"
-          >Log out</a>
+          >Log out{{ $t("GENERAL.LOGOUT") }}</a>
         </router-link>
       </li>
     </div>

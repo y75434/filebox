@@ -91,24 +91,24 @@ export default {
   },
 	data: () => ({}),
   methods:{
-    // login(){
-    //   this.$api.auth.login({
-    //     account:this.loginForm.account,
-    //     password:this.loginForm.password
-    //   }).then((res) => {
-    //     let res = res.data;
-    //     let token = res.result.token;
-    //     this.$store.dispatch('auth/setAuth', {
-    //       "token": token,
-    //       "isLogin": true
-    //     });
-    //     this.loginForm = {
-    //       "account": "",
-    //       "password": ""
-    //     }
-    //     this.$router.push('/home');
-    //   })
-    // },
+    login(){
+      // this.$api.auth.login({
+      //   account:this.loginForm.account,
+      //   password:this.loginForm.password
+      // }).then((res) => {
+      //   let res = res.data;
+      //   let token = "Hello JWT";//res.result.token;
+      //   this.$store.dispatch('auth/setAuth', {
+      //     "token": token,
+      //     "isLogin": true
+      //   });
+      //   this.loginForm = {
+      //     "account": "",
+      //     "password": ""
+      //   }
+      //   this.$router.push('/home');
+      // })
+    },
     ForgotPassword(){ this.$bvModal.show('ForgotPassword');},
     RequestEmailSent(){ this.$bvModal.show('RequestEmailSent');},
     ResetNewPassword(){ this.$bvModal.show('ResetNewPassword');},

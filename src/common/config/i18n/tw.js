@@ -6,5 +6,6 @@ export const locale = {
     CONTINUE: '繼續',
     CANCEL: '取消',
     GUEST: '訪客',
+    LOGOUT: '登出'
   },
 }

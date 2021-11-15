@@ -24,9 +24,13 @@
         <select
           class="form-select form-select-sm" 
           aria-label="Default select example"
+          @click="setLang"
         >
           <option selected>
             English
+          </option>
+          <option>
+            繁體中文
           </option>
         </select>
       </div>
@@ -91,6 +95,14 @@ data() {
      }
    },
    methods: {
+      setActiveLanguage(lang) {
+      localStorage.setItem('language', lang)
+    },
+    setLang(evt) {
+      const lang = evt.target.dataset.lang
+      this.setActiveLanguage(lang)
+      return history.go(0)
+    },
      show() {
       this.showModal = true
      },

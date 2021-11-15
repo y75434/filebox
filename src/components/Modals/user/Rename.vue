@@ -28,6 +28,8 @@
             type="Username"
             class="form-control inline-block width-320"
             id="Username"
+            disabled
+            v-model="tabData.Name"
           >
         </div>
         <h1 class="text-dark">
@@ -40,6 +42,8 @@
             class="form-label"
           >Full name</label>
           <input
+            v-model="tabData.FullName
+            "
             type="Fullname"
             class="form-control width-320"
             id="Fullname"
