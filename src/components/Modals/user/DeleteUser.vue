@@ -10,30 +10,39 @@
     no-close-on-esc
     @ok="handleOk"
     @cancel="cancel"
+    body-bg-variant="white"
+    footer-bg-variant="white"
+    cancel-variant="outline-secondary"
+    ok-variant="danger"
   >
-    <div class="p-3">
-      <h5 class="text-dark mb-3">
-        Delete
-        <!-- <strong class="text-danger"> {{ dataSource.name }}</strong> -->
-        , are you sure?
-      </h5>
-      <h5 class="text-dark mb-3">
-        Please type the following to confirm:
-      </h5>
-      <p>
-      <!-- <code>{{ dataSource.name }}</code> -->
-      </p>
-      <div class="mx-auto">
-        <span class="badge px-4 py-2 my-2 bg-danger">Danger</span>
-      </div>
+    <div
+      class="radius"
+    >
+      <div class="p-3">
+        <h5 class="text-dark mb-3">
+          Delete
+          <!-- <strong class="text-danger"> {{ dataSource.name }}</strong> -->
+          , are you sure?
+        </h5>
+        <h5 class="text-dark mb-3">
+          Please type the following to confirm:
+        </h5>
+      
 
-      <input
-        class="form-control"
-        type="text"
-        v-model="userInput"
-      >
+        <p>
+          <!-- <code>{{ dataSource.name }}</code> -->
+        </p>
+        <div class="mx-auto">
+          <span class="badge px-4 py-2 my-2 bg-danger">{{ tabData.FullName }}</span>
+        </div>
+
+        <input
+          class="form-control"
+          type="text"
+          v-model="userInput"
+        >
+      </div>
     </div>
-    
     <template #modal-ok>
       Yes
     </template>
@@ -43,11 +52,15 @@
 export default {
 	name: 'DeleteUser',
 	props: {
-		// dataSource: { type: Object, require: true },
+    // dataSource: { type: Object, require: true },
+    tabData: { type: Object , default() { return {} }}
+
 	},
 	data() {
 		return {
-			userInput: '',
+      userInput: '',
+      personData: this.tabData
+
 		};
 	},
 	computed: {

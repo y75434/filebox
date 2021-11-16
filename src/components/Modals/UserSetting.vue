@@ -11,66 +11,72 @@
     footer-bg-variant="bgmodal"
     body-bg-variant="bgmodal"
   >
-    <!-- <form
+    <form
       class="container"
       ref="form"
       @submit.stop.prevent="handleSubmit"
-    > -->
-    <div class="modal-popout-bg p-3">
-      <div class="d-flex justify-content-between align-items-center">
-        <p class="text-center m-0">
-          Display language
-        </p>
-        <select
-          class="form-select form-select-sm" 
-          aria-label="Default select example"
-          @click="setLang"
-        >
-          <option selected>
+    >
+      <div class="modal-popout-bg p-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="text-center m-0">
+            {{ $t("GENERAL.DISPLAYLANGUAGE") }}
+          </p>
+          <select
+            class="form-select w-75 form-select-sm" 
+            aria-label="Default select example"
+            v-model="$i18n.locale"
+          >
+            <!-- <option data-lang="en" selected>
             English
           </option>
-          <option>
+          <option data-lang="tw">
             繁體中文
-          </option>
-        </select>
-      </div>
-            
-      <hr class="">
-
-
-
-      <div class="d-flex justify-content-between ">
-        <div class="d-flex flex-column justify-content-center ">
-          <div
-            class="d-flex justify-content-between mb-5"
-          >
-            <span class="text-dark">
-              Password
-            </span>
-            <p class="mx-5 m-0 text-gray">
-              ********
-            </p>
-          </div>
-            
-          <div
-            class="d-flex justify-content-between mb-5"
-          >
-            <span class="text-dark">
-              Confirm Password
-            </span>
-            <p class="mx-5 m-0 text-gray">
-              ********
-            </p>
-          </div>
+          </option> -->
+            <option
+              v-for="(lang, i) in langs"
+              :key="`Lang${i}`"
+              :value="lang"
+            >
+              {{ lang }}
+            </option>
+          </select>
         </div>
-        <a
-          href="#"
-          class="text-decoration-none ml-auto text-primary"
-        >Change Password</a>
-      </div>
-    </div>
+            
+        <hr class="">
 
-    <!-- </form> -->
+
+
+        <div class="d-flex justify-content-between ">
+          <div class="d-flex flex-column justify-content-center ">
+            <div
+              class="d-flex justify-content-between mb-5"
+            >
+              <span class="text-dark">
+                {{ $t("GENERAL.PASSWORD") }}
+              </span>
+              <p class="mx-5 m-0 text-gray">
+                ********
+              </p>
+            </div>
+            
+            <div
+              class="d-flex justify-content-between mb-5"
+            >
+              <span class="text-dark">
+                {{ $t("GENERAL.CONFIRMPASSWORD") }}
+              </span>
+              <p class="mx-5 m-0 text-gray">
+                ********
+              </p>
+            </div>
+          </div>
+          <a
+            href="#"
+            class="text-decoration-none ml-auto text-primary"
+          >{{ $t("GENERAL.CHANGEPASSWORD") }}</a>
+        </div>
+      </div>
+    </form>
     <template
       #modal-cancel
       variant="outline-primary"
@@ -91,23 +97,21 @@ export default {
 name: "UserSetting",
 data() {
      return {
-      showModal: false
+      showModal: false,
+      langs: ['tw', 'en']
      }
    },
    methods: {
-      setActiveLanguage(lang) {
-      localStorage.setItem('language', lang)
-    },
-    setLang(evt) {
-      const lang = evt.target.dataset.lang
-      this.setActiveLanguage(lang)
-      return history.go(0)
-    },
      show() {
       this.showModal = true
      },
      hide(){
       this.showModal = false
+     },
+     handleSubmit(lang){
+       localStorage.setItem('language', lang)
+       this.showModal = false
+
      }
    }
 }

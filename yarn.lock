@@ -1976,6 +1976,13 @@
   "resolved" "https://registry.npm.taobao.org/aws4/download/aws4-1.11.0.tgz"
   "version" "1.11.0"
 
+"axios@^0.24.0", "axios@>= 0.20.0":
+  "integrity" "sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA=="
+  "resolved" "https://registry.npmjs.org/axios/-/axios-0.24.0.tgz"
+  "version" "0.24.0"
+  dependencies:
+    "follow-redirects" "^1.14.4"
+
 "babel-eslint@^10.1.0":
   "integrity" "sha1-aWjlaKkQt4+zd5zdi2rC9HmUMjI="
   "resolved" "https://registry.npm.taobao.org/babel-eslint/download/babel-eslint-10.1.0.tgz"
@@ -4300,7 +4307,7 @@
     "inherits" "^2.0.3"
     "readable-stream" "^2.3.6"
 
-"follow-redirects@^1.0.0":
+"follow-redirects@^1.0.0", "follow-redirects@^1.14.4":
   "integrity" "sha1-g4/fSKi73XnlLuUfsclOPtmLk3k="
   "resolved" "https://registry.nlark.com/follow-redirects/download/follow-redirects-1.14.4.tgz?cache=0&sync_timestamp=1631622163078&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ffollow-redirects%2Fdownload%2Ffollow-redirects-1.14.4.tgz"
   "version" "1.14.4"
@@ -9246,6 +9253,11 @@
   "resolved" "https://registry.npm.taobao.org/vm-browserify/download/vm-browserify-1.1.2.tgz"
   "version" "1.1.2"
 
+"vue-axios@^3.4.0":
+  "integrity" "sha512-S3YTCJeEndzmtaYzyz919Z54wY1D2OftWEhioGbHED3VUSta8ti0OHjDipTPkb1StxOzQLAAO2hSUq830i14KA=="
+  "resolved" "https://registry.npmjs.org/vue-axios/-/vue-axios-3.4.0.tgz"
+  "version" "3.4.0"
+
 "vue-cli-plugin-bootstrap-vue@^0.8.2":
   "integrity" "sha512-PnWIioKYvfV45qsaZarBdrOSZCbKp8sisGp6KfBvTfSl2htHh7Ig7A40Lqqk3WadsSheZWF2fVvo9Dyz29G3vw=="
   "resolved" "https://registry.npmjs.org/vue-cli-plugin-bootstrap-vue/-/vue-cli-plugin-bootstrap-vue-0.8.2.tgz"
@@ -9332,7 +9344,7 @@
   "resolved" "https://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2 || ^3.0.0-0", "vue@^2.0.0", "vue@^2.5.18", "vue@^2.6.10", "vue@^2.6.11":
+"vue@^2 || ^3.0.0-0", "vue@^2.0.0", "vue@^2.5.18", "vue@^2.6.10", "vue@^2.6.11", "vue@^3.0.0 || ^2.0.0":
   "integrity" "sha1-5RqlJQJQ1Wmj+606ilpofWA24jU="
   "resolved" "https://registry.npmmirror.com/vue/download/vue-2.6.14.tgz?cache=0&sync_timestamp=1633712907554&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fvue%2Fdownload%2Fvue-2.6.14.tgz"
   "version" "2.6.14"

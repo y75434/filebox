@@ -47,10 +47,16 @@
 
 .modal-footer{
 	border-top: 0 !important;
+	border-bottom-right-radius: 10px !important;
+	border-bottom-left-radius: 10px !important;
 
 }
 
+.radius{
+	border-bottom-right-radius: 10px !important;
+	border-bottom-left-radius: 10px !important;
 
+}
 
 // Container that the modal scrolls within
 .modal {
@@ -132,8 +138,11 @@
 	pointer-events: auto;
 	background-color: $modal-content-bg;
 	background-clip: padding-box;
+	background: transparent !important;
+
 	border: $modal-content-border-width solid $modal-content-border-color;
-	@include border-radius($modal-content-border-radius);
+	// @include border-radius($modal-content-border-radius);
+	border-radius: 10px !important;
 	@include box-shadow($modal-content-box-shadow-xs);
 	// Remove focus outline from opened modal
 	outline: 0;
@@ -157,7 +166,9 @@
 	justify-content: space-between; // Put modal header elements (title and dismiss) on opposite ends
 	padding: 20px;
 	border-bottom: $modal-header-border-width solid $modal-header-border-color;
-	@include border-top-radius($modal-content-inner-border-radius);
+	// @include border-top-radius($modal-content-inner-border-radius);
+	border-top-left-radius: 10px !important;
+	border-top-right-radius: 10px !important;
 
 	.btn-close {
 		padding: ($modal-header-padding-y * 0.5) ($modal-header-padding-x * 0.5);
@@ -255,7 +266,7 @@
 			.modal-content {
 				height: 100%;
 				border: 0;
-				@include border-radius(0);
+				// @include border-radius(0);
 			}
 
 			.modal-header {

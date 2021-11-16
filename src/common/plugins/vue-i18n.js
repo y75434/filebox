@@ -12,6 +12,7 @@ const lang = localStorage.getItem('language') || 'tw'
 const i18n = new VueI18n({
   locale: lang,
   messages,
+  silentFallbackWarn:true
 })
 
 export default i18n

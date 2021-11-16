@@ -15,19 +15,6 @@
             class="light-blue fw-bold"
           />
         </div>
-        <!-- i18n test -->
-        <!-- <div class="hello text-dark">
-          <h1 class="text-dark">
-            {{ msg }}
-          </h1>
-          <h1 class="">
-            {{ $t('GENERAL.OK') }}
-          </h1>
-          <h1>{{ $t('GENERAL.CONTINUE') }}</h1>
-          <h1>{{ $t('GENERAL.CANCEL') }}</h1>
-          <h1>{{ $t('GENERAL.GUEST') }}</h1>
-        </div> -->
-
       
         <div class="d-flex">
           <button
@@ -50,8 +37,7 @@
             @click="ImportUser"
             v-if="this.currentSelected === 1"
             type="button"
-            class="title-btn btn d-flex align-items-center m-3"
-            style="background-color: #6ac1a2"
+            class="title-btn btn d-flex align-items-center m-3 bg-green"
             data-bs-toggle="modal" 
             data-bs-target="#ImportUser"
           > 
@@ -67,6 +53,7 @@
         </div>
       </div>
 
+
       <div class="col-6 d-none d-sm-none d-md-block">
         <div
           class="input-group mb-2 mt-4 border-0 align-items-end "
@@ -75,15 +62,14 @@
             <label
               for="GroupName"
               class="m-2 text-dark"
-            >Group Name</label>
-
+            >Search</label>
             <input
               type="text"
               placeholder="search name"
               class="form-control "
+              v-model="filter"
             >
-          </div>
-        
+          </div>        
           <div
             v-if="this.currentSelected === 1"
             class="d-flex flex-column"
@@ -96,14 +82,17 @@
             <select
               class="form-select"
               aria-label="Default select example"
+              v-model="filter"
             >
-              <option selected>
+              <option 
+                selected
+              >
                 All
               </option>
-              <option value="1">
+              <option>
                 active
               </option>
-              <option value="2">
+              <option>
                 disabled
               </option>
             </select>
@@ -115,6 +104,8 @@
               type="button"
               id="button-addon2"
               class="btn btn-blue"
+              :disabled="!filter"
+              @click="filter = ''"
             >
               <img
                 src="@/assets/images/icon/magnifier.png"
@@ -136,11 +127,12 @@
           <h2
             class="fw-bold dark-blue"
           >
-            003
+            {{ count }}
           </h2>
-          <h5 class="text-dark slash">
-            Users
-          </h5>
+          <h5 
+            v-text="this.countName"
+            class="text-dark slash"
+          />
         </div>
         <div class="d-flex">
           <button
@@ -177,6 +169,7 @@
             :select-mode="selectMode"
             selectable
             hover
+            :filter="filter"
           />
         </b-col>
       </div>
@@ -221,7 +214,7 @@
               class="icon24px"
             >Properties
           </li>
-          <li>
+          <li @click="DeleteUser">
             <img
               src="@/assets/images/cmd/delete@2x-2.png"
               class="icon24px"
@@ -244,11 +237,21 @@
               class="icon24px"
             >Properties
           </li>
-          <li>
+          <li @click="DeleteUser">
             <img
               src="@/assets/images/cmd/delete@2x-2.png"
               class="icon24px"
             >Delete
+          </li>
+        </ul>
+      </ContextMenu>
+      <ContextMenu ref="menuForEvents">
+        <ul class="text-dark">
+          <li @click="EventProperties">
+            <img
+              src="@/assets/images/icon/user setting@2x.png"
+              class="icon24px"
+            >Properties
           </li>
         </ul>
       </ContextMenu>
@@ -267,7 +270,7 @@
               class="icon24px"
             >Properties
           </li>
-          <li>
+          <li @click="DeleteUser">
             <img
               src="@/assets/images/cmd/delete@2x-2.png"
               class="icon24px"
@@ -275,17 +278,24 @@
           </li>
         </ul>
       </ContextMenu>
-      <!-- @update="getUserTable" --> //todo
+      <!-- @update="getUserTable" --> 
       <rename
         ref="EditUserProperties"
         :tab-data="selected"
       />
       <ImportUser ref="ImportUser" />
-      <delete-user ref="DeleteUser" />
-      <NewGroupProperties ref="NewGroupProperties" />
+      <delete-user
+        ref="DeleteUser"
+        :tab-data="selected"
+      />
+      <NewGroupProperties
+        ref="NewGroupProperties"
+        :title="GroupProperties"
+      />
       <AddNewUser ref="AddNewUser" />
       <RootFolderProperties ref="RootFolderProperties" />
       <EditPublicLink ref="EditPublicLink" />
+      <EventProperties ref="EventProperties" />
     </div>
   </div>
 </template>
@@ -300,6 +310,7 @@ import DeleteUser from '@/components/Modals/user/DeleteUser.vue';
 import NewGroupProperties from '@/components/Modals/group/NewGroupProperties.vue';
 import RootFolderProperties from '@/components/Modals/folder/RootFolderProperties.vue';
 import EditPublicLink from'@/components/Modals/link/EditPublicLink.vue';
+import EventProperties from '@/components/Modals/events/EventProperties.vue';
 
 export default {
 name: "Content",
@@ -312,12 +323,14 @@ components:{
     NewGroupProperties,
     RootFolderProperties,
     EditPublicLink,
+    EventProperties
 
 },
 data() {
   return {
     src: require('@/assets/images/icon/usermanagement@2x.png'),
     title: 'User Management',
+    countName:'Users',
     currentSelected:1,
     items: [
         { Name: 'Rachel',FullName:'Rachel Lee', LoginCount: '5',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM', DateModified:'25/02/2007 10:52 AM',Status:'active'},
@@ -334,12 +347,17 @@ data() {
         { Name: '1.Root Folder',DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
         { Name: '2. Features Test Folder',DateCreated:'25/02/2022 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
       ],
+      eventsitems: [
+        { Type: 'Browse',Date:'.', CreatedBy:'admin', HitCount:'2',LastHitTime:'25/02/2007 10:52 AM',Expiration:'25/02/2007 10:52 AM'}, 
+      ],
       linkitems: [
         { Name: 'Rachel',LinkedItem:'https://demos.google.com/admin/public...', CreatedBy:'admin', HitCount:'2',LastHitTime:'25/02/2007 10:52 AM',Expiration:'25/02/2007 10:52 AM'}, 
       ],
       selectedRow : null,
       selected: {},
       selectMode: 'single',
+      filter: null,
+      sortDirection: 'All',
 
 
   };
@@ -348,6 +366,7 @@ created(){
   this.getData();
   this.getTable();
 },
+
 methods: { 
   handler(event) { event.preventDefault(); }, 
   reloadPage() {window.location.reload(); },
@@ -356,20 +375,28 @@ methods: {
     this.currentSelected = item.id;
     this.src = item.pic;
     this.title = item.name;
+    this.countName = item.countName
+    this.filter = null;
     this.getTable(this.currentSelected);
-
     this.selectedRow = null;
     });			
   },
   getTable(){    
     switch (this.currentSelected) {
       case 1:
+        this.count = this.items.length        
         return this.items;
       case 2:        
+        this.count = this.groupitems.length
         return this.groupitems;
       case 3:
+        this.count = this.folderitems.length
         return this.folderitems;         
       case 4: 
+        this.count = this.eventsitems.length
+        return this.eventsitems;
+      case 5: 
+        this.count = this.linkitems.length
         return this.linkitems;
       default:
         return [];
@@ -390,6 +417,9 @@ methods: {
         this.$refs.menuForFolder.open(event);
         break;
       case 4: 
+        this.$refs.menuForEvents.open(event); 
+        break;
+      case 5: 
         this.$refs.menuForLink.open(event); 
         break;
       default:
@@ -407,7 +437,7 @@ methods: {
     // this.selectedRow = index;
     this.selected = items[0]
     console.log(this.selected);
-    //todo ddddd
+  
     // this.$refs.selectableTable.selectRow(index) 
     
   },
@@ -443,6 +473,9 @@ methods: {
       this.$bvModal.show('RootFolderProperties');
 
     },
+    EventProperties(){
+      this.$bvModal.show('EventProperties');
+    }
     //用戶table更新
     // getUserTable(){
     //   const url = ``

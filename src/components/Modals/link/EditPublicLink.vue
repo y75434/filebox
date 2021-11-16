@@ -8,7 +8,7 @@
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"
-    footer-bg-variant="bgmodal"
+    footer-bg-variant="white"
     body-bg-variant="bgmodal"
   >
     <!-- <form
@@ -137,27 +137,49 @@
             for="Public link"
             class="form-label"
           >Public link</label>
-          <input
-            type="password"
-            class="form-control"
-            id="Public link"
-          >
+          <div class="d-flex justify-content-between">
+            <input
+              type="password"
+              class="form-control w-75"
+              id="Public link"
+            >
+            <b-button
+              class="bg-green border-0"
+            >
+              Copy link
+            </b-button>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- </form> -->
     <template
-      #modal-cancel
-      variant="outline-primary"
-      class="cancel-btn"
+      #modal-footer="{ Cancel, Reset, Update }"
     >
-      Cancel
+      <div class="d-flex w-100 justify-content-between">
+        <b-button
+          class="cancel-btn"
+          @click="Cancel()"
+        >
+          Cancel
+        </b-button>
+        <div class="">
+          <b-button
+            class="bg-green border-0 mx-2"
+            @click="Reset('forget')"
+          >
+            Reset
+          </b-button>
+          <b-button
+            variant="primary"
+            @click="Update()"
+          >
+            Update
+          </b-button>
+        </div>
+      </div>
     </template>
-
-    <template #modal-ok>
-      ok
-    </template>
+    <!-- </form> -->
   </b-modal>
 </template>
 

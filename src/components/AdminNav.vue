@@ -3,7 +3,10 @@
     class="dqbz-header d-flex justify-content-between bg-lightblue"
   >
     <li class="nav-item d-flex align-items-center">
-      <router-link :to="{ path: '/' }" class="dqbz-previous">
+      <router-link
+        :to="{ path: '/' }"
+        class="dqbz-previous"
+      >
         <img
           src="@/assets/images/arrow/arrow-left@2x.png"
           class="nav-icon"
@@ -32,7 +35,7 @@
               src="@/assets/images/icon/user@2x.png"
               class="nav-icon"
             >
-            Administration
+            {{ $t("GENERAL.ADMINISTRATION") }}
           </a>
           <ul
             class="dropdown-menu"
@@ -44,11 +47,11 @@
                 class="nav-icon"
               >
               <a
-              @click="usersetting"
+                @click="usersetting"
 
                 class="dropdown-item p-0"
                 href="#"
-              >User setting</a>
+              >{{ $t("GENERAL.USERSETTING") }}</a>
             </li>
             <li class="d-flex align-items-center">
               <img
@@ -58,7 +61,7 @@
               <a
                 class="dropdown-item p-0"
                 href="#"
-              >Administration</a>
+              >{{ $t("GENERAL.ADMINISTRATION") }}</a>
             </li>
           </ul>
         </li>
@@ -68,10 +71,13 @@
           src="@/assets/images/cmd/logout@2x.png"
           class="nav-icon"
         >
-        <router-link :to="{ path: '/login' }" class="text-decoration-none">
+        <router-link
+          :to="{ path: '/login' }"
+          class="text-decoration-none"
+        >
           <a
             class="nav-link py-0 px-1"
-          >Log out{{ $t("GENERAL.LOGOUT") }}</a>
+          >{{ $t("GENERAL.LOGOUT") }}</a>
         </router-link>
       </li>
     </div>

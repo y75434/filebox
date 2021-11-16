@@ -5,7 +5,11 @@ import router from './router';
 import store from './store';
 import 'bootstrap';
 // import api from './apis;'
-import i18n from './common/plugins/vue-i18n'
+import i18n from './common/plugins/vue-i18n';
+import VueAxios from 'vue-axios';
+import axios from 'axios';
+
+
 
 import 'splitpanes/dist/splitpanes.css';
 
@@ -20,6 +24,7 @@ window.$ = $;
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
+Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false
 

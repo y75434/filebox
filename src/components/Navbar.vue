@@ -27,7 +27,7 @@
               src="@/assets/images/icon/user@2x.png"
               class="nav-icon"
             >
-            Administration
+            {{ $t("GENERAL.ADMINISTRATION") }}
           </a>
           <ul
             class="dropdown-menu"
@@ -39,20 +39,23 @@
                 class="nav-icon"
               >
               <a
-              @click="usersetting"
+                @click="usersetting"
                 class="dropdown-item p-0"
                 href="#"
-              >User setting</a>
+              >{{ $t("GENERAL.USERSETTING") }}</a>
             </li>
             <li class="d-flex align-items-center">
               <img
                 src="@/assets/images/icon/administrator@2x.png"
                 class="nav-icon"
               >
-              <router-link :to="{ path: '/admin' }" class="text-decoration-none">
+              <router-link
+                :to="{ path: '/admin' }"
+                class="text-decoration-none"
+              >
                 <a
                   class="dropdown-item p-0"
-                >Administration</a>
+                >{{ $t("GENERAL.ADMINISTRATION") }}</a>
               </router-link>
             </li>
           </ul>
@@ -71,7 +74,7 @@
           class="nav-link py-0 px-1 "
           aria-current="page"
           href="#"
-        >Log out</a>
+        >{{ $t("GENERAL.LOGOUT") }}</a>
       <!-- </li> -->
       </router-link>
     </div>

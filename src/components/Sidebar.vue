@@ -36,10 +36,11 @@ export default {
   data() {
     return {
       menuItems: [
-        { id: 1, name: 'User Management',pic: require('@/assets/images/icon/usermanagement@2x.png') },
-        { id: 2, name: 'Group Management', pic: require('@/assets/images/icon/group management@2x.png')},
-        { id: 3, name: 'Root Folders', pic: require('@/assets/images/file/root folder@2x.png') },
-        { id: 4, name: 'Public Links' , pic: require('@/assets/images/file/publiclink@2x.png')},
+        { id: 1, name: 'User Management',pic: require('@/assets/images/icon/usermanagement@2x.png'), countName: 'Users'},
+        { id: 2, name: 'Group Management', pic: require('@/assets/images/icon/group management@2x.png'), countName: 'Groups'},
+        { id: 3, name: 'Root Folders', pic: require('@/assets/images/file/root folder@2x.png') , countName: 'Root Folders'},
+        { id: 4, name: 'Events' , pic: require('@/assets/images/icon/event@2x.png'), countName: 'Events'},
+        { id: 5, name: 'Public Links' , pic:require('@/assets/images/file/publiclink@2x.png'), countName: 'Public Links'},
       ],
       selectedRow: null, 
       // currentSelected: 1,

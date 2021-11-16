@@ -1,22 +1,22 @@
 <template>
   <b-modal
     id="UploadFiles"
-    class="modal-content"
+    class="modal-content radius"
     body-text-variant="warning"
     centered
     :title="title"
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"
-    hide-footer
-    footer-bg-variant="bgmodal" body-bg-variant="bgmodal"
+    footer-bg-variant="bgmodal"
+    body-bg-variant="bgmodal"
   >
     <!-- <form
       class="container"
       ref="form"
       @submit.stop.prevent="handleSubmit"
     > -->
-    <div class="modal-popout-bg p-0">
+    <div class="modal-popout-bg  p-0">
       <p class="m-0">
         <img src="@/assets/images/cmd/upload@2x.png">
         Select files to be uploaded
@@ -29,45 +29,49 @@
           Drag and drop files and folders here.
         </p>
       </div>
-      <div class="w-100 d-flex my-2">
-        <button
-          type="button"
-          class="cancel-btn btn me-2"
-        >
-          Add files
-        </button>
-        <button
-          type="button"
-          class="cancel-btn btn me-2 "
-        >
-          Add folder
-        </button>
-        <button
-          type="button"
-          class="cancel-btn btn me-2"
-        >
-          Remove
-        </button>
-
-        <button
-          type="button"
-          class="cancel-btn btn me-2"
-        >
-          Clear
-        </button>
-        <button
-          type="button"
-          class="modal-btn btn me-2"
-        >
-          Upload
-        </button>
-      </div>
     </div>
    
 
+    <template #modal-footer="{ Addfiles, Addfolder, Remove, Clear, Upload }">
+      <div class="d-flex w-100 justify-content-between">
+        <div class="">
+          <b-button
+            class="cancel-btn mx-1"
+            @click="Addfiles()"
+          >
+            Add files
+          </b-button>
+          <b-button
+            class="cancel-btn mx-1"
+            @click="Addfolder()"
+          >
+            Add folder
+          </b-button>
+          <b-button
+            class="cancel-btn mx-1"
+            @click="Remove()"
+          >
+            Remove
+          </b-button>
+          <b-button
+            class="cancel-btn mx-1"
+            @click="Clear()"
+          >
+            Clear
+          </b-button>
+        </div>
+
+         
+        <b-button
+          variant="primary"
+          @click="Upload()"
+        >
+          Upload
+        </b-button>
+      </div>
+    </template>
 
     <!-- </form> -->
-    
   </b-modal>
 </template>
 

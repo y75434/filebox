@@ -6,6 +6,30 @@ export const locale = {
     CONTINUE: '繼續',
     CANCEL: '取消',
     GUEST: '訪客',
-    LOGOUT: '登出'
+    SELECT:'選擇',
+    LOGOUT: '登出',
+    PASSWORD: '密碼',
+    CHANGEPASSWORD: '更改密碼',
+    CONFIRMPASSWORD: '確認密碼',
+    APPLICATIONSETTINGS: '設定',
+    LICENSEINFORMATION: '授權資訊',
+    ADMINISTRATION: '管理',
+    USERSETTING:'用戶設定',
+    DISPLAYLANGUAGE: '選擇語言'
   },
+  HOME:{
+    COPY: '複製',
+    PASTE: '貼上',
+    CUT: '剪下',
+    DELETE: '刪除',
+    RENAME: '重新命名',
+    NEW: '新增',
+    DOWNLOAD: '下載',
+    UPLOAD: '上傳',
+    MANAGEPUBLICLINKS: '管理公開連結',
+    CREATEPUBLICLINK: '新增公開連結',
+    SELECTALL: '全選',
+    SELECTNONE: '取消全選',
+    INVERTSELECTION: '反向選取',
+  }
 }

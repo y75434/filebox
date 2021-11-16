@@ -8,9 +8,8 @@
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"
-    footer-bg-variant="bgmodal"
     body-bg-variant="bgmodal"
-
+    footer-bg-variant="white"
     size="xl"
   >
     <!-- <form

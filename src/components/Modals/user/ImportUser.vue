@@ -10,7 +10,7 @@
     cancel-variant="outline-secondary"
     ok-variant="primary"
     size="lg"
-    footer-bg-variant="bgmodal"
+    footer-bg-variant="white"
   >
     <!-- <form
       class="container"
@@ -21,9 +21,10 @@
       <div class="w-50 d-flex align-items-center justify-content-center mb-2">
         <label
           for="Connectto"
-          class="m-2"
+          class="m-2 w-50"
         >Connect to</label>
         <input
+          disabled
           type="Connect to"
           class="form-control inline-block disable width-320"
           id="Connectto"
@@ -35,7 +36,7 @@
         <div class="w-50 d-flex align-items-center justify-content-center">
           <label
             for="Connectas"
-            class="m-2"
+            class="m-2 w-50"
           >Connect as</label>
           <input
             type="Connectas"
@@ -50,7 +51,7 @@
         >
           <label
             for="Password"
-            class="m-2"
+            class="m-2 w-50"
           >Password</label><input
             type="Password"
             id="Password"
@@ -214,7 +215,7 @@
     </template>
 
     <template #modal-ok>
-      ok
+      Import selected users
     </template>
   </b-modal>
 </template>
@@ -230,12 +231,24 @@ props: { title: { type: String, default: 'Import User' },
       showModal: false
      }
    },
+   created(){
+    this.getUser()
+   },
    methods: {
      show() {
       this.showModal = true
      },
      hide(){
       this.showModal = false
+     },
+     getUser(){
+      // let promise = this.axios.get('/some/url')
+      //   return promise.then((data) => {
+      //     const items = data.items       
+      //     return(items)
+      //   }).catch(error => {
+      //     return []
+      //   })
      },
      handleSubmit() {
 			// this.$nextTick(() => {

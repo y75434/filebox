@@ -13,14 +13,17 @@
     <!-- Modal -->
     <div
 
-      class="modal fade"
+      class="modal fade "
       id="c"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div
+          style="background:transparent;"
+          class="modal-content"
+        >
           <div class="modal-header bg-blue p-3">
             <h5
               class="modal-title"
@@ -36,7 +39,7 @@
             />
           </div>
           <div
-            class="modal-body bg-gray p-0"
+            class="modal-body bg-gray p-0 radius"
           >
             <div class="w-100 d-flex p-3  align-items-center">
               <div class="col-6" />
@@ -113,8 +116,7 @@
               </div>
             </div>
             <div
-              class="modal-footer d-flex justify-content-center
-"
+              class="modal-footer  d-flex justify-content-center"
             >
               <button
                 type="button"

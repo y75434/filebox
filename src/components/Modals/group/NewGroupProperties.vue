@@ -8,7 +8,7 @@
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"
-    footer-bg-variant="bgmodal"
+    footer-bg-variant="white"
     body-bg-variant="bgmodal"
 
     @ok="Ok"
@@ -56,12 +56,16 @@
         <div class="border-0">
           <div class="d-flex ">
             <input
+              v-model="filter"
               type="text"
               placeholder="Name, Fullname"
               class="form-control "
             >
                   
             <button
+              :disabled="!filter"
+              @click="filter = ''"
+
               type="button"
               id="button-addon2"
               class="btn btn-blue"
@@ -77,7 +81,10 @@
 
       <div class="row p-4">
         <div class="col-8 ">
-          <table class="table border h-100 overflow-auto">
+          <table
+            class="table border h-100 overflow-auto"
+            :filter="filter"
+          >
             <thead>
               <tr>
                 <th scope="col">
@@ -122,7 +129,7 @@
                   Name
                 </th>
                 <th scope="col">
-                  Fulll name
+                  Full name
                 </th>
               </tr>
             </thead>
@@ -242,6 +249,7 @@ export default {
   data() {
     return {
       showModal: false,
+      filter: null,
     };
   },
   methods: {

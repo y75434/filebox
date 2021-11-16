@@ -9,6 +9,7 @@
     cancel-variant="outline-secondary"
     ok-variant="primary"
     body-bg-variant="bgmodal"
+    footer-bg-variant="white"
   >
     <!-- <form
       class="container"
