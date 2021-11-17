@@ -9,6 +9,7 @@ import i18n from './common/plugins/vue-i18n';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 
+import picture from '@/common/images';
 
 
 import 'splitpanes/dist/splitpanes.css';
@@ -17,6 +18,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 import $ from 'jquery';
 window.$ = $;
+
+window.picture = picture;
 
 
 
@@ -32,5 +35,6 @@ new Vue({
   router,
   store,
   i18n,
+  picture,
   render: h => h(App)
 }).$mount('#app')

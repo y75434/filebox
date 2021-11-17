@@ -311,6 +311,7 @@
                 >
                   <div class="accordion-body">
                     <h6 class="text-dark">
+                      <img :src="picture.treeview.folder" class="nav12px">
                       Folder One
                     </h6>
                     <h6 class="text-dark">

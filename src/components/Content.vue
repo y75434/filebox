@@ -7,7 +7,7 @@
 
       class="title d-flex w-100 justify-content-between align-items-center my-3"
     >
-      <div class=" col-4">
+      <div class=" col-3">
         <div class="d-flex align-items-center">
           <img :src="this.src">
           <h4
@@ -54,10 +54,78 @@
       </div>
 
 
-      <div class="col-6 d-none d-sm-none d-md-block">
+      <div class="col-7 d-none d-sm-none d-md-block">
         <div
           class="input-group mb-2 mt-4 border-0 align-items-end "
         >
+          <div class="d-flex flex-column">
+            <div class="h-50" />
+            <!-- 別刪 -->
+            <!-- <button
+              type="button"
+              id="button-addon2"
+              class="btn left-radius btn-primary"
+              :disabled="!filter"
+              @click="filter = ''"
+            >
+              Search
+            </button> -->
+          </div>
+
+          <div
+            v-if="this.currentSelected === 4"
+            class="d-flex flex-column"
+          >
+            <div>
+              <b-dropdown
+                text="Please select field"
+                class="m-0 border"
+                menu-class="w-100"
+                variant="white"
+              >
+                <template>
+                  <div>
+                    <b-form-group>
+                      <template #label>
+                        <b-form-checkbox
+                          class="text-dark"
+                          v-model="allSelected"
+                          aria-describedby="events"
+                          aria-controls="events"
+                          @change="toggleAll"
+                        >
+                          {{ allSelected ? 'Un-select All' : 'Select All' }}
+                        </b-form-checkbox>
+                        <hr>
+                      </template>
+                      <template v-slot="{ ariaDescribedby }">
+                        <div
+                          class="w-100 row"
+                          style=""
+                        >
+                          <b-form-checkbox-group
+                            style=""
+                        
+                            id="events"
+                            v-model="eventsSelected"
+                            :options="events"
+                            :aria-describedby="ariaDescribedby"
+                            name="events"
+                            class="mx-1"
+                            aria-label="events"
+                            stacked
+                          />
+                        </div>
+                      </template>
+                    </b-form-group>
+                  </div>
+                </template>
+              </b-dropdown>
+            </div>
+          </div>
+         
+
+
           <div class="d-flex flex-column">
             <label
               for="GroupName"
@@ -97,6 +165,47 @@
               </option>
             </select>
           </div>
+          <!-- datepicker -->
+          
+          <div 
+            v-if="this.currentSelected === 4"
+            class="d-flex flex-column"
+          >
+            <label
+              class="text-dark m-2"
+              for="datepicker-dateformat1"
+            >Date range</label>
+            <b-form-datepicker
+              id="datepicker-dateformat1"
+              :date-format-options="{
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric',
+              }"
+              locale="en"
+            />
+          </div>
+          <div 
+            v-if="this.currentSelected === 4"
+
+            class="d-flex flex-column"
+          >
+            <label
+              class="text-dark m-2"
+              for="datepicker-dateformat2"
+            >Date range</label>
+            <b-form-datepicker
+              class=""
+              id="datepicker-dateformat2"
+              :date-format-options="{
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric',
+              }"
+              locale="en"
+            />
+          </div>
+
               
           <div class="d-flex flex-column">
             <div class="h-50" />
@@ -115,7 +224,6 @@
           </div>
         </div>
       </div>
-      
 
 
       <div
@@ -171,6 +279,261 @@
             hover
             :filter="filter"
           />
+          <div
+            v-if="this.currentSelected === 4"
+          >
+            <b-table-simple
+              hover
+              small
+              responsive
+              class="my-2"
+            >
+              <b-thead>
+                <b-tr>
+                  <b-th>
+                    Type
+                  </b-th>
+                  <b-th>
+                    Date
+                  </b-th>
+                  <b-th>
+                    Time
+                  </b-th>
+                  
+                  <b-th>
+                    User
+                  </b-th>
+                </b-tr>
+              </b-thead>
+              <b-tbody>
+                <b-tr v-if="eventsSelected.indexOf('Browse') !== -1">
+                  <b-th>
+                    <img
+                      src="@/assets/images/icon/browse@2x.png"
+                      class="icon32px"
+                    >
+                    {{ events[0] }}
+                  </b-th>
+                  <b-td>
+                    22/11/2007 09:23 AM
+                  </b-td>
+                  <b-td>12:23:50 AM</b-td>
+                  <b-td>
+                    Keng
+                  </b-td>
+                </b-tr>
+                <b-tr v-if="eventsSelected.indexOf('Login') !== -1">
+                  <b-th class="text-right">
+                    <img
+                      src="@/assets/images/file/publiclink@2x.png"
+                      class="icon32px"
+                    >
+                    {{ events[1] }}
+                  </b-th>
+                  <b-td>
+                    22/11/2007 09:23 AM
+                  </b-td>
+                  <b-td>12:23:50 AM</b-td>
+                  <b-td>
+                    Keng
+                  </b-td>
+                </b-tr>
+                <b-tr v-if="eventsSelected.indexOf('Preview') !== -1">
+                  <b-th class="text-right">
+                    <img
+                      src="@/assets/images/cmd/preview@2x.png"
+                      class="icon32px"
+                    >
+                    {{ events[2] }}
+                  </b-th>
+                  <b-td>
+                    22/11/2007 09:23 AM
+                  </b-td>
+                  <b-td>12:23:50 AM</b-td>
+                  <b-td>
+                    Keng
+                  </b-td>
+                </b-tr>
+                <b-tr v-if="eventsSelected.indexOf('Download') !== -1">
+                  <b-th class="text-right">
+                    <img
+                      src="@/assets/images/cmd/download@2x.png"
+                      class="icon32px"
+                    >
+                    {{ events[3] }}
+                  </b-th>                
+                  <b-td>
+                    22/11/2007 09:23 AM
+                  </b-td>
+                  <b-td>12:23:50 AM</b-td>
+                  <b-td>
+                    Keng
+                  </b-td>
+                </b-tr>
+                <b-tr v-if="eventsSelected.indexOf('Public link') !== -1">
+                  <b-th class="text-right">
+                    <img
+                      src="@/assets/images/file/publiclink@2x.png"
+                      class="icon32px"
+                    >
+                    {{ events[4] }}
+                  </b-th>
+                  <b-td>
+                    22/11/2007 09:23 AM
+                  </b-td>
+                  <b-td>12:23:50 AM</b-td>
+                  <b-td>
+                    Keng
+                  </b-td>
+                </b-tr>
+                <b-tr v-if="eventsSelected.indexOf('CreateMove') !== -1">
+                  <b-th class="text-right">
+                    <img
+                      src="@/assets/images/file/folder@2x.png"
+                      class="icon32px"
+                    >
+                    {{ events[5] }}
+                  </b-th>
+                  <b-td>
+                    22/11/2007 09:23 AM
+                  </b-td>
+                  <b-td>12:23:50 AM</b-td>
+                  <b-td>
+                    Keng
+                  </b-td>
+                </b-tr>
+                <b-tr v-if="eventsSelected.indexOf('Rename') !== -1">
+                  <b-th class="text-right">
+                    <img
+                      src="@/assets/images/cmd/rename@2x.png"
+                      class="icon32px"
+                    >
+                    {{ events[6] }}
+                  </b-th>
+                  <b-td>
+                    22/11/2007 09:23 AM
+                  </b-td>
+                  <b-td>12:23:50 AM</b-td>
+                  <b-td>
+                    Keng
+                  </b-td>
+                </b-tr>
+                <b-tr v-if="eventsSelected.indexOf('Move') !== -1">
+                  <b-th class="text-right">
+                    <img
+                      src="@/assets/images/icon/usermanagement@2x.png"
+                      class="icon32px"
+                    >
+                    {{ events[7] }}
+                  </b-th>
+                  <b-td>
+                    22/11/2007 09:23 AM
+                  </b-td>
+                  <b-td>12:23:50 AM</b-td>
+                  <b-td>
+                    Keng
+                  </b-td>
+                </b-tr>
+                <b-tr v-if="eventsSelected.indexOf('Extract') !== -1">
+                  <b-th class="text-right">
+                    <img
+                      src="@/assets/images/cmd/cut@2x.png"
+                      class="icon32px"
+                    >
+                    {{ events[8] }}
+                  </b-th>
+                  <b-td>
+                    22/11/2007 09:23 AM
+                  </b-td>
+                  <b-td>12:23:50 AM</b-td>
+                  <b-td>
+                    Keng
+                  </b-td>
+                </b-tr>
+                <b-tr v-if="eventsSelected.indexOf('Logout') !== -1">
+                  <b-th class="text-right">
+                    <img
+                      src="@/assets/images/file/extractallfiles@2x.png"
+                      class="icon32px"
+                    >
+                    {{ events[9] }}
+                  </b-th>
+                  <b-td>
+                    22/11/2007 09:23 AM
+                  </b-td>
+                  <b-td>12:23:50 AM</b-td>
+                  <b-td>
+                    Keng
+                  </b-td>
+                </b-tr>
+                <b-tr v-if="eventsSelected.indexOf('DeleteDownload') !== -1">
+                  <b-th class="text-right">
+                    <img
+                      src="@/assets/images/cmd/logout@2x.png"
+                      class="icon32px"
+                    >
+                    {{ events[10] }}
+                  </b-th>
+                  <b-td>
+                    22/11/2007 09:23 AM
+                  </b-td>
+                  <b-td>12:23:50 AM</b-td>
+                  <b-td>
+                    Keng
+                  </b-td>
+                </b-tr>
+                <b-tr v-if="eventsSelected.indexOf('Copy') !== -1">
+                  <b-th class="text-right">
+                    <img
+                      src="@/assets/images/cmd/delete@2x-2.png"
+                      class="icon32px"
+                    >
+                    {{ events[11] }}
+                  </b-th>
+                  <b-td>
+                    22/11/2007 09:23 AM
+                  </b-td>
+                  <b-td>12:23:50 AM</b-td>
+                  <b-td>
+                    Keng
+                  </b-td>
+                </b-tr>
+                <b-tr v-if="eventsSelected.indexOf('Compress') !== -1">
+                  <b-th class="text-right">
+                    <img
+                      src="@/assets/images/file/addtozip@2x.png"
+                      class="icon32px"
+                    >
+                    {{ events[12] }}
+                  </b-th>
+                  <b-td>
+                    22/11/2007 09:23 AM
+                  </b-td>
+                  <b-td>12:23:50 AM</b-td>
+                  <b-td>
+                    Keng
+                  </b-td>
+                </b-tr>
+                <b-tr v-if="eventsSelected.indexOf('Upload') !== -1">
+                  <b-th class="text-right">
+                    <img
+                      src="@/assets/images/cmd/upload@2x.png"
+                      class="icon32px"
+                    >
+                    {{ events[13] }}
+                  </b-th>
+                  <b-td>
+                    22/11/2007 09:23 AM
+                  </b-td>
+                  <b-td>12:23:50 AM</b-td>
+                  <b-td>
+                    Keng
+                  </b-td>
+                </b-tr>
+              </b-tbody>
+              <b-tfoot />
+            </b-table-simple>
+          </div>
         </b-col>
       </div>
       <ContextMenu ref="menuForUser">
@@ -348,7 +711,7 @@ data() {
         { Name: '2. Features Test Folder',DateCreated:'25/02/2022 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
       ],
       eventsitems: [
-        { Type: 'Browse',Date:'.', CreatedBy:'admin', HitCount:'2',LastHitTime:'25/02/2007 10:52 AM',Expiration:'25/02/2007 10:52 AM'}, 
+      
       ],
       linkitems: [
         { Name: 'Rachel',LinkedItem:'https://demos.google.com/admin/public...', CreatedBy:'admin', HitCount:'2',LastHitTime:'25/02/2007 10:52 AM',Expiration:'25/02/2007 10:52 AM'}, 
@@ -358,7 +721,11 @@ data() {
       selectMode: 'single',
       filter: null,
       sortDirection: 'All',
-
+      events: ['Browse', 'Login', 'Preview', 'Download', 'Public link', 'CreateMove','Rename','Move','Extract','Logout','DeleteDownload','Copy','Compress','Upload'],
+      allSelected: true,
+      eventsSelected:['Browse', 'Login', 'Preview', 'Download', 'Public link',
+'CreateMove','Rename','Move','Extract','Logout','DeleteDownload','Copy','Compress','Upload'
+]
 
   };
 },
@@ -366,8 +733,21 @@ created(){
   this.getData();
   this.getTable();
 },
-
+watch: {
+  eventsSelected(newValue) {
+    if (newValue.length === 0) {
+      this.allSelected = false
+    } else if (newValue.length === this.events.length) {
+      this.allSelected = true
+    } else {
+      this.allSelected = false
+    }
+  }
+},
 methods: { 
+  toggleAll(checked) { 
+    this.eventsSelected = checked ? this.events.slice() : [] 
+  },
   handler(event) { event.preventDefault(); }, 
   reloadPage() {window.location.reload(); },
   getData() {
