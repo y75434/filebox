@@ -211,7 +211,7 @@
     <template
       #modal-cancel
     >
-      Cancel
+      {{ $t("GENERAL.CANCEL") }}
     </template>
 
     <template #modal-ok>

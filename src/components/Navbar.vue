@@ -3,7 +3,7 @@
     <li class="nav-item d-flex align-items-center">
       <img
         src="@/assets/images/file/folder@2x.png"
-        class="nav-icon"
+        class="icon24px"
       >
       <p
         class="p-0 m-0"
@@ -25,7 +25,7 @@
           >
             <img
               src="@/assets/images/icon/user@2x.png"
-              class="nav-icon"
+              class="icon24px"
             >
             {{ $t("GENERAL.ADMINISTRATION") }}
           </a>
@@ -36,7 +36,7 @@
             <li class="d-flex align-items-center">
               <img
                 src="@/assets/images/icon/user setting@2x.png"
-                class="nav-icon"
+                class="icon24px"
               >
               <a
                 @click="usersetting"
@@ -47,7 +47,7 @@
             <li class="d-flex align-items-center">
               <img
                 src="@/assets/images/icon/administrator@2x.png"
-                class="nav-icon"
+                class="icon24px"
               >
               <router-link
                 :to="{ path: '/admin' }"
@@ -68,7 +68,7 @@
         <!-- <li class="border-start px-1 nav-item d-flex align-items-center"> -->
         <img
           src="@/assets/images/cmd/logout@2x.png"
-          class="nav-icon"
+          class="icon24px"
         >
         <a
           class="nav-link py-0 px-1 "

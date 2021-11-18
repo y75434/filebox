@@ -22,7 +22,7 @@
           <label
             for="Username"
             class=""
-          >User name</label>
+          >{{ $t("MODAL.USERNAME") }}</label>
           <input
             type="Username"
             class="form-control inline-block width-320"
@@ -35,7 +35,7 @@
           <label
             for="Fullname"
             class="form-label"
-          >Full name</label>
+          >{{ $t("MODAL.FULLNAME") }}</label>
           <input
             type="Fullname"
             class="form-control width-320"
@@ -46,7 +46,7 @@
           <label
             for="Email"
             class="col-form-label"
-          >Email</label>
+          >{{ $t("MODAL.EMAIL") }}</label>
                   
           <input
             type="Email"
@@ -58,7 +58,7 @@
           <label
             for="Description"
             class="col-form-label"
-          >Description</label>
+          >{{ $t("MODAL.DESCRIPTION") }}</label>
                   
           <input
             type="Description"
@@ -73,7 +73,7 @@
 
 
       <div class="d-flex flex-column justify-content-between p-3">
-        <div class="form-check">
+        <div class="form-check mb-2">
           <input
             class="form-check-input"
             type="checkbox"
@@ -84,13 +84,14 @@
             class="form-check-label"
             for="Changeuserpassword"
           >
-            Change user password
+            {{ $t("MODAL.CHANGEUSERPASSWORD") }}
+
           </label>
           <div class="w-100 d-flex align-items-center justify-content-between mb-2">
             <label
               for="Password"
               class="form-label"
-            >Password</label>
+            >{{ $t("GENERAL.PASSWORD") }}</label>
             <input
               type="Password"
               class="form-control width-220"
@@ -102,7 +103,7 @@
             <label
               for="ConfirmPassword"
               class="form-label"
-            >Confirm Password</label>
+            >{{ $t("GENERAL.CONFIRMPASSWORD") }}</label>
             <input
               type="Password"
               class="form-control width-220"
@@ -122,7 +123,7 @@
             class="form-check-label"
             for="Usermustchangepasswordatnexttime"
           >
-            User must change password at next time
+           {{ $t("MODAL.USERMUSTCHANGEPASSWORDATNEXTTIME") }}
           </label>
         </div>
         <div class="form-check">
@@ -136,7 +137,7 @@
             class="form-check-label"
             for="Usercannotchangepassword"
           >
-            User cannot change password
+          {{ $t("MODAL.USERCANNOTCHANGEPASSWORD") }}
           </label>
         </div>
         <div class="form-check">
@@ -150,14 +151,10 @@
             class="form-check-label"
             for="Passwordneverexpires"
           >
-            Password never expires
+          {{ $t("MODAL.PASSWORDNEVEREXPIRES") }}
           </label>
         </div>
-
         <hr class="">
-
-
-
         <div class="form-check">
           <input
             class="form-check-input"
@@ -169,7 +166,7 @@
             class="form-check-label"
             for="Passwordneverexpires"
           >
-            Account is disabled
+{{ $t("MODAL.ACCOUNTISDISABLED") }}
 
           </label>
         </div>
@@ -184,7 +181,7 @@
             class="form-check-label"
             for="Passwordneverexpires"
           >
-            Account is locked out
+          {{ $t("MODAL.ACCOUNTISLOCKEDOUT") }}
           </label>
         </div>
       </div>
@@ -197,11 +194,11 @@
 
       class="cancel-btn"
     >
-      Cancel
+      {{ $t("GENERAL.CANCEL") }}
     </template>
 
     <template #modal-ok>
-      ok
+      {{ $t("GENERAL.OK") }}
     </template>
   </b-modal>
 </template>
@@ -217,12 +214,7 @@ export default {
     };
   },
   methods: {
-    show() {
-      this.showModal = true;
-    },
-    hide() {
-      this.showModal = false;
-    },
+    
     handleSubmit() {
       // this.$nextTick(() => {
       this.showModal = false;

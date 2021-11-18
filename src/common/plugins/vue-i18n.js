@@ -7,7 +7,7 @@ Vue.use(VueI18n)
 let messages = {}
 messages = { ...messages, en, tw }
 
-const lang = localStorage.getItem('language') || 'tw'
+const lang = localStorage.getItem('language') || 'en'
 
 const i18n = new VueI18n({
   locale: lang,

@@ -1,7 +1,5 @@
 export const locale = {
   GENERAL: {
-    NAV_OPTIONS: ['Home', 'About', 'Contact'],
-    WELCOME_WORD: 'Welcome to your Vue.js application',
     OK: 'ok',
     CONTINUE: 'continue',
     CANCEL: 'cancel',
@@ -31,8 +29,34 @@ export const locale = {
     SELECTALL: 'Select all',
     SELECTNONE: 'Select none',
     INVERTSELECTION: 'Invert Selection',
+    SHARE: 'Share',
+    LARGE:'Large',
+    ICONS:'icons',
+    TILES:'Tiles',
+    DETAILS:'Details',
+    ITEMCHECKBOXES:'Item check boxes',
+    FILEEXTENSIONS:'File extensions',
+    SHOWHIDE:'Show/Hide',
+    ORGANIZE:'Organize',
+    TRANSFER: 'Transfer',
+    CLIPBOARD: 'Clipboard',
+    LAYOUT:'Layout'
+
+
   },
   MODAL:{
-    
+    USERNAME:'User name',
+    FULLNAME:'Full name',
+    EMAIL:'Email',
+    DESCRIPTION:'Description',
+    CHANGEUSERPASSWORD:'Change user password',
+    USERMUSTCHANGEPASSWORDATNEXTTIME:'User must change password at next time',
+    USERCANNOTCHANGEPASSWORD:'User cannot change password',
+    PASSWORDNEVEREXPIRES:'Password never expires',
+    ACCOUNTISDISABLED:'Account is disabled',
+    ACCOUNTISLOCKEDOUT:'Account is locked out'
+  },
+  OBJECT:{
+    1:'User Management'
   }
 }

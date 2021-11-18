@@ -121,6 +121,7 @@
               <button
                 type="button"
                 class="modal-btn btn sm-btn"
+                @click="hide"
               >
                 Ok
               </button>

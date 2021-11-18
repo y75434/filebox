@@ -8,6 +8,7 @@
       flex-column
       align-items-start
       h-100
+      mt-2
     "
     @contextmenu="handler($event)"
   >
@@ -21,8 +22,11 @@
         :src="`${item.pic}`"
         class="icon28px"
       >
-      <p class="m-0">
+      <p v-if="$i18n.locale === 'en'" class="m-0">
         {{ item.name }}
+      </p>
+      <p v-if="$i18n.locale === 'tw'" class="m-0">
+        {{ item.tw }}
       </p>
     </li>
   </ul>
@@ -36,15 +40,22 @@ export default {
   data() {
     return {
       menuItems: [
-        { id: 1, name: 'User Management',pic: require('@/assets/images/icon/usermanagement@2x.png'), countName: 'Users'},
-        { id: 2, name: 'Group Management', pic: require('@/assets/images/icon/group management@2x.png'), countName: 'Groups'},
-        { id: 3, name: 'Root Folders', pic: require('@/assets/images/file/root folder@2x.png') , countName: 'Root Folders'},
-        { id: 4, name: 'Events' , pic: require('@/assets/images/icon/event@2x.png'), countName: 'Events'},
-        { id: 5, name: 'Public Links' , pic:require('@/assets/images/file/publiclink@2x.png'), countName: 'Public Links'},
+        { id: 1,tw:'用戶管理', name: 'User Management',pic: require('@/assets/images/icon/usermanagement@2x.png'), countName: 'Users'},
+        { id: 2,tw:'群組管理', name: 'Group Management', pic: require('@/assets/images/icon/group management@2x.png'), countName: 'Groups'},
+        { id: 3, tw:'資料夾管理',name: 'Root Folders', pic: require('@/assets/images/file/root folder@2x.png') , countName: 'Root Folders'},
+        { id: 4, tw:'事件管理',name: 'Events' , pic: require('@/assets/images/icon/event@2x.png'), countName: 'Events'},
+        { id: 5, tw:'連結管理',name: 'Public Links' , pic:require('@/assets/images/file/publiclink@2x.png'), countName: 'Public Links'},
       ],
       selectedRow: null, 
       // currentSelected: 1,
    };
+  },
+  created() {
+      console.log(this.$i18n.locale);
+      
+    },
+  computed:{
+
   },
   methods:{
     handler(event) { event.preventDefault(); },

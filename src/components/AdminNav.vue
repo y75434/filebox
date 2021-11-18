@@ -5,17 +5,17 @@
     <li class="nav-item d-flex align-items-center">
       <router-link
         :to="{ path: '/' }"
-        class="dqbz-previous"
+        class="dqbz-previous bg-headerbtn d-flex align-items-center"
       >
         <img
           src="@/assets/images/arrow/arrow-left@2x.png"
-          class="nav-icon"
+          class="nav-icon mx-1"
         >
       </router-link>
 
       
       <p
-        class="m-0"
+        class="m-0 ms-1"
       >
         FileVista- Administration
       </p>
@@ -33,7 +33,7 @@
           >
             <img
               src="@/assets/images/icon/user@2x.png"
-              class="nav-icon"
+              class="icon24px"
             >
             {{ $t("GENERAL.ADMINISTRATION") }}
           </a>
@@ -44,7 +44,7 @@
             <li class="d-flex align-items-center">
               <img
                 src="@/assets/images/icon/user setting@2x.png"
-                class="nav-icon"
+                class="icon24px"
               >
               <a
                 @click="usersetting"
@@ -56,7 +56,7 @@
             <li class="d-flex align-items-center">
               <img
                 src="@/assets/images/icon/administrator@2x.png"
-                class="nav-icon"
+                class="icon24px"
               >
               <a
                 class="dropdown-item p-0"
@@ -69,7 +69,7 @@
       <li class="border-start nav-item d-flex px-1 align-items-center">
         <img
           src="@/assets/images/cmd/logout@2x.png"
-          class="nav-icon"
+          class="icon24px"
         >
         <router-link
           :to="{ path: '/login' }"

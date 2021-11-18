@@ -67,21 +67,26 @@
 }
 
 .fn-w-50,
+.fn-w-60,
 .fn-w-75,
 .fn-w-100,
 .fn-w-120,
 .fn-w-150,
+.fn-w-160,
+.fn-w-180,
 .fn-w-210 {
   height: 100%;
   position: relative;
 }
 
 .fn-w-50 > span,
+.fn-w-60 > span,
 .fn-w-75 > span,
 .fn-w-100 > span,
 .fn-w-120 > span,
 .fn-w-150 > span,
 .fn-w-160 > span,
+.fn-w-180 > span,
 .fn-w-210 > span {
   position: absolute;
   display: block;
@@ -132,9 +137,7 @@
 .dqbz-previous {
   width: 32px;
   height: 32px;
-  background-color: #f3f5f6;
   border: none;
-  margin-right: 5px;
 }
 
 .dqbz-previous:hover {
@@ -144,7 +147,6 @@
 
 .input-group {
   border: 1px solid rgb(225, 226, 228);
-
   position: relative;
 }
 
@@ -194,4 +196,9 @@
 
 .fileSelected{
   border: 2px solid blue;
+}
+
+.window-btn {
+  width: 70px;
+  height: 35px;
 }

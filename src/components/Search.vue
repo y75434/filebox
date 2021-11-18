@@ -18,7 +18,7 @@
         class="nav-icon"
       >
     </button> -->
-    <button class="dqbz-previous">
+    <button class="dqbz-previous bg-light">
       <img
         src="@/assets/images/arrow/arrow-up@2x.png"
         class="nav-icon"
@@ -27,7 +27,7 @@
     <div class="btn-group dropend">
       <button
         type="button"
-        class="btn dqbz-previous dropdown-toggle"
+        class="btn dqbz-previous bg-light dropdown-toggle"
         data-bs-toggle="dropdown"
         aria-expanded="false"
       />

@@ -44,7 +44,7 @@
       </div>
     </div>
     <template #modal-ok>
-      Yes
+      {{ $t("GENERAL.OK") }}
     </template>
   </b-modal>
 </template>

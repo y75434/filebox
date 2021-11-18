@@ -24,7 +24,8 @@
           <select
             class="form-select w-75 form-select-sm" 
             aria-label="Default select example"
-            v-model="$i18n.locale"
+            v-model="locale"
+            @change="changeLocale()"
           >
             <!-- <option data-lang="en" selected>
             English
@@ -32,13 +33,8 @@
           <option data-lang="tw">
             繁體中文
           </option> -->
-            <option
-              v-for="(lang, i) in langs"
-              :key="`Lang${i}`"
-              :value="lang"
-            >
-              {{ lang }}
-            </option>
+            <option value="en">English</option>
+            <option value="tw">繁體中文</option>
           </select>
         </div>
             
@@ -83,11 +79,11 @@
 
       class="cancel-btn"
     >
-      Cancel
+      {{ $t("GENERAL.CANCEL") }}
     </template>
 
     <template #modal-ok>
-      ok
+      {{ $t("GENERAL.OK") }}
     </template>
   </b-modal>
 </template>
@@ -98,9 +94,14 @@ name: "UserSetting",
 data() {
      return {
       showModal: false,
-      langs: ['tw', 'en']
+      locale: localStorage.getItem("locale") || "en"
      }
    },
+   created() {
+      this.$i18n.locale = this.locale;
+      console.log(this.$i18n.locale);
+      
+    },
    methods: {
      show() {
       this.showModal = true
@@ -108,10 +109,12 @@ data() {
      hide(){
       this.showModal = false
      },
-     handleSubmit(lang){
-       localStorage.setItem('language', lang)
+     changeLocale(){
+       this.$i18n.locale = this.locale;
+       localStorage.setItem('locale', this.locale)
+     },
+     handleSubmit(){
        this.showModal = false
-
      }
    }
 }

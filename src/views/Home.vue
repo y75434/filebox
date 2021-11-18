@@ -35,7 +35,7 @@
 
           
          
-            <span class="text-center">Clipboard</span>
+            <span class="text-center">{{ $t("HOME.CLIPBOARD") }}</span>
           </div>
           <div class="divider" />
           <div class="fn-w-100 d-flex align-items-center">
@@ -61,7 +61,7 @@
               >
               <span class="nav-text text-center">{{ $t("HOME.RENAME") }}</span>
             </li>
-            <span class="text-center">Organize</span>
+            <span class="text-center">{{ $t("HOME.ORGANIZE") }}</span>
           </div>
           <div class="divider" />
           <div class="fn-w-60 align-items-center d-flex">
@@ -73,8 +73,10 @@
                 src="@/assets/images/file/new folder@2x.png"
                 alt=""
               >
+
               <span class="nav-text text-center">{{ $t("HOME.NEW") }}</span>
             </li>
+            <span class="nav-text text-center">{{ $t("HOME.NEW") }}</span>
           </div>
           <div class="divider" />
           <div class="fn-w-100 d-flex align-items-center">
@@ -95,7 +97,7 @@
               >
               <span class="nav-text text-center">{{ $t("HOME.UPLOAD") }}</span>
             </li>
-            <span class="text-center">Transfer</span>
+            <span class="text-center">{{ $t("HOME.TRANSFER") }}</span>
           </div>
           <!-- 留著 -->
           <!-- <div class="divider" />
@@ -118,8 +120,9 @@
             <span class="text-center">Compression</span>
           </div> -->
           <div class="divider" />
-          <div class="fn-w-150 d-flex align-items-center flex-column">
+          <div class="fn-w-160 d-flex align-items-center flex-column py-3">
             <b-button
+              @click="ManagePublicLink"
               v-b-tooltip.hover
               title="Create public link..."
               class="bg-light text-dark border-0 p-0 d-flex"
@@ -144,14 +147,14 @@
               <span class="d-sm-none d-md-block d-lg-block ">{{ $t("HOME.CREATEPUBLICLINK") }}</span>
             </b-button>
 
-            <span class="text-center">Share</span>
+            <span class="text-center">{{ $t("HOME.SHARE") }}</span>
           </div>
           <div class="divider" />
-          <div class="fn-w-150 d-flex flex-column">
+          <div class="fn-w-150 d-flex flex-column py-3">
             <b-button
               v-b-tooltip.hover
               title="Select all"
-              class="bg-light text-dark border-0 p-0 d-flex"
+              class="bg-light text-dark border-0 p-0 mb-1 d-flex"
             >
               <img
                 src="@/assets/images/cmd/select all@2x.png"
@@ -163,7 +166,7 @@
             <b-button
               v-b-tooltip.hover
               title="Select none"
-              class="bg-light text-dark border-0 p-0 d-flex"
+              class="bg-light text-dark border-0 p-0 mb-1 d-flex"
             >
               <img
                 src="@/assets/images/cmd/select none@2x.png"
@@ -185,59 +188,59 @@
             <span class="text-center">{{ $t("GENERAL.SELECT") }}</span>
           </div>
           <div class="divider" />
-          <div class="fn-w-210">
-            <div class="d-flex">
+          <div class="fn-w-180">
+            <div class="d-flex justify-content-between py-2">
               <b-button
                 v-b-tooltip.hover
                 title="Large icons"
-                class="bg-light text-dark border-0 p-0"
+                class="window-btn bg-light text-dark border-0 p-0 flex-column d-flex align-items-center"           
               >
                 <img
                   src="@/assets/images/icon/large icons@2x.png"
                   class="nav-icon pe-1"
                 >
-                <span class="">Large icons</span>
+                <span class="">{{ $t("HOME.LARGE") }}</span>
               </b-button>
               <b-button
                 v-b-tooltip.hover
                 title="icons"
-                class="bg-light text-dark border-0 p-0"
+                class="window-btn bg-light text-dark border-0 p-0 flex-column d-flex align-items-center"
               >
                 <img
                   src="@/assets/images/icon/icons@2x.png"
                   class="nav-icon pe-1"
                 >
-                <span class="">icons</span>
+                <span class="">{{ $t("HOME.ICONS") }}</span>
               </b-button>
             </div>
-            <div class="d-flex">
+            <div class="d-flex justify-content-between my-2">
               <b-button
                 v-b-tooltip.hover
                 title="Tiles"
-                class="bg-light text-dark border-0 p-0"
+                class="window-btn bg-light text-dark border-0 p-0 flex-column d-flex align-items-center"
               >
                 <img
                   src="@/assets/images/file/tile@2x.png"
                   class="nav-icon pe-1"
                 >  
-                <span class="">Tiles</span>
+                <span class="">{{ $t("HOME.TILES") }}</span>
               </b-button>
               <b-button
                 v-b-tooltip.hover
                 title="Details"
-                class="bg-light text-dark border-0 p-0"
+                class="window-btn bg-light text-dark border-0 p-0 flex-column d-flex align-items-center"
               >
                 <img
                   src="@/assets/images/icon/details@2x.png"
                   class="nav-icon pe-1 "
                 >
-                <span class="">Details</span>
+                <span class="">{{ $t("HOME.DETAILS") }}</span>
               </b-button>
             </div>
-            <span class="text-center">Layout</span>
+            <span class="text-center">{{ $t("HOME.LAYOUT") }}</span>
           </div>
           <div class="divider" />
-          <div class="fn-w-150 d-md-none d-lg-block">
+          <div class="fn-w-150 d-md-none d-lg-block py-2">
             <div class="form-check">
               <input
                 class="form-check-input"
@@ -249,7 +252,7 @@
                 class="form-check-label"
                 for="Item check boxes"
               >
-                Item check boxes
+                {{ $t("HOME.ITEMCHECKBOXES") }}
               </label>
             </div>
             <div class="form-check">
@@ -263,11 +266,12 @@
                 class="form-check-label"
                 for="File extensions"
               >
-                File extensions
+                {{ $t("HOME.FILEEXTENSIONS") }}
+
               </label>
             </div>
 
-            <span class="text-center">Show/Hide</span>
+            <span class="text-center">{{ $t("HOME.SHOWHIDE") }}</span>
           </div>
           <div class="divider" />
         </div>
@@ -300,6 +304,10 @@
                     aria-expanded="false"
                     aria-controls="flush-collapseOne"
                   >
+                    <img
+                      :src="`${this.treeItems[0].pic}`"
+                      class="icon24px"
+                    >
                     Root Folder
                   </button>
                 </h2>
@@ -311,26 +319,59 @@
                 >
                   <div class="accordion-body">
                     <h6 class="text-dark">
-                      <img :src="picture.treeview.folder" class="nav12px">
+                      <img
+                        :src="`${this.treeItems[0].pic}`"
+                        class="icon24px"
+                      >
                       Folder One
                     </h6>
                     <h6 class="text-dark">
+                      <img
+                        :src="`${this.treeItems[0].pic}`"
+                        class="icon24px"
+                      >
+
                       Folder Two
                     </h6>
                     <h6 class="text-dark">
+                      <img
+                        :src="`${this.treeItems[1].pic}`"
+                        class="icon24px"
+                      >
+
                       7Z Archive
                     </h6>
                     <h6 class="text-dark">
-                      Deadlines
+                      <img
+                        :src="`${this.treeItems[4].pic}`"
+                        class="icon24px"
+                      >
+
+                      ZIP Archive
                     </h6>
                     <h6 class="text-dark">
+                      <img
+                        :src="`${this.treeItems[2].pic}`"
+                        class="icon24px"
+                      >
+
                       RAR Archive
                     </h6>
                     <h6 class="text-dark">
-                      Deadlines
+                      <img
+                        :src="`${this.treeItems[3].pic}`"
+                        class="icon24px"
+                      >
+
+                      TAR Archive
                     </h6>
                     <h6 class="text-dark">
-                      Favourites
+                      <img
+                        :src="`${this.treeItems[2].pic}`"
+                        class="icon24px"
+                      >
+
+                      RAR Archive
                     </h6>
                   </div>
                 </div>
@@ -348,6 +389,10 @@
                     aria-expanded="false"
                     aria-controls="flush-collapseTwo"
                   >
+                    <img
+                      :src="`${this.treeItems[0].pic}`"
+                      class="icon24px"
+                    >
                     Feature Tests
                   </button>
                 </h2>
@@ -375,6 +420,10 @@
                     aria-expanded="false"
                     aria-controls="flush-collapseThree"
                   >
+                    <img
+                      :src="`${this.treeItems[0].pic}`"
+                      class="icon24px"
+                    >
                     Another Root Folder
                   </button>
                 </h2>
@@ -565,6 +614,7 @@
       <create-folder ref="CreateFolder" />
       <rename-item ref="RenameItem" />
       <delete-folder ref="DeleteFolder" />
+      <manage-public-link ref="ManagePublicLink" />
     </div>
     <div class="dqbz-footer">
       <p class="mx-3">
@@ -583,6 +633,7 @@ import UploadFiles from '../components/Modals/home/UploadFiles.vue';
 import CreateFolder from '../components/Modals/home/CreateFolder.vue';
 import DeleteFolder from '../components/Modals/home/DeleteFolder.vue';
 import RenameItem from '../components/Modals/home/RenameItem.vue';
+import ManagePublicLink from '../components/Modals/home/ManagePublicLink.vue';
 
 
 export default {
@@ -596,7 +647,9 @@ export default {
     CreateFolder,
     RenameItem,
     DeleteFolder,
+    ManagePublicLink
 
+  
   },
   data: () => ({
     allItems: 7,
@@ -605,7 +658,13 @@ export default {
     paneSize: 15,
     fileSelected:{ border: '2px solid blue' },
     selectedItems: [],
-    
+    treeItems: [
+      { id: 0, name: 'Folder',pic: require('@/assets/images/file/single folder@2x.png')},
+      { id: 1, name: '7Z', pic: require('@/assets/images/file/7zip@2x.png')},
+      { id: 2, name: 'RAR', pic: require('@/assets/images/file/rar@2x.png')},
+      { id: 3, name: 'TAR' , pic: require('@/assets/images/file/tar@2x.png')},
+      { id: 4, name: 'ZIP' , pic:require('@/assets/images/file/addtozip@2x.png')},
+    ]
   }),
   computed:{
     //數目前有幾個檔案
@@ -617,6 +676,7 @@ export default {
     CreateFolder(){ this.$bvModal.show('CreateFolder'); },
     RenameItem(){ this.$bvModal.show('RenameItem'); },
     DeleteFolder(){ this.$bvModal.show('DeleteFolder'); },
+    ManagePublicLink(){this.$bvModal.show('ManagePublicLink');},
     //選擇檔案後有邊匡
     selectFile(){
       this.selected = true;
