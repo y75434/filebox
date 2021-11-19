@@ -13,7 +13,15 @@ export const locale = {
     LICENSEINFORMATION: 'License Information',
     ADMINISTRATION: 'Administration',
     USERSETTING:'User setting',
-    DISPLAYLANGUAGE: 'Display language'
+    DISPLAYLANGUAGE: 'Display language',
+    BROWSE: 'Browse',
+    PUBLICLINK: 'Public links',
+    CREATEMOVE: 'CreateMove',
+    MOVE: 'Move',
+    EXTRACT: 'Extract',
+    DELETEDOWNLOAD: 'DeleteDownload',
+    COMPRESS: 'Compress'
+
   },
   HOME:{
     COPY: 'Copy',
@@ -54,9 +62,8 @@ export const locale = {
     USERCANNOTCHANGEPASSWORD:'User cannot change password',
     PASSWORDNEVEREXPIRES:'Password never expires',
     ACCOUNTISDISABLED:'Account is disabled',
-    ACCOUNTISLOCKEDOUT:'Account is locked out'
-  },
-  OBJECT:{
-    1:'User Management'
+    ACCOUNTISLOCKEDOUT:'Account is locked out',
+    PLEASEFILLOUTTHISFIELD:'Please fill out this field',
+    ENTERANAMEFORTHENEWFOLDER:'Enter a name for the new folder'
   }
 }

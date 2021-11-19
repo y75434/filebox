@@ -15,7 +15,15 @@ export const locale = {
     LICENSEINFORMATION: '授權資訊',
     ADMINISTRATION: '管理',
     USERSETTING:'用戶設定',
-    DISPLAYLANGUAGE: '選擇語言'
+    DISPLAYLANGUAGE: '選擇語言',
+    BROWSE: '瀏覽',
+    PUBLICLINK: '公共鏈接',
+    CREATEMOVE: '創建移動',
+    MOVE: '移動',
+    EXTRACT: '提取',
+    DELETEDOWNLOAD: '刪除下載',
+    COMPRESS: '壓縮'
+
   },
   HOME:{
     COPY: '複製',
@@ -56,9 +64,9 @@ export const locale = {
     USERCANNOTCHANGEPASSWORD:'用戶不能更改密碼',
     PASSWORDNEVEREXPIRES:'密碼永不過期',
     ACCOUNTISDISABLED:'帳戶被禁用',
-    ACCOUNTISLOCKEDOUT:'帳戶被鎖定'
+    ACCOUNTISLOCKEDOUT:'帳戶被鎖定',
+    PLEASEFILLOUTTHISFIELD: '請填寫此欄位',
+    ENTERANAMEFORTHENEWFOLDER: '新增資料夾名稱'
   },
-  OBJECT:{
-    1:'用戶管理'
-  }
+ 
 }

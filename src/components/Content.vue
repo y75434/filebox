@@ -19,7 +19,7 @@
         <div class="d-flex">
           <button
             @click="addnew()"
-            v-if="this.currentSelected != 4"
+            v-if="(this.currentSelected != 4 && this.currentSelected != 5)"
             type="button"
             class="modal-btn border title-btn d-flex align-items-center m-3"
           > 
@@ -98,7 +98,7 @@
                         </b-form-checkbox>
                         <hr>
                       </template>
-                      <template v-slot="{ ariaDescribedby }">
+                      <template #default="{ ariaDescribedby }">
                         <div
                           class="w-100 row"
                           style=""
@@ -312,7 +312,18 @@
                       src="@/assets/images/icon/browse@2x.png"
                       class="icon32px"
                     >
-                    {{ events[0] }}
+                    <span
+                      v-if="$i18n.locale === 'en'"
+                      class="m-0"
+                    >
+                      {{ events[0] }}
+                    </span>
+                    <span
+                      v-if="$i18n.locale === 'tw'"
+                      class="m-0"
+                    >
+                      {{ $t("GENERAL.BROWSE") }}
+                    </span>
                   </b-th>
                   <b-td>
                     22/11/2007 09:23 AM
@@ -328,7 +339,18 @@
                       src="@/assets/images/file/publiclink@2x.png"
                       class="icon32px"
                     >
-                    {{ events[1] }}
+                    <span
+                      v-if="$i18n.locale === 'en'"
+                      class="m-0"
+                    >
+                      {{ events[1] }}
+                    </span>
+                    <span
+                      v-if="$i18n.locale === 'tw'"
+                      class="m-0"
+                    >
+                      {{ $t("GENERAL.PUBLICLINK") }}
+                    </span>
                   </b-th>
                   <b-td>
                     22/11/2007 09:23 AM
@@ -344,7 +366,18 @@
                       src="@/assets/images/cmd/preview@2x.png"
                       class="icon32px"
                     >
-                    {{ events[2] }}
+                    <span
+                      v-if="$i18n.locale === 'en'"
+                      class="m-0"
+                    >
+                      {{ events[2] }}
+                    </span>
+                    <span
+                      v-if="$i18n.locale === 'tw'"
+                      class="m-0"
+                    >
+                      {{ $t("GENERAL.PUBLICLINK") }}
+                    </span>
                   </b-th>
                   <b-td>
                     22/11/2007 09:23 AM
@@ -360,7 +393,18 @@
                       src="@/assets/images/cmd/download@2x.png"
                       class="icon32px"
                     >
-                    {{ events[3] }}
+                    <span
+                      v-if="$i18n.locale === 'en'"
+                      class="m-0"
+                    >
+                      {{ events[3] }}
+                    </span>
+                    <span
+                      v-if="$i18n.locale === 'tw'"
+                      class="m-0"
+                    >
+                      {{ $t("HOME.DOWNLOAD") }}
+                    </span>
                   </b-th>                
                   <b-td>
                     22/11/2007 09:23 AM
@@ -376,7 +420,18 @@
                       src="@/assets/images/file/publiclink@2x.png"
                       class="icon32px"
                     >
-                    {{ events[4] }}
+                    <span
+                      v-if="$i18n.locale === 'en'"
+                      class="m-0"
+                    >
+                      {{ events[4] }}
+                    </span>
+                    <span
+                      v-if="$i18n.locale === 'tw'"
+                      class="m-0"
+                    >
+                      {{ $t("GENERAL.PUBLICLINK") }}
+                    </span>
                   </b-th>
                   <b-td>
                     22/11/2007 09:23 AM
@@ -392,7 +447,18 @@
                       src="@/assets/images/file/folder@2x.png"
                       class="icon32px"
                     >
-                    {{ events[5] }}
+                    <span
+                      v-if="$i18n.locale === 'en'"
+                      class="m-0"
+                    >
+                      {{ events[5] }}
+                    </span>
+                    <span
+                      v-if="$i18n.locale === 'tw'"
+                      class="m-0"
+                    >
+                      {{ $t("GENERAL.CREATEMOVE") }}
+                    </span>
                   </b-th>
                   <b-td>
                     22/11/2007 09:23 AM
@@ -408,7 +474,18 @@
                       src="@/assets/images/cmd/rename@2x.png"
                       class="icon32px"
                     >
-                    {{ events[6] }}
+                    <span
+                      v-if="$i18n.locale === 'en'"
+                      class="m-0"
+                    >
+                      {{ events[6] }}
+                    </span>
+                    <span
+                      v-if="$i18n.locale === 'tw'"
+                      class="m-0"
+                    >
+                      {{ $t("HOME.RENAME") }}
+                    </span>
                   </b-th>
                   <b-td>
                     22/11/2007 09:23 AM
@@ -424,7 +501,18 @@
                       src="@/assets/images/icon/usermanagement@2x.png"
                       class="icon32px"
                     >
-                    {{ events[7] }}
+                    <span
+                      v-if="$i18n.locale === 'en'"
+                      class="m-0"
+                    >
+                      {{ events[7] }}
+                    </span>
+                    <span
+                      v-if="$i18n.locale === 'tw'"
+                      class="m-0"
+                    >
+                      {{ $t("GENERAL.MOVE") }}
+                    </span>
                   </b-th>
                   <b-td>
                     22/11/2007 09:23 AM
@@ -440,7 +528,18 @@
                       src="@/assets/images/cmd/cut@2x.png"
                       class="icon32px"
                     >
-                    {{ events[8] }}
+                    <span
+                      v-if="$i18n.locale === 'en'"
+                      class="m-0"
+                    >
+                      {{ events[8] }}
+                    </span>
+                    <span
+                      v-if="$i18n.locale === 'tw'"
+                      class="m-0"
+                    >
+                      {{ $t("GENERAL.EXTRACT") }}
+                    </span>
                   </b-th>
                   <b-td>
                     22/11/2007 09:23 AM
@@ -456,7 +555,18 @@
                       src="@/assets/images/file/extractallfiles@2x.png"
                       class="icon32px"
                     >
-                    {{ events[9] }}
+                    <span
+                      v-if="$i18n.locale === 'en'"
+                      class="m-0"
+                    >
+                      {{ events[9] }}
+                    </span>
+                    <span
+                      v-if="$i18n.locale === 'tw'"
+                      class="m-0"
+                    >
+                      {{ $t("GENERAL.LOGOUT") }}
+                    </span>
                   </b-th>
                   <b-td>
                     22/11/2007 09:23 AM
@@ -472,7 +582,18 @@
                       src="@/assets/images/cmd/logout@2x.png"
                       class="icon32px"
                     >
-                    {{ events[10] }}
+                    <span
+                      v-if="$i18n.locale === 'en'"
+                      class="m-0"
+                    >
+                      {{ events[10] }}
+                    </span>
+                    <span
+                      v-if="$i18n.locale === 'tw'"
+                      class="m-0"
+                    >
+                      {{ $t("GENERAL.DELETEDOWNLOAD") }}
+                    </span>
                   </b-th>
                   <b-td>
                     22/11/2007 09:23 AM
@@ -488,7 +609,18 @@
                       src="@/assets/images/cmd/delete@2x-2.png"
                       class="icon32px"
                     >
-                    {{ events[11] }}
+                    <span
+                      v-if="$i18n.locale === 'en'"
+                      class="m-0"
+                    >
+                      {{ events[11] }}
+                    </span>
+                    <span
+                      v-if="$i18n.locale === 'tw'"
+                      class="m-0"
+                    >
+                      {{ $t("HOME.COPY") }}
+                    </span>
                   </b-th>
                   <b-td>
                     22/11/2007 09:23 AM
@@ -504,7 +636,18 @@
                       src="@/assets/images/file/addtozip@2x.png"
                       class="icon32px"
                     >
-                    {{ events[12] }}
+                    <span
+                      v-if="$i18n.locale === 'en'"
+                      class="m-0"
+                    >
+                      {{ events[12] }}
+                    </span>
+                    <span
+                      v-if="$i18n.locale === 'tw'"
+                      class="m-0"
+                    >
+                      {{ $t("GENERAL.COMPRESS") }}
+                    </span>
                   </b-th>
                   <b-td>
                     22/11/2007 09:23 AM
@@ -520,7 +663,18 @@
                       src="@/assets/images/cmd/upload@2x.png"
                       class="icon32px"
                     >
-                    {{ events[13] }}
+                    <span
+                      v-if="$i18n.locale === 'en'"
+                      class="m-0"
+                    >
+                      {{ events[13] }}
+                    </span>
+                    <span
+                      v-if="$i18n.locale === 'tw'"
+                      class="m-0"
+                    >
+                      {{ $t("HOME.UPLOAD") }}
+                    </span>
                   </b-th>
                   <b-td>
                     22/11/2007 09:23 AM

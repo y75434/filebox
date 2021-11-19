@@ -20,47 +20,47 @@
     <div class="modal-popout-bg p-0">
       <form class=" p-3">   
         <div class="d-flex">
-          <div class="w-50 d-flex align-items-center justify-content-between mb-2">
+          <div class="w-50 d-flex align-items-center  mb-2">
             <label
               for="Type"
-              class="col-form-label"
+              class="col-form-label me-5 fw-bold"
             >Type</label>
             <label
               for=""
               class="col-form-label"
             >Preview</label>
           </div>
-          <div class="w-50 d-flex align-items-center justify-content-between mb-2">
+          <div class="w-50 d-flex align-items-center  mb-2">
             <label
               for="Type"
-              class="col-form-label"
-            >Type</label>
+              class="col-form-label me-5 fw-bold"
+            >User</label>
             <label
               for=""
               class="col-form-label"
-            >Preview</label>
+            >Admin</label>
           </div>
         </div>
         <div class="d-flex">
-          <div class="w-50 d-flex align-items-center justify-content-between mb-2">
+          <div class="w-50 d-flex align-items-center  mb-2">
             <label
               for="Type"
-              class="col-form-label"
-            >Type</label>
+              class="col-form-label me-5 fw-bold"
+            >Date</label>
             <label
               for=""
               class="col-form-label"
-            >Preview</label>
+            >11/15/2021</label>
           </div>
-          <div class="w-50 d-flex align-items-center justify-content-between mb-2">
+          <div class="w-50 d-flex align-items-center mb-2">
             <label
               for="Type"
-              class="col-form-label"
-            >Type</label>
+              class="col-form-label me-5 fw-bold"
+            >Time</label>
             <label
               for=""
               class="col-form-label"
-            >Preview</label>
+            >09:21:00 PM</label>
           </div>
         </div>
       </form>
@@ -73,7 +73,7 @@
         <label for="">Description
         </label>
 
-        <div class="bg-white modal-selectuser p-1">
+        <div class="bg-white modal-event p-1">
           <p
             class=" text-dark"
           >

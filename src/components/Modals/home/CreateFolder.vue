@@ -9,8 +9,7 @@
     footer-bg-variant="bgmodal"
     cancel-variant="outline-secondary"
     ok-variant="primary"
-   body-bg-variant="bgmodal"
-
+    body-bg-variant="bgmodal"
   >
     <!-- <form
       class="container"
@@ -19,12 +18,13 @@
     > -->
     <div class="modal-popout-bg p-3">
       <p class=" m-0">
-        Enter a name for the new folder
+        {{ $t("MODAL.ENTERANAMEFORTHENEWFOLDER") }}
       </p>
       <input
         type="email"
         class="form-control"
-        placeholder="Please fill out this field"
+        :placeholder="$t(
+          'MODAL.PLEASEFILLOUTTHISFIELD')"
       >
     </div>
 
@@ -34,11 +34,11 @@
       variant="outline-primary"
       class="cancel-btn"
     >
-      Cancel
+      {{ $t("GENERAL.CANCEL") }}
     </template>
 
     <template #modal-ok>
-      ok
+      {{ $t("GENERAL.OK") }}
     </template>
   </b-modal>
 </template>
