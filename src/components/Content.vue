@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-100"
+    class="w-100 overflow-scroll"
     @contextmenu="handler($event)"
   >
     <div 
@@ -29,7 +29,7 @@
               alt=""
             >
             <p class="ms-1 m-0">
-              Add new
+              {{ $t("GENERAL.ADDNEW") }}
             </p>
           </button>
 
@@ -47,7 +47,7 @@
               alt=""
             >
             <p class="ms-1 m-0">
-              import user
+              {{ $t("GENERAL.IMPORTUSER") }}
             </p>
           </button>
         </div>
@@ -130,10 +130,10 @@
             <label
               for="GroupName"
               class="m-2 text-dark"
-            >Search</label>
+            >{{ $t("GENERAL.SEARCH") }}</label>
             <input
               type="text"
-              placeholder="search name"
+              :placeholder="$t( 'GENERAL.SEARCH')"
               class="form-control "
               v-model="filter"
             >
@@ -145,7 +145,7 @@
             <label
               for="MemberName"
               class="m-2 text-dark"
-            > Status</label>
+            >{{ $t("GENERAL.STATUS") }}</label>
 
             <select
               class="form-select"
@@ -174,7 +174,7 @@
             <label
               class="text-dark m-2"
               for="datepicker-dateformat1"
-            >Date range</label>
+            >{{ $t("GENERAL.DATERANGE") }}</label>
             <b-form-datepicker
               id="datepicker-dateformat1"
               :date-format-options="{
@@ -193,7 +193,7 @@
             <label
               class="text-dark m-2"
               for="datepicker-dateformat2"
-            >Date range</label>
+            >{{ $t("GENERAL.DATERANGE") }}</label>
             <b-form-datepicker
               class=""
               id="datepicker-dateformat2"
@@ -255,7 +255,7 @@
               alt=""
             >
             <h5 class="ms-1 m-0">
-              Refresh
+              {{ $t("GENERAL.REFRESH") }}
             </h5>
           </button>
         </div>
@@ -291,17 +291,17 @@
               <b-thead>
                 <b-tr>
                   <b-th>
-                    Type
+                    {{ $t("GENERAL.TYPE") }}
                   </b-th>
                   <b-th>
-                    Date
+                    {{ $t("GENERAL.DATE") }}
                   </b-th>
                   <b-th>
-                    Time
+                    {{ $t("GENERAL.TIME") }}
                   </b-th>
                   
                   <b-th>
-                    User
+                    {{ $t("GENERAL.USER") }}
                   </b-th>
                 </b-tr>
               </b-thead>
@@ -697,19 +697,19 @@
               src="@/assets/images/cmd/rename@2x.png"
               class="icon24px"
             >
-            Rename
+            {{ $t("HOME.RENAME") }}
           </li>
           <li @click="Rename">
             <img
               src="@/assets/images/icon/user setting@2x.png"
               class="icon24px"
-            >Properties
+            >{{ $t("GENERAL.ATTRIBUTES") }}
           </li>
           <li @click="DeleteUser">
             <img
               src="@/assets/images/cmd/delete@2x-2.png"
               class="icon24px"
-            >Delete
+            >{{ $t("HOME.DELETE") }}
           </li>
         </ul>
       </ContextMenu>
@@ -723,19 +723,19 @@
               src="@/assets/images/cmd/rename@2x.png"
               class="icon24px"
             >
-            Rename
+            {{ $t("HOME.RENAME") }}
           </li>
           <li @click="NewGroupProperties">
             <img
               src="@/assets/images/icon/user setting@2x.png"
               class="icon24px"
-            >Properties
+            >{{ $t("GENERAL.ATTRIBUTES") }}
           </li>
           <li @click="DeleteUser">
             <img
               src="@/assets/images/cmd/delete@2x-2.png"
               class="icon24px"
-            >Delete
+            >{{ $t("HOME.DELETE") }}
           </li>
         </ul>
       </ContextMenu>
@@ -746,19 +746,19 @@
               src="@/assets/images/cmd/rename@2x.png"
               class="icon24px"
             >
-            Rename
+            {{ $t("HOME.RENAME") }}
           </li>
           <li @click="RootFolderProperties">
             <img
               src="@/assets/images/icon/user setting@2x.png"
               class="icon24px"
-            >Properties
+            >{{ $t("GENERAL.ATTRIBUTES") }}
           </li>
           <li @click="DeleteUser">
             <img
               src="@/assets/images/cmd/delete@2x-2.png"
               class="icon24px"
-            >Delete
+            >{{ $t("HOME.DELETE") }}
           </li>
         </ul>
       </ContextMenu>
@@ -768,7 +768,7 @@
             <img
               src="@/assets/images/icon/user setting@2x.png"
               class="icon24px"
-            >Properties
+            >{{ $t("GENERAL.ATTRIBUTES") }}
           </li>
         </ul>
       </ContextMenu>
@@ -779,19 +779,19 @@
               src="@/assets/images/cmd/rename@2x.png"
               class="icon24px"
             >
-            Rename
+            {{ $t("HOME.RENAME") }}
           </li>
           <li @click="EditPublicLink">
             <img
               src="@/assets/images/icon/user setting@2x.png"
               class="icon24px"
-            >Properties
+            >{{ $t("GENERAL.ATTRIBUTES") }}
           </li>
           <li @click="DeleteUser">
             <img
               src="@/assets/images/cmd/delete@2x-2.png"
               class="icon24px"
-            >Delete
+            >{{ $t("HOME.DELETE") }}
           </li>
         </ul>
       </ContextMenu>
@@ -807,8 +807,8 @@
       />
       <NewGroupProperties
         ref="NewGroupProperties"
-        :title="GroupProperties"
       />
+
       <AddNewUser ref="AddNewUser" />
       <RootFolderProperties ref="RootFolderProperties" />
       <EditPublicLink ref="EditPublicLink" />
@@ -1001,7 +1001,7 @@ methods: {
   },
   NewGroupProperties(){
       this.$bvModal.show('NewGroupProperties');
-
+      this.title = 'aaaa'
     },
     RootFolderProperties(){
       this.$bvModal.show('RootFolderProperties');

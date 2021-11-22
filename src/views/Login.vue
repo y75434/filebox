@@ -6,7 +6,7 @@
         <h1
           class=""
         >
-          Hello,Welcome to FileVista.Please enter your credentials
+          {{ $t("GENERAL.WELCOME_WORD") }}
         </h1>
         <div class="input-group mb-3">
           <div class="input-group-prepend" />
@@ -16,7 +16,7 @@
           <label
             for="email"
             class="my-2"
-          >User name</label>
+          >{{ $t("MODAL.USERNAME") }}</label>
             
           <input
             class="form-control user-icon"
@@ -29,7 +29,7 @@
           <label
             for="passwords"
             class="my-2"
-          >Password</label>
+          >{{ $t("GENERAL.PASSWORD") }}</label>
             
           <input
             class="form-control password-icon position-relative"
@@ -41,29 +41,29 @@
 
         <div class="d-flex justify-content-between my-2">
           <span class="text-danger">
-            password error msg
+            {{ $t("GENERAL.PASSWORDERRORMSG") }}
           </span>
           <a
             @click="ForgotPassword"
             class=" float-end light-blue"
-          >Forgot Password</a>
+          >{{ $t("GENERAL.FORGOTPASSWORD") }}</a>
         </div>
           
         <router-link :to="{ path: '/' }">
           <a
             class="dqbz-btn btn btn-primary col-12"
-          >Login</a>
+          >{{ $t("GENERAL.LOGIN") }}</a>
         </router-link>
 
         <p class="my-4">
-          <span>or</span>
+          <span>{{ $t("GENERAL.OR") }}</span>
         </p>
 
         <a
           href="#"
           class="login-btn dqbz-btn btn col-12"
-        >Use Secure Dongle Login</a>
-        <a class="float-end my-3 light-blue">Lost USB Token?</a>
+        >{{ $t("GENERAL.USESECUREDONGLELOGIN") }}</a>
+        <a class="float-end my-3 light-blue">{{ $t("GENERAL.LOSTUSBTOKEN") }}</a>
       </form>
     </div>
     <forgot-password ref="ForgotPassword" />

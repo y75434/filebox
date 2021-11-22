@@ -59,7 +59,7 @@
               <h5
                 class=""
               >
-                About FileVista
+                {{ $t("MODAL.ABOUTFILEVISTA") }}
               </h5>
             </li>
           </ul>

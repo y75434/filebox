@@ -1,7 +1,7 @@
 <template>
   <b-modal
     id="DeleteFolder"
-    class="modal-content"
+    class="modal-content justify-content-center d-flex"
     body-text-variant="warning"
     centered
     :title="title"
@@ -10,20 +10,19 @@
     ok-variant="primary"
     footer-bg-variant="bgmodal"
     body-bg-variant="bgmodal"
-    hide-footer
   >
     <!-- <form
       class="container"
       ref="form"
       @submit.stop.prevent="handleSubmit"
     > -->
-    <div class="modal-popout-bg p-5 justify-content-center d-flex flex-column">
+    <div class="modal-popout-bg p-5 justify-content-center d-flex flex-column ">
       <img
         class="mx-auto  m-0"
         src="@/assets/images/cmd/alarm@2x.png"
       >
       <h5 class="text-center m-0">
-        Are you sure you want to delete this folder?
+        {{ $t("MODAL.SURETODELETE") }}
       </h5>
            
             
@@ -36,39 +35,28 @@
         type="text"
         class="form-control"
       >
-
-
-
-
-      <div class="w-100 d-flex justify-content-center mt-5">
-        <button
-          type="button"
-          class="sm-btn cancel-btn mx-3 px-5 btn justify-content-center d-flex"
-        >
-          Cancel
-        </button>
-
-        <button
-          type="button"
-          class="sm-btn px-5 btn btn-danger text-white justify-content-center d-flex "
-        >
-          Delete
-        </button>
-      </div>
     </div>
 
     <!-- </form> -->
-    <!-- <template
-      #modal-cancel
-      variant="outline-primary"
-      class="cancel-btn"
-    >
-      Cancel
-    </template>
+    
 
-    <template #modal-ok>
-      ok
-    </template> -->
+    <template #modal-footer>
+      <div class="w-100 justify-content-center d-flex">
+        <button
+          type="button"
+          class="sm-btn cancel-btn mx-3 btn justify-content-center d-flex"
+        >
+          {{ $t("GENERAL.CANCEL") }}
+        </button>
+
+        <button
+          type="button"
+          class="sm-btn btn btn-danger text-white justify-content-center d-flex"
+        >
+          {{ $t("HOME.DELETE") }}
+        </button>
+      </div>
+    </template>
   </b-modal>
 </template>
 

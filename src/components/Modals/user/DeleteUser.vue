@@ -20,12 +20,12 @@
     >
       <div class="p-3">
         <h5 class="text-dark mb-3">
-          Delete
+          {{ $t("HOME.DELETE") }}
+
           <!-- <strong class="text-danger"> {{ dataSource.name }}</strong> -->
-          , are you sure?
         </h5>
         <h5 class="text-dark mb-3">
-          Please type the following to confirm:
+          {{ $t("MODAL.PLEASETYPE") }}
         </h5>
       
 
@@ -43,6 +43,10 @@
         >
       </div>
     </div>
+    <template #modal-cancel>
+      {{ $t("GENERAL.CANCEL") }}
+    </template>
+
     <template #modal-ok>
       {{ $t("GENERAL.OK") }}
     </template>

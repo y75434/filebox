@@ -1,7 +1,7 @@
 export const locale = {
   GENERAL: {
     NAV_OPTIONS: ['首頁', '關於', '聯絡我們'],
-    WELCOME_WORD: '歡迎來到 Vue.js 應用程式',
+    WELCOME_WORD: '您好，歡迎來到 FileVista。請輸入您的資訊',
     OK: '確定',
     CONTINUE: '繼續',
     CANCEL: '取消',
@@ -22,8 +22,31 @@ export const locale = {
     MOVE: '移動',
     EXTRACT: '提取',
     DELETEDOWNLOAD: '刪除下載',
-    COMPRESS: '壓縮'
-
+    COMPRESS: '壓縮',
+    REFRESH: '重新整理',
+    ADDNEW: '新增',
+    IMPORTUSER:'新增使用者',
+    PASSWORDERRORMSG:'密碼錯誤',
+    FORGOTPASSWORD: '忘記密碼',
+    LOSTUSBTOKEN:'遺失USB令牌？',
+    USESECUREDONGLELOGIN: '使用安全加密登入',
+    LOGIN:'登入',
+    OR: '或',
+    UPDATEPASSWORD:'更新密碼',
+    NEWPASSWORD: '新密碼',
+    RESETNEWPASSWORD: '重置新密碼',
+    SEARCH:'搜尋',
+    STATUS:'狀態',
+    DATERANGE:'日期範圍',
+    TYPE:'類型',
+    DATE: '日期',
+    TIME:'時間',
+    USER: '使用者',
+    ADDFILES:'新增檔案',
+    ADDFOLDER:'新增資料夾',
+    REMOVE: '刪除',
+    CLEAR:'清空',
+    ATTRIBUTES:'屬性'
   },
   HOME:{
     COPY: '複製',
@@ -66,7 +89,23 @@ export const locale = {
     ACCOUNTISDISABLED:'帳戶被禁用',
     ACCOUNTISLOCKEDOUT:'帳戶被鎖定',
     PLEASEFILLOUTTHISFIELD: '請填寫此欄位',
-    ENTERANAMEFORTHENEWFOLDER: '新增資料夾名稱'
+    ENTERANAMEFORTHENEWFOLDER: '新增資料夾名稱',
+    ABOUTFILEVISTA:'關於 FileVista',
+    SENDYOUANEMAIL:'在下面輸入您的電子郵件地址，我們將向您發送一封電子郵件，允許您重置密碼。',
+    REQUESTEMAILSENT: '發送電子郵件',
+    CHECKYOUREMAILTORESET :'請檢查您的電子郵件以重置密碼。',
+    PASSWORDHASBEENRESET:'您的密碼已被重置。請點擊下方以使用您的新密碼登入。',
+    RESETSUCCESS:'重置成功',
+    IMPORTRESULT:'匯入結果',
+    CONNECTTO: '連接到',
+    CONNECTAS:'連接為',
+    PLEASETYPE:'請輸入以下內容進行確認：',
+    SURETODELETE:'您確定要刪除此文件夾嗎？',
+    ENTERNEWITEM:'輸入新項目的名稱',
+    SELECTFILESUPLOADED:'選擇要上傳的文件',
+    DRAGFILE: '將文件和文件夾拖放到此處'
   },
- 
+  FOLDER:{
+    ROOTFOLDER: '根文件夾'
+  }
 }

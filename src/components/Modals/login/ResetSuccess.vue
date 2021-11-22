@@ -16,11 +16,10 @@
     > -->
     <div class="modal-popout-bg p-3">
       <h3 class="dark-blue">
-        Reset Success
+        {{ $t("MODAL.RESETSUCCESS") }}
       </h3>
       <h5 class="fw-bold">
-        Your password has been reset.Please click below to sign in with your new
-        password.
+        {{ $t("MODAL.PASSWORDHASBEENRESET") }}
       </h5>
 
       <a
@@ -36,11 +35,11 @@
       variant="outline-primary"
       class="cancel-btn"
     >
-      Cancel
+      {{ $t("GENERAL.CANCEL") }}
     </template>
 
     <template #modal-ok>
-      ok
+      {{ $t("GENERAL.OK") }}
     </template>
   </b-modal>
 </template>

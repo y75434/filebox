@@ -18,18 +18,17 @@
     > -->
     <div class="modal-popout-bg p-3">
       <h3 class="text-center dark-blue">
-        Forgot Password
+        {{ $t("GENERAL.FORGOTPASSWORD") }}
       </h3>
       <h5 class="text-center fw-bold">
-        Enter your email address below, and we’ll send you an email allowing you to
-        reset password.
+        {{ $t("MODAL.SENDYOUANEMAIL") }}
       </h5>
 
       <div class="mb-3">
         <label
           for="exampleInputEmail1"
           class="form-label"
-        >Email</label>
+        >{{ $t("MODAL.EMAIL") }}</label>
         <input
           type="email"
           class="form-control"
@@ -43,11 +42,11 @@
       variant="outline-primary"
       class="cancel-btn"
     >
-      Cancel
+      {{ $t("GENERAL.CANCEL") }}
     </template>
 
     <template #modal-ok>
-      Request Email Sent
+      {{ $t("MODAL.REQUESTEMAILSENT") }}
     </template>
   </b-modal>
 </template>

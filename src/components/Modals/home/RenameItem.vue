@@ -18,12 +18,12 @@
     > -->
     <div class="modal-popout-bg p-5">
       <p class=" m-0">
-        Enter a name for the new item
+        {{ $t("MODAL.ENTERNEWITEM") }}
       </p>
       <input
         type="email"
         class="form-control"
-        placeholder="Please fill out this field"
+        :placeholder="$t( 'MODAL.PLEASEFILLOUTTHISFIELD')"
       >
     </div>
     <!-- </form> -->
@@ -32,11 +32,11 @@
       variant="outline-primary"
       class="cancel-btn"
     >
-      Cancel
+      {{ $t("GENERAL.CANCEL") }}
     </template>
 
     <template #modal-ok>
-      ok
+      {{ $t("GENERAL.OK") }}
     </template>
   </b-modal>
 </template>

@@ -16,10 +16,10 @@
     > -->
     <div class="modal-popout-bg p-3">
       <h3 class="text-center dark-blue">
-        Request Email Sent.
+        {{ $t("MODAL.REQUESTEMAILSENT") }}
       </h3>
       <h5 class="text-center fw-bold">
-        Please check your email to reset password.
+        {{ $t("MODAL.CHECKYOUREMAILTORESET") }}
       </h5>
     </div>
 
@@ -29,11 +29,11 @@
       variant="outline-primary"
       class="cancel-btn"
     >
-      Cancel
+      {{ $t("GENERAL.CANCEL") }}
     </template>
 
     <template #modal-ok>
-      ok
+      {{ $t("GENERAL.OK") }}
     </template>
   </b-modal>
 </template>

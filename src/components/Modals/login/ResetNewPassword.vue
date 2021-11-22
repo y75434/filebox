@@ -16,14 +16,14 @@
     > -->
     <div class="modal-popout-bg p-3">
       <h3 class="text-center dark-blue">
-        Reset New Password
+        {{ $t("GENERAL.RESETNEWPASSWORD") }}
       </h3>
 
       <div class="mb-3">
         <label
           for="Newpassword"
           class="form-label"
-        >New password</label>
+        >{{ $t("GENERAL.NEWPASSWORD") }}</label>
         <input
           type="Newpassword"
           class="form-control"
@@ -34,7 +34,7 @@
         <label
           for="Newpassword"
           class="form-label"
-        >Confirm password</label>
+        >{{ $t("GENERAL.CONFIRMPASSWORD") }}</label>
         <input
           type="Newpassword"
           class="form-control"
@@ -46,7 +46,7 @@
           type="button"
           class="modal-btn px-5 btn  justify-content-center d-flex btn-lg"
         >
-          Update password
+          {{ $t("GENERAL.UPDATEPASSWORD") }}
         </button>
       </div>
     </div>
@@ -57,11 +57,11 @@
       variant="outline-primary"
       class="cancel-btn"
     >
-      Cancel
+      {{ $t("GENERAL.CANCEL") }}
     </template>
 
     <template #modal-ok>
-      ok
+      {{ $t("GENERAL.OK") }}
     </template>
   </b-modal>
 </template>

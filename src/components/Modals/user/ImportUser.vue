@@ -22,7 +22,7 @@
         <label
           for="Connectto"
           class="m-2 w-50"
-        >Connect to</label>
+        >{{ $t("MODAL.CONNECTTO") }}</label>
         <input
           disabled
           type="Connect to"
@@ -37,7 +37,7 @@
           <label
             for="Connectas"
             class="m-2 w-50"
-          >Connect as</label>
+          >{{ $t("MODAL.CONNECTAS") }}</label>
           <input
             type="Connectas"
             class="form-control inline-block width-320"
@@ -52,7 +52,7 @@
           <label
             for="Password"
             class="m-2 w-50"
-          >Password</label><input
+          >{{ $t("GENERAL.PASSWORD") }}</label><input
             type="Password"
             id="Password"
             placeholder="********"
@@ -71,11 +71,11 @@
             <label
               for="Name"
               class="m-2"
-            >Name</label>
+            >{{ $t("MODAL.USERNAME") }}</label>
 
             <input
               type="text"
-              placeholder="Please fill out this field"
+              :placeholder="$t( 'MODAL.PLEASEFILLOUTTHISFIELD')"
               class="form-control "
             >
           </div>
@@ -83,11 +83,11 @@
             <label
               for="Full name"
               class="m-2"
-            >Full name</label>
+            >{{ $t("MODAL.FULLNAME") }}</label>
 
             <input
               type="text"
-              placeholder="Please fill out this field"
+              :placeholder="$t( 'MODAL.PLEASEFILLOUTTHISFIELD')"
               class="form-control h-100"
             >
           </div>
@@ -95,12 +95,12 @@
             <label
               for="Email"
               class="m-2"
-            >Email</label>
+            >{{ $t("MODAL.EMAIL") }}</label>
 
 
             <input
               type="text"
-              placeholder="Please fill out this field"
+              :placeholder="$t( 'MODAL.PLEASEFILLOUTTHISFIELD')"
               class="form-control h-100"
             >
           </div>
@@ -139,19 +139,19 @@
                 >
               </th>
               <th scope="col">
-                Name
+                {{ $t("MODAL.USERNAME") }}
               </th>
               <th scope="col">
-                Fulll name
+                {{ $t("MODAL.FULLNAME") }}
               </th>
               <th scope="col">
-                Email
+                {{ $t("MODAL.EMAIL") }}
               </th>
               <th scope="col">
-                Description
+                {{ $t("MODAL.DESCRIPTION") }}
               </th>
               <th scope="col">
-                Import result
+                {{ $t("MODAL.IMPORTRESULT") }}
               </th>
             </tr>
           </thead>
@@ -215,7 +215,7 @@
     </template>
 
     <template #modal-ok>
-      Import selected users
+      {{ $t("GENERAL.IMPORTUSER") }}
     </template>
   </b-modal>
 </template>

@@ -117,11 +117,11 @@
                 class="form-check-label align-items-center d-flex"
                 for=""
               >
-                Maximum public link age 
+                {{ $t("MODAL.MAXIMUMPUBLICLINKAGE") }}
                 <input
                   type="text"
                   class=" form-control w-25 mx-2"
-                >days
+                >{{ $t("MODAL.DAYS") }}
               </label>
             </div>
             <div
@@ -132,7 +132,7 @@
                 class="form-check-label align-items-center d-flex"
                 for=""
               >
-                Maximum public link hits
+                {{ $t("MODAL.MAXIMUMPUBLICLINKHITS") }}
                 <input
                   type="text"
                   class=" form-control w-25 mx-2"
@@ -148,7 +148,9 @@
           aria-labelledby="profile-tab"
         >
           <div class="mt-3">
-            <p class="my-1">Log Events</p>
+            <p class="my-1">
+              {{ $t("MODAL.LOGEVENTS") }}
+            </p>
             <div class="form-check">
               <input
                 class="form-check-input"
@@ -160,7 +162,8 @@
                 class="form-check-label"
                 for="All"
               >
-                All
+                {{ $t("GENERAL.ALL") }}
+
               </label>
             </div>
 
@@ -177,7 +180,7 @@
                   <label
                     class="form-check-label"
                     for="Login"
-                  >Login</label>
+                  >{{ $t("GENERAL.LOGIN") }}</label>
                 </div>
                 <div class="form-check form-check-inline">
                   <input
@@ -189,7 +192,7 @@
                   <label
                     class="form-check-label"
                     for="Extract"
-                  >Extract</label>
+                  >{{ $t("GENERAL.EXTRACT") }}</label>
                 </div>
                 <div class="form-check form-check-inline">
                   <input
@@ -201,7 +204,7 @@
                   <label
                     class="form-check-label"
                     for="Delete"
-                  >Delete</label>
+                  >{{ $t("HOME.Delete") }}</label>
                 </div>
               </div>
               <div class="col-10 d-flex justify-content-between">
@@ -215,7 +218,7 @@
                   <label
                     class="form-check-label"
                     for="Failure"
-                  >Failure</label>
+                  >{{ $t("MODAL.FAILURE") }}</label>
                 </div>
                 <div class="form-check form-check-inline">
                   <input
@@ -227,7 +230,7 @@
                   <label
                     class="form-check-label"
                     for="Download"
-                  >Download</label>
+                  >{{ $t("HOME.DOWNLOAD") }}</label>
                 </div>
                 <div class="form-check form-check-inline">
                   <input
@@ -239,14 +242,14 @@
                   <label
                     class="form-check-label"
                     for="Copy"
-                  >Copy</label>
+                  >{{ $t("HOME.COPY") }}</label>
                 </div>
               </div>
             </div>
           </div>
           <div class="">
             <p class="fw-bold">
-              Log Size
+              {{ $t("MODAL.LOGSIZE") }}
             </p>
             <div class="col-12">
               <div class="d-flex align-items-center">
@@ -254,25 +257,26 @@
                   class="form-check-label align-items-center d-flex"
                   for=""
                 >
-                  Maximum log size  <input
+                  {{ $t("MODAL.MAXIMUMLOGSIZE") }}  <input
                     type="text"
                     class=" form-control mx-3 w-25"
-                  >events
+                  >{{ $t("MODAL.EVENTS") }}
 
                 </label>
               </div>
               <p class="py-2">
-                When maximum log size is reached
+                {{ $t("MODAL.WHENMAXIMUMLOGSIZEISREACHED") }}
               </p>
               <div class="d-flex align-items-center">
                 <label
                   class="form-check-label align-items-center d-flex"
                   for=""
                 >
-                  Delete events older than <input
+                  {{ $t("MODAL.DELETEEVENTSOLDERTHAN") }}<input
                     type="text"
                     class=" form-control mx-3 w-25"
-                  > days
+                  > {{ $t("MODAL.DAYS") }}
+
 
 
                 </label>
@@ -283,7 +287,7 @@
                 type="button"
                 class="cancel-btn btn  me-2"
               >
-                Clear Log
+                {{ $t("MODAL.CLEARLOG") }}
               </button>
             </div>
           </div>
@@ -305,7 +309,8 @@
               class="form-check-label"
               for="Sendemailnotifications"
             >
-              Send email notifications
+              {{ $t("MODAL.SENDEMAILNOTIFICATIONS") }}
+
             </label>
           </div>
 
@@ -316,7 +321,7 @@
             <label
               for="Fromemailaddress"
               class=""
-            >From email address</label>
+            >{{ $t("MODAL.FROMEMAILADDRESS") }}</label>
             <input
               type="email"
               class="form-control inline-block width-270"
@@ -329,7 +334,8 @@
             <label
               for="Email"
               class="col-form-label"
-            >SMTP host</label>
+            >{{ $t("MODAL.SMTPHOST") }}
+            </label>
                   
                   
             <select
@@ -337,7 +343,7 @@
               aria-label="Default select example"
             >
               <option selected>
-                Anonymous
+                {{ $t("MODAL.ANONYMOUS") }}
               </option>
             </select>
           </div>
@@ -347,7 +353,7 @@
             <label
               for="SMTPport"
               class=""
-            >SMTP port</label>
+            >{{ $t("MODAL.SMTPPORT") }}</label>
             <input
               type="email"
               class="form-control inline-block width-150"
@@ -360,7 +366,7 @@
             <label
               for="SMTPauthentication"
               class="col-form-label"
-            >SMTP authentication</label>
+            >{{ $t("MODAL.SMTPAUTHENTICATION") }}</label>
                   
                   
             <select
@@ -369,7 +375,7 @@
               aria-label="Default select example"
             >
               <option selected>
-                Anonymous
+                {{ $t("MODAL.ANONYMOUS") }}
               </option>
             </select>
           </div>
@@ -380,7 +386,7 @@
             <label
               for="Username"
               class="form-label"
-            >User name</label>
+            >{{ $t("MODAL.USERNAME") }}</label>
             <input
               type="Password"
               class="form-control width-270"
@@ -392,7 +398,7 @@
             <label
               for="Password"
               class="form-label"
-            >Password</label>
+            >{{ $t("GENERAL.PASSWORD") }}</label>
             <input
               type="Password"
               class="form-control width-270"
@@ -411,7 +417,7 @@
               class="form-check-label"
               for="UseSSL"
             >
-              Use SSL
+              {{ $t("MODAL.USESSL") }}
 
             </label>
           </div>
@@ -420,7 +426,7 @@
               type="button"
               class="cancel-btn btn  me-2"
             >
-              Test email
+              {{ $t("MODAL.TESTEMAIL") }}
             </button>
           </div>
         </div>
@@ -433,11 +439,11 @@
       variant="outline-primary"
       class="cancel-btn"
     >
-      Cancel
+      {{ $t("GENERAL.CANCEL") }}
     </template>
 
     <template #modal-ok>
-      ok
+      {{ $t("GENERAL.OK") }}
     </template>
   </b-modal>
 </template>

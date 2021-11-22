@@ -19,14 +19,14 @@
     <div class="modal-popout-bg  p-0">
       <p class="m-0">
         <img src="@/assets/images/cmd/upload@2x.png">
-        Select files to be uploaded
+        {{ $t("MODAL.SELECTFILESUPLOADED") }}
       </p>
 
       <div class="bg-white p-5 text-center">
         <p
           class="m-5 hr-gray"
         >
-          Drag and drop files and folders here.
+          {{ $t("MODAL.DRAGFILE") }}
         </p>
       </div>
     </div>
@@ -39,25 +39,25 @@
             class="cancel-btn mx-1"
             @click="Addfiles()"
           >
-            Add files
+            {{ $t("GENERAL.ADDFILES") }}
           </b-button>
           <b-button
             class="cancel-btn mx-1"
             @click="Addfolder()"
           >
-            Add folder
+            {{ $t("GENERAL.ADDFOLDER") }}
           </b-button>
           <b-button
             class="cancel-btn mx-1"
             @click="Remove()"
           >
-            Remove
+            {{ $t("GENERAL.REMOVE") }}
           </b-button>
           <b-button
             class="cancel-btn mx-1"
             @click="Clear()"
           >
-            Clear
+            {{ $t("GENERAL.CLEAR") }}
           </b-button>
         </div>
 
@@ -66,7 +66,7 @@
           variant="primary"
           @click="Upload()"
         >
-          Upload
+          {{ $t("HOME.UPLOAD") }}
         </b-button>
       </div>
     </template>

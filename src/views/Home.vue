@@ -539,16 +539,35 @@
             class="d-flex align-items-start justify-content-start"
           >
             <!-- v-for="item in items" :key="item.message" -->
-            <li class="d-flex flex-column">
+            <label
+              class="d-flex flex-column position-relative"
+              for="flexCheckDefault"
+              
+            >
+              <input
+                class="form-check-input itemCheckbox"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+              >
               <img
                 src="@/assets/images/file/folder@2x.png"
                 class="folder-icon"
-              >
+              >           
               <h6 class="text-dark text-center">
                 Folder One
               </h6>
-            </li>
-            <li class="d-flex flex-column">
+            </label>
+            <label
+              class="d-flex flex-column position-relative"
+              for="flexCheckDefault"
+            >
+              <input
+                class="form-check-input itemCheckbox"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+              >
               <img
                 src="@/assets/images/file/folder@2x.png"
                 class="folder-icon"
@@ -556,8 +575,17 @@
               <h6 class="text-dark text-center">
                 Folder Two
               </h6>
-            </li>
-            <li class="d-flex flex-column">
+            </label>
+            <label
+              class="d-flex flex-column position-relative"
+              for="flexCheckDefault"
+            >
+              <input
+                class="form-check-input itemCheckbox"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+              >
               <img
                 src="@/assets/images/file/7zip@2x.png"
                 class="folder-icon"
@@ -565,8 +593,17 @@
               <h6 class="text-dark text-center">
                 7Z Archive
               </h6>
-            </li>
-            <li class="d-flex flex-column">
+            </label>
+            <label
+              class="d-flex flex-column position-relative"
+              for="flexCheckDefault"
+            >
+              <input
+                class="form-check-input itemCheckbox"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+              >
               <img
                 src="@/assets/images/file/ppt@2x.png"
                 class="folder-icon"
@@ -574,8 +611,17 @@
               <h6 class="text-dark text-center">
                 PPTX Sample File
               </h6>
-            </li>
-            <li class="d-flex flex-column">
+            </label>
+            <label
+              class="d-flex flex-column position-relative"
+              for="flexCheckDefault"
+            >
+              <input
+                class="form-check-input itemCheckbox"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+              >
               <img
                 src="@/assets/images/file/rar@2x.png"
                 class="folder-icon"
@@ -583,8 +629,17 @@
               <h6 class="text-dark text-center">
                 RAR Archive
               </h6>
-            </li>
-            <li class="d-flex flex-column">
+            </label>
+            <label
+              class="d-flex flex-column position-relative"
+              for="flexCheckDefault"
+            >
+              <input
+                class="form-check-input itemCheckbox"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+              >
               <img
                 src="@/assets/images/file/tar@2x.png"
                 class="folder-icon"
@@ -592,12 +647,19 @@
               <h6 class="text-dark text-center">
                 TAR Archive
               </h6>
-            </li>
-            <li
+            </label>
+            <label
               @change="!selected"
-              class="d-flex flex-column "
+              class="d-flex flex-column position-relative"
+              for="flexCheckDefault"
               :style="selected ? 'border: 1px solid red;' : 'border: 1px solid white;'"
             >
+              <input
+                class="form-check-input itemCheckbox"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+              >
               <img
                 src="@/assets/images/file/word@2x.png"
                 class="folder-icon"
@@ -605,7 +667,7 @@
               <h6 class="text-dark text-center">
                 Word
               </h6>
-            </li>
+            </label>
           </Pane>
         </Splitpanes>
       </div>
