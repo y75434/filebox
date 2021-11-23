@@ -46,7 +46,10 @@ export const locale = {
     REMOVE: 'Remove',
     CLEAR:'Clear',
     ATTRIBUTES:'Properties',
-    ALL: 'All'
+    ALL: 'All',
+    ADMIN: 'Admin',
+    TIMES:'Times',
+    COPYLINK:'Copy link'
   },
   HOME:{
     COPY: 'Copy',
@@ -122,7 +125,31 @@ export const locale = {
     FAILURE:'Failure',
     LOGEVENTS:'Log Events',
     MAXIMUMPUBLICLINKHITS:'Maximum public link hits',
-    MAXIMUMPUBLICLINKAGE:'Maximum public link age'
+    MAXIMUMPUBLICLINKAGE:'Maximum public link age',
+    WILLBELOCKEDOUT:'Users will be locked out after',
+    INVALIDLOGIN:'invalid login attempts',
+    PASSWORDSWILLEXPIRE:'Passwords will expire after ',
+    LOGGING:'Logging',
+    GENERAL:'General',
+    SELECTGROUPMEMBER:'Select group member',
+    TOTAL: 'Total',
+    SELECTED:'Selected',
+    SAVE: 'Save',
+    FOLDERNAME:'Folder name',
+    ACCESSCONTROLFOR:'Access Control for',
+    INHERITFROMPARENT:'Inherit from parent',
+    SELECTEDGROUPSUSERS:'Selected Groups/Users',
+    PERMISSIONS:'Permissions',
+    FILESSETTING:'Files Setting',
+    LIMITDISKSPACETO:'Limit disk space to',
+    FILETYPE:'File Type',
+    RESTRICTFILETYPES:'Restrict file types',
+    NAMEINLINK:'Name in link',
+    RESET:'Reset',
+    OPENLINKEDFILE:'Open linked file in the brower',
+    LINKEXPIRES:'Link expires',
+    LINKCANBEOPENED:' Link can be opened only',
+    PROTECTLINKWITH:'Protect link with password'
 
   },
   FOLDER:{

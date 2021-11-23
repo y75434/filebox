@@ -36,7 +36,7 @@
             aria-controls="home"
             aria-selected="true"
           >
-            General
+            {{ $t("MODAL.GENERAL") }}
           </button>
         </li>
         <li
@@ -53,7 +53,7 @@
             aria-controls="profile"
             aria-selected="false"
           >
-            Logging
+            {{ $t("MODAL.LOGGING") }}
           </button>
         </li>
         <li
@@ -70,7 +70,7 @@
             aria-controls="contact"
             aria-selected="false"
           >
-            Email
+            {{ $t("MODAL.EMAIL") }}
           </button>
         </li>
       </ul>
@@ -91,10 +91,10 @@
                 class="form-check-label align-items-center d-flex"
                 for=""
               >
-                Passwords will expire after  <input
+                {{ $t("MODAL.PASSWORDSWILLEXPIRE") }} <input
                   type="text"
                   class=" form-control w-25 mx-2"
-                >days
+                >{{ $t("MODAL.DAYS") }}
 
               </label>
             </div>
@@ -103,11 +103,11 @@
                 class="form-check-label align-items-center d-flex"
                 for=""
               >
-                Users will be locked out after 
+                {{ $t("MODAL.WILLBELOCKEDOUT") }}
                 <input
                   type="text"
                   class=" form-control w-25 mx-2"
-                >invalid login attempts
+                >{{ $t("MODAL.INVALIDLOGIN") }}
 
 
               </label>
@@ -204,7 +204,7 @@
                   <label
                     class="form-check-label"
                     for="Delete"
-                  >{{ $t("HOME.Delete") }}</label>
+                  >{{ $t("HOME.DELETE") }}</label>
                 </div>
               </div>
               <div class="col-10 d-flex justify-content-between">

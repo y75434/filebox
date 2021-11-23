@@ -22,7 +22,7 @@
           <label
             for="Name in link"
             class=""
-          >Name in link</label>
+          >{{ $t("MODAL.NAMEINLINK") }}</label>
           <input
             type="Name in link"
             class="form-control inline-block width-320"
@@ -47,7 +47,7 @@
             class="form-check-label"
             for="Usermustchangepasswordatnexttime"
           >
-            Open linked file in the brower
+            {{ $t("MODAL.OPENLINKEDFILE") }}
           </label>
         </div>
         <div class="form-check">
@@ -61,10 +61,10 @@
             class="form-check-label align-items-center d-flex"
             for=""
           >
-            Link expires <input
+            {{ $t("MODAL.LINKEXPIRES") }}<input
               type="text"
               class="mx-2 form-control w-25"
-            >in days
+            >{{ $t("MODAL.DAYS") }}
 
           </label>
         </div>
@@ -79,10 +79,11 @@
             class="form-check-label align-items-center d-flex"
             for=""
           >
-            Link can be opened only <input
+            {{ $t("MODAL.LINKCANBEOPENED") }}<input
               type="text"
               class="mx-2 form-control w-25"
-            >times
+            >{{ $t("GENERAL.TIMES") }}
+
 
           </label>
         </div>
@@ -99,7 +100,8 @@
             class="form-check-label"
             for="Changeuserpassword"
           >
-            Protect link with password
+            {{ $t("MODAL.PROTECTLINKWITH") }}
+
           </label>
           <div
             class="w-100 d-flex align-items-center justify-content-between mb-2"
@@ -107,7 +109,7 @@
             <label
               for="Password"
               class="form-label"
-            >Password</label><input
+            >{{ $t("GENERAL.PASSWORD") }}</label><input
               type="Password"
               id="Password"
               placeholder="******"
@@ -120,7 +122,8 @@
             <label
               for="Confirmpassword"
               class="form-label"
-            >Confirm password</label><input
+            >{{ $t("GENERAL.CONFIRMPASSWORD") }}
+            </label><input
               type="Confirmpassword"
               id="Confirmpassword"
               placeholder="******"
@@ -136,7 +139,7 @@
           <label
             for="Public link"
             class="form-label"
-          >Public link</label>
+          >{{ $t("GENERAL.PUBLICLINK") }}</label>
           <div class="d-flex justify-content-between">
             <input
               type="password"
@@ -146,7 +149,7 @@
             <b-button
               class="bg-green border-0"
             >
-              Copy link
+              {{ $t("GENERAL.COPYLINK") }}
             </b-button>
           </div>
         </div>
@@ -161,20 +164,20 @@
           class="cancel-btn"
           @click="Cancel()"
         >
-          Cancel
+          {{ $t("GENERAL.CANCEL") }}
         </b-button>
         <div class="">
           <b-button
             class="bg-green border-0 mx-2"
             @click="Reset('forget')"
           >
-            Reset
+            {{ $t("MODAL.RESET") }}
           </b-button>
           <b-button
             variant="primary"
             @click="Update()"
           >
-            Update
+            {{ $t("GENERAL.OK") }}
           </b-button>
         </div>
       </div>

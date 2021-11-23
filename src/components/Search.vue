@@ -48,12 +48,70 @@
     </div>
 
 
-    <select
+    <!-- <select
       class="form-select"
       aria-label="Default select example"
     >
       <option selected />
-    </select>
+    </select> -->
+    <div class="input-group float-left">
+      <div class="btn-group dropend treeviewRoute">
+        <button
+          type="button"
+          class="btn bg-white dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        
+        >
+          {{ test }}
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a
+              class="dropdown-item"
+              href="#"
+            >Another action</a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              href="#"
+            >Something else here</a>
+          </li>
+        </ul>
+      </div>
+      <div class="btn-group dropend treeviewRoute">
+        <button
+          type="button"
+          class="btn bg-white dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Folder One
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a
+              class="dropdown-item"
+              href="#"
+            >Another action</a>
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              href="#"
+            >Something else here</a>
+          </li>
+        </ul>
+      </div>
+
+
+
+      <input
+        type="text"
+        class="form-control treeviewRoute"
+      >
+    </div>
 
     <button class="dqbz-previous">
       <img
@@ -81,8 +139,43 @@
 </template>
 
 <script>
-export default {
+// import eventBus from "@/bus.js";
 
+export default {
+  name: "Search",
+  props: { route: { type: String, default: "aaa" } },
+
+  data() {
+    return {
+      showModal: false,
+      test: this.route
+    };
+  },
+  created(){
+    // this.get();
+  },
+  watch:{
+    
+  },
+  methods: {
+    // get(){
+    //   eventBus.$on('treeSelected',(item) => { 
+    //     this.route = item.treeSelected; });
+    //   console.log(this.route);
+
+    // },
+    show() {
+      this.showModal = true;
+    },
+    hide() {
+      this.showModal = false;
+    },
+    handleSubmit() {
+      // this.$nextTick(() => {
+      this.showModal = false;
+      // });
+    },
+  },
 }
 </script>
 

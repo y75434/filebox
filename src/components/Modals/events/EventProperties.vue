@@ -24,21 +24,25 @@
             <label
               for="Type"
               class="col-form-label me-5 fw-bold"
-            >Type</label>
+            >{{ $t("GENERAL.TYPE") }}
+            </label>
             <label
               for=""
               class="col-form-label"
-            >Preview</label>
+            >Preview
+            </label>
           </div>
           <div class="w-50 d-flex align-items-center  mb-2">
             <label
               for="Type"
               class="col-form-label me-5 fw-bold"
-            >User</label>
+            >{{ $t("GENERAL.USER") }}
+            </label>
             <label
               for=""
               class="col-form-label"
-            >Admin</label>
+            >{{ $t("GENERAL.ADMIN") }}
+            </label>
           </div>
         </div>
         <div class="d-flex">
@@ -46,7 +50,7 @@
             <label
               for="Type"
               class="col-form-label me-5 fw-bold"
-            >Date</label>
+            >{{ $t("GENERAL.DATE") }}</label>
             <label
               for=""
               class="col-form-label"
@@ -56,7 +60,7 @@
             <label
               for="Type"
               class="col-form-label me-5 fw-bold"
-            >Time</label>
+            >{{ $t("GENERAL.TIME") }}</label>
             <label
               for=""
               class="col-form-label"
@@ -70,7 +74,8 @@
 
 
       <div class="d-flex flex-column justify-content-between p-3">
-        <label for="">Description
+        <label for="">{{ $t("MODAL.DESCRIPTION") }}
+
         </label>
 
         <div class="bg-white modal-event p-1">
@@ -89,11 +94,11 @@
       #modal-cancel
       variant="danger"
     >
-      Cancel
+      {{ $t("GENERAL.CANCEL") }}
     </template>
 
     <template #modal-ok>
-      ok
+      {{ $t("GENERAL.OK") }}
     </template>
   </b-modal>
 </template>

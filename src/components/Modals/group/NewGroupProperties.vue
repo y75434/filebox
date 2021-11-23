@@ -22,7 +22,7 @@
       <div
         class="p-3 w-100 d-flex align-items-center justify-content-between mb-2"
       >
-        <label for="Username">User name</label><input
+        <label for="Username">{{ $t("MODAL.USERNAME") }}</label><input
           type="Username"
           id="Username"
           class="form-control inline-block width-320"
@@ -32,7 +32,7 @@
       <div
         class="p-3 w-100 d-flex align-items-center justify-content-between mb-2"
       >
-        <label for="Username">Description</label><input
+        <label for="Username">{{ $t("MODAL.DESCRIPTION") }}</label><input
           type="Username"
           id="Username"
           class="form-control inline-block width-320"
@@ -47,7 +47,7 @@
 
       <div class="p-2 d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center">
-          <span>Select group member</span>
+          <span>{{ $t("MODAL.SELECTGROUPMEMBER") }}</span>
           <img
             src="@/assets/images/cmd/Group.png"
             class="ms-2 icon20px"
@@ -80,7 +80,7 @@
       </div>
 
       <div class="row p-4">
-        <div class="col-8 ">
+        <div class="col-8 overflow-scroll">
           <table
             class="table border h-100 overflow-auto"
             :filter="filter"
@@ -126,10 +126,10 @@
                   </div>
                 </th>
                 <th scope="col">
-                  Name
+                  {{ $t("MODAL.USERNAME") }}
                 </th>
                 <th scope="col">
-                  Full name
+                  {{ $t("MODAL.FULLNAME") }}
                 </th>
               </tr>
             </thead>
@@ -196,7 +196,7 @@
           </table>
         </div>
 
-        <ul class="list-group col-4 p-0  bg-white border overflow-auto">
+        <ul class="list-group col-4 p-0  bg-white border overflow-auto overflow-scroll">
           <li class="list-group-item  d-flex align-items-center border-0" />
           <li class="list-group-item bg-white  border-0">
             <button
@@ -222,21 +222,29 @@
 
       <div class="d-flex justify-content-end p-3">
         <p>
-          <span>Total
+          <span>{{ $t("MODAL.TOTAL") }}
+
           </span>
           <span class=" fw-bold">500</span>
         </p>
         <p class="ms-3">
           <span class="dark-blue fw-bold">4
           </span>
-          <span>Selected</span>
+          <span>{{ $t("MODAL.SELECTED") }}</span>
         </p>
       </div>
     </div>
     <!-- </form> -->
+    <template
+      #modal-cancel
+      variant="outline-primary"
+      class="cancel-btn"
+    >
+      {{ $t("GENERAL.CANCEL") }}
+    </template>
 
     <template #modal-ok>
-      Save
+      {{ $t("GENERAL.OK") }}
     </template>
   </b-modal>
 </template>

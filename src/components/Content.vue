@@ -21,11 +21,11 @@
             @click="addnew()"
             v-if="(this.currentSelected != 4 && this.currentSelected != 5)"
             type="button"
-            class="modal-btn border title-btn d-flex align-items-center m-3"
+            class="modal-btn title-btn d-flex align-items-center m-3"
           > 
             <img
               class="nav-icon"
-              src="@/assets/images/cmd/add@2x.png"
+              src="@/assets/images/cmd/Vector.png"
               alt=""
             >
             <p class="ms-1 m-0">
@@ -37,13 +37,13 @@
             @click="ImportUser"
             v-if="this.currentSelected === 1"
             type="button"
-            class="title-btn btn d-flex align-items-center m-3 bg-green"
+            class="title-btn btn m-3 bg-green"
             data-bs-toggle="modal" 
             data-bs-target="#ImportUser"
           > 
             <img
               class="nav-icon"
-              src="@/assets/images/cmd/add@2x.png"
+              src="@/assets/images/cmd/Vector.png"
               alt=""
             >
             <p class="ms-1 m-0">

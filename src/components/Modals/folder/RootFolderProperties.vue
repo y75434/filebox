@@ -26,7 +26,7 @@
             <label
               for="Foldername"
               class="m-2"
-            >Folder name</label>
+            >{{ $t("MODAL.FOLDERNAME") }}</label>
             <input
               type="Name"
               class="form-control inline-block width-320"
@@ -39,7 +39,7 @@
             <label
               for="Description"
               class="m-2"
-            >Description</label>
+            >{{ $t("MODAL.DESCRIPTION") }}</label>
             <input
               type="Description"
               class="form-control inline-block width-320"
@@ -82,7 +82,7 @@
               class="d-flex flex-column height-70px"
             >
               <h5 class="m-0 fw-bold">
-                Access Control for
+                {{ $t("MODAL.ACCESSCONTROLFOR") }}
               </h5>
 
               <div class="d-flex justify-content-between align-items-center">
@@ -105,7 +105,7 @@
                   <label
                     class="form-check-label"
                     for="exampleCheck1"
-                  >Inherit from parent</label>
+                  >{{ $t("MODAL.INHERITFROMPARENT") }}</label>
                 </div>
               </div>
             </div>
@@ -149,7 +149,7 @@
               
                 <li class="list-group-item d-flex justify-content-end border p-2">
                   <p>
-                    <span>Total
+                    <span>{{ $t("MODAL.TOTAL") }}
                     </span>
                     <span class=" fw-bold">500</span>
                   </p>
@@ -163,7 +163,7 @@
                       class="form-control fw-bold"
                       id=""
                     >
-                      Selected Groups/users
+                      {{ $t("MODAL.SELECTEDGROUPSUSERS") }}
                     </p>
                   </li>
 
@@ -190,7 +190,7 @@
                   <p class="ms-3 justify-content-end d-flex align-items-center">
                     <span class="dark-blue fw-bold">4
                     </span>
-                    <span>Selected</span>
+                    <span>{{ $t("MODAL.SELECTED") }}</span>
                   </p>
                 </li>
               </ul>
@@ -211,7 +211,7 @@
                     aria-controls="nav-home"
                     aria-selected="true"
                   >
-                    Permissions
+                    {{ $t("MODAL.PERMISSIONS") }}
                   </button>
                   <button
                     class="nav-link w-50"
@@ -223,7 +223,7 @@
                     aria-controls="nav-profile"
                     aria-selected="false"
                   >
-                    Files Setting
+                    {{ $t("MODAL.FILESSETTING") }}
                   </button>
                 </div>
                 <div
@@ -296,7 +296,7 @@
                       <label
                         for="flexCheckDefault"
                         class="form-check-label"
-                      > Limit disk space to</label>
+                      >{{ $t("MODAL.LIMITDISKSPACETO") }}</label>
                       <input
                         placeholder="enter code"
                         type="text"
@@ -305,7 +305,8 @@
                         value=""
                       >
                       <p class="fw-bold">
-                        File Type
+                        {{ $t("MODAL.FILETYPE") }}
+
                       </p>
                       <div
                         class="form-check"
@@ -319,7 +320,8 @@
                         <label
                           for="flexCheckDefault"
                           class="form-check-label"
-                        > Restrict file types
+                        > {{ $t("MODAL.RESTRICTFILETYPES") }}
+
                         </label>
                       </div>
                       <div
@@ -422,11 +424,11 @@
       #modal-cancel
       variant="danger"
     >
-      Cancel
+      {{ $t("GENERAL.CANCEL") }}
     </template>
 
     <template #modal-ok>
-      ok
+      {{ $t("GENERAL.OK") }}
     </template>
   </b-modal>
 </template>

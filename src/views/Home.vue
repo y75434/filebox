@@ -31,10 +31,7 @@
                 alt=""
               >
               <span class=" nav-text text-center">{{ $t("HOME.CUT") }}</span>
-            </div>
-
-          
-         
+            </div>    
             <span class="text-center">{{ $t("HOME.CLIPBOARD") }}</span>
           </div>
           <div class="divider" />
@@ -245,8 +242,9 @@
               <input
                 class="form-check-input"
                 type="checkbox"
-                value=""
+                value="1"
                 id="Item check boxes"
+                v-model="renderCheckboxs"
               >
               <label
                 class="form-check-label"
@@ -259,7 +257,7 @@
               <input
                 class="form-check-input"
                 type="checkbox"
-                value=""
+                value="2"
                 id="File extensions"
               >
               <label
@@ -276,7 +274,7 @@
           <div class="divider" />
         </div>
       </div>
-      <Search />
+      <Search :route="treeSelected" />
       <div />
       <!-- main -->
       <div class="dqbz-main">
@@ -419,7 +417,9 @@
                     data-bs-target="#flush-collapseThree"
                     aria-expanded="false"
                     aria-controls="flush-collapseThree"
+                    @click="this.treeSelected = 'Another Root Folder'"
                   >
+                    //TODO 
                     <img
                       :src="`${this.treeItems[0].pic}`"
                       class="icon24px"
@@ -541,14 +541,15 @@
             <!-- v-for="item in items" :key="item.message" -->
             <label
               class="d-flex flex-column position-relative"
-              for="flexCheckDefault"
-              
+              for="flexCheckDefault1"
             >
               <input
                 class="form-check-input itemCheckbox"
                 type="checkbox"
-                value=""
-                id="flexCheckDefault"
+                value="1"
+                id="flexCheckDefault1"
+                v-if="renderCheckboxs"
+                v-model="checkboxSelected"
               >
               <img
                 src="@/assets/images/file/folder@2x.png"
@@ -560,13 +561,15 @@
             </label>
             <label
               class="d-flex flex-column position-relative"
-              for="flexCheckDefault"
+              for="flexCheckDefault2"
             >
               <input
                 class="form-check-input itemCheckbox"
                 type="checkbox"
-                value=""
-                id="flexCheckDefault"
+                value="2"
+                id="flexCheckDefault2"
+                v-if="renderCheckboxs"
+                v-model="checkboxSelected"
               >
               <img
                 src="@/assets/images/file/folder@2x.png"
@@ -578,13 +581,15 @@
             </label>
             <label
               class="d-flex flex-column position-relative"
-              for="flexCheckDefault"
+              for="flexCheckDefault3"
             >
               <input
                 class="form-check-input itemCheckbox"
                 type="checkbox"
-                value=""
-                id="flexCheckDefault"
+                value="3"
+                id="flexCheckDefault3"
+                v-if="renderCheckboxs"
+                v-model="checkboxSelected"
               >
               <img
                 src="@/assets/images/file/7zip@2x.png"
@@ -596,13 +601,15 @@
             </label>
             <label
               class="d-flex flex-column position-relative"
-              for="flexCheckDefault"
+              for="flexCheckDefault4"
             >
               <input
                 class="form-check-input itemCheckbox"
                 type="checkbox"
-                value=""
-                id="flexCheckDefault"
+                value="4"
+                id="flexCheckDefault4"
+                v-if="renderCheckboxs"
+                v-model="checkboxSelected"
               >
               <img
                 src="@/assets/images/file/ppt@2x.png"
@@ -613,14 +620,17 @@
               </h6>
             </label>
             <label
+             
               class="d-flex flex-column position-relative"
-              for="flexCheckDefault"
+              for="flexCheckDefault5"
             >
               <input
                 class="form-check-input itemCheckbox"
                 type="checkbox"
-                value=""
-                id="flexCheckDefault"
+                value="5"
+                id="flexCheckDefault5"
+                v-if="renderCheckboxs"
+                v-model="checkboxSelected"
               >
               <img
                 src="@/assets/images/file/rar@2x.png"
@@ -632,13 +642,15 @@
             </label>
             <label
               class="d-flex flex-column position-relative"
-              for="flexCheckDefault"
+              for="flexCheckDefault6"
             >
               <input
                 class="form-check-input itemCheckbox"
                 type="checkbox"
-                value=""
-                id="flexCheckDefault"
+                value="6"
+                id="flexCheckDefault6"
+                v-if="renderCheckboxs"
+                v-model="checkboxSelected"
               >
               <img
                 src="@/assets/images/file/tar@2x.png"
@@ -651,14 +663,16 @@
             <label
               @change="!selected"
               class="d-flex flex-column position-relative"
-              for="flexCheckDefault"
+              for="flexCheckDefault7"
               :style="selected ? 'border: 1px solid red;' : 'border: 1px solid white;'"
             >
               <input
                 class="form-check-input itemCheckbox"
                 type="checkbox"
-                value=""
-                id="flexCheckDefault"
+                value="7"
+                id="flexCheckDefault7"
+                v-if="renderCheckboxs"
+                v-model="checkboxSelected"
               >
               <img
                 src="@/assets/images/file/word@2x.png"
@@ -719,21 +733,37 @@ export default {
     selectMode: 'single',
     paneSize: 15,
     fileSelected:{ border: '2px solid blue' },
-    selectedItems: [],
+    selectedItems: [],//邊框
     treeItems: [
       { id: 0, name: 'Folder',pic: require('@/assets/images/file/single folder@2x.png')},
       { id: 1, name: '7Z', pic: require('@/assets/images/file/7zip@2x.png')},
       { id: 2, name: 'RAR', pic: require('@/assets/images/file/rar@2x.png')},
       { id: 3, name: 'TAR' , pic: require('@/assets/images/file/tar@2x.png')},
       { id: 4, name: 'ZIP' , pic:require('@/assets/images/file/addtozip@2x.png')},
-    ]
+    ],
+    renderCheckboxs: false,
+    checkboxSelected: [],//checkbox
+    treeSelected: ''
   }),
   computed:{
-    //數目前有幾個檔案
-    selectedLength(){ return this.selectedItems.length; }
-
+    //數checkbox勾選幾個
+    selectedLength(){ 
+      return this.checkboxSelected.length; 
+    }
   },
   methods: {
+    // passRoute(){
+    //   eventBus.$emit('treeSelected', this.treeSelected);
+    // },
+    // clickcheckbox(e){
+    //   const { value,checked } = e.target
+    //   if (checked) {
+
+    //   this.checkboxSelected.push(value)
+    //   }
+    //   console.log('754',this.checkboxSelected);
+    // },
+    
     UploadFiles(){ this.$bvModal.show('UploadFiles'); },
     CreateFolder(){ this.$bvModal.show('CreateFolder'); },
     RenameItem(){ this.$bvModal.show('RenameItem'); },
@@ -742,6 +772,7 @@ export default {
     //選擇檔案後有邊匡
     selectFile(){
       this.selected = true;
+      
     }
   },
 };
