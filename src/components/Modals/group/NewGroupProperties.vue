@@ -3,7 +3,7 @@
     id="NewGroupProperties"
     class="modal-content modal-popout-bg"
     centered
-    :title="title"
+    :title="$t('TITLE.NEWGROUPPROPERTIES')"
     body-text-variant="warning"
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"

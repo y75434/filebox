@@ -4,7 +4,7 @@
     class="modal-content justify-content-center d-flex"
     body-text-variant="warning"
     centered
-    :title="title"
+    :title="$t('TITLE.DELETEFOLDER')"
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"

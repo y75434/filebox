@@ -17,10 +17,9 @@ export const locale = {
     DISPLAYLANGUAGE: 'Display language',
     BROWSE: 'Browse',
     PUBLICLINK: 'Public links',
-    CREATEMOVE: 'CreateMove',
+    CREATEMOVE: 'Create',
     MOVE: 'Move',
     EXTRACT: 'Extract',
-    DELETEDOWNLOAD: 'DeleteDownload',
     COMPRESS: 'Compress',
     REFRESH: 'Refresh',
     ADDNEW: 'Add New',
@@ -49,7 +48,12 @@ export const locale = {
     ALL: 'All',
     ADMIN: 'Admin',
     TIMES:'Times',
-    COPYLINK:'Copy link'
+    COPYLINK:'Copy link',
+    PLEASESELECTFIELD:'No date selected',
+    NODATESELECTED:'Please select field',
+    UNSELECTALL:'Unselect All',
+    SELECTALL: 'Select All',
+    PREVIEW: 'Preview'
   },
   HOME:{
     COPY: 'Copy',
@@ -155,5 +159,25 @@ export const locale = {
   FOLDER:{
     ROOTFOLDER:'Root Folder',
     FEATURETESTS:'Feature Tests'
+  },
+  TITLE:{
+    DELETEFOLDER:'Delete Folder',
+    EVENTPROPERTIES:'Event Properties',
+    ROOTFOLDERPROPERTIES: 'Root Folder Properties',
+    NEWGROUPPROPERTIES: 'New Group Properties',
+    CREATEFOLDER: 'CreateFolder',
+    MANAGEPUBLICLINK:'Manage Public Link',
+    RENAMEITEM:'Rename Item',
+    UPLOADFILES:'Upload Files',
+    EDITPUBLICLINK:'Edit Public Link',
+    FORGOTPASSWORD:'Forgot Password',
+    REQUESTEMAILSENT:'Request Email Sent',
+    RESETNEWPASSWORD:'Reset New Password',
+    RESETSUCCESS:'Reset Success',
+    ADDNEWUSER:'Add New User',
+    DELETE: 'Delete',
+    IMPORTUSER:'Import User',
+    RENAME:'Rename',
+    USERSETTING:'User Setting'
   }
 }

@@ -4,7 +4,7 @@
     class="modal-content"
     body-text-variant="warning"
     centered
-    title="User Setting"
+    :title="$t('TITLE.USERSETTING')"
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"

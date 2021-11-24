@@ -4,7 +4,7 @@
     class="modal-content radius"
     body-text-variant="warning"
     centered
-    :title="title"
+    :title="$t('TITLE.UPLOADFILES')"
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"

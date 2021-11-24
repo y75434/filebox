@@ -5,7 +5,7 @@
     body-text-variant="warning"
     body-bg-variant="bgmodal"
     centered
-    :title="title"
+    :title="$t('TITLE.IMPORTUSER')"
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"

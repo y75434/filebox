@@ -4,7 +4,7 @@
     class="modal-content"
     body-text-variant="warning"
     centered
-    :title="title"
+    :title="$t('TITLE.CREATEFOLDER')"
     header-bg-variant="bgheader"
     footer-bg-variant="bgmodal"
     cancel-variant="outline-secondary"

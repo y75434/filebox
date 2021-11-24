@@ -2,7 +2,7 @@
   <b-modal
     id="modal-delete-user"
     centered
-    title="Delete Account"
+    :title="$t('TITLE.DELETE')"
     header-bg-variant="danger"
     header-text-variant="light"
     hide-header-close

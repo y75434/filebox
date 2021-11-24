@@ -20,7 +20,6 @@ export const locale = {
     CREATEMOVE: '創建移動',
     MOVE: '移動',
     EXTRACT: '提取',
-    DELETEDOWNLOAD: '刪除下載',
     COMPRESS: '壓縮',
     REFRESH: '重新整理',
     ADDNEW: '新增',
@@ -49,7 +48,12 @@ export const locale = {
     ALL: '總共',
     ADMIN: '管理員',
     TIMES:'次',
-    COPYLINK:'複製連結'
+    COPYLINK:'複製連結',
+    PLEASESELECTFIELD:'請選擇',
+    NODATESELECTED:'未選擇日期',
+    UNSELECTALL:'取消全選',
+    SELECTALL: '全選',
+    PREVIEW: '預覽'
   },
   HOME:{
     COPY: '複製',
@@ -76,7 +80,7 @@ export const locale = {
     ORGANIZE:'組織',
     TRANSFER:'轉移',
     CLIPBOARD: '剪貼板',
-    LAYOUT:'顯示'
+    LAYOUT:'顯示',
 
 
   },
@@ -154,5 +158,25 @@ export const locale = {
   },
   FOLDER:{
     ROOTFOLDER: '根文件夾'
+  },
+  TITLE:{
+    DELETEFOLDER:'刪除資料夾',
+    EVENTPROPERTIES:'事件屬性',
+    ROOTFOLDERPROPERTIES: '根資料夾屬性',
+    NEWGROUPPROPERTIES:'新群組屬性',
+    CREATEFOLDER: '新增資料夾',
+    MANAGEPUBLICLINK:'管理公共連結',
+    RENAMEITEM:'重新命名',
+    UPLOADFILES:'更新檔案',
+    EDITPUBLICLINK:'編輯公共連結',
+    FORGOTPASSWORD:'忘記密碼',
+    REQUESTEMAILSENT:'已寄重設電子郵件',
+    RESETNEWPASSWORD:'重置新密碼',
+    RESETSUCCESS:'重置成功',
+    ADDNEWUSER:'新增使用者',
+    DELETE: '刪除',
+    IMPORTUSER:'匯入使用者',
+    RENAME:'重新命名',
+    USERSETTING:'使用者設定'
   }
 }

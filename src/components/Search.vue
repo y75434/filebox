@@ -64,6 +64,7 @@
         
         >
           {{ test }}
+          {{ route }}
         </button>
         <ul class="dropdown-menu">
           <li>
@@ -148,11 +149,14 @@ export default {
   data() {
     return {
       showModal: false,
-      test: this.route
-    };
+      test: 'i',
+    };//TODO click
+
   },
-  created(){
+  mounted(){
     // this.get();
+    this.test = this.route;
+
   },
   watch:{
     

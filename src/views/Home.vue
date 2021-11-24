@@ -273,8 +273,8 @@
           </div>
           <div class="divider" />
         </div>
-      </div>
-      <Search :route="treeSelected" />
+      </div>//todo search
+      <Search :route="tree-selected" />
       <div />
       <!-- main -->
       <div class="dqbz-main">
@@ -419,7 +419,7 @@
                     aria-controls="flush-collapseThree"
                     @click="this.treeSelected = 'Another Root Folder'"
                   >
-                    //TODO 
+                    //TODO click
                     <img
                       :src="`${this.treeItems[0].pic}`"
                       class="icon24px"
@@ -664,8 +664,10 @@
               @change="!selected"
               class="d-flex flex-column position-relative"
               for="flexCheckDefault7"
-              :style="selected ? 'border: 1px solid red;' : 'border: 1px solid white;'"
-            >
+              :style=" selected ? {backgroundColor: '#d3eaff'} : {backgroundColor: '#f0f0f0'}"
+            >//todo bindstyle
+              <!-- :style="selected ? 'border: 1px solid red;' : 'border: 1px solid white;'" -->
+
               <input
                 class="form-check-input itemCheckbox"
                 type="checkbox"
@@ -732,7 +734,7 @@ export default {
     selected: false,
     selectMode: 'single',
     paneSize: 15,
-    fileSelected:{ border: '2px solid blue' },
+    fileSelected: false,
     selectedItems: [],//邊框
     treeItems: [
       { id: 0, name: 'Folder',pic: require('@/assets/images/file/single folder@2x.png')},
@@ -743,7 +745,7 @@ export default {
     ],
     renderCheckboxs: false,
     checkboxSelected: [],//checkbox
-    treeSelected: ''
+    treeSelected: 'ccc'
   }),
   computed:{
     //數checkbox勾選幾個

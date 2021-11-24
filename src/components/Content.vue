@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-100 overflow-scroll"
+    class="w-100 h-100 overflow-scroll"
     @contextmenu="handler($event)"
   >
     <div 
@@ -78,8 +78,8 @@
           >
             <div>
               <b-dropdown
-                text="Please select field"
-                class="m-0 border"
+                :text="$t('GENERAL.PLEASESELECTFIELD')"
+                class="m-0 border eventdrop"
                 menu-class="w-100"
                 variant="white"
               >
@@ -88,13 +88,14 @@
                     <b-form-group>
                       <template #label>
                         <b-form-checkbox
+
                           class="text-dark"
                           v-model="allSelected"
                           aria-describedby="events"
                           aria-controls="events"
                           @change="toggleAll"
                         >
-                          {{ allSelected ? 'Un-select All' : 'Select All' }}
+                          {{ allSelected ? $t('GENERAL.UNSELECTALL') : $t('GENERAL.SELECTALL') }}
                         </b-form-checkbox>
                         <hr>
                       </template>
@@ -105,7 +106,7 @@
                         >
                           <b-form-checkbox-group
                             style=""
-                        
+
                             id="events"
                             v-model="eventsSelected"
                             :options="events"
@@ -177,6 +178,7 @@
             >{{ $t("GENERAL.DATERANGE") }}</label>
             <b-form-datepicker
               id="datepicker-dateformat1"
+              :placeholder="$t('GENERAL.NODATESELECTED')"
               :date-format-options="{
                 year: 'numeric',
                 month: 'numeric',
@@ -196,6 +198,7 @@
             >{{ $t("GENERAL.DATERANGE") }}</label>
             <b-form-datepicker
               class=""
+              :placeholder="$t('GENERAL.NODATESELECTED')"
               id="datepicker-dateformat2"
               :date-format-options="{
                 year: 'numeric',
@@ -306,7 +309,7 @@
                 </b-tr>
               </b-thead>
               <b-tbody>
-                <b-tr v-if="eventsSelected.indexOf('Browse') !== -1">
+                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.BROWSE')) !== -1">
                   <b-th>
                     <img
                       src="@/assets/images/icon/browse@2x.png"
@@ -333,7 +336,7 @@
                     Keng
                   </b-td>
                 </b-tr>
-                <b-tr v-if="eventsSelected.indexOf('Login') !== -1">
+                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.LOGIN')) !== -1">
                   <b-th class="text-right">
                     <img
                       src="@/assets/images/file/publiclink@2x.png"
@@ -349,7 +352,7 @@
                       v-if="$i18n.locale === 'tw'"
                       class="m-0"
                     >
-                      {{ $t("GENERAL.PUBLICLINK") }}
+                      {{ $t("GENERAL.LOGIN") }}
                     </span>
                   </b-th>
                   <b-td>
@@ -360,7 +363,7 @@
                     Keng
                   </b-td>
                 </b-tr>
-                <b-tr v-if="eventsSelected.indexOf('Preview') !== -1">
+                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.PREVIEW')) !== -1">
                   <b-th class="text-right">
                     <img
                       src="@/assets/images/cmd/preview@2x.png"
@@ -376,7 +379,7 @@
                       v-if="$i18n.locale === 'tw'"
                       class="m-0"
                     >
-                      {{ $t("GENERAL.PUBLICLINK") }}
+                      {{ $t("GENERAL.PREVIEW") }}
                     </span>
                   </b-th>
                   <b-td>
@@ -387,7 +390,7 @@
                     Keng
                   </b-td>
                 </b-tr>
-                <b-tr v-if="eventsSelected.indexOf('Download') !== -1">
+                <b-tr v-if="eventsSelected.indexOf($t('HOME.DOWNLOAD')) !== -1">
                   <b-th class="text-right">
                     <img
                       src="@/assets/images/cmd/download@2x.png"
@@ -414,7 +417,7 @@
                     Keng
                   </b-td>
                 </b-tr>
-                <b-tr v-if="eventsSelected.indexOf('Public link') !== -1">
+                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.PUBLICLINK')) !== -1">
                   <b-th class="text-right">
                     <img
                       src="@/assets/images/file/publiclink@2x.png"
@@ -441,7 +444,7 @@
                     Keng
                   </b-td>
                 </b-tr>
-                <b-tr v-if="eventsSelected.indexOf('CreateMove') !== -1">
+                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.CREATEMOVE')) !== -1">
                   <b-th class="text-right">
                     <img
                       src="@/assets/images/file/folder@2x.png"
@@ -468,7 +471,7 @@
                     Keng
                   </b-td>
                 </b-tr>
-                <b-tr v-if="eventsSelected.indexOf('Rename') !== -1">
+                <b-tr v-if="eventsSelected.indexOf($t('HOME.RENAME')) !== -1">
                   <b-th class="text-right">
                     <img
                       src="@/assets/images/cmd/rename@2x.png"
@@ -495,10 +498,10 @@
                     Keng
                   </b-td>
                 </b-tr>
-                <b-tr v-if="eventsSelected.indexOf('Move') !== -1">
+                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.MOVE')) !== -1">
                   <b-th class="text-right">
                     <img
-                      src="@/assets/images/icon/usermanagement@2x.png"
+                      src="@/assets/images/cmd/cut@2x.png"
                       class="icon32px"
                     >
                     <span
@@ -522,10 +525,10 @@
                     Keng
                   </b-td>
                 </b-tr>
-                <b-tr v-if="eventsSelected.indexOf('Extract') !== -1">
+                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.EXTRACT')) !== -1">
                   <b-th class="text-right">
                     <img
-                      src="@/assets/images/cmd/cut@2x.png"
+                      src="@/assets/images/file/extractallfiles@2x.png"
                       class="icon32px"
                     >
                     <span
@@ -549,10 +552,10 @@
                     Keng
                   </b-td>
                 </b-tr>
-                <b-tr v-if="eventsSelected.indexOf('Logout') !== -1">
+                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.LOGOUT')) !== -1">
                   <b-th class="text-right">
                     <img
-                      src="@/assets/images/file/extractallfiles@2x.png"
+                      src="@/assets/images/cmd/logout@2x.png"
                       class="icon32px"
                     >
                     <span
@@ -576,10 +579,10 @@
                     Keng
                   </b-td>
                 </b-tr>
-                <b-tr v-if="eventsSelected.indexOf('DeleteDownload') !== -1">
+                <b-tr v-if="eventsSelected.indexOf($t('HOME.DELETE')) !== -1">
                   <b-th class="text-right">
                     <img
-                      src="@/assets/images/cmd/logout@2x.png"
+                      src="@/assets/images/cmd/delete@2x-2.png"
                       class="icon32px"
                     >
                     <span
@@ -592,7 +595,7 @@
                       v-if="$i18n.locale === 'tw'"
                       class="m-0"
                     >
-                      {{ $t("GENERAL.DELETEDOWNLOAD") }}
+                      {{ $t("HOME.DELETE") }}
                     </span>
                   </b-th>
                   <b-td>
@@ -603,10 +606,10 @@
                     Keng
                   </b-td>
                 </b-tr>
-                <b-tr v-if="eventsSelected.indexOf('Copy') !== -1">
+                <b-tr v-if="eventsSelected.indexOf($t('HOME.COPY')) !== -1">
                   <b-th class="text-right">
                     <img
-                      src="@/assets/images/cmd/delete@2x-2.png"
+                      src="@/assets/images/cmd/copy@2x.png"
                       class="icon32px"
                     >
                     <span
@@ -630,7 +633,7 @@
                     Keng
                   </b-td>
                 </b-tr>
-                <b-tr v-if="eventsSelected.indexOf('Compress') !== -1">
+                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.COMPRESS')) !== -1">
                   <b-th class="text-right">
                     <img
                       src="@/assets/images/file/addtozip@2x.png"
@@ -657,7 +660,7 @@
                     Keng
                   </b-td>
                 </b-tr>
-                <b-tr v-if="eventsSelected.indexOf('Upload') !== -1">
+                <b-tr v-if="eventsSelected.indexOf($t('HOME.UPLOAD')) !== -1">
                   <b-th class="text-right">
                     <img
                       src="@/assets/images/cmd/upload@2x.png"
@@ -875,12 +878,9 @@ data() {
       selectMode: 'single',
       filter: null,
       sortDirection: 'All',
-      events: ['Browse', 'Login', 'Preview', 'Download', 'Public link', 'CreateMove','Rename','Move','Extract','Logout','DeleteDownload','Copy','Compress','Upload'],
+      events: [this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"), this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"), this.$t("GENERAL.PUBLICLINK"), this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
       allSelected: true,
-      eventsSelected:['Browse', 'Login', 'Preview', 'Download', 'Public link',
-'CreateMove','Rename','Move','Extract','Logout','DeleteDownload','Copy','Compress','Upload'
-]
-
+      eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
   };
 },
 created(){

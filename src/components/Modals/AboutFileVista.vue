@@ -29,7 +29,7 @@
               class="modal-title"
               id="exampleModalLabel"
             >
-              About FileVista
+              {{ $t('MODAL.ABOUTFILEVISTA') }}
             </h5>
             <button
               type="button"

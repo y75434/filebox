@@ -5,7 +5,7 @@
     body-text-variant="warning"
     body-bg-variant="bgmodal"
     centered
-    :title="title"
+    :title="$t('TITLE.MANAGEPUBLICLINK')"
     header-bg-variant="bgheader"
     ok-variant="primary"
     size="lg"
