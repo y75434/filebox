@@ -417,7 +417,8 @@
                     data-bs-target="#flush-collapseThree"
                     aria-expanded="false"
                     aria-controls="flush-collapseThree"
-                    @click="this.treeSelected = 'Another Root Folder'"
+                    @click="passRoute(value)"
+                    value="'Another Root Folder'"
                   >
                     //TODO click
                     <img
@@ -754,9 +755,11 @@ export default {
     }
   },
   methods: {
-    // passRoute(){
-    //   eventBus.$emit('treeSelected', this.treeSelected);
-    // },
+    passRoute(value){
+      console.log(value);
+      
+      this.treeSelected = value;
+    },
     // clickcheckbox(e){
     //   const { value,checked } = e.target
     //   if (checked) {
