@@ -61,10 +61,9 @@
           class="btn bg-white dropdown-toggle"
           data-bs-toggle="dropdown"
           aria-expanded="false"
-        
         >
-          {{ test }}
-          {{ route }}
+          {{ treeSelected }}
+          <!-- {{ new }} -->
         </button>
         <ul class="dropdown-menu">
           <li>
@@ -144,18 +143,18 @@
 
 export default {
   name: "Search",
-  props: { route: { type: String, default: "aaa" } },
+  props: { treeSelected: { type: String, default: "aaa" } },
 
   data() {
     return {
       showModal: false,
-      test: 'i',
+      new: this.treeSelected,
     };//TODO click
 
   },
   mounted(){
     // this.get();
-    this.test = this.route;
+    this.new = this.treeSelected;
 
   },
   watch:{

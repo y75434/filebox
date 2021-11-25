@@ -37,15 +37,40 @@
         <div class="">
           <b-button
             class="cancel-btn mx-1"
-            @click="Addfiles()"
+            @submit.prevent="Addfiles()"
           >
-            {{ $t("GENERAL.ADDFILES") }}
+            <label
+              for="inputFile"
+              class="button"
+            >
+              <span>{{ $t("GENERAL.ADDFILES") }}</span>
+            </label>
+            <input
+              type="file"
+              id="inputFile"
+              class="d-none"
+            >
           </b-button>
+
+
           <b-button
             class="cancel-btn mx-1"
-            @click="Addfolder()"
+            @submit.prevent="Addfolder()"
           >
-            {{ $t("GENERAL.ADDFOLDER") }}
+            <label
+              for="inputFolder"
+              class="button"
+            >
+              <span>{{ $t("GENERAL.ADDFOLDER") }}</span>
+            </label>
+            <input
+              type="file"
+              id="inputFolder"
+              class="d-none"
+              webkitdirectory
+              directory
+              multiple
+            >
           </b-button>
           <b-button
             class="cancel-btn mx-1"
@@ -97,6 +122,11 @@ export default {
       this.showModal = false;
       // });
     },
+    Addfiles(){
+
+    },
+    
+
   },
 };
 </script>

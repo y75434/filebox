@@ -6,12 +6,16 @@
         <div class="fn-box bg-light">
           <div class="d-flex fn-w-150 align-items-center">
             <div
+              :style=" selected ? {color: 'red'} : {color: '#acaeaf'}"
               class="d-flex flex-column w-30"
             >
               <img
                 src="@/assets/images/cmd/copy@2x.png"
                 alt="copy"
-              >
+                :style=" this.selected ? {filter: 'grayscale(90%);'} : {filter: 'grayscale(100%);'}"
+              >//todo 無法顯示
+              <!-- :style=" selected ? {filter: 'grayscale(90%);'} : {filter: 'grayscale(0%);'}" -->
+
               <span class="nav-text text-center">{{ $t("HOME.COPY") }}</span>
             </div>
             <div
@@ -274,7 +278,7 @@
           <div class="divider" />
         </div>
       </div>//todo search
-      <Search :route="tree-selected" />
+      <Search :tree-selected="tree-selected" />
       <div />
       <!-- main -->
       <div class="dqbz-main">
@@ -417,8 +421,8 @@
                     data-bs-target="#flush-collapseThree"
                     aria-expanded="false"
                     aria-controls="flush-collapseThree"
-                    @click="passRoute(value)"
-                    value="'Another Root Folder'"
+                    @click="passRoute($event)"                   
+                    value="Another Root Folder"
                   >
                     //TODO click
                     <img
@@ -666,7 +670,7 @@
               class="d-flex flex-column position-relative"
               for="flexCheckDefault7"
               :style=" selected ? {backgroundColor: '#d3eaff'} : {backgroundColor: '#f0f0f0'}"
-            >//todo bindstyle
+            >//todo 無法顯示
               <!-- :style="selected ? 'border: 1px solid red;' : 'border: 1px solid white;'" -->
 
               <input
@@ -694,6 +698,7 @@
       <rename-item ref="RenameItem" />
       <delete-folder ref="DeleteFolder" />
       <manage-public-link ref="ManagePublicLink" />
+      <EditPublicLink ref="EditPublicLink" />
     </div>
     <div class="dqbz-footer">
       <p class="mx-3">
@@ -713,6 +718,7 @@ import CreateFolder from '../components/Modals/home/CreateFolder.vue';
 import DeleteFolder from '../components/Modals/home/DeleteFolder.vue';
 import RenameItem from '../components/Modals/home/RenameItem.vue';
 import ManagePublicLink from '../components/Modals/home/ManagePublicLink.vue';
+import EditPublicLink from'@/components/Modals/link/EditPublicLink.vue';
 
 
 export default {
@@ -726,7 +732,8 @@ export default {
     CreateFolder,
     RenameItem,
     DeleteFolder,
-    ManagePublicLink
+    ManagePublicLink,
+    EditPublicLink
 
   
   },
@@ -746,7 +753,7 @@ export default {
     ],
     renderCheckboxs: false,
     checkboxSelected: [],//checkbox
-    treeSelected: 'ccc'
+    treeSelected: null
   }),
   computed:{
     //數checkbox勾選幾個
@@ -755,10 +762,11 @@ export default {
     }
   },
   methods: {
-    passRoute(value){
-      console.log(value);
+    passRoute(e){
+      const buttonValue = e.target.value;   
+      this.treeSelected = buttonValue;
+      console.log(this.treeSelected);
       
-      this.treeSelected = value;
     },
     // clickcheckbox(e){
     //   const { value,checked } = e.target
@@ -774,6 +782,8 @@ export default {
     RenameItem(){ this.$bvModal.show('RenameItem'); },
     DeleteFolder(){ this.$bvModal.show('DeleteFolder'); },
     ManagePublicLink(){this.$bvModal.show('ManagePublicLink');},
+    EditPublicLink(){ this.$bvModal.show('EditPublicLink'); },
+
     //選擇檔案後有邊匡
     selectFile(){
       this.selected = true;
