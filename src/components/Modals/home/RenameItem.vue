@@ -16,7 +16,7 @@
       ref="form"
       @submit.stop.prevent="handleSubmit"
     > -->
-    <div class="modal-popout-bg p-5">
+    <div class="modal-popout-bg p-3">
       <p class=" m-0">
         {{ $t("MODAL.ENTERNEWITEM") }}
       </p>

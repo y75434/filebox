@@ -10,8 +10,6 @@
     ok-variant="primary"
     footer-bg-variant="white"
     body-bg-variant="bgmodal"
-
-    @ok="Ok"
   >
     <!-- <form
       class="container"
@@ -216,10 +214,6 @@
           </li>
         </ul>
       </div>
-
-
-           
-
       <div class="d-flex justify-content-end p-3">
         <p>
           <span>{{ $t("MODAL.TOTAL") }}
@@ -276,4 +270,4 @@ export default {
 };
 </script>
 
-<style></style>
+

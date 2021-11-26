@@ -53,7 +53,8 @@ export const locale = {
     NODATESELECTED:'Please select field',
     UNSELECTALL:'Unselect All',
     SELECTALL: 'Select All',
-    PREVIEW: 'Preview'
+    PREVIEW: 'Preview',
+    CLOSE: 'Close'
   },
   HOME:{
     COPY: 'Copy',

@@ -91,7 +91,7 @@
             class="form-check-label"
             for="Changeuserpassword"
           >
-{{ $t("GENERAL.CHANGEPASSWORD") }}
+            {{ $t("GENERAL.CHANGEPASSWORD") }}
           </label>
           <div class="w-100 d-flex align-items-center justify-content-between mb-2">
             <label
@@ -129,7 +129,7 @@
             class="form-check-label"
             for="Usermustchangepasswordatnexttime"
           >
-{{ $t("MODAL.USERMUSTCHANGEPASSWORDATNEXTTIME") }}
+            {{ $t("MODAL.USERMUSTCHANGEPASSWORDATNEXTTIME") }}
           </label>
         </div>
         <div class="form-check">
@@ -143,7 +143,7 @@
             class="form-check-label"
             for="Usercannotchangepassword"
           >
-{{ $t("MODAL.USERCANNOTCHANGEPASSWORD") }}
+            {{ $t("MODAL.USERCANNOTCHANGEPASSWORD") }}
           </label>
         </div>
         <div class="form-check">
@@ -157,7 +157,7 @@
             class="form-check-label"
             for="Passwordneverexpires"
           >
-{{ $t("MODAL.PASSWORDNEVEREXPIRES") }}
+            {{ $t("MODAL.PASSWORDNEVEREXPIRES") }}
           </label>
         </div>
 
@@ -176,7 +176,7 @@
             class="form-check-label"
             for="Passwordneverexpires"
           >
-{{ $t("MODAL.ACCOUNTISDISABLED") }}
+            {{ $t("MODAL.ACCOUNTISDISABLED") }}
 
           </label>
         </div>
@@ -191,7 +191,7 @@
             class="form-check-label"
             for="Passwordneverexpires"
           >
-{{ $t("MODAL.ACCOUNTISLOCKEDOUT") }}
+            {{ $t("MODAL.ACCOUNTISLOCKEDOUT") }}
           </label>
         </div>
       </div>
@@ -262,4 +262,3 @@ export default {
 };
 </script>
 
-<style></style>

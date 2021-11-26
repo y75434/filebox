@@ -10,14 +10,15 @@
     ok-variant="primary"
     footer-bg-variant="white"
     body-bg-variant="bgmodal"
-    @contextmenu="handler($event)"
   >
     <!-- <form
       class="container"
       ref="form"
       @submit.stop.prevent="handleSubmit"
     > -->
-    <div class="modal-popout-bg p-0">
+    <div
+      class="modal-popout-bg p-0"
+    >
       <form class=" p-3">
         <div class="w-100 d-flex align-items-center justify-content-between mb-2">
           <label
@@ -36,8 +37,10 @@
       <hr class="">
 
 
-      <div class="d-flex flex-column justify-content-between p-3" @contextmenu="showMenu($event)">
-        <div class="form-check" @contextmenu="operational($event)">
+      <div
+        class="d-flex flex-column justify-content-between p-3"
+      >
+        <div class="form-check">
           <input
             class="form-check-input"
             type="checkbox"
@@ -182,38 +185,18 @@
           </b-button>
         </div>
       </div>
-      <ContextMenu ref="menuLink">
-        <ul class="text-dark">   
-          <li>
-            <img
-              src="@/assets/images/icon/user setting@2x.png"
-              class="icon24px"
-            >{{ $t("GENERAL.ATTRIBUTES") }}
-          </li>
-          <li @click="DeleteUser">
-            <img
-              src="@/assets/images/cmd/delete@2x-2.png"
-              class="icon24px"
-            >{{ $t("HOME.DELETE") }}
-          </li>
-        </ul>
-      </ContextMenu>
-      <delete-user ref="DeleteUser" />
     </template>
     <!-- </form> -->
   </b-modal>
 </template>
 
 <script>
-import ContextMenu from '@/components/ContextMenu.vue';
-import DeleteUser from '@/components/Modals/user/DeleteUser.vue';
 
 export default {
   name: "EditPublicLink",
   props: { title: { type: String, default: "Edit Public Link" } },
   components:{ 
-    DeleteUser,
-    ContextMenu
+   
   },
   data() {
     return {
@@ -221,15 +204,7 @@ export default {
     };
   },
   methods: {
-    handler(event) { event.preventDefault(); },
-    operational(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.$refs.menuLink.open(event);
-    }, 
-    showMenu(event) {
-      this.$refs.menuLink.open(event);
-    },
+    
     show() {
       this.showModal = true;
     },

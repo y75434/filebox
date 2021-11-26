@@ -259,6 +259,3 @@ props: { title: { type: String, default: 'Import User' },
 }
 </script>
 
-<style>
-
-</style>

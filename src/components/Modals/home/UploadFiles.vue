@@ -23,6 +23,18 @@
       </p>
 
       <div class="bg-white p-5 text-center">
+        <input
+          type="file"
+          @change="onFileChange"
+        >
+        <img
+          :src="url"
+          class="folder-icon"
+        >
+        <h6 class="text-dark text-center">
+          file name
+        </h6>
+
         <p
           class="m-5 hr-gray"
         >
@@ -108,6 +120,8 @@ export default {
   data() {
     return {
       showModal: false,
+      url: null,
+
     };
   },
   methods: {
@@ -125,7 +139,10 @@ export default {
     Addfiles(){
 
     },
-    
+    onFileChange(e) {
+      const file = e.target.files[0];
+      this.url = URL.createObjectURL(file);
+    }
 
   },
 };

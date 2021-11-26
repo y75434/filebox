@@ -12,6 +12,7 @@
 
     <!-- Modal -->
     <div
+      data-bs-toggle="c"
 
       class="modal fade "
       id="c"
@@ -21,8 +22,7 @@
     >
       <div class="modal-dialog">
         <div
-          style="background:transparent;"
-          class="modal-content"
+          class="modal-content bg-transparent"
         >
           <div class="modal-header bg-blue p-3">
             <h5
@@ -121,9 +121,10 @@
               <button
                 type="button"
                 class="modal-btn btn sm-btn"
-                @click="hide"
+                data-bs-dismiss="modal"
+                aria-label="Close"
               >
-                Ok
+                {{ $t("GENERAL.OK") }}
               </button>
             </div>
           </div>
@@ -152,6 +153,3 @@ name: 'AboutFileVista',
 }
 </script>
 
-<style>
-
-</style>

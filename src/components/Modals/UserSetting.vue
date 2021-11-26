@@ -120,6 +120,4 @@ data() {
 }
 </script>
 
-<style>
 
-</style>

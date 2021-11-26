@@ -53,7 +53,8 @@ export const locale = {
     NODATESELECTED:'未選擇日期',
     UNSELECTALL:'取消全選',
     SELECTALL: '全選',
-    PREVIEW: '預覽'
+    PREVIEW: '預覽',
+    CLOSE: '關閉'
   },
   HOME:{
     COPY: '複製',

@@ -123,8 +123,8 @@
           <div class="divider" />
           <div class="fn-w-160 d-flex align-items-center flex-column py-3">
             <b-button
-              @click="ManagePublicLink"
               v-b-tooltip.hover
+              @click="EditPublicLink"
               title="Create public link..."
               class="bg-light text-dark border-0 p-0 d-flex"
             >
@@ -132,11 +132,13 @@
                 src="@/assets/images/file/publiclink@2x.png"
                 class="nav-icon pe-1 mx-auto"
               >
-              <span class="d-sm-none d-md-block d-lg-block text-truncate">{{ $t("HOME.MANAGEPUBLICLINKS") }}
+              <span class="d-sm-none d-md-block d-lg-block text-truncate">{{ $t("HOME.CREATEPUBLICLINK") }}
+
               </span>
             </b-button>
 
             <b-button
+              @click="ManagePublicLink"
               v-b-tooltip.hover
               title="Manage public links..."
               class="bg-light text-dark border-0 p-0 d-flex"
@@ -145,7 +147,7 @@
                 src="@/assets/images/icon/managepubliclink@2x.png"
                 class="nav-icon pe-1 mx-auto"
               >
-              <span class="d-sm-none d-md-block d-lg-block ">{{ $t("HOME.CREATEPUBLICLINK") }}</span>
+              <span class="d-sm-none d-md-block d-lg-block ">{{ $t("HOME.MANAGEPUBLICLINKS") }}</span>
             </b-button>
 
             <span class="text-center">{{ $t("HOME.SHARE") }}</span>
@@ -156,6 +158,7 @@
               v-b-tooltip.hover
               title="Select all"
               class="bg-light text-dark border-0 p-0 mb-1 d-flex"
+              @click="selectAll"
             >
               <img
                 src="@/assets/images/cmd/select all@2x.png"
@@ -168,6 +171,7 @@
               v-b-tooltip.hover
               title="Select none"
               class="bg-light text-dark border-0 p-0 mb-1 d-flex"
+              @click="selectNone"
             >
               <img
                 src="@/assets/images/cmd/select none@2x.png"
@@ -179,6 +183,7 @@
               v-b-tooltip.hover
               title="Invert Selection"
               class="bg-light text-dark border-0 p-0 d-flex"
+              @change="invert"
             >
               <img
                 src="@/assets/images/icon/invert selection@2x.png"
@@ -263,6 +268,7 @@
                 type="checkbox"
                 value="2"
                 id="File extensions"
+                v-model="extensions"
               >
               <label
                 class="form-check-label"
@@ -686,7 +692,10 @@
                 class="folder-icon"
               >
               <h6 class="text-dark text-center">
-                Word
+                Word<span
+                  class="text-dark"
+                  v-if="extensions"
+                >.docx</span>
               </h6>
             </label>
           </Pane>
@@ -753,7 +762,10 @@ export default {
     ],
     renderCheckboxs: false,
     checkboxSelected: [],//checkbox
-    treeSelected: null
+    treeSelected: null,
+    allSelected: false,
+    allFiles:[],//所有檔案過濾後把id放入這個陣列
+    extensions: false
   }),
   computed:{
     //數checkbox勾選幾個
@@ -761,6 +773,17 @@ export default {
       return this.checkboxSelected.length; 
     }
   },
+  watch: {
+    checkboxSelected(newValue) {
+      if (newValue.length === 0) {
+        this.allSelected = false
+      } else if (newValue.length === this.events.length) {
+        this.allSelected = true
+      } else {
+        this.allSelected = false
+      }
+  }
+},
   methods: {
     passRoute(e){
       const buttonValue = e.target.value;   
@@ -784,6 +807,18 @@ export default {
     ManagePublicLink(){this.$bvModal.show('ManagePublicLink');},
     EditPublicLink(){ this.$bvModal.show('EditPublicLink'); },
 
+    selectAll() { 
+      // this.allFiles.forEach(function (allFiles) {
+      //     this.checkboxSelected.push(allFiles.id);
+      // });
+      this.checkboxSelected = this.allFiles.slice()//目前allfiles空的
+    },
+    selectNone(){
+      this.checkboxSelected =  []
+    },
+    invert(){
+      // this.checkboxSelected = checked ? this.allFiles.slice() : []
+    },
     //選擇檔案後有邊匡
     selectFile(){
       this.selected = true;

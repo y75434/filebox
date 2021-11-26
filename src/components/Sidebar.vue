@@ -50,10 +50,6 @@ export default {
       // currentSelected: 1,
    };
   },
-  created() {
-      console.log(this.$i18n.locale);
-      
-    },
   computed:{
 
   },
@@ -70,8 +66,3 @@ export default {
 }
 </script>
 
-
-
-<style scoped>
-
-</style>

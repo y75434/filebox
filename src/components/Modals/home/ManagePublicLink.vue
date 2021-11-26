@@ -10,13 +10,17 @@
     ok-variant="primary"
     size="lg"
     footer-bg-variant="white"
+    @contextmenu="handler($event)"
+    ok-only
   >
     <!-- <form
       class="container"
       ref="form"
       @submit.stop.prevent="handleSubmit"
     > -->
-    <div class="modal-popout-bg bg-bgmodal p-3">
+    <div
+      class="modal-popout-bg bg-bgmodal p-3"
+    >
       <div class="text-dark d-flex justify-content-between">
         <h4 class="fw-bold">
           photoshop-transparent-image-2.psd
@@ -28,7 +32,11 @@
           <h5>Public Links</h5>
         </div>
       </div>
-      <div class="w-100 mt-4 overflow-scroll">
+      <div
+        class="w-100 mt-4 overflow-scroll"
+        @contextmenu="showMenu($event)"
+      >
+        <!-- @contextmenu="operational($event)" @row-selected="rowSelected" -->
         <table class="table">
           <thead>
             <tr class="modal-tr">
@@ -64,7 +72,7 @@
               <td>25/02/2007 10:52 AM</td>
             </tr>
             <tr>
-             <th scope="row">
+              <th scope="row">
                 5vnak/bemkq/wallpaper-1.jpg
               </th>
 
@@ -92,20 +100,47 @@
 
     <!-- </form> -->
    
+    <ContextMenu ref="menuLink">
+      <ul class="text-dark">   
+        <li @click="EditPublicLink">
+          <img
+            src="@/assets/images/icon/user setting@2x.png"
+            class="icon24px"
+          >{{ $t("GENERAL.ATTRIBUTES") }}
+        </li>
+        <li @click="DeleteUser">
+          <img
+            src="@/assets/images/cmd/delete@2x-2.png"
+            class="icon24px"
+          >{{ $t("HOME.DELETE") }}
+        </li>
+      </ul>
+    </ContextMenu>
+    <EditPublicLink ref="EditPublicLink" />
+    <delete-user ref="DeleteUser" />
 
     <template #modal-ok>
-      Close
+      {{ $t("GENERAL.CLOSE") }}
     </template>
   </b-modal>
 </template>
 
 <script>
-export default {
-name: 'ImportUser',
-props: { title: { type: String, default: 'Manage Public Link' }, 
-},
+import ContextMenu from '@/components/ContextMenu.vue';
+import EditPublicLink from'@/components/Modals/link/EditPublicLink.vue';
+import DeleteUser from '@/components/Modals/user/DeleteUser.vue';
 
- data() {
+export default {
+  name: 'ImportUser',
+  props: { title: { type: String, default: 'Manage Public Link' }, 
+  },
+  components:{ 
+    DeleteUser,
+    ContextMenu,
+    EditPublicLink
+
+  },
+  data() {
      return {
       showModal: false
      }
@@ -114,12 +149,21 @@ props: { title: { type: String, default: 'Manage Public Link' },
     this.getUser()
    },
    methods: {
-     show() {
-      this.showModal = true
-     },
-     hide(){
-      this.showModal = false
-     },
+    handler(event) { event.preventDefault(); },//todo無法右鍵
+    operational(event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }, 
+    DeleteUser(){ this.$bvModal.show('modal-delete-user'); },
+    EditPublicLink(){ this.$bvModal.show('EditPublicLink'); },
+    rowSelected(items) {
+      this.selected = items[0]
+      console.log(this.selected);
+    
+    },
+    showMenu(event) {
+      this.$refs.menuLink.open(event);
+    },
      getUser(){
       // let promise = this.axios.get('/some/url')
       //   return promise.then((data) => {
@@ -138,6 +182,3 @@ props: { title: { type: String, default: 'Manage Public Link' },
 }
 </script>
 
-<style>
-
-</style>

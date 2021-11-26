@@ -5,12 +5,11 @@ module.exports = {
 		disableHostCheck: true, 
 	},
 	chainWebpack: config => {
-    config
-      .plugin('html')
-      .tap(args => {
-        args[0].title = 'FileVista'
-        return args
-      })
+		config
+			.plugin('html')
+			.tap(args => {
+					args[0].title = "FileVista";
+					return args;
+		})
   }
-
 }

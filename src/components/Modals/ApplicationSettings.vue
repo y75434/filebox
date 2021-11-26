@@ -75,8 +75,7 @@
         </li>
       </ul>
       <div
-        class="tab-content "
-        style="height:400px"
+        class="tab-content height-400"
         id="myTabContent"
       >
         <div

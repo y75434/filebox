@@ -102,11 +102,8 @@
                       <template #default="{ ariaDescribedby }">
                         <div
                           class="w-100 row"
-                          style=""
                         >
                           <b-form-checkbox-group
-                            style=""
-
                             id="events"
                             v-model="eventsSelected"
                             :options="events"
@@ -779,13 +776,6 @@
         <ul class="text-dark">
           <li @click="EditPublicLink">
             <img
-              src="@/assets/images/cmd/rename@2x.png"
-              class="icon24px"
-            >
-            {{ $t("HOME.RENAME") }}
-          </li>
-          <li @click="EditPublicLink">
-            <img
               src="@/assets/images/icon/user setting@2x.png"
               class="icon24px"
             >{{ $t("GENERAL.ATTRIBUTES") }}
@@ -964,7 +954,7 @@ methods: {
   operational(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.$refs.menuForUser.open(event);
+    // this.$refs.menuForUser.open(event);
   }, 
   //選取一個資料 並將資料傳遞子層 
   rowSelected(items) {
@@ -976,7 +966,7 @@ methods: {
     
   },
   Rename(){      
-    this.$refs.menuForUser.close();
+    // this.$refs.menuForUser.close();
     this.$bvModal.show('EditUserProperties');
   },
   ImportUser(){
@@ -1023,7 +1013,3 @@ methods: {
 }
 }
 </script>
-
-<style>
-
-</style>
