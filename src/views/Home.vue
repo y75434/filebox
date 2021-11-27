@@ -12,9 +12,12 @@
               <img
                 src="@/assets/images/cmd/copy@2x.png"
                 alt="copy"
-                :style=" this.selected ? {filter: 'grayscale(90%);'} : {filter: 'grayscale(100%);'}"
-              >//todo 無法顯示
-              <!-- :style=" selected ? {filter: 'grayscale(90%);'} : {filter: 'grayscale(0%);'}" -->
+                :style=" selected ? {opacity:'0.5'} : {opacity:'0.9'}"
+              >
+              <!-- :style=" selected ? {filter: 'grayscale(90%);'} : {filter: 'grayscale(50%);'}" -->
+
+
+              <!-- style=" selected ? {filter: 'grayscale(90%);'} : {filter: 'grayscale(0%);'}" -->
 
               <span class="nav-text text-center">{{ $t("HOME.COPY") }}</span>
             </div>
@@ -183,7 +186,7 @@
               v-b-tooltip.hover
               title="Invert Selection"
               class="bg-light text-dark border-0 p-0 d-flex"
-              @change="invert"
+              @click="invert"
             >
               <img
                 src="@/assets/images/icon/invert selection@2x.png"
@@ -283,8 +286,11 @@
           </div>
           <div class="divider" />
         </div>
-      </div>//todo search
-      <Search :tree-selected="tree-selected" />
+      </div>
+      <Search
+        :tree-selected="treeSelected
+        "
+      />
       <div />
       <!-- main -->
       <div class="dqbz-main">
@@ -672,11 +678,11 @@
               </h6>
             </label>
             <label
-              @change="!selected"
+              @change="selected = !selected"
               class="d-flex flex-column position-relative"
               for="flexCheckDefault7"
-              :style=" selected ? {backgroundColor: '#d3eaff'} : {backgroundColor: '#f0f0f0'}"
-            >//todo 無法顯示
+              :style="selected ? {backgroundColor: '#d3eaff'} : {backgroundColor: 'red'}"
+            >
               <!-- :style="selected ? 'border: 1px solid red;' : 'border: 1px solid white;'" -->
 
               <input
@@ -696,6 +702,27 @@
                   class="text-dark"
                   v-if="extensions"
                 >.docx</span>
+              </h6>
+            </label>
+            <label
+              v-for="item in allFiles"
+              :key="item.id"
+              class="d-flex flex-column position-relative"
+            >
+              <input
+                class="form-check-input itemCheckbox"
+                type="checkbox"
+                v-model="item.ischecked"
+              >
+              <img
+                :src="item.pic"
+                class="folder-icon"
+              >
+              <h6 class="text-dark text-center">
+                {{ item.name }}<span
+                  class="text-dark"
+                  v-if="extensions"
+                >.{{ item.extensions }}</span>
               </h6>
             </label>
           </Pane>
@@ -764,9 +791,28 @@ export default {
     checkboxSelected: [],//checkbox
     treeSelected: null,
     allSelected: false,
-    allFiles:[],//所有檔案過濾後把id放入這個陣列
+    allFiles:[{
+        name:'word',
+        extensions:'docx',
+        pic: require('@/assets/images/file/single folder@2x.png')
+
+    },
+    {
+        name:'abc',
+        extensions:'pdf',
+        pic: require('@/assets/images/file/single folder@2x.png')
+
+    },],//所有檔案過濾後把id放入這個陣列
     extensions: false
   }),
+  created(){
+    this.allFiles.map((x,index)=>{
+      x.ischecked = false;
+      x.showCheckbox = false;
+      x.id = index;
+      return x;
+    })
+  },
   computed:{
     //數checkbox勾選幾個
     selectedLength(){ 
@@ -808,16 +854,29 @@ export default {
     EditPublicLink(){ this.$bvModal.show('EditPublicLink'); },
 
     selectAll() { 
-      // this.allFiles.forEach(function (allFiles) {
-      //     this.checkboxSelected.push(allFiles.id);
-      // });
-      this.checkboxSelected = this.allFiles.slice()//目前allfiles空的
+      
+      this.allFiles.map(item =>{
+        item.ischecked = true
+        return item;
+      })
+      console.log('821',this.allFiles);
+      
+
     },
     selectNone(){
-      this.checkboxSelected =  []
+    this.allFiles.map(item =>{ 
+      item.ischecked = false;
+      return item;
+      })
+      console.log('867',this.allFiles);
     },
     invert(){
-      // this.checkboxSelected = checked ? this.allFiles.slice() : []
+      this.allFiles.map(item =>{ 
+        item.ischecked = !item.ischecked; 
+        return item;
+      })
+      console.log('867',this.allFiles); 
+      
     },
     //選擇檔案後有邊匡
     selectFile(){
