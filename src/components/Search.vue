@@ -149,7 +149,7 @@ export default {
     return {
       showModal: false,
       new: this.treeSelected,
-    };//TODO click
+    };
 
   },
   mounted(){
@@ -161,12 +161,7 @@ export default {
     
   },
   methods: {
-    // get(){
-    //   eventBus.$on('treeSelected',(item) => { 
-    //     this.route = item.treeSelected; });
-    //   console.log(this.route);
-
-    // },
+   
     show() {
       this.showModal = true;
     },

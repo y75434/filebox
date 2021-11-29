@@ -16,7 +16,7 @@
       ref="form"
       @submit.stop.prevent="handleSubmit"
     > -->
-    <div class="modal-popout-bg p-3">
+    <div class="modal-popout-bg p-3" style="height:500px">
       <ul
         class="nav nav-tabs"
         id="myTab"

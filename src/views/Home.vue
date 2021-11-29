@@ -436,7 +436,6 @@
                     @click="passRoute($event)"                   
                     value="Another Root Folder"
                   >
-                    //TODO click
                     <img
                       :src="`${this.treeItems[0].pic}`"
                       class="icon24px"
@@ -681,7 +680,7 @@
               @change="selected = !selected"
               class="d-flex flex-column position-relative"
               for="flexCheckDefault7"
-              :style="selected ? {backgroundColor: '#d3eaff'} : {backgroundColor: 'red'}"
+              :style="selected ? {backgroundColor: '#d3eaff'} : {backgroundColor: 'transparent'}"
             >
               <!-- :style="selected ? 'border: 1px solid red;' : 'border: 1px solid white;'" -->
 
@@ -708,11 +707,14 @@
               v-for="item in allFiles"
               :key="item.id"
               class="d-flex flex-column position-relative"
+              @change="ischecked = !ischecked"
+              :style="item.ischecked ? {backgroundColor: '#d3eaff'} : {backgroundColor:'transparent'}"
             >
               <input
                 class="form-check-input itemCheckbox"
                 type="checkbox"
                 v-model="item.ischecked"
+                v-if="renderCheckboxs"
               >
               <img
                 :src="item.pic"
@@ -725,6 +727,12 @@
                 >.{{ item.extensions }}</span>
               </h6>
             </label>
+            <DDR
+              v-model="transform"
+              draggable="false"
+            >
+              <div style="background:#d3eaff;width:100%;height:100%" />
+            </DDR>  
           </Pane>
         </Splitpanes>
       </div>
@@ -738,7 +746,7 @@
     </div>
     <div class="dqbz-footer">
       <p class="mx-3">
-        {{ allItems }} items
+        {{ allFiles.length }} items
       </p>
       <p>{{ selectedLength || 0 }} item selected</p>
     </div>
@@ -755,6 +763,8 @@ import DeleteFolder from '../components/Modals/home/DeleteFolder.vue';
 import RenameItem from '../components/Modals/home/RenameItem.vue';
 import ManagePublicLink from '../components/Modals/home/ManagePublicLink.vue';
 import EditPublicLink from'@/components/Modals/link/EditPublicLink.vue';
+import DDR from 'yoyoo-ddr';
+ import 'yoyoo-ddr/dist/yoyoo-ddr.css';
 
 
 export default {
@@ -769,12 +779,13 @@ export default {
     RenameItem,
     DeleteFolder,
     ManagePublicLink,
-    EditPublicLink
+    EditPublicLink,
+    DDR,
 
   
   },
   data: () => ({
-    allItems: 7,
+    transform: { x: 1000, y: 1000, width: 100, height: 100, rotation: 0 },
     selected: false,
     selectMode: 'single',
     paneSize: 15,
@@ -803,20 +814,24 @@ export default {
         pic: require('@/assets/images/file/single folder@2x.png')
 
     },],//所有檔案過濾後把id放入這個陣列
-    extensions: false
+    extensions: false,
   }),
   created(){
     this.allFiles.map((x,index)=>{
-      x.ischecked = false;
-      x.showCheckbox = false;
-      x.id = index;
+      this.$set(this.allFiles, x.ischecked, false)
+      this.$set(this.allFiles, x.showCheckbox, false)
+      this.$set(this.allFiles, x.id, index)
       return x;
     })
+    
   },
   computed:{
     //數checkbox勾選幾個
     selectedLength(){ 
-      return this.checkboxSelected.length; 
+      // return this.allFiles.ischecked[true].length; 
+      return Object.keys(this.allFiles).filter(key =>
+          this.allFiles[key].ischecked === true).length
+
     }
   },
   watch: {
@@ -830,59 +845,48 @@ export default {
       }
   }
 },
-  methods: {
+  methods: {  
     passRoute(e){
       const buttonValue = e.target.value;   
       this.treeSelected = buttonValue;
-      console.log(this.treeSelected);
-      
+      console.log(this.treeSelected);     
     },
-    // clickcheckbox(e){
-    //   const { value,checked } = e.target
-    //   if (checked) {
-
-    //   this.checkboxSelected.push(value)
-    //   }
-    //   console.log('754',this.checkboxSelected);
-    // },
-    
+     handleDrag(event, transform) {
+      this.transform = transform
+    },
+    handleResize(event, transform) {
+      this.transform = transform
+    },
+    handleRotate(event, transform) {
+      this.transform = transform
+    },
+    // modal
     UploadFiles(){ this.$bvModal.show('UploadFiles'); },
     CreateFolder(){ this.$bvModal.show('CreateFolder'); },
     RenameItem(){ this.$bvModal.show('RenameItem'); },
     DeleteFolder(){ this.$bvModal.show('DeleteFolder'); },
     ManagePublicLink(){this.$bvModal.show('ManagePublicLink');},
     EditPublicLink(){ this.$bvModal.show('EditPublicLink'); },
-
-    selectAll() { 
-      
+    // checkbox func
+    selectAll() {   
       this.allFiles.map(item =>{
+
         item.ischecked = true
         return item;
       })
-      console.log('821',this.allFiles);
-      
-
     },
     selectNone(){
     this.allFiles.map(item =>{ 
       item.ischecked = false;
       return item;
       })
-      console.log('867',this.allFiles);
     },
     invert(){
       this.allFiles.map(item =>{ 
         item.ischecked = !item.ischecked; 
         return item;
       })
-      console.log('867',this.allFiles); 
-      
     },
-    //選擇檔案後有邊匡
-    selectFile(){
-      this.selected = true;
-      
-    }
   },
 };
 </script>

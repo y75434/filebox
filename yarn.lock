@@ -9804,3 +9804,8 @@
     "is-ci" "^1.0.10"
     "normalize-path" "^1.0.0"
     "strip-indent" "^2.0.0"
+
+"yoyoo-ddr@^0.5.5":
+  "integrity" "sha512-/v2QF0NWmftNcsG4J8Lhgwn65N76jhuQiwHxXpj86zSAgno7EyWP3wewOjJwhT+pd4xcKtlOPa6Hf1jOAOQPoA=="
+  "resolved" "https://registry.npmjs.org/yoyoo-ddr/-/yoyoo-ddr-0.5.5.tgz"
+  "version" "0.5.5"
