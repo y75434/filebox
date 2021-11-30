@@ -49,26 +49,26 @@
         </p>
       </div>
     </div>
-    <form
-      action="/somewhere/to/upload"
-      enctype="multipart/form-data"
-    >
-      <input
-        type="file"
-        id="TWInput"
-        accept="image/gif, image/jpeg, image/png"
-        multiple
-        @change="readURL"
-      >
-      <div
-        id="TW"
-        style="width:100%; height: 300px; overflow:scroll;"
-      >
-      <div v-if="" class="" v-for="item in files">
-        <img :src="e.target.result" alt="">
-      </div>
-        <p v-else>目前沒有圖片</p>
-      </div>
+    <form>
+      <!-- <div
+          class=""
+          :key="item.name"
+          v-for="item in this.file"
+        >  -->
+
+      <!-- 
+        <div
+          class=""
+          v-for="this.file.length==0"
+        >     
+          <img  :src="item.url" alt="">
+            <p class="m-5 hr-gray">
+              {{ item.name }}
+            </p>
+          <p v-else>目前沒有圖片</p> 
+        </div>
+        -->
+      <!-- </div> -->
     </form>
 
 
@@ -150,11 +150,12 @@ export default {
   data() {
     return {
       showModal: false,
-      url: null,
+      url: [],
       file:{
         name:null
       },
-      files:[]
+      files:[],
+      a:[]
     };
   },
   methods: {
@@ -174,24 +175,34 @@ export default {
     },
     onFileChange(e) {
       const file = e.target.files;
-      // this.file.name = file.name
       console.log(file);
+      this.file = file 
+      Object.assign(this.file, {url: "value3"});
+
+
+      console.log(this.file);
+      this.url  = this.file[0].url 
+
+      console.log(this.file[0]);
+
+
       this.url = [...file].map(URL.createObjectURL);
 
+      console.log(this.url);
+
+      this.url.forEach(element =>{
+       element.replace('blob:')
+
+     
+       this.url = element
+       
+       console.log(this.url);
+
+      });
+      console.log(this.file);  
       // this.url = URL.createObjectURL(file);
     },
-    readURL(input){
-      if (input.files && input.files.length >= 0) {
-        for(let i = 0; i < input.files.length; i ++){
-          let reader = new FileReader();
-          // reader(e){
-            
-          // }
-          reader.readAsDataURL(input.files[i]);
-        }
-      
-}
-
+   
   },
 };
 </script>

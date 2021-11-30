@@ -6,19 +6,13 @@
         <div class="fn-box bg-light">
           <div class="d-flex fn-w-150 align-items-center">
             <div
-              :style=" selected ? {color: 'red'} : {color: '#acaeaf'}"
               class="d-flex flex-column w-30"
             >
               <img
                 src="@/assets/images/cmd/copy@2x.png"
                 alt="copy"
-                :style=" selected ? {opacity:'0.5'} : {opacity:'0.9'}"
+                :style=" selectedLength>0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
-              <!-- :style=" selected ? {filter: 'grayscale(90%);'} : {filter: 'grayscale(50%);'}" -->
-
-
-              <!-- style=" selected ? {filter: 'grayscale(90%);'} : {filter: 'grayscale(0%);'}" -->
-
               <span class="nav-text text-center">{{ $t("HOME.COPY") }}</span>
             </div>
             <div
@@ -27,6 +21,7 @@
               <img
                 src="@/assets/images/cmd/paste@2x.png"
                 alt="paste"
+                :style=" copy ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.PASTE") }}</span>
             </div>
@@ -36,6 +31,7 @@
               <img
                 src="@/assets/images/cmd/cut@2x.png"
                 alt=""
+                :style=" cut ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class=" nav-text text-center">{{ $t("HOME.CUT") }}</span>
             </div>    
@@ -50,6 +46,7 @@
               <img
                 src="@/assets/images/cmd/delete@2x-2.png"
                 alt=""
+                :style=" selectedLength>0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">
                 {{ $t("HOME.DELETE") }}
@@ -62,6 +59,7 @@
               <img
                 src="@/assets/images/cmd/rename@2x.png"
                 alt=""
+                :style=" selectedLength==1 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.RENAME") }}</span>
             </li>
@@ -76,6 +74,7 @@
               <img
                 src="@/assets/images/file/new folder@2x.png"
                 alt=""
+                :style=" selectedLength==0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
 
               <span class="nav-text text-center">{{ $t("HOME.NEW") }}</span>
@@ -88,6 +87,7 @@
               <img
                 src="@/assets/images/cmd/download@2x.png"
                 alt=""
+                :style=" selectedLength>0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.DOWNLOAD") }}</span>
             </div>
@@ -98,6 +98,7 @@
               <img
                 src="@/assets/images/cmd/upload@2x.png"
                 alt=""
+                :style=" selectedLength==0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.UPLOAD") }}</span>
             </li>
@@ -134,6 +135,7 @@
               <img
                 src="@/assets/images/file/publiclink@2x.png"
                 class="nav-icon pe-1 mx-auto"
+                :style=" selectedLength==0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="d-sm-none d-md-block d-lg-block text-truncate">{{ $t("HOME.CREATEPUBLICLINK") }}
 
@@ -149,6 +151,7 @@
               <img
                 src="@/assets/images/icon/managepubliclink@2x.png"
                 class="nav-icon pe-1 mx-auto"
+                :style=" selectedLength>0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="d-sm-none d-md-block d-lg-block ">{{ $t("HOME.MANAGEPUBLICLINKS") }}</span>
             </b-button>
@@ -288,8 +291,8 @@
         </div>
       </div>
       <Search
-        :tree-selected="treeSelected
-        "
+        :tree-selected="treeSelected"
+        @update="selfUpdate"
       />
       <div />
       <!-- main -->
@@ -727,6 +730,27 @@
                 >.{{ item.extensions }}</span>
               </h6>
             </label>
+
+
+
+
+            <h6 class="text-dark text-center">
+              {{ searchQuery }}
+            </h6>
+            //todo undo
+            <tr
+              class="text-dark text-center"
+
+              :key="item.id"
+              v-for="item in resultQuery"
+            >
+              <td>
+                <a>{{ item.name }}</a>
+              </td>
+            </tr>
+
+
+
             <DDR
               v-model="transform"
               draggable="false"
@@ -815,6 +839,9 @@ export default {
 
     },],//所有檔案過濾後把id放入這個陣列
     extensions: false,
+    copy: false,//有無複製檔案
+    cut: false,
+    // searchQuery: ""
   }),
   created(){
     this.allFiles.map((x,index)=>{
@@ -828,10 +855,17 @@ export default {
   computed:{
     //數checkbox勾選幾個
     selectedLength(){ 
-      // return this.allFiles.ischecked[true].length; 
       return Object.keys(this.allFiles).filter(key =>
           this.allFiles[key].ischecked === true).length
-
+    },//todo undo
+    resultQuery(){
+      if(this.searchQuery){
+        return this.allFiles.filter((item)=>{
+          return this.searchQuery.toLowerCase().split(' ').every(v => item.name.toLowerCase().includes(v))
+        })
+        }else{
+          return this.allFiles;
+      }
     }
   },
   watch: {
@@ -846,6 +880,11 @@ export default {
   }
 },
   methods: {  
+    selfUpdate(val) {
+      this.searchQuery = val;
+      console.log(this.searchQuery);
+      
+    },
     passRoute(e){
       const buttonValue = e.target.value;   
       this.treeSelected = buttonValue;

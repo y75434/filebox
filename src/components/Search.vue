@@ -123,8 +123,11 @@
     <b-form-input
       type="text"
       placeholder="Search"
+      v-model="searchQuery"
+      @change="update"
     />
 
+    
 
     <!-- <b-button
       class="text-white"
@@ -149,7 +152,9 @@ export default {
     return {
       showModal: false,
       new: this.treeSelected,
-    };
+      searchQuery: null,
+    }
+
 
   },
   mounted(){
@@ -157,11 +162,15 @@ export default {
     this.new = this.treeSelected;
 
   },
+
+  
   watch:{
     
   },
   methods: {
-   
+   update() {
+    this.$emit('update', this.searchQuery); 
+    },
     show() {
       this.showModal = true;
     },
