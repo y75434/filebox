@@ -108,6 +108,17 @@ export default {
       //   }
       //   this.$router.push('/home');
       // })
+       
+      this.axios.post(`${process.env.APIPATH}/api/Users/IsDBUserAuthenticated`,
+      {account:this.loginForm.account,password:this.loginForm.password})
+        .then((data) => {
+         
+
+        console.log(data);
+      }).catch(error => {
+          console.log(error);          
+        })
+      
     },
     ForgotPassword(){ this.$bvModal.show('ForgotPassword');},
     RequestEmailSent(){ this.$bvModal.show('RequestEmailSent');},

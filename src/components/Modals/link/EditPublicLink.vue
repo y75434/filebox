@@ -29,12 +29,16 @@
             type="Name in link"
             class="form-control inline-block width-320"
             id="Name in link"
+            v-model="tabData.name"
           >
         </div>
       </form>
       <!-- </div> -->
             
       <hr class="">
+      <h1 class="text-dark">
+        {{ tabData }}
+      </h1>
 
 
       <div
@@ -46,6 +50,7 @@
             type="checkbox"
             value=""
             id="Usermustchangepasswordatnexttime"
+            v-model="tabData.isPublic"
           >
           <label
             class="form-check-label"
@@ -86,6 +91,7 @@
             {{ $t("MODAL.LINKCANBEOPENED") }}<input
               type="text"
               class="mx-2 form-control w-25"
+              v-model="tabData.viewableTimes"
             >{{ $t("GENERAL.TIMES") }}
 
 
@@ -146,9 +152,11 @@
           >{{ $t("GENERAL.PUBLICLINK") }}</label>
           <div class="d-flex justify-content-between">
             <input
-              type="password"
+              type="url"
               class="form-control w-75"
               id="Public link"
+              v-model="tabData.url"
+              disabled
             >
             <b-button
               class="bg-green border-0"
@@ -173,7 +181,7 @@
         <div class="">
           <b-button
             class="bg-green border-0 mx-2"
-            @click="Reset('forget')"
+            @click="Reset()"
           >
             {{ $t("MODAL.RESET") }}
           </b-button>
@@ -194,17 +202,68 @@
 
 export default {
   name: "EditPublicLink",
-  props: { title: { type: String, default: "Edit Public Link" } },
+  props: { 
+    title: { type: String, default: "Edit Public Link" },
+    tabData: { type: Object , default() { return {} }}
+  },
   components:{ 
    
   },
   data() {
     return {
       showModal: false,
+      personData: this.tabData
     };
   },
   methods: {
-    
+    // rename + editname
+    EditLinkName (id) {  
+      this.axios.post(`${process.env.APIPATH}/api/Link/${id}`)
+        .then((data) => {
+
+          // {
+          //   "linkId": "bd30087c-0e86-4118-8aaa-3f2a195664ce",
+          //   "name": "link3",
+          //   "expireDays": 3,
+          //   "viewableTimes": 10,
+          //   "password": "Link3Pass",
+          //   "url": "https://localhost:44395/swagger/index.html",
+          //   "editor": "jamy"
+          // }
+
+ 
+
+
+        console.log(data);
+      }).catch(error => {
+          console.log(error);          
+        })
+    },
+    createNewLink() {  
+      this.axios.post(`${process.env.APIPATH}/api/Link/Create`)
+        .then((data) => {
+
+        // {
+        //     "name": "mp4link",
+        //     "isPublic": true,
+        //     "expireDay": 2,
+        //     "viewableTimes": 10,
+        //     "password": "pass",
+        //     "url": "https://localhost:44395/swagger/index.html",
+        //     "fileId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        //     "creator": "vr",
+        //     "editor": "vr"
+        //   }
+
+
+ 
+
+
+        console.log(data);
+      }).catch(error => {
+          console.log(error);          
+        })
+    },
     show() {
       this.showModal = true;
     },
@@ -216,6 +275,9 @@ export default {
       this.showModal = false;
       // });
     },
+    Reset(){
+      this.personData = ""
+    }
   },
 };
 </script>

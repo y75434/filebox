@@ -73,6 +73,34 @@ export default {
 		// },
 	},
 	methods: {
+     deleteGroup(id) {  
+      this.axios.delete(`${process.env.APIPATH}/api/Groups/${id}`)
+        .then((data) => {
+        
+        console.log(data);
+      }).catch(error => {
+          console.log(error);          
+        })
+      },
+      deleteUser(id) {  
+      this.axios.delete(`${process.env.APIPATH}/api/Users/${id}`)
+        .then((data) => {
+        //Input parameters: userId
+        console.log(data);
+      }).catch(error => {
+          console.log(error);          
+        })
+      },
+       deleteLink(id) {  
+         //它不會刪除記錄，而只是將刪除標誌設置為打開或關閉
+        this.axios.delete(`${process.env.APIPATH}/api/Link/${id}`)
+          .then((data) => {
+          //Input parameters: userId
+          console.log(data);
+        }).catch(error => {
+            console.log(error);          
+          })
+      },
 		handleOk(bvModalEvt) {
 			bvModalEvt.preventDefault();
 			this.handleSubmit();

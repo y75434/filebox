@@ -306,7 +306,12 @@
                 </b-tr>
               </b-thead>
               <b-tbody>
-                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.BROWSE')) !== -1">
+                //todo events 無法右鍵
+                <b-tr 
+                  @click="eventsProps($event)"
+                  value="GENERAL.BROWSE"
+                  v-if="eventsSelected.indexOf($t('GENERAL.BROWSE')) !== -1"
+                >
                   <b-th>
                     <img
                       src="@/assets/images/icon/browse@2x.png"
@@ -804,8 +809,14 @@
 
       <AddNewUser ref="AddNewUser" />
       <RootFolderProperties ref="RootFolderProperties" />
-      <EditPublicLink ref="EditPublicLink" />
-      <EventProperties ref="EventProperties" />
+      <EditPublicLink
+        ref="EditPublicLink"
+        :tab-data="selected"
+      />
+      <EventProperties
+        ref="EventProperties"
+        :tab-data="eventTab"
+      />
     </div>
   </div>
 </template>
@@ -861,7 +872,28 @@ data() {
       
       ],
       linkitems: [
-        { Name: 'Rachel',LinkedItem:'https://demos.google.com/admin/public...', CreatedBy:'admin', HitCount:'2',LastHitTime:'25/02/2007 10:52 AM',Expiration:'25/02/2007 10:52 AM'}, 
+        {
+          linkId: "4ca71772-2459-4503-bf7b-2cf6b9a313f8",
+          name: "link2",
+          isPublic: true,
+          expire: "2021-11-16T04:55:37.249",
+          viewableTimes: 0,
+          viewed: 0,
+          url: "string",
+          lastViewed: "2021-11-16T04:55:37.249",
+          creator: "string"
+        },
+        {
+          linkId: "99f18a0a-42a5-4831-98bf-6595ab174881",
+          name: "mp4link",
+          isPublic: true,
+          expire: "2021-12-01T18:24:07.179089",
+          viewableTimes: 10,
+          viewed: 1,
+          url: "https://localhost:44395/swagger/index.html",
+          lastViewed: null,
+          creator: "vr"
+        }
       ],
       selectedRow : null,
       selected: {},
@@ -871,6 +903,7 @@ data() {
       events: [this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"), this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"), this.$t("GENERAL.PUBLICLINK"), this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
       allSelected: true,
       eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
+      eventTab: null
   };
 },
 created(){
@@ -908,18 +941,22 @@ methods: {
   getTable(){    
     switch (this.currentSelected) {
       case 1:
+        this.getUserTable();
         this.count = this.items.length        
         return this.items;
-      case 2:        
+      case 2: 
+        this.getGroupTable();       
         this.count = this.groupitems.length
         return this.groupitems;
       case 3:
         this.count = this.folderitems.length
         return this.folderitems;         
       case 4: 
+        this.getEventTable();
         this.count = this.eventsitems.length
         return this.eventsitems;
       case 5: 
+        this.getLinkTable();
         this.count = this.linkitems.length
         return this.linkitems;
       default:
@@ -965,6 +1002,13 @@ methods: {
     // this.$refs.selectableTable.selectRow(index) 
     
   },
+  // todo 目前點擊右鍵無法用
+  eventsProps(e){
+    const buttonValue = e.target.value;
+    this.eventTab = buttonValue
+    console.log(this.eventTab);
+
+  },
   Rename(){      
     // this.$refs.menuForUser.close();
     this.$bvModal.show('EditUserProperties');
@@ -999,7 +1043,68 @@ methods: {
     },
     EventProperties(){
       this.$bvModal.show('EventProperties');
-    }
+    },
+    getUserTable () {  
+        let promise = this.axios.get(`${process.env.APIPATH}/api/Users/GetUsers`)
+        return promise.then((data) => {          
+          this.items = data       
+          return this.items
+        }).catch(error => {
+          console.log(error);        
+          return []
+        })
+    },
+    getGroupTable () {  
+        let promise = this.axios.get(`${process.env.APIPATH}/api/Groups/GetGroups`)
+        return promise.then((data) => {          
+          this.groupitems = data       
+          return this.groupitems
+        }).catch(error => {
+          console.log(error);        
+          return []
+        })
+    },
+    getEventTable(){
+      let promise = this.axios.get(`${process.env.APIPATH}/Log/GetAll`)
+        return promise.then((data) => {          
+          this.eventsitems = data       
+          return this.eventsitems
+        }).catch(error => {
+          console.log(error);        
+          return []
+        })
+    },
+    // change this.eventsSelected value
+    getEventType(){ 
+      this.axios.post(`${process.env.APIPATH}/ActionType/GetAll`)
+        .then((data) => {
+          console.log(data);
+          data.forEach(element =>{
+            this.eventsSelected.push(element.name)
+            console.log(this.eventsSelected);     
+      });
+      }).catch(error => {
+          console.log(error);          
+        })
+
+        // {
+        //   "actionTypeId": "bddb88fd-ea7c-4997-9f74-f3d1be2de263",
+        //   "code": "1",
+        //   "name": "MoveCutPaste",
+        //   "log": null
+        // }
+
+    },
+    getLinkTable(){
+      let promise = this.axios.get(`${process.env.APIPATH}/api/Link/GetAll`)
+        return promise.then((data) => {          
+          this.linkitems = data       
+          return this.linkitems
+        }).catch(error => {
+          console.log(error);        
+          return []
+        })
+    },
     //用戶table更新
     // getUserTable(){
     //   const url = ``
