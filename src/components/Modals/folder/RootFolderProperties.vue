@@ -4,7 +4,7 @@
     class="modal-content"
     body-text-variant="warning"
     centered
-    :title="$t('TITLE.DELETEFOLDER')"
+    :title="$t('TITLE.ROOTFOLDERPROPERTIES')"
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"

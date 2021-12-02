@@ -33,7 +33,7 @@
           <!-- <code>{{ dataSource.name }}</code> -->
         </p>
         <div class="mx-auto">
-          <span class="badge px-4 py-2 my-2 bg-danger">{{ tabData.FullName }}</span>
+          <span class="badge px-4 py-2 my-2 bg-danger">{{ tabData.FullName || tabData.name || tabData.Name }}</span>
         </div>
 
         <input

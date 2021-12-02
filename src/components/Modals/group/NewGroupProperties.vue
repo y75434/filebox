@@ -306,30 +306,41 @@ export default {
           console.log(error);          
         })
       },
-      renameGroupName() {  
-      this.axios.post(`${process.env.APIPATH}/api/Groups/EditGroupName`)
-        .then((data) => {
-        
-        console.log(data);
-      }).catch(error => {
-          console.log(error);          
-        })
-      },
+      
       updateGroup() {  
       this.axios.post(`${process.env.APIPATH}/api/Groups/EditGroup`)
         .then((data) => {
         
+          // {
+          //   "id": "34531a23-5b89-4864-845a-5dafcdcacd73",
+          //   "groupName": "SETgroup",
+          //   "groupDescription": "SET group",
+          //   "groupUserRelations": [
+          //     {
+          //       "groupID": "34531a23-5b89-4864-845a-5dafcdcacd73",
+          //       "userID": "be521f65-7f95-4ca6-a00e-0aa67f08d968",
+          //       "roleId": 1
+          //     },
+          //     {
+          //       "groupID": "34531a23-5b89-4864-845a-5dafcdcacd73",
+          //       "userID": "2623f7d6-e03d-4bf3-b9fe-7844a6c4f736",
+          //       "roleId": 2
+          //     },
+          //     {
+          //       "groupID": "34531a23-5b89-4864-845a-5dafcdcacd73",
+          //       "userID": "05d28b09-648b-4d69-9b39-13fdf664991f",
+          //       "roleId": 2
+          //     }
+          //   ]
+          // }
+
+
         console.log(data);
       }).catch(error => {
           console.log(error);          
         })
       },
-    show() {
-      this.showModal = true;
-    },
-    hide() {
-      this.showModal = false;
-    },
+    
     handleSubmit() {
       // this.$nextTick(() => {
       this.showModal = false;

@@ -272,10 +272,9 @@
             :items="getTable()"
             class="col-12 b-col"
             @contextmenu="operational($event)"
-            @row-selected="rowSelected"
+            @row-hovered="rowSelected"
             ref="selectableTable"
-            :select-mode="selectMode"
-            selectable
+            :select-mode="selectMode"      
             hover
             :filter="filter"
           />
@@ -704,7 +703,7 @@
             >
             {{ $t("HOME.RENAME") }}
           </li>
-          <li @click="Rename">
+          <li @click="property">
             <img
               src="@/assets/images/icon/user setting@2x.png"
               class="icon24px"
@@ -721,7 +720,7 @@
       <ContextMenu ref="menuForGroup">
         <ul class="text-dark">
           <li
-            @click="NewGroupProperties"
+            @click="Rename"
             title="Edit Group Properties"
           >
             <img
@@ -746,7 +745,7 @@
       </ContextMenu>
       <ContextMenu ref="menuForFolder">
         <ul class="text-dark">
-          <li @click="RootFolderProperties">
+          <li @click="Rename">
             <img
               src="@/assets/images/cmd/rename@2x.png"
               class="icon24px"
@@ -817,6 +816,10 @@
         ref="EventProperties"
         :tab-data="eventTab"
       />
+      <rename-item
+        ref="RenameItem" 
+        :tab-data="selected"
+      />
     </div>
   </div>
 </template>
@@ -832,6 +835,8 @@ import NewGroupProperties from '@/components/Modals/group/NewGroupProperties.vue
 import RootFolderProperties from '@/components/Modals/folder/RootFolderProperties.vue';
 import EditPublicLink from'@/components/Modals/link/EditPublicLink.vue';
 import EventProperties from '@/components/Modals/events/EventProperties.vue';
+import RenameItem from '../components/Modals/home/RenameItem.vue';
+
 
 export default {
 name: "Content",
@@ -844,7 +849,8 @@ components:{
     NewGroupProperties,
     RootFolderProperties,
     EditPublicLink,
-    EventProperties
+    EventProperties,
+    RenameItem
 
 },
 data() {
@@ -993,10 +999,10 @@ methods: {
     event.stopPropagation();
     // this.$refs.menuForUser.open(event);
   }, 
-  //選取一個資料 並將資料傳遞子層 
+  //hover一個資料 並將資料傳遞子層 
   rowSelected(items) {
     // this.selectedRow = index;
-    this.selected = items[0]
+    this.selected = items
     console.log(this.selected);
   
     // this.$refs.selectableTable.selectRow(index) 
@@ -1010,7 +1016,9 @@ methods: {
 
   },
   Rename(){      
-    // this.$refs.menuForUser.close();
+    this.$bvModal.show('RenameItem');
+  },
+  property(){      
     this.$bvModal.show('EditUserProperties');
   },
   ImportUser(){

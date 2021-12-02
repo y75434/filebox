@@ -26,6 +26,11 @@
         :placeholder="$t( 'MODAL.PLEASEFILLOUTTHISFIELD')"
       >
     </div>
+
+    <p class="text-dark">
+      {{ tabData }}
+    </p>
+
     <!-- </form> -->
     <template
       #modal-cancel
@@ -35,7 +40,10 @@
       {{ $t("GENERAL.CANCEL") }}
     </template>
 
-    <template #modal-ok>
+    <template
+      @click="EditName"
+      #modal-ok
+    >
       {{ $t("GENERAL.OK") }}
     </template>
   </b-modal>
@@ -44,20 +52,46 @@
 <script>
 export default {
   name: "RenameItem",
-  props: { title: { type: String, default: "Rename Item" } },
-
+  props: { 
+    title: { type: String, default: "Rename Item" },
+    tabData: { type: Object , default() { return {} }}
+  },
   data() {
     return {
       showModal: false,
+      personData: this.tabData,
+      type: "",
+
     };
   },
   methods: {
-    show() {
-      this.showModal = true;
-    },
-    hide() {
-      this.showModal = false;
-    },
+    
+     EditName () {  
+      console.log(this.personData.name);
+
+      if(Object.prototype.hasOwnProperty.call(this.personData, "userName")) { 
+        this.type =='Users/EditUserName'
+       }else{
+         this.type =='Groups/EditGroupName'
+       }
+      // ${process.env.APIPATH}/api/Groups/EditGroupName
+
+      //if user
+      this.axios.post(`${process.env.APIPATH}/api/${this.type}/${this.tabData.id}`)
+        .then((data) => {
+          // {
+          //   "id": "816eb044-087d-43b7-af15-090af7cd0d37",
+          //   "userName": "ccnewname"
+          // }
+          console.log(data);
+
+          this.personData.name = data.userName
+        }).catch(error => {
+          console.log(error);          
+        })
+
+      },
+    
     handleSubmit() {
       // this.$nextTick(() => {
       this.showModal = false;

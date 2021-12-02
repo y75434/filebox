@@ -153,13 +153,14 @@
           <div class="d-flex justify-content-between">
             <input
               type="url"
-              class="form-control w-75"
+              class="form-control w-75 obj"
               id="Public link"
               v-model="tabData.url"
               disabled
             >
             <b-button
               class="bg-green border-0"
+              @click="copyText()"
             >
               {{ $t("GENERAL.COPYLINK") }}
             </b-button>
@@ -212,7 +213,8 @@ export default {
   data() {
     return {
       showModal: false,
-      personData: this.tabData
+      personData: this.tabData,
+      items: []
     };
   },
   methods: {
@@ -277,6 +279,10 @@ export default {
     },
     Reset(){
       this.personData = ""
+    },
+    copyText() {
+      this.items.push(this.tabData.url);
+      console.log('copy url',this.items[0])      
     }
   },
 };

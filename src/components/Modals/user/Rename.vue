@@ -227,15 +227,7 @@ export default {
   },
   
   methods: {
-    EditUserName () {  
-      this.axios.post(`${process.env.APIPATH}/api/Users/EditUserName`)
-        .then((data) => {
-
-        console.log(data);
-      }).catch(error => {
-          console.log(error);          
-        })
-      },
+   
     // update() {
     //   let url = `product`
     
