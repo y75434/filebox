@@ -36,9 +36,9 @@
       <!-- </div> -->
             
       <hr class="">
-      <h1 class="text-dark">
+      <p class="text-dark">
         {{ tabData }}
-      </h1>
+      </p>
 
 
       <div

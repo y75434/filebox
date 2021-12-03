@@ -178,6 +178,7 @@ export const locale = {
     DELETE: '刪除',
     IMPORTUSER:'匯入使用者',
     RENAME:'重新命名',
-    USERSETTING:'使用者設定'
+    USERSETTING:'使用者設定',
+    EDITUSERPROPERTIES:'用戶設定'
   }
 }

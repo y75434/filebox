@@ -5,7 +5,7 @@
     class="modal-content"
     body-text-variant="warning"
     centered
-    :title="$t('TITLE.RENAME')"
+    :title="$t('TITLE.EDITUSERPROPERTIES')"
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"

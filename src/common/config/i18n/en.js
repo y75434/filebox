@@ -179,6 +179,7 @@ export const locale = {
     DELETE: 'Delete',
     IMPORTUSER:'Import User',
     RENAME:'Rename',
-    USERSETTING:'User Setting'
+    USERSETTING:'User Setting',
+    EDITUSERPROPERTIES:'EditUserProperties'
   }
 }

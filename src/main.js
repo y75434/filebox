@@ -11,6 +11,7 @@ import axios from 'axios';
 
 import picture from '@/common/images';
 
+Vue.prototype.$axios = axios;
 
 import 'splitpanes/dist/splitpanes.css';
 

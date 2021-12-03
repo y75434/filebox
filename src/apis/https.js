@@ -16,8 +16,12 @@ const errorHandle = (status, msg) => {
 }
 
 var instance = axios.create({
-  baseURL: '/api'
+  baseURL:'https://192.168.110.180:6100'
+
 })
+
+export default axios;
+
 
 instance.interceptors.request.use((request) => {
   //檢查本端目前有無token

@@ -258,6 +258,16 @@
               {{ $t("GENERAL.REFRESH") }}
             </h5>
           </button>
+          <button
+            @click="getEventTable()"
+
+            type="button"
+            class="user-btn  btn d-flex align-items-center mr-3"
+          >
+            <h5 class="ms-1 m-0">
+              test api
+            </h5>
+          </button>
         </div>
       </div>
     </div>
@@ -305,387 +315,36 @@
                 </b-tr>
               </b-thead>
               <b-tbody>
-                //todo events 無法右鍵
-                <b-tr 
-                  @click="eventsProps($event)"
-                  value="GENERAL.BROWSE"
-                  v-if="eventsSelected.indexOf($t('GENERAL.BROWSE')) !== -1"
+                <b-tr
+                  v-for="item in eventsitems"
+                  :key="item.id"
+                  @contextmenu="operational($event)"
+                  @mouseover="eventsProps"
+                  @mouseout="buttonLeave"
+                  :value="item.name"
                 >
+                  <!-- v-if="eventsSelected.indexOf(eventpics[i].eventName) !== -1" -->
+                  <!-- @mouseover="eventsProps($event)" -->
+
                   <b-th>
-                    <img
-                      src="@/assets/images/icon/browse@2x.png"
+                    <!-- 配合eventpics的邏輯 -->
+
+                    <!-- <img
+                      :src="pic"
                       class="icon32px"
-                    >
+                    > -->
                     <span
-                      v-if="$i18n.locale === 'en'"
                       class="m-0"
                     >
-                      {{ events[0] }}
-                    </span>
-                    <span
-                      v-if="$i18n.locale === 'tw'"
-                      class="m-0"
-                    >
-                      {{ $t("GENERAL.BROWSE") }}
+                      {{ item.actionType }}
                     </span>
                   </b-th>
                   <b-td>
-                    22/11/2007 09:23 AM
+                    {{ item.datetime }}
                   </b-td>
-                  <b-td>12:23:50 AM</b-td>
+                  <b-td>{{ item.description }}</b-td>
                   <b-td>
-                    Keng
-                  </b-td>
-                </b-tr>
-                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.LOGIN')) !== -1">
-                  <b-th class="text-right">
-                    <img
-                      src="@/assets/images/file/publiclink@2x.png"
-                      class="icon32px"
-                    >
-                    <span
-                      v-if="$i18n.locale === 'en'"
-                      class="m-0"
-                    >
-                      {{ events[1] }}
-                    </span>
-                    <span
-                      v-if="$i18n.locale === 'tw'"
-                      class="m-0"
-                    >
-                      {{ $t("GENERAL.LOGIN") }}
-                    </span>
-                  </b-th>
-                  <b-td>
-                    22/11/2007 09:23 AM
-                  </b-td>
-                  <b-td>12:23:50 AM</b-td>
-                  <b-td>
-                    Keng
-                  </b-td>
-                </b-tr>
-                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.PREVIEW')) !== -1">
-                  <b-th class="text-right">
-                    <img
-                      src="@/assets/images/cmd/preview@2x.png"
-                      class="icon32px"
-                    >
-                    <span
-                      v-if="$i18n.locale === 'en'"
-                      class="m-0"
-                    >
-                      {{ events[2] }}
-                    </span>
-                    <span
-                      v-if="$i18n.locale === 'tw'"
-                      class="m-0"
-                    >
-                      {{ $t("GENERAL.PREVIEW") }}
-                    </span>
-                  </b-th>
-                  <b-td>
-                    22/11/2007 09:23 AM
-                  </b-td>
-                  <b-td>12:23:50 AM</b-td>
-                  <b-td>
-                    Keng
-                  </b-td>
-                </b-tr>
-                <b-tr v-if="eventsSelected.indexOf($t('HOME.DOWNLOAD')) !== -1">
-                  <b-th class="text-right">
-                    <img
-                      src="@/assets/images/cmd/download@2x.png"
-                      class="icon32px"
-                    >
-                    <span
-                      v-if="$i18n.locale === 'en'"
-                      class="m-0"
-                    >
-                      {{ events[3] }}
-                    </span>
-                    <span
-                      v-if="$i18n.locale === 'tw'"
-                      class="m-0"
-                    >
-                      {{ $t("HOME.DOWNLOAD") }}
-                    </span>
-                  </b-th>                
-                  <b-td>
-                    22/11/2007 09:23 AM
-                  </b-td>
-                  <b-td>12:23:50 AM</b-td>
-                  <b-td>
-                    Keng
-                  </b-td>
-                </b-tr>
-                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.PUBLICLINK')) !== -1">
-                  <b-th class="text-right">
-                    <img
-                      src="@/assets/images/file/publiclink@2x.png"
-                      class="icon32px"
-                    >
-                    <span
-                      v-if="$i18n.locale === 'en'"
-                      class="m-0"
-                    >
-                      {{ events[4] }}
-                    </span>
-                    <span
-                      v-if="$i18n.locale === 'tw'"
-                      class="m-0"
-                    >
-                      {{ $t("GENERAL.PUBLICLINK") }}
-                    </span>
-                  </b-th>
-                  <b-td>
-                    22/11/2007 09:23 AM
-                  </b-td>
-                  <b-td>12:23:50 AM</b-td>
-                  <b-td>
-                    Keng
-                  </b-td>
-                </b-tr>
-                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.CREATEMOVE')) !== -1">
-                  <b-th class="text-right">
-                    <img
-                      src="@/assets/images/file/folder@2x.png"
-                      class="icon32px"
-                    >
-                    <span
-                      v-if="$i18n.locale === 'en'"
-                      class="m-0"
-                    >
-                      {{ events[5] }}
-                    </span>
-                    <span
-                      v-if="$i18n.locale === 'tw'"
-                      class="m-0"
-                    >
-                      {{ $t("GENERAL.CREATEMOVE") }}
-                    </span>
-                  </b-th>
-                  <b-td>
-                    22/11/2007 09:23 AM
-                  </b-td>
-                  <b-td>12:23:50 AM</b-td>
-                  <b-td>
-                    Keng
-                  </b-td>
-                </b-tr>
-                <b-tr v-if="eventsSelected.indexOf($t('HOME.RENAME')) !== -1">
-                  <b-th class="text-right">
-                    <img
-                      src="@/assets/images/cmd/rename@2x.png"
-                      class="icon32px"
-                    >
-                    <span
-                      v-if="$i18n.locale === 'en'"
-                      class="m-0"
-                    >
-                      {{ events[6] }}
-                    </span>
-                    <span
-                      v-if="$i18n.locale === 'tw'"
-                      class="m-0"
-                    >
-                      {{ $t("HOME.RENAME") }}
-                    </span>
-                  </b-th>
-                  <b-td>
-                    22/11/2007 09:23 AM
-                  </b-td>
-                  <b-td>12:23:50 AM</b-td>
-                  <b-td>
-                    Keng
-                  </b-td>
-                </b-tr>
-                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.MOVE')) !== -1">
-                  <b-th class="text-right">
-                    <img
-                      src="@/assets/images/cmd/cut@2x.png"
-                      class="icon32px"
-                    >
-                    <span
-                      v-if="$i18n.locale === 'en'"
-                      class="m-0"
-                    >
-                      {{ events[7] }}
-                    </span>
-                    <span
-                      v-if="$i18n.locale === 'tw'"
-                      class="m-0"
-                    >
-                      {{ $t("GENERAL.MOVE") }}
-                    </span>
-                  </b-th>
-                  <b-td>
-                    22/11/2007 09:23 AM
-                  </b-td>
-                  <b-td>12:23:50 AM</b-td>
-                  <b-td>
-                    Keng
-                  </b-td>
-                </b-tr>
-                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.EXTRACT')) !== -1">
-                  <b-th class="text-right">
-                    <img
-                      src="@/assets/images/file/extractallfiles@2x.png"
-                      class="icon32px"
-                    >
-                    <span
-                      v-if="$i18n.locale === 'en'"
-                      class="m-0"
-                    >
-                      {{ events[8] }}
-                    </span>
-                    <span
-                      v-if="$i18n.locale === 'tw'"
-                      class="m-0"
-                    >
-                      {{ $t("GENERAL.EXTRACT") }}
-                    </span>
-                  </b-th>
-                  <b-td>
-                    22/11/2007 09:23 AM
-                  </b-td>
-                  <b-td>12:23:50 AM</b-td>
-                  <b-td>
-                    Keng
-                  </b-td>
-                </b-tr>
-                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.LOGOUT')) !== -1">
-                  <b-th class="text-right">
-                    <img
-                      src="@/assets/images/cmd/logout@2x.png"
-                      class="icon32px"
-                    >
-                    <span
-                      v-if="$i18n.locale === 'en'"
-                      class="m-0"
-                    >
-                      {{ events[9] }}
-                    </span>
-                    <span
-                      v-if="$i18n.locale === 'tw'"
-                      class="m-0"
-                    >
-                      {{ $t("GENERAL.LOGOUT") }}
-                    </span>
-                  </b-th>
-                  <b-td>
-                    22/11/2007 09:23 AM
-                  </b-td>
-                  <b-td>12:23:50 AM</b-td>
-                  <b-td>
-                    Keng
-                  </b-td>
-                </b-tr>
-                <b-tr v-if="eventsSelected.indexOf($t('HOME.DELETE')) !== -1">
-                  <b-th class="text-right">
-                    <img
-                      src="@/assets/images/cmd/delete@2x-2.png"
-                      class="icon32px"
-                    >
-                    <span
-                      v-if="$i18n.locale === 'en'"
-                      class="m-0"
-                    >
-                      {{ events[10] }}
-                    </span>
-                    <span
-                      v-if="$i18n.locale === 'tw'"
-                      class="m-0"
-                    >
-                      {{ $t("HOME.DELETE") }}
-                    </span>
-                  </b-th>
-                  <b-td>
-                    22/11/2007 09:23 AM
-                  </b-td>
-                  <b-td>12:23:50 AM</b-td>
-                  <b-td>
-                    Keng
-                  </b-td>
-                </b-tr>
-                <b-tr v-if="eventsSelected.indexOf($t('HOME.COPY')) !== -1">
-                  <b-th class="text-right">
-                    <img
-                      src="@/assets/images/cmd/copy@2x.png"
-                      class="icon32px"
-                    >
-                    <span
-                      v-if="$i18n.locale === 'en'"
-                      class="m-0"
-                    >
-                      {{ events[11] }}
-                    </span>
-                    <span
-                      v-if="$i18n.locale === 'tw'"
-                      class="m-0"
-                    >
-                      {{ $t("HOME.COPY") }}
-                    </span>
-                  </b-th>
-                  <b-td>
-                    22/11/2007 09:23 AM
-                  </b-td>
-                  <b-td>12:23:50 AM</b-td>
-                  <b-td>
-                    Keng
-                  </b-td>
-                </b-tr>
-                <b-tr v-if="eventsSelected.indexOf($t('GENERAL.COMPRESS')) !== -1">
-                  <b-th class="text-right">
-                    <img
-                      src="@/assets/images/file/addtozip@2x.png"
-                      class="icon32px"
-                    >
-                    <span
-                      v-if="$i18n.locale === 'en'"
-                      class="m-0"
-                    >
-                      {{ events[12] }}
-                    </span>
-                    <span
-                      v-if="$i18n.locale === 'tw'"
-                      class="m-0"
-                    >
-                      {{ $t("GENERAL.COMPRESS") }}
-                    </span>
-                  </b-th>
-                  <b-td>
-                    22/11/2007 09:23 AM
-                  </b-td>
-                  <b-td>12:23:50 AM</b-td>
-                  <b-td>
-                    Keng
-                  </b-td>
-                </b-tr>
-                <b-tr v-if="eventsSelected.indexOf($t('HOME.UPLOAD')) !== -1">
-                  <b-th class="text-right">
-                    <img
-                      src="@/assets/images/cmd/upload@2x.png"
-                      class="icon32px"
-                    >
-                    <span
-                      v-if="$i18n.locale === 'en'"
-                      class="m-0"
-                    >
-                      {{ events[13] }}
-                    </span>
-                    <span
-                      v-if="$i18n.locale === 'tw'"
-                      class="m-0"
-                    >
-                      {{ $t("HOME.UPLOAD") }}
-                    </span>
-                  </b-th>
-                  <b-td>
-                    22/11/2007 09:23 AM
-                  </b-td>
-                  <b-td>12:23:50 AM</b-td>
-                  <b-td>
-                    Keng
+                    {{ item.user }}
                   </b-td>
                 </b-tr>
               </b-tbody>
@@ -768,7 +427,9 @@
       </ContextMenu>
       <ContextMenu ref="menuForEvents">
         <ul class="text-dark">
-          <li @click="EventProperties">
+          <li
+            @click="EventProperties"
+          >
             <img
               src="@/assets/images/icon/user setting@2x.png"
               class="icon24px"
@@ -793,9 +454,9 @@
         </ul>
       </ContextMenu>
       <!-- @update="getUserTable" --> 
-      <rename
+      <EditUserProperties
         ref="EditUserProperties"
-        :tab-data="selected"
+        :tab-data="eventTab"
       />
       <ImportUser ref="ImportUser" />
       <delete-user
@@ -829,7 +490,7 @@ import ContextMenu from '@/components/ContextMenu.vue';
 import eventBus from "@/bus.js";
 import ImportUser from '@/components/Modals/user/ImportUser.vue';
 import AddNewUser from '@/components/Modals/user/AddNewUser.vue'
-import Rename from './Modals/user/Rename.vue'
+import EditUserProperties from './Modals/user/EditUserProperties.vue';
 import DeleteUser from '@/components/Modals/user/DeleteUser.vue';
 import NewGroupProperties from '@/components/Modals/group/NewGroupProperties.vue';
 import RootFolderProperties from '@/components/Modals/folder/RootFolderProperties.vue';
@@ -844,7 +505,7 @@ components:{
   ContextMenu,
   ImportUser,
     AddNewUser,
-    Rename,
+    EditUserProperties,
     DeleteUser,
     NewGroupProperties,
     RootFolderProperties,
@@ -874,8 +535,23 @@ data() {
         { Name: '1.Root Folder',DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
         { Name: '2. Features Test Folder',DateCreated:'25/02/2022 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
       ],
-      eventsitems: [
-      
+      eventsitems: [],
+      eventpics: [
+        { id: 0,pic: require('@/assets/images/icon/browse@2x.png'), eventName: this.$t('GENERAL.BROWSE')},
+        { id: 1, pic: require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.LOGIN')},
+        { id: 2, pic: require('@/assets/images/cmd/preview@2x.png') , eventName: this.$t('GENERAL.PREVIEW')},
+        { id: 3, pic: require('@/assets/images/cmd/download@2x.png'), eventName: this.$t('HOME.DOWNLOAD')},
+        { id: 4, pic:require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.PUBLICLINK')},
+        { id: 5, pic:require('@/assets/images/file/folder@2x.png'), eventName:this.$t('GENERAL.CREATEMOVE')},
+        { id: 6, pic:require('@/assets/images/cmd/rename@2x.png'), eventName:this.$t('HOME.RENAME')},
+        { id: 7, pic:require('@/assets/images/cmd/cut@2x.png'), eventName:this.$t('GENERAL.MOVE')},
+        { id: 8, pic:require('@/assets/images/file/extractallfiles@2x.png'), eventName:this.$t('GENERAL.EXTRACT')},
+        { id: 9, pic:require('@/assets/images/cmd/logout@2x.png'), eventName:this.$t('GENERAL.LOGOUT')},
+        { id: 10, pic:require('@/assets/images/cmd/delete@2x-2.png'), eventName:this.$t('HOME.DELETE')},
+        { id: 11, pic:require('@/assets/images/cmd/copy@2x.png'), eventName:this.$t('HOME.COPY')},
+        { id: 12, pic:require('@/assets/images/file/addtozip@2x.png'),eventName:this.$t('GENERAL.COMPRESS')},
+        { id: 13, pic:require('@/assets/images/cmd/upload@2x.png'),eventName:this.$t('HOME.UPLOAD')},
+
       ],
       linkitems: [
         {
@@ -908,8 +584,9 @@ data() {
       sortDirection: 'All',
       events: [this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"), this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"), this.$t("GENERAL.PUBLICLINK"), this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
       allSelected: true,
-      eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
-      eventTab: null
+      //eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
+      eventsSelected:[],
+      eventTab: {}
   };
 },
 created(){
@@ -947,11 +624,11 @@ methods: {
   getTable(){    
     switch (this.currentSelected) {
       case 1:
-        this.getUserTable();
+        // this.getUserTable();
         this.count = this.items.length        
         return this.items;
       case 2: 
-        this.getGroupTable();       
+        // this.getGroupTable();       
         this.count = this.groupitems.length
         return this.groupitems;
       case 3:
@@ -959,10 +636,10 @@ methods: {
         return this.folderitems;         
       case 4: 
         this.getEventTable();
-        this.count = this.eventsitems.length
-        return this.eventsitems;
+        // return this.eventsitems;
+        break
       case 5: 
-        this.getLinkTable();
+        // this.getLinkTable();
         this.count = this.linkitems.length
         return this.linkitems;
       default:
@@ -1003,16 +680,19 @@ methods: {
   rowSelected(items) {
     // this.selectedRow = index;
     this.selected = items
-    console.log(this.selected);
+     console.log(this.selected); 
+     //檢視目前hover值
   
     // this.$refs.selectableTable.selectRow(index) 
     
   },
-  // todo 目前點擊右鍵無法用
-  eventsProps(e){
-    const buttonValue = e.target.value;
+  // todo 目前點擊右鍵無法用+ hover取不到值
+  eventsProps(event){
+    // e.preventDefault();
+    // e.stopPropagation();
+    const buttonValue = event.currentTarget.value;
     this.eventTab = buttonValue
-    console.log(this.eventTab);
+    console.log('689',this.eventTab);
 
   },
   Rename(){      
@@ -1043,7 +723,6 @@ methods: {
   },
   NewGroupProperties(){
       this.$bvModal.show('NewGroupProperties');
-      this.title = 'aaaa'
     },
     RootFolderProperties(){
       this.$bvModal.show('RootFolderProperties');
@@ -1063,8 +742,8 @@ methods: {
         })
     },
     getGroupTable () {  
-        let promise = this.axios.get(`${process.env.APIPATH}/api/Groups/GetGroups`)
-        return promise.then((data) => {          
+      this.axios.get(`${process.env.APIPATH}/api/Groups/GetGroups`)
+        .then(data => {          
           this.groupitems = data       
           return this.groupitems
         }).catch(error => {
@@ -1073,34 +752,26 @@ methods: {
         })
     },
     getEventTable(){
-      let promise = this.axios.get(`${process.env.APIPATH}/Log/GetAll`)
-        return promise.then((data) => {          
-          this.eventsitems = data       
-          return this.eventsitems
+      this.axios.get(`${process.env.VUE_APP_APIPATH}/Log/GetAll`)
+        .then(data => {  
+          // console.log(data.data); 會重複跳   
+          this.eventsitems = data.data 
+          this.count = this.eventsitems.length      
         }).catch(error => {
           console.log(error);        
-          return []
         })
     },
     // change this.eventsSelected value
     getEventType(){ 
-      this.axios.post(`${process.env.APIPATH}/ActionType/GetAll`)
+      this.axios.get(`${process.env.VUE_APP_APIPATH}/ActionType/GetAll`,)
         .then((data) => {
-          console.log(data);
-          data.forEach(element =>{
-            this.eventsSelected.push(element.name)
-            console.log(this.eventsSelected);     
+          data.data.forEach(item =>{
+            this.eventsSelected.push(item.name)
       });
+            console.log('766',this.eventsSelected);     
       }).catch(error => {
           console.log(error);          
         })
-
-        // {
-        //   "actionTypeId": "bddb88fd-ea7c-4997-9f74-f3d1be2de263",
-        //   "code": "1",
-        //   "name": "MoveCutPaste",
-        //   "log": null
-        // }
 
     },
     getLinkTable(){
@@ -1113,16 +784,7 @@ methods: {
           return []
         })
     },
-    //用戶table更新
-    // getUserTable(){
-    //   const url = ``
-    //   this.$http.get(url).then(res => {
-    //     this.user = res.data.data
-    //   }).catch(err => {
-    //    console.log(err);
-       
-    //   })
-    // }
+    
 }
 }
 </script>

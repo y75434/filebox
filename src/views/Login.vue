@@ -49,11 +49,11 @@
           >{{ $t("GENERAL.FORGOTPASSWORD") }}</a>
         </div>
           
-        <router-link :to="{ path: '/' }">
-          <a
-            class="dqbz-btn btn btn-primary col-12"
-          >{{ $t("GENERAL.LOGIN") }}</a>
-        </router-link>
+        <!-- <router-link :to="{ path: '/' }"> -->
+        <a
+          class="dqbz-btn btn btn-primary col-12"
+        >{{ $t("GENERAL.LOGIN") }}</a>
+        <!-- </router-link> -->
 
         <p class="my-4">
           <span>{{ $t("GENERAL.OR") }}</span>
