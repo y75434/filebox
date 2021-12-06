@@ -181,6 +181,7 @@
                 month: 'numeric',
                 day: 'numeric',
               }"
+              v-model="filter"
               locale="en"
             />
           </div>
@@ -203,10 +204,12 @@
                 day: 'numeric',
               }"
               locale="en"
+              v-model="filter"
             />
           </div>
+    
+        
 
-              
           <div class="d-flex flex-column">
             <div class="h-50" />
             <button
@@ -314,28 +317,34 @@
                   </b-th>
                 </b-tr>
               </b-thead>
+              
+
               <b-tbody>
                 <b-tr
                   v-for="item in eventsitems"
                   :key="item.id"
-                  @contextmenu="operational($event)"
-                  @mouseover="eventsProps"
-                  @mouseout="buttonLeave"
+                  @row-hovered="rowSelected"
                   :value="item.name"
                 >
-                  <!-- v-if="eventsSelected.indexOf(eventpics[i].eventName) !== -1" -->
-                  <!-- @mouseover="eventsProps($event)" -->
-
+                  <!-- v-if="item.indexOf(eventpics.eventName) !== -1" -->
+              
                   <b-th>
                     <!-- 配合eventpics的邏輯 -->
 
-                    <!-- <img
-                      :src="pic"
-                      class="icon32px"
-                    > -->
+
+                   
+                  
                     <span
                       class="m-0"
                     >
+                      <!-- 會重複跳無法顯示照片 -->
+                      <!-- <div class="">
+                        <img
+                          :src="this.src"
+                          class="icon32px"
+                        >
+                      </div> -->
+
                       {{ item.actionType }}
                     </span>
                   </b-th>
@@ -456,7 +465,7 @@
       <!-- @update="getUserTable" --> 
       <EditUserProperties
         ref="EditUserProperties"
-        :tab-data="eventTab"
+        :tab-data="selected"
       />
       <ImportUser ref="ImportUser" />
       <delete-user
@@ -475,7 +484,7 @@
       />
       <EventProperties
         ref="EventProperties"
-        :tab-data="eventTab"
+        :tab-data="selected"
       />
       <rename-item
         ref="RenameItem" 
@@ -524,12 +533,10 @@ data() {
         { Name: 'Rachel',FullName:'Rachel Lee', LoginCount: '5',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM', DateModified:'25/02/2007 10:52 AM',Status:'active'},
         { Name: 'David',FullName:'David Kang', LoginCount: '33',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM',Status:'active'},
         { Name: 'Peter',FullName:'Peter Lin', LoginCount: '1',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM',Status:'active'}
-
       ],
       groupitems: [
         { GroupName: 'RD',Members:5,DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
         { GroupName: 'HR',Members:5,DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
-
       ],
       folderitems: [
         { Name: '1.Root Folder',DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
@@ -551,33 +558,9 @@ data() {
         { id: 11, pic:require('@/assets/images/cmd/copy@2x.png'), eventName:this.$t('HOME.COPY')},
         { id: 12, pic:require('@/assets/images/file/addtozip@2x.png'),eventName:this.$t('GENERAL.COMPRESS')},
         { id: 13, pic:require('@/assets/images/cmd/upload@2x.png'),eventName:this.$t('HOME.UPLOAD')},
-
       ],
-      linkitems: [
-        {
-          linkId: "4ca71772-2459-4503-bf7b-2cf6b9a313f8",
-          name: "link2",
-          isPublic: true,
-          expire: "2021-11-16T04:55:37.249",
-          viewableTimes: 0,
-          viewed: 0,
-          url: "string",
-          lastViewed: "2021-11-16T04:55:37.249",
-          creator: "string"
-        },
-        {
-          linkId: "99f18a0a-42a5-4831-98bf-6595ab174881",
-          name: "mp4link",
-          isPublic: true,
-          expire: "2021-12-01T18:24:07.179089",
-          viewableTimes: 10,
-          viewed: 1,
-          url: "https://localhost:44395/swagger/index.html",
-          lastViewed: null,
-          creator: "vr"
-        }
-      ],
-      selectedRow : null,
+      linkitems: [],
+      // selectedRow : null,
       selected: {},
       selectMode: 'single',
       filter: null,
@@ -586,7 +569,6 @@ data() {
       allSelected: true,
       //eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
       eventsSelected:[],
-      eventTab: {}
   };
 },
 created(){
@@ -618,7 +600,7 @@ methods: {
     this.countName = item.countName
     this.filter = null;
     this.getTable(this.currentSelected);
-    this.selectedRow = null;
+    // this.selectedRow = null;
     });			
   },
   getTable(){    
@@ -634,12 +616,13 @@ methods: {
       case 3:
         this.count = this.folderitems.length
         return this.folderitems;         
-      case 4: 
-        this.getEventTable();
-        // return this.eventsitems;
-        break
+       case 4: 
+         this.getEventTable();
+         this.count = this.eventsitems.length
+         return this.eventsitems;
+        
       case 5: 
-        // this.getLinkTable();
+        this.getLinkTable();
         this.count = this.linkitems.length
         return this.linkitems;
       default:
@@ -680,20 +663,11 @@ methods: {
   rowSelected(items) {
     // this.selectedRow = index;
     this.selected = items
-     console.log(this.selected); 
+    //  console.log(this.selected); 
      //檢視目前hover值
   
     // this.$refs.selectableTable.selectRow(index) 
     
-  },
-  // todo 目前點擊右鍵無法用+ hover取不到值
-  eventsProps(event){
-    // e.preventDefault();
-    // e.stopPropagation();
-    const buttonValue = event.currentTarget.value;
-    this.eventTab = buttonValue
-    console.log('689',this.eventTab);
-
   },
   Rename(){      
     this.$bvModal.show('RenameItem');
@@ -752,7 +726,7 @@ methods: {
         })
     },
     getEventTable(){
-      this.axios.get(`${process.env.VUE_APP_APIPATH}/Log/GetAll`)
+      this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`)
         .then(data => {  
           // console.log(data.data); 會重複跳   
           this.eventsitems = data.data 
@@ -761,9 +735,9 @@ methods: {
           console.log(error);        
         })
     },
-    // change this.eventsSelected value
+    // change this.eventsSelected value 
     getEventType(){ 
-      this.axios.get(`${process.env.VUE_APP_APIPATH}/ActionType/GetAll`,)
+      this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/ActionType/GetAll`,)
         .then((data) => {
           data.data.forEach(item =>{
             this.eventsSelected.push(item.name)
@@ -775,9 +749,10 @@ methods: {
 
     },
     getLinkTable(){
-      let promise = this.axios.get(`${process.env.APIPATH}/api/Link/GetAll`)
-        return promise.then((data) => {          
-          this.linkitems = data       
+      let promise = this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll`)
+        return promise.then((data) => { 
+          // console.log('780',data.data);         
+          this.linkitems = data.data       
           return this.linkitems
         }).catch(error => {
           console.log(error);        

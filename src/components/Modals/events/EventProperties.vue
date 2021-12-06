@@ -29,7 +29,7 @@
             <label
               for=""
               class="col-form-label"
-            >Preview
+            >{{ tabData.actionType }}
             </label>
           </div>
           <div class="w-50 d-flex align-items-center  mb-2">
@@ -41,7 +41,7 @@
             <label
               for=""
               class="col-form-label"
-            >{{ $t("GENERAL.ADMIN") }}
+            >{{ tabData.user }}
             </label>
           </div>
         </div>
@@ -64,16 +64,16 @@
             <label
               for=""
               class="col-form-label"
-            >09:21:00 PM</label>
+            >{{ tabData.datetime }}</label>
           </div>
         </div>
       </form>
       <!-- </div> -->
             
       <hr class="">
-      <h1 class="text-dark">
+      <h5 class="text-dark">
         {{ tabData }}
-      </h1>
+      </h5>
 
 
       <div class="d-flex flex-column justify-content-between p-3">
@@ -85,8 +85,7 @@
           <p
             class=" text-dark"
           >
-            Path: [1. Root Folder]:\Folder Two\Test Previewed File: Sand Castle - Quincas
-            Moreira.mp3 Previewer: MediaPlayer Browser: Chrome 95.0 IP:
+            {{ tabData.description }}
           </p>
         </div>
       </div>
@@ -132,6 +131,9 @@ export default {
     //   })
     // },
     addLog(id) {  
+
+
+
       this.axios.post(`${process.env.APIPATH}/Log/GetLogProperty/${id}`)
         .then((data) => {
 
@@ -160,12 +162,6 @@ export default {
         
     //   })
     // },
-    show() {
-      this.showModal = true;
-    },
-    hide() {
-      this.showModal = false;
-    },
     handleSubmit() {
       // this.$nextTick(() => {
       this.showModal = false;
