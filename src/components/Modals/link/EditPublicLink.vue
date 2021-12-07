@@ -14,7 +14,7 @@
     <form
       class="container"
       ref="form"
-      @submit.stop.prevent="handleSubmit(personData.linkId)"
+      @submit.stop.prevent=""
     >
       <div
         class="modal-popout-bg p-0"
@@ -35,11 +35,14 @@
         </form>
         <!-- </div> -->
             
-        <hr class="">
         <p class="text-dark">
           {{ tabData }}
         </p>
+        <hr class="">
 
+        <p class="text-dark">
+          {{ personData }}
+        </p>
 
         <div
           class="d-flex flex-column justify-content-between p-3"
@@ -64,7 +67,7 @@
               class="form-check-input"
               type="checkbox"
               value=""
-              id="Usercannotchangepassword"
+              id=""
             >
             <label
               class="form-check-label align-items-center d-flex"
@@ -84,7 +87,7 @@
               class="form-check-input"
               type="checkbox"
               value=""
-              id="Usercannotchangepassword"
+              id=""
             >
             <label
               class="form-check-label align-items-center d-flex"
@@ -176,29 +179,30 @@
       class="cancel-btn"
       @click="handleSubmit()"
     >
-      test api
+      post
     </b-button>
 
+
     <template
-      #modal-footer="{ Cancel, Reset, Update }"
+      #modal-footer="{}"
     >
       <div class="d-flex w-100 justify-content-between">
         <b-button
           class="cancel-btn"
-          @click="Cancel()"
+          @click="cancel"
         >
           {{ $t("GENERAL.CANCEL") }}
         </b-button>
         <div class="">
           <b-button
             class="bg-green border-0 mx-2"
-            @click="Reset()"
+            @click="clear"
           >
             {{ $t("MODAL.RESET") }}
           </b-button>
           <b-button
             variant="primary"
-            @click="Update()"
+            @click="handleOk"
           >
             {{ $t("GENERAL.OK") }}
           </b-button>
@@ -222,70 +226,106 @@ export default {
   data() {
     return {
       showModal: false,
-      personData: {},
+      personData: 
+       this.tabData,
+      // { 
+      //   linkId: "", 
+      //   name: "",
+      //   expireDays: 0, 
+      //   viewableTimes: 0, 
+      //   password: "", 
+      //   url: "",
+      //   editor: "" 
+      // },
+
+
       items: []
     };
   },
   mounted(){
-    // this.personData = this.tabData
-    setTimeout(()=>{
+     this.personData = this.tabData
 
-    
-      this.personData =JSON.parse(JSON.stringify(this.tabData));
-      console.log("运行记录组件接到的数据",this.tabData);
-    
-    },800)
-
-
+    // setTimeout(()=>{    
+    //   this.personData =JSON.parse(JSON.stringify(this.tabData));
+    //   console.log("运行记录组件接到的数据",this.tabData);
+    //   console.log('241',this.personData);
+    // },800)
   },
   methods: {
-    // rename + editname
-    handleSubmit(id) { 
-      console.log('id',id);
-      console.log('this.personData',this.personData);
+    handleOk(bvModalEvt) {
+        bvModalEvt.preventDefault()
+        console.log('245',this.personData);
+        this.put(this.tabData.linkId)
+      },
+    handleSubmit() { 
+      
       const headers = { 
-        'Content-Type': 'Content-Type: application/json',
-        "Access-Control-Allow-Origin": "*", };
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json',
+        "Access-Control-Allow-Origin": '*' 
+        };
+        // const data = JSON.stringify(this.personData)
 
-      this.axios.put(`/api/Link/5c96b679-8584-44c6-accb-924810715dc1`, this.personData,{ headers: headers })
-        .then((data) => {
+        const data = JSON.stringify(
+        {"name": "dmjjjjjjjoqubiz", "isPublic": false, "expireDay": 0, "viewableTimes":
+        0, "viewed": 0, "password": "aaa", "url": "string", "fileId":
+        "3fa85f64-5717-4562-b3fc-2c963f66afa6", "creator": "linda" }
+        );
 
-          
+
+      this.axios.post(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/Create`,
+      data,{ headers: headers }) .then((data) => {
+
 
  
 
 
         console.log(data);
       }).catch(error => {
-          console.log(error);          
+          console.log(error.response.data);          
         })
     },
-    // createNewLink
-    createNewLink() {  
-      this.axios.post(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/Create`)
-        .then((data) => {
-
-      
 
 
+
+    // rename + editname
+    put(id) { 
+     
+      this.tabData =  this.personData
+
+      console.log('281',this.tabData);
+
+      const headers = { 
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json',
+        "Access-Control-Allow-Origin": '*' 
+        };
+        const data = JSON.stringify(this.tabData)   
+
+      this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/${id}`,
+      data,{ headers: headers }) .then((data) => {
         console.log(data);
       }).catch(error => {
-          console.log(error);          
+          console.log(error.response.data);          
         })
+
+        this.$nextTick(() => { this.personData = {};
+        this.$bvModal.hide('EditPublicLink'); });
+
     },
     
-    // handleSubmit() {
-    //   // this.$nextTick(() => {
-    //   this.showModal = false;
-    //   // });
-    // },
-    Reset(){
+    clear(){
       this.personData = ""
     },
     copyText() {
       this.items.push(this.tabData.url);
       console.log('copy url',this.items[0])      
-    }
+    },
+    cancel() { 
+      this.$bvModal.hide('EditPublicLink');
+
+     },
+
   },
 };
 </script>

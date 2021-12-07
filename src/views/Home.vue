@@ -558,155 +558,11 @@
             class="d-flex align-items-start justify-content-start"
           >
             <!-- v-for="item in items" :key="item.message" -->
-            <label
-              class="d-flex flex-column position-relative"
-              for="flexCheckDefault1"
-            >
-              <input
-                class="form-check-input itemCheckbox"
-                type="checkbox"
-                value="1"
-                id="flexCheckDefault1"
-                v-if="renderCheckboxs"
-                v-model="checkboxSelected"
-              >
-              <img
-                src="@/assets/images/file/folder@2x.png"
-                class="folder-icon"
-              >           
-              <h6 class="text-dark text-center">
-                Folder One
-              </h6>
-            </label>
-            <label
-              class="d-flex flex-column position-relative"
-              for="flexCheckDefault2"
-            >
-              <input
-                class="form-check-input itemCheckbox"
-                type="checkbox"
-                value="2"
-                id="flexCheckDefault2"
-                v-if="renderCheckboxs"
-                v-model="checkboxSelected"
-              >
-              <img
-                src="@/assets/images/file/folder@2x.png"
-                class="folder-icon"
-              >
-              <h6 class="text-dark text-center">
-                Folder Two
-              </h6>
-            </label>
-            <label
-              class="d-flex flex-column position-relative"
-              for="flexCheckDefault3"
-            >
-              <input
-                class="form-check-input itemCheckbox"
-                type="checkbox"
-                value="3"
-                id="flexCheckDefault3"
-                v-if="renderCheckboxs"
-                v-model="checkboxSelected"
-              >
-              <img
-                src="@/assets/images/file/7zip@2x.png"
-                class="folder-icon"
-              >
-              <h6 class="text-dark text-center">
-                7Z Archive
-              </h6>
-            </label>
-            <label
-              class="d-flex flex-column position-relative"
-              for="flexCheckDefault4"
-            >
-              <input
-                class="form-check-input itemCheckbox"
-                type="checkbox"
-                value="4"
-                id="flexCheckDefault4"
-                v-if="renderCheckboxs"
-                v-model="checkboxSelected"
-              >
-              <img
-                src="@/assets/images/file/ppt@2x.png"
-                class="folder-icon"
-              >
-              <h6 class="text-dark text-center">
-                PPTX Sample File
-              </h6>
-            </label>
-            <label
-             
-              class="d-flex flex-column position-relative"
-              for="flexCheckDefault5"
-            >
-              <input
-                class="form-check-input itemCheckbox"
-                type="checkbox"
-                value="5"
-                id="flexCheckDefault5"
-                v-if="renderCheckboxs"
-                v-model="checkboxSelected"
-              >
-              <img
-                src="@/assets/images/file/rar@2x.png"
-                class="folder-icon"
-              >
-              <h6 class="text-dark text-center">
-                RAR Archive
-              </h6>
-            </label>
-            <label
-              class="d-flex flex-column position-relative"
-              for="flexCheckDefault6"
-            >
-              <input
-                class="form-check-input itemCheckbox"
-                type="checkbox"
-                value="6"
-                id="flexCheckDefault6"
-                v-if="renderCheckboxs"
-                v-model="checkboxSelected"
-              >
-              <img
-                src="@/assets/images/file/tar@2x.png"
-                class="folder-icon"
-              >
-              <h6 class="text-dark text-center">
-                TAR Archive
-              </h6>
-            </label>
-            <label
-              @change="selected = !selected"
-              class="d-flex flex-column position-relative"
-              for="flexCheckDefault7"
-              :style="selected ? {backgroundColor: '#d3eaff'} : {backgroundColor: 'transparent'}"
-            >
-              <!-- :style="selected ? 'border: 1px solid red;' : 'border: 1px solid white;'" -->
+            
+            
 
-              <input
-                class="form-check-input itemCheckbox"
-                type="checkbox"
-                value="7"
-                id="flexCheckDefault7"
-                v-if="renderCheckboxs"
-                v-model="checkboxSelected"
-              >
-              <img
-                src="@/assets/images/file/word@2x.png"
-                class="folder-icon"
-              >
-              <h6 class="text-dark text-center">
-                Word<span
-                  class="text-dark"
-                  v-if="extensions"
-                >.docx</span>
-              </h6>
-            </label>
-            <label
+            <!-- 原版 -->
+            <!-- <label      
               v-for="item in allFiles"
               :key="item.id"
               class="d-flex flex-column position-relative"
@@ -728,32 +584,42 @@
                   class="text-dark"
                   v-if="extensions"
                 >.{{ item.extensions }}</span>
-              </h6>
-            </label>
+              </h6>     
+            </label> -->
+            
 
 
-
-
-            <h6 class="text-dark text-center">
-              {{ searchQuery }}
-            </h6>
-            //todo undo
-            <tr
-              class="text-dark text-center"
-
+            
+            <label
+              class="d-flex flex-column position-relative"
               :key="item.id"
               v-for="item in resultQuery"
+              @change="ischecked = !ischecked"
+              :style="item.ischecked ? {backgroundColor:
+                '#d3eaff'} : {backgroundColor:'transparent'}"
             >
-              <td>
-                <a>{{ item.name }}</a>
-              </td>
-            </tr>
+              <input
+                class="form-check-input itemCheckbox"
+                type="checkbox"
+                v-model="item.ischecked"
+                v-if="renderCheckboxs"
+              >
+              <img
+                :src="item.pic"
+                class="folder-icon"
+              >
+              <h6 class="text-dark text-center">
+                {{ item.name }}<span
+                  class="text-dark"
+                  v-if="extensions"
+                >.{{ item.extensions }}</span>
+              </h6>     
+            </label>
 
 
 
             <DDR
               v-model="transform"
-              draggable="false"
             >
               <div style="background:#d3eaff;width:100%;height:100%" />
             </DDR>  
@@ -809,7 +675,7 @@ export default {
   
   },
   data: () => ({
-    transform: { x: 1000, y: 1000, width: 100, height: 100, rotation: 0 },
+    transform: { x: 500, y: 500, width: 100, height: 100, rotation: 0 },
     selected: false,
     selectMode: 'single',
     paneSize: 15,
@@ -823,7 +689,6 @@ export default {
       { id: 4, name: 'ZIP' , pic:require('@/assets/images/file/addtozip@2x.png')},
     ],
     renderCheckboxs: false,
-    checkboxSelected: [],//checkbox
     treeSelected: null,
     allSelected: false,
     allFiles:[{
@@ -841,13 +706,18 @@ export default {
     extensions: false,
     copy: false,//有無複製檔案
     cut: false,
-    // searchQuery: ""
+    searchQuery: ""
   }),
   created(){
-    this.allFiles.map((x,index)=>{
-      this.$set(this.allFiles, x.ischecked, false)
-      this.$set(this.allFiles, x.showCheckbox, false)
-      this.$set(this.allFiles, x.id, index)
+    // this.allFiles.map((x,index)=>{
+      this.resultQuery.map((x,index)=>{
+
+      // this.$set(this.allFiles, x.ischecked, false)
+      // this.$set(this.allFiles, x.showCheckbox, false)
+      // this.$set(this.allFiles, x.id, index)
+      this.$set(this.resultQuery, x.ischecked, false)
+      this.$set(this.resultQuery, x.showCheckbox, false)
+      this.$set(this.resultQuery, x.id, index)
       return x;
     })
     
@@ -855,34 +725,22 @@ export default {
   computed:{
     //數checkbox勾選幾個
     selectedLength(){ 
-      return Object.keys(this.allFiles).filter(key =>
-          this.allFiles[key].ischecked === true).length
-    },//todo undo
+      // return Object.keys(this.allFiles).filter(key =>
+      //     this.allFiles[key].ischecked === true).length
+      return Object.keys(this.resultQuery).filter(key =>
+          this.resultQuery[key].ischecked === true).length
+    },
     resultQuery(){
-      if(this.searchQuery){
-        return this.allFiles.filter((item)=>{
-          return this.searchQuery.toLowerCase().split(' ').every(v => item.name.toLowerCase().includes(v))
-        })
-        }else{
-          return this.allFiles;
-      }
+        return this.allFiles.filter(item =>
+          item.name.toLowerCase().includes(this.searchQuery))
     }
   },
-  watch: {
-    checkboxSelected(newValue) {
-      if (newValue.length === 0) {
-        this.allSelected = false
-      } else if (newValue.length === this.events.length) {
-        this.allSelected = true
-      } else {
-        this.allSelected = false
-      }
-  }
-},
+
   methods: {  
+    // 子層輸入傳父層
     selfUpdate(val) {
       this.searchQuery = val;
-      console.log(this.searchQuery);
+      console.log('885',this.searchQuery);
       
     },
     passRoute(e){
@@ -908,20 +766,25 @@ export default {
     EditPublicLink(){ this.$bvModal.show('EditPublicLink'); },
     // checkbox func
     selectAll() {   
-      this.allFiles.map(item =>{
+      // this.allFiles.map(item =>{
+      this.resultQuery.map(item =>{
 
         item.ischecked = true
         return item;
       })
     },
     selectNone(){
-    this.allFiles.map(item =>{ 
+    //this.allFiles.map(item =>{ 
+      this.resultQuery.map(item =>{
+
       item.ischecked = false;
       return item;
       })
     },
     invert(){
-      this.allFiles.map(item =>{ 
+      //this.allFiles.map(item =>{ 
+        this.resultQuery.map(item =>{
+
         item.ischecked = !item.ischecked; 
         return item;
       })

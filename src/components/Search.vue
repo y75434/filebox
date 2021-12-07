@@ -146,7 +146,7 @@
 
 export default {
   name: "Search",
-  props: { treeSelected: { type: String, default: "aaa" } },
+  props: { treeSelected: { type: String, default: "" } },
 
   data() {
     return {
@@ -170,18 +170,9 @@ export default {
   methods: {
    update() {
     this.$emit('update', this.searchQuery); 
+    
     },
-    show() {
-      this.showModal = true;
-    },
-    hide() {
-      this.showModal = false;
-    },
-    handleSubmit() {
-      // this.$nextTick(() => {
-      this.showModal = false;
-      // });
-    },
+    
   },
 }
 </script>

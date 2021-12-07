@@ -732,7 +732,7 @@ methods: {
           this.eventsitems = data.data 
           this.count = this.eventsitems.length      
         }).catch(error => {
-          console.log(error);        
+          console.log(error).response.data;        
         })
     },
     // change this.eventsSelected value 
@@ -742,21 +742,19 @@ methods: {
           data.data.forEach(item =>{
             this.eventsSelected.push(item.name)
       });
-            console.log('766',this.eventsSelected);     
+        console.log('766',this.eventsSelected);     
       }).catch(error => {
-          console.log(error);          
+          console.log(error.response.data);          
         })
 
     },
     getLinkTable(){
-      let promise = this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll`)
-        return promise.then((data) => { 
-          // console.log('780',data.data);         
-          this.linkitems = data.data       
-          return this.linkitems
+      this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll`)
+        .then((data) => { 
+          this.linkitems = data.data 
+          this.count = this.linkitems.length
         }).catch(error => {
-          console.log(error);        
-          return []
+          console.log(error.response.data);        
         })
     },
     

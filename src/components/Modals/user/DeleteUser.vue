@@ -29,9 +29,7 @@
         </h5>
       
 
-        <p>
-          <!-- <code>{{ dataSource.name }}</code> -->
-        </p>
+        
         <div class="mx-auto">
           <span class="badge px-4 py-2 my-2 bg-danger">{{ tabData.FullName || tabData.name || tabData.Name }}</span>
         </div>
@@ -47,7 +45,9 @@
       {{ $t("GENERAL.CANCEL") }}
     </template>
 
-    <template #modal-ok>
+    <template
+      #modal-ok
+    >
       {{ $t("GENERAL.OK") }}
     </template>
   </b-modal>
@@ -68,13 +68,18 @@ export default {
 		};
 	},
 	computed: {
-		// delFormValidity() {
-		// 	return this.dataSource.name !== this.userInput;
-		// },
+		delFormValidity() {
+			return this.tabData.name !== this.userInput;
+		},
 	},
 	methods: {
+    handleOk(bvModalEvt) {
+        bvModalEvt.preventDefault()
+        //之後要加判斷 link group user
+        this.deleteLink(this.tabData.linkId)
+      },
      deleteGroup(id) {  
-      this.axios.delete(`${process.env.APIPATH}/api/Groups/${id}`)
+      this.axios.delete(`/api/Groups/${id}`)
         .then((data) => {
         
         console.log(data);
@@ -83,7 +88,7 @@ export default {
         })
       },
       deleteUser(id) {  
-      this.axios.delete(`${process.env.APIPATH}/api/Users/${id}`)
+      this.axios.delete(`/api/Users/${id}`)
         .then((data) => {
         //Input parameters: userId
         console.log(data);
@@ -93,31 +98,34 @@ export default {
       },
        deleteLink(id) {  
          //它不會刪除記錄，而只是將刪除標誌設置為打開或關閉
-        this.axios.delete(`${process.env.APIPATH}/api/Link/${id}`)
+         console.log('97',id);
+         
+        this.axios.delete(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/${id}`)
           .then((data) => {
           //Input parameters: userId
-          console.log(data);
+            console.log(data);
+
+
+          // this.$store.dispatch('users/deleteUser', { userId: this.dataSource.id });
+          this.$nextTick(() => { this.userInput = '';
+          this.$bvModal.hide('modal-delete-user'); });
+
+
+
         }).catch(error => {
             console.log(error);          
           })
       },
-		handleOk(bvModalEvt) {
-			bvModalEvt.preventDefault();
-			this.handleSubmit();
-		},
-		handleSubmit() {
-			// this.$store.dispatch('users/deleteUser', { userId: this.dataSource.id });
-			this.$nextTick(() => {
-				this.userInput = '';
-				this.$bvModal.hide('modal-delete-user');
-			});
-		},
 		cancel() {
 			this.userInput = '';
 		},
 	},
 };
 </script>
+
+
+
+
 <style scoped>
 code {
 	background-color: rgba(255, 0, 0, 0.3);
