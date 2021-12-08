@@ -154,7 +154,8 @@ export const locale = {
     OPENLINKEDFILE:'在瀏覽器中打開連結文件',
     LINKEXPIRES:'連結過期',
     LINKCANBEOPENED:'連結只能打開',
-    PROTECTLINKWITH:'用密碼保存連結'
+    PROTECTLINKWITH:'用密碼保存連結',
+    CREATOR: '建立者'
 
   },
   FOLDER:{

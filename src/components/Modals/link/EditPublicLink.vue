@@ -4,13 +4,15 @@
     class="modal-content"
     body-text-variant="warning"
     centered
-    :title="$t('TITLE.EDITPUBLICLINK')"
+    :title="this.title"
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"
     footer-bg-variant="white"
     body-bg-variant="bgmodal"
   >
+    <!-- :title="$t('TITLE.EDITPUBLICLINK')" -->
+
     <form
       class="container"
       ref="form"
@@ -26,13 +28,29 @@
               class=""
             >{{ $t("MODAL.NAMEINLINK") }}</label>
             <input
-              type="Name in link"
+              type="string"
               class="form-control inline-block width-320"
               id="Name in link"
               v-model="personData.name"
             >
+            <span class="text-danger">Required</span>
+          </div>
+          <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+            <label
+              for="creator"
+              class=""
+            >{{ $t("MODAL.CREATOR") }}</label>
+            <input
+              type="string"
+              class="form-control inline-block width-320"
+              id="creator"
+              v-model="personData.creator"
+            >
+            <span class="text-danger">Required</span>
           </div>
         </form>
+
+        
         <!-- </div> -->
             
         <p class="text-dark">
@@ -151,18 +169,20 @@
 
           <hr class="">
 
+          <span class="text-danger">Required</span>
           <div class="mb-3">
             <label
               for="Public link"
               class="form-label"
-            >{{ $t("GENERAL.PUBLICLINK") }}</label>
+            >{{ $t("GENERAL.PUBLICLINK") }} </label>
             <div class="d-flex justify-content-between">
               <input
-                type="url"
+                type="string"
                 class="form-control w-75 obj"
                 id="Public link"
                 v-model="personData.url"
               >
+             
               <b-button
                 class="bg-green border-0"
                 @click="copyText()"
@@ -173,15 +193,7 @@
           </div>
         </div>
       </div>
-    </form>
-
-    <b-button
-      class="cancel-btn"
-      @click="handleSubmit()"
-    >
-      post
-    </b-button>
-
+    </form>    
 
     <template
       #modal-footer="{}"
@@ -226,36 +238,26 @@ export default {
   data() {
     return {
       showModal: false,
-      personData: 
-       this.tabData,
-      // { 
-      //   linkId: "", 
-      //   name: "",
-      //   expireDays: 0, 
-      //   viewableTimes: 0, 
-      //   password: "", 
-      //   url: "",
-      //   editor: "" 
-      // },
-
+      // personData: this.tabData,
+      personData: {},
 
       items: []
     };
   },
-  mounted(){
-     this.personData = this.tabData
-
-    // setTimeout(()=>{    
-    //   this.personData =JSON.parse(JSON.stringify(this.tabData));
-    //   console.log("运行记录组件接到的数据",this.tabData);
-    //   console.log('241',this.personData);
-    // },800)
+  watch:{ 
+    tabData(){ 
+      this.personData = this.tabData 
+    } 
   },
   methods: {
     handleOk(bvModalEvt) {
         bvModalEvt.preventDefault()
-        console.log('245',this.personData);
-        this.put(this.tabData.linkId)
+        // console.log('245',this.personData);
+        if(this.title == 'Edit Public Link'){
+          this.put(this.tabData.linkId)
+        }else{
+          this.handleSubmit();
+        }
       },
     handleSubmit() { 
       
@@ -264,13 +266,15 @@ export default {
         'Accept': 'application/json',
         "Access-Control-Allow-Origin": '*' 
         };
-        // const data = JSON.stringify(this.personData)
 
-        const data = JSON.stringify(
-        {"name": "dmjjjjjjjoqubiz", "isPublic": false, "expireDay": 0, "viewableTimes":
-        0, "viewed": 0, "password": "aaa", "url": "string", "fileId":
-        "3fa85f64-5717-4562-b3fc-2c963f66afa6", "creator": "linda" }
-        );
+          const data = JSON.stringify(this.personData)
+
+        // const data = JSON.stringify(
+        // {"name": "12000", "isPublic": false, "expireDay": 0, "viewableTimes":
+        // 0, "viewed": 0, "password": "aaa", "url": "string", "fileId":
+        // "3fa85f64-5717-4562-b3fc-2c963f66afa6", "creator": "linda" }
+        // );
+        console.log(data);
 
 
       this.axios.post(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/Create`,
@@ -292,8 +296,6 @@ export default {
     put(id) { 
      
       this.tabData =  this.personData
-
-      console.log('281',this.tabData);
 
       const headers = { 
         'Content-Type': 'application/json', 

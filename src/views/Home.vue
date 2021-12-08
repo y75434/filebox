@@ -618,6 +618,9 @@
 
 
 
+
+
+
             <DDR
               v-model="transform"
             >
@@ -632,7 +635,10 @@
       <rename-item ref="RenameItem" />
       <delete-folder ref="DeleteFolder" />
       <manage-public-link ref="ManagePublicLink" />
-      <EditPublicLink ref="EditPublicLink" />
+      <EditPublicLink
+        ref="EditPublicLink"
+        :title="'Create Public Link'"
+      />
     </div>
     <div class="dqbz-footer">
       <p class="mx-3">
@@ -706,7 +712,8 @@ export default {
     extensions: false,
     copy: false,//有無複製檔案
     cut: false,
-    searchQuery: ""
+    searchQuery: "",
+
   }),
   created(){
     // this.allFiles.map((x,index)=>{

@@ -154,7 +154,8 @@ export const locale = {
     OPENLINKEDFILE:'Open linked file in the brower',
     LINKEXPIRES:'Link expires',
     LINKCANBEOPENED:' Link can be opened only',
-    PROTECTLINKWITH:'Protect link with password'
+    PROTECTLINKWITH:'Protect link with password',
+    CREATOR: 'Creator'
 
   },
   FOLDER:{

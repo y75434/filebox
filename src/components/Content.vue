@@ -112,6 +112,7 @@
                             class="mx-1"
                             aria-label="events"
                             stacked
+                            :filter="filter"
                           />
                         </div>
                       </template>
@@ -261,16 +262,6 @@
               {{ $t("GENERAL.REFRESH") }}
             </h5>
           </button>
-          <button
-            @click="getEventTable()"
-
-            type="button"
-            class="user-btn  btn d-flex align-items-center mr-3"
-          >
-            <h5 class="ms-1 m-0">
-              test api
-            </h5>
-          </button>
         </div>
       </div>
     </div>
@@ -291,74 +282,50 @@
             hover
             :filter="filter"
           />
+
+        
+
           <div
             v-if="this.currentSelected === 4"
           >
-            <b-table-simple
+            <b-table
+              :fields="fields"
+              responsive="true"
+              :items="test"
+              class="col-12 b-col"
+              @contextmenu="operational($event)"
+              @row-hovered="rowSelected"
+              ref="selectableTable"
+              :select-mode="selectMode"
               hover
-              small
-              responsive
-              class="my-2"
+              :filter="filter"
             >
-              <b-thead>
-                <b-tr>
-                  <b-th>
-                    {{ $t("GENERAL.TYPE") }}
-                  </b-th>
-                  <b-th>
-                    {{ $t("GENERAL.DATE") }}
-                  </b-th>
-                  <b-th>
-                    {{ $t("GENERAL.TIME") }}
-                  </b-th>
-                  
-                  <b-th>
-                    {{ $t("GENERAL.USER") }}
-                  </b-th>
-                </b-tr>
-              </b-thead>
-              
-
-              <b-tbody>
-                <b-tr
-                  v-for="item in eventsitems"
-                  :key="item.id"
-                  @row-hovered="rowSelected"
-                  :value="item.name"
+              <template #cell(pic)="">
+                <img
+                  src="@/assets/images/icon/usermanagement@2x.png"
+                  class="icon32px"
                 >
-                  <!-- v-if="item.indexOf(eventpics.eventName) !== -1" -->
-              
-                  <b-th>
-                    <!-- 配合eventpics的邏輯 -->
+                <p class="text-dark">
+                  {{ name }}
+                </p>
+              </template>
+              <template #cell(name)="data">
+                {{ data.item.name }} 
+              </template>
 
-
-                   
-                  
-                    <span
-                      class="m-0"
-                    >
-                      <!-- 會重複跳無法顯示照片 -->
-                      <!-- <div class="">
-                        <img
-                          :src="this.src"
-                          class="icon32px"
-                        >
-                      </div> -->
-
-                      {{ item.actionType }}
-                    </span>
-                  </b-th>
-                  <b-td>
-                    {{ item.datetime }}
-                  </b-td>
-                  <b-td>{{ item.description }}</b-td>
-                  <b-td>
-                    {{ item.user }}
-                  </b-td>
-                </b-tr>
-              </b-tbody>
-              <b-tfoot />
-            </b-table-simple>
+              <template #cell(url)="data">
+                {{ data.item.url }}
+              </template>
+              <template #cell(creator)="data">
+                {{ data.item.creator }}
+              </template>
+              <template #cell(viewed)="data">
+                {{ data.item.viewed }}
+              </template>
+              <template #cell(viewableTimes)="data">
+                {{ data.item.viewableTimes }}
+              </template>
+            </b-table>
           </div>
         </b-col>
       </div>
@@ -529,6 +496,19 @@ data() {
     title: 'User Management',
     countName:'Users',
     currentSelected:1,
+    //link
+    fields: [ 
+      { key: 'name', label: 'Name', sortable: true },
+      { key: 'url', label: 'Linked Item' },
+      { key: 'creator', label: 'Created By' },
+      { key: 'viewed', label: 'viewed' },
+      { key: 'viewableTimes', label: 'viewableTimes' },
+      { key: 'expire', label: this.$t("GENERAL.TIME") },
+      { key: 'pic', label: 'pic' },
+
+
+
+    ],
     items: [
         { Name: 'Rachel',FullName:'Rachel Lee', LoginCount: '5',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM', DateModified:'25/02/2007 10:52 AM',Status:'active'},
         { Name: 'David',FullName:'David Kang', LoginCount: '33',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM',Status:'active'},
@@ -567,8 +547,19 @@ data() {
       sortDirection: 'All',
       events: [this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"), this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"), this.$t("GENERAL.PUBLICLINK"), this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
       allSelected: true,
-      //eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
-      eventsSelected:[],
+      eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
+      // eventsSelected:[],
+      test:[{ "linkId": "168a6d55-8d2c-4414-aa12-30199f5c2e92", "name": "string",
+"isPublic": true, "expire": "2021-12-07T01:46:42.28144", "viewableTimes": 0,
+"viewed": 0, "url": "string", "fileId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+"lastViewed": null, "creator": "string", "dateCreated":
+"2021-12-07T01:46:42.281511", "editor": null, "dateModified": null },{ "linkId": "168a6d55-8d2c-4414-aa12-30199f5c2e92", "name": "string",
+"isPublic": true, "expire": "2021-12-07T01:46:42.28144", "viewableTimes": 0,
+"viewed": 0, "url": "string", "fileId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+"lastViewed": null, "creator": "string", "dateCreated":
+"2021-12-07T01:46:42.281511", "editor": null, "dateModified": null }
+
+],
   };
 },
 created(){
@@ -706,48 +697,45 @@ methods: {
       this.$bvModal.show('EventProperties');
     },
     getUserTable () {  
-        let promise = this.axios.get(`${process.env.APIPATH}/api/Users/GetUsers`)
-        return promise.then((data) => {          
+      this.axios.get(`/api/Users/GetUsers`)
+        .then((data) => {          
           this.items = data       
-          return this.items
         }).catch(error => {
           console.log(error);        
-          return []
         })
     },
     getGroupTable () {  
-      this.axios.get(`${process.env.APIPATH}/api/Groups/GetGroups`)
+      this.axios.get(`/api/Groups/GetGroups`)
         .then(data => {          
           this.groupitems = data       
-          return this.groupitems
         }).catch(error => {
-          console.log(error);        
-          return []
+          console.log(error.response.data);        
         })
     },
     getEventTable(){
       this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`)
         .then(data => {  
-          // console.log(data.data); 會重複跳   
           this.eventsitems = data.data 
-          this.count = this.eventsitems.length      
+          this.count = this.eventsitems.length  
+        return this.eventsitems;
+
         }).catch(error => {
-          console.log(error).response.data;        
+          console.log(error.response.data);        
         })
     },
     // change this.eventsSelected value 
-    getEventType(){ 
-      this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/ActionType/GetAll`,)
-        .then((data) => {
-          data.data.forEach(item =>{
-            this.eventsSelected.push(item.name)
-      });
-        console.log('766',this.eventsSelected);     
-      }).catch(error => {
-          console.log(error.response.data);          
-        })
+    // getEventType(){ 
+    //   this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/ActionType/GetAll`,)
+    //     .then((data) => {
+    //       data.data.forEach(item =>{
+    //         this.eventsSelected.push(item.name)
+    //   });
+    //     console.log('766',this.eventsSelected);     
+    //   }).catch(error => {
+    //       console.log(error.response.data);          
+    //     })
 
-    },
+    // },
     getLinkTable(){
       this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll`)
         .then((data) => { 
