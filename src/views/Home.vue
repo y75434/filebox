@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @contextmenu="handler($event)">
     <Navbar />
     <div class="dqbz-body">
       <div class="dqbz-fnlist">
@@ -676,9 +676,7 @@ export default {
     DeleteFolder,
     ManagePublicLink,
     EditPublicLink,
-    DDR,
-
-  
+    DDR, 
   },
   data: () => ({
     transform: { x: 500, y: 500, width: 100, height: 100, rotation: 0 },
@@ -701,13 +699,11 @@ export default {
         name:'word',
         extensions:'docx',
         pic: require('@/assets/images/file/single folder@2x.png')
-
     },
     {
         name:'abc',
         extensions:'pdf',
         pic: require('@/assets/images/file/single folder@2x.png')
-
     },],//所有檔案過濾後把id放入這個陣列
     extensions: false,
     copy: false,//有無複製檔案
@@ -743,7 +739,8 @@ export default {
     }
   },
 
-  methods: {  
+  methods: { 
+    handler(event) { event.preventDefault(); }, 
     // 子層輸入傳父層
     selfUpdate(val) {
       this.searchQuery = val;

@@ -10,12 +10,8 @@
     ok-variant="primary"
     body-bg-variant="bgmodal"
     footer-bg-variant="bgmodal"
+    @ok="EditName"
   >
-    <!-- <form
-      class="container"
-      ref="form"
-      @submit.stop.prevent="handleSubmit"
-    > -->
     <div class="modal-popout-bg p-3">
       <p class=" m-0">
         {{ $t("MODAL.ENTERNEWITEM") }}
@@ -31,7 +27,6 @@
       {{ tabData }}
     </p>
 
-    <!-- </form> -->
     <template
       #modal-cancel
       variant="outline-primary"
@@ -41,7 +36,6 @@
     </template>
 
     <template
-      @click="EditName"
       #modal-ok
     >
       {{ $t("GENERAL.OK") }}
@@ -71,18 +65,18 @@ export default {
 
       if(Object.prototype.hasOwnProperty.call(this.personData, "userName")) { 
         this.type =='Users/EditUserName'
-       }else{
+       }else if(Object.prototype.hasOwnProperty.call(this.personData, "userName")){
          this.type =='Groups/EditGroupName'
-       }
+       }else if(Object.prototype.hasOwnProperty.call(this.personData, "userName")){ 
+         this.type =='Groups/EditGroupName' 
+         }
+
       // ${process.env.APIPATH}/api/Groups/EditGroupName
 
       //if user
       this.axios.post(`${process.env.APIPATH}/api/${this.type}/${this.tabData.id}`)
         .then((data) => {
-          // {
-          //   "id": "816eb044-087d-43b7-af15-090af7cd0d37",
-          //   "userName": "ccnewname"
-          // }
+          
           console.log(data);
 
           this.personData.name = data.userName
@@ -91,7 +85,14 @@ export default {
         })
 
       },
-    
+    putFolder(){
+      this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`)
+      .then((data) => { 
+        this.folderitems = data.data 
+      }).catch(error => {
+        console.log(error.response.data);        
+      })
+    },
     handleSubmit() {
       // this.$nextTick(() => {
       this.showModal = false;

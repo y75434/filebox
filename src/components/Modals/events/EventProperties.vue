@@ -111,57 +111,24 @@ export default {
   props: { 
     title: { type: String, default: "Event Properties" } ,
     tabData: { type: Object , default() { return {} }}
-
   },
-
   data() {
     return {
-      showModal: false,
       personData: this.tabData
     };
   },
-  
-  methods: {
-    // getUser (id) {
-    //   const url = `${id}`
-    //   this.$http.get(url).then(res => {
-    //     this.user = res.data.data   
-    //   }).catch((err) => {
-    //     console.log(err);
-    //   })
-    // },
+  methods: { 
     addLog(id) {  
-
-
-
       this.axios.post(`${process.env.APIPATH}/Log/GetLogProperty/${id}`)
         .then((data) => {
 
-          // {
-          //   "logId": "a186c7ca-f0be-49f6-b9da-0c0ffe8ac2d1",
-          //   "actionTypeId": "bddb88fd-ea7c-4997-9f74-f3d1be2de263",
-          //   "actionType": "nameone2",
-          //   "datetime": "2021-11-15T08:54:28.022107",
-          //   "user": "userreadone",
-          //   "description": "this is for read"
-          // }
+         
 
         console.log(data);
       }).catch(error => {
           console.log(error);          
         })
       },
-    // update() {
-    //   let url = `product`
-    
-    //   this.$http.post(url, this.user).then(() => {
-    //     this.$emit('update')
-        
-    //   }).catch(err => {
-    //     console.log(err);
-        
-    //   })
-    // },
     handleSubmit() {
       // this.$nextTick(() => {
       this.showModal = false;
@@ -171,4 +138,3 @@ export default {
 };
 </script>
 
-<style></style>

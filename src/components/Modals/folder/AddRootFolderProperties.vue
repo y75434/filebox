@@ -1,17 +1,17 @@
 <template>
   <b-modal
-    id="RootFolderProperties"
+    id="AddRootFolderProperties"
     class="modal-content"
     body-text-variant="warning"
     centered
-    :title="$t('TITLE.ROOTFOLDERPROPERTIES')"
+    :title="title"
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"
     body-bg-variant="bgmodal"
     footer-bg-variant="white"
     size="xl"
-    @ok="putFolder"
+    @ok="postFolder"
   >
     <!-- <form
       class="container"
@@ -32,8 +32,7 @@
               type="Name"
               class="form-control inline-block width-320"
               id="Name"
-              v-model="personData.name"
-              disabled
+              v-model="personData.name"          
             >
           </div>
           <div class="w-50 d-flex align-items-center justify-content-center">
@@ -51,28 +50,30 @@
           </div>
         </div>
             
-        <h5 class="text-dark">
-          {{ tabData }}
-        </h5>
+        
 
 
         <div class="row p-5 modal-sidebar">
           <div class="col-4 h-100 ">
             <div class="bg-white h-100 border">
               <ul class="list-group border-0">
-                <li class="list-group-item d-flex align-items-center border-0">
+                <li 
+                  v-for="item in this.folderTree"
+                  :key="item.id"
+                  class="list-group-item d-flex align-items-center border-0"
+                >
                   <img
                     src="@/assets/images/file/single folder@2x.png"
                     class="icon32px"
                   >
                   <p class="text-dark m-0">
-                    {{ this.folderTree.name }}
+                    {{ item.name }}
                   </p>
                 </li>
 
-                <li 
-                  v-for="item in this.folderTree.subFolders"
-                  :key="item.id"
+
+                <!-- 目前無全部資料夾樹狀api -->
+                <!-- <li 
                   class="ms-4 list-group-item d-flex align-items-center border-0"
                 >
                   <img
@@ -82,7 +83,7 @@
                   <p class="text-dark m-0">
                     {{ item.name }}
                   </p>
-                </li>
+                </li> -->
               </ul>
             </div>
           </div>
@@ -101,7 +102,7 @@
                     class="icon32px"
                   >
                   <p class="fw-bold m-0">
-                    {{ this.folderTree.name }}
+                    3. Another Root Folder
                   </p>
                 </div>
                 
@@ -447,55 +448,46 @@ export default {
   name: "RootFolderProperties",
   props: { 
     title: { type: String, default: "Root Folder Properties" },
-    tabData: { type: Object , default() { return {} }}
   },
   data() {
     return {
       personData: {},
-      folderTree: {},
-      FolderSettings:{}
+      folderTree: {}
 
     };
   },
-  //todo優先處理這裡
-  //watch 會loop
-  // watch:{ 
-  //   tabData(){ 
-  //     this.personData = this.tabData 
-  //     this.getFolderTree(this.personData.folderId)
-  //     this.getFolderSettings(this.personData.folderId)
-  //   },
-    
-  //},
+  created(){ 
+    this.getFolderTable();
+    },
   methods: {  
-    
-    getFolderTree(id){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
+    //ok
+    postFolder(){
+      const headers = { 
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json',
+        "Access-Control-Allow-Origin": '*' 
+        };
+      const data = JSON.stringify(this.personData)
+
+      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CreateRootFolder`,
+      data,{ headers: headers })
       .then((data) => { 
-        this.folderTree = data.data
+        console.log(data);
+
       }).catch(error => {
         console.log(error.response.data);        
       })
     },
-    getFolderSettings(id){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
-      .then((data) => {  
-        this.FolderSettings = data.data
-        console.log(this.FolderSettings);
-         
-      }).catch(error => {
-        console.log(error.response.data);        
-      })
-    },
-    putFolder(){
-      this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`)
-      .then((data) => { 
-        this.folderitems = data.data 
-      }).catch(error => {
-        console.log(error.response.data);        
-      })
-    },
-   
+    //ok
+    getFolderTable(){
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
+        .then((data) => { 
+          
+          this.folderTree = data.data 
+        }).catch(error => {
+          console.log(error.response.data);        
+        })
+    }
 
   },
 };

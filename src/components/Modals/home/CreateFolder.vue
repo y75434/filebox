@@ -50,16 +50,10 @@ export default {
 
   data() {
     return {
-      showModal: false,
     };
   },
   methods: {
-    show() {
-      this.showModal = true;
-    },
-    hide() {
-      this.showModal = false;
-    },
+    
     handleSubmit() {
       // this.$nextTick(() => {
       this.showModal = false;

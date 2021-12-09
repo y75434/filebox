@@ -227,24 +227,6 @@ export default {
   },
   
   methods: {
-   
-    // update() {
-    //   let url = `product`
-    
-    //   this.$http.post(url, this.user).then(() => {
-    //     this.$emit('update')
-        
-    //   }).catch(err => {
-    //     console.log(err);
-        
-    //   })
-    // },
-    show() {
-      this.showModal = true;
-    },
-    hide() {
-      this.showModal = false;
-    },
     handleSubmit() {
       // this.$nextTick(() => {
       this.showModal = false;

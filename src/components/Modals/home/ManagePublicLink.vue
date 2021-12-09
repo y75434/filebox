@@ -23,21 +23,21 @@
     >
       <div class="text-dark d-flex justify-content-between">
         <h4 class="fw-bold">
-          photoshop-transparent-image-2.psd
+          {{ linkitems[0].name }}
         </h4>
         <div class="d-flex align-items-center">
           <h5 class="fw-bold mx-2">
-            25
+            {{ count }}
           </h5>
           <h5>Public Links</h5>
         </div>
       </div>
       <div
-        class="w-100 mt-4 overflow-scroll"
+        class="w-100 mt-4 overflow-scroll height-400"
         @contextmenu="showMenu($event)"
       >
         <!-- @contextmenu="operational($event)" @row-selected="rowSelected" -->
-        <table class="table">
+        <table class="table overflow-scroll ">
           <thead>
             <tr class="modal-tr">
               <th scope="col">
@@ -60,38 +60,20 @@
               </th>
             </tr>
           </thead>
-          <tbody class="bg-white">
-            <tr>
+          <tbody class="bg-white ">
+            <tr
+              v-for="item in linkitems"
+              :key="item.id"
+              @mouseover="rowSelected(item)"
+            >
               <th scope="row">
-                5vnak/bemkq/wallpaper-1.jpg
+                {{ item.name }}
               </th>
-              <td>5vnak/bemkq/wallpaper-1.jpg</td>
-              <td>https://demos.google.com/admin/public...</td>
-              <td>admin</td>
-              <td>5</td>
-              <td>25/02/2007 10:52 AM</td>
-            </tr>
-            <tr>
-              <th scope="row">
-                5vnak/bemkq/wallpaper-1.jpg
-              </th>
-
-              <td>5vnak/bemkq/wallpaper-1.jpg</td>
-              <td>https://demos.google.com/admin/public...</td>
-              <td>admin</td>
-              <td>5</td>
-              <td>25/02/2007 10:52 AM</td>
-            </tr>
-            <tr>
-              <th scope="row">
-                5vnak/bemkq/wallpaper-1.jpg
-              </th>
-
-              <td>5vnak/bemkq/wallpaper-1.jpg</td>
-              <td>https://demos.google.com/admin/public...</td>
-              <td>admin</td>
-              <td>5</td>
-              <td>25/02/2007 10:52 AM</td>
+              <td>{{ item.linkId }}</td>
+              <td>{{ item.url }}</td>
+              <td>{{ item.viewed }}</td>
+              <td>{{ item.dateModified }}</td>
+              <td>{{ item.expire }}</td>
             </tr>
           </tbody>
         </table>
@@ -116,8 +98,8 @@
         </li>
       </ul>
     </ContextMenu>
-    <EditPublicLink ref="EditPublicLink" />
-    <delete-user ref="DeleteUser" />
+    <EditPublicLink ref="EditPublicLink" :tab-data="selected"/>
+    <delete-user ref="DeleteUser" :tab-data="selected"/>
 
     <template #modal-ok>
       {{ $t("GENERAL.CLOSE") }}
@@ -138,46 +120,42 @@ export default {
     DeleteUser,
     ContextMenu,
     EditPublicLink
-
   },
   data() {
      return {
-      showModal: false
+      count: 0,
+      linkitems: [],
+      selected: {},
      }
    },
    created(){
-    this.getUser()
+    this.getLinkTable()
    },
    methods: {
-    handler(event) { event.preventDefault(); },//todo無法右鍵
+    handler(event) { event.preventDefault(); },//todo無法右鍵+跑兩次modal
     operational(event) {
       event.preventDefault();
       event.stopPropagation();
     }, 
     DeleteUser(){ this.$bvModal.show('modal-delete-user'); },
     EditPublicLink(){ this.$bvModal.show('EditPublicLink'); },
-    rowSelected(items) {
-      this.selected = items[0]
-      console.log(this.selected);
-    
+    rowSelected(item) {
+      this.selected = item
+      console.log('147' ,this.selected); 
     },
     showMenu(event) {
       this.$refs.menuLink.open(event);
     },
-     getUser(){
-      // let promise = this.axios.get('/some/url')
-      //   return promise.then((data) => {
-      //     const items = data.items       
-      //     return(items)
-      //   }).catch(error => {
-      //     return []
-      //   })
-     },
-     handleSubmit() {
-			// this.$nextTick(() => {
-        this.showModal = false
-			// });
-		},
+    
+    getLinkTable(){
+      this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll`)
+        .then((data) => { 
+          this.linkitems = data.data 
+          this.count = this.linkitems.length
+        }).catch(error => {
+          console.log(error.response.data);        
+        })
+    }
    }
 }
 </script>

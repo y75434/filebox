@@ -108,7 +108,6 @@
                             v-model="eventsSelected"
                             :options="events"
                             :aria-describedby="ariaDescribedby"
-                            name="events"
                             class="mx-1"
                             aria-label="events"
                             stacked
@@ -305,9 +304,6 @@
                   src="@/assets/images/icon/usermanagement@2x.png"
                   class="icon32px"
                 >
-                <p class="text-dark">
-                  {{ name }}
-                </p>
               </template>
               <template #cell(name)="data">
                 {{ data.item.name }} 
@@ -429,7 +425,6 @@
           </li>
         </ul>
       </ContextMenu>
-      <!-- @update="getUserTable" --> 
       <EditUserProperties
         ref="EditUserProperties"
         :tab-data="selected"
@@ -442,9 +437,15 @@
       <NewGroupProperties
         ref="NewGroupProperties"
       />
-
       <AddNewUser ref="AddNewUser" />
-      <RootFolderProperties ref="RootFolderProperties" />
+      <RootFolderProperties
+        ref="RootFolderProperties"
+        :tab-data="selected"
+      />
+      <AddRootFolderProperties
+        ref="AddRootFolderProperties"
+        :title="'Add Root Folder'"
+      />
       <EditPublicLink
         ref="EditPublicLink"
         :tab-data="selected"
@@ -470,6 +471,7 @@ import EditUserProperties from './Modals/user/EditUserProperties.vue';
 import DeleteUser from '@/components/Modals/user/DeleteUser.vue';
 import NewGroupProperties from '@/components/Modals/group/NewGroupProperties.vue';
 import RootFolderProperties from '@/components/Modals/folder/RootFolderProperties.vue';
+import AddRootFolderProperties from'@/components/Modals/folder/AddRootFolderProperties.vue';
 import EditPublicLink from'@/components/Modals/link/EditPublicLink.vue';
 import EventProperties from '@/components/Modals/events/EventProperties.vue';
 import RenameItem from '../components/Modals/home/RenameItem.vue';
@@ -487,7 +489,8 @@ components:{
     RootFolderProperties,
     EditPublicLink,
     EventProperties,
-    RenameItem
+    RenameItem,
+    AddRootFolderProperties
 
 },
 data() {
@@ -505,9 +508,6 @@ data() {
       { key: 'viewableTimes', label: 'viewableTimes' },
       { key: 'expire', label: this.$t("GENERAL.TIME") },
       { key: 'pic', label: 'pic' },
-
-
-
     ],
     items: [
         { Name: 'Rachel',FullName:'Rachel Lee', LoginCount: '5',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM', DateModified:'25/02/2007 10:52 AM',Status:'active'},
@@ -518,10 +518,7 @@ data() {
         { GroupName: 'RD',Members:5,DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
         { GroupName: 'HR',Members:5,DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
       ],
-      folderitems: [
-        { Name: '1.Root Folder',DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
-        { Name: '2. Features Test Folder',DateCreated:'25/02/2022 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
-      ],
+      folderitems: [],
       eventsitems: [],
       eventpics: [
         { id: 0,pic: require('@/assets/images/icon/browse@2x.png'), eventName: this.$t('GENERAL.BROWSE')},
@@ -605,20 +602,19 @@ methods: {
         this.count = this.groupitems.length
         return this.groupitems;
       case 3:
+        this.getFolderTable();
         this.count = this.folderitems.length
         return this.folderitems;         
        case 4: 
          this.getEventTable();
          this.count = this.eventsitems.length
-         return this.eventsitems;
-        
+         return this.eventsitems;        
       case 5: 
         this.getLinkTable();
         this.count = this.linkitems.length
         return this.linkitems;
       default:
         return [];
-
     }
   },
   //顯示各頁選單
@@ -648,17 +644,11 @@ methods: {
   operational(event) {
     event.preventDefault();
     event.stopPropagation();
-    // this.$refs.menuForUser.open(event);
   }, 
   //hover一個資料 並將資料傳遞子層 
   rowSelected(items) {
-    // this.selectedRow = index;
     this.selected = items
-    //  console.log(this.selected); 
-     //檢視目前hover值
-  
-    // this.$refs.selectableTable.selectRow(index) 
-    
+    //  console.log(this.selected);     
   },
   Rename(){      
     this.$bvModal.show('RenameItem');
@@ -683,7 +673,8 @@ methods: {
       this.$bvModal.show('NewGroupProperties');
     }
     if (this.currentSelected === 3) {
-      this.$bvModal.show('RootFolderProperties');
+      this.$bvModal.show('AddRootFolderProperties');
+      console.log('111')
     }
   },
   NewGroupProperties(){
@@ -745,7 +736,15 @@ methods: {
           console.log(error.response.data);        
         })
     },
-    
+    getFolderTable(){
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
+        .then((data) => { 
+          this.folderitems = data.data 
+          this.count = this.folderitems.length
+        }).catch(error => {
+          console.log(error.response.data);        
+        })
+    },
 }
 }
 </script>
