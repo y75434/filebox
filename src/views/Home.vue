@@ -128,7 +128,7 @@
           <div class="fn-w-160 d-flex align-items-center flex-column py-3">
             <b-button
               v-b-tooltip.hover
-              @click="EditPublicLink"
+              @click="AddPublicLink"
               title="Create public link..."
               class="bg-light text-dark border-0 p-0 d-flex"
             >
@@ -292,6 +292,7 @@
       </div>
       <Search
         :tree-selected="treeSelected"
+        :sub-tree="[this.folderitems]"
         @update="selfUpdate"
       />
       <div />
@@ -393,38 +394,11 @@
                   </div>
                 </div>
               </div>
-              <div class="accordion-item">
-                <h2
-                  class="accordion-header"
-                  id="flush-headingTwo"
-                >
-                  <button
-                    class="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#flush-collapseTwo"
-                    aria-expanded="false"
-                    aria-controls="flush-collapseTwo"
-                  >
-                    <img
-                      :src="`${this.treeItems[0].pic}`"
-                      class="icon24px"
-                    >
-                    Feature Tests
-                  </button>
-                </h2>
-                <div
-                  id="flush-collapseTwo"
-                  class="accordion-collapse collapse"
-                  aria-labelledby="flush-headingTwo"
-                  data-bs-parent="#accordionFlushExample"
-                >
-                  <div class="accordion-body">
-                    Placeholder   actual content.
-                  </div>
-                </div>
-              </div>
-              <div class="accordion-item">
+              
+              <div
+                
+                class="accordion-item"
+              >
                 <h2
                   class="accordion-header"
                   id="flush-headingThree"
@@ -437,13 +411,13 @@
                     aria-expanded="false"
                     aria-controls="flush-collapseThree"
                     @click="passRoute($event)"                   
-                    value="Another Root Folder"
+                    :value="this.folderTree.name"
                   >
                     <img
                       :src="`${this.treeItems[0].pic}`"
                       class="icon24px"
                     >
-                    Another Root Folder
+                    {{ folderTree.name }}
                   </button>
                 </h2>
                 <div
@@ -459,7 +433,13 @@
                       class="accordion"
                       id="accordionExample"
                     >
-                      <div class="accordion-item">
+                      <div
+                        class="accordion-item"
+                        v-for="item in this.folderTree.subFolders"
+                        :key="item.id"
+                        @click="passRoute($event)"                   
+                        :value="item.name"
+                      >
                         <h2
                           class="accordion-header"
                           id="headingOne"
@@ -472,10 +452,10 @@
                             aria-expanded="true"
                             aria-controls="collapseOne"
                           >
-                            #1
+                            {{ item.name }}
                           </button>
                         </h2>
-                        <div
+                        <!-- <div
                           id="collapseOne"
                           class="accordion-collapse collapse show"
                           aria-labelledby="headingOne"
@@ -486,65 +466,7 @@
                               ccc
                             </h6>
                           </div>
-                        </div>
-                      </div>
-                      <div class="accordion-item">
-                        <h2
-                          class="accordion-header"
-                          id="headingTwo"
-                        >
-                          <button
-                            class="accordion-button collapsed"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapseTwo"
-                            aria-expanded="false"
-                            aria-controls="collapseTwo"
-                          >
-                            #2
-                          </button>
-                        </h2>
-                        <div
-                          id="collapseTwo"
-                          class="accordion-collapse collapse"
-                          aria-labelledby="headingTwo"
-                          data-bs-parent="#accordionExample"
-                        >
-                          <div class="accordion-body">
-                            <h6 class="text-dark">
-                              aaaa
-                            </h6>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="accordion-item">
-                        <h2
-                          class="accordion-header"
-                          id="headingThree"
-                        >
-                          <button
-                            class="accordion-button collapsed"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapseThree"
-                            aria-expanded="false"
-                            aria-controls="collapseThree"
-                          >
-                            #3
-                          </button>
-                        </h2>
-                        <div
-                          id="collapseThree"
-                          class="accordion-collapse collapse"
-                          aria-labelledby="headingThree"
-                          data-bs-parent="#accordionExample"
-                        >
-                          <div class="accordion-body">
-                            <h6 class="text-dark">
-                              ddddd
-                            </h6>
-                          </div>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                     <!-- new -->
@@ -635,9 +557,9 @@
       <rename-item ref="RenameItem" />
       <delete-folder ref="DeleteFolder" />
       <manage-public-link ref="ManagePublicLink" />
-      <EditPublicLink
-        ref="EditPublicLink"
-        :title="'Create Public Link'"
+    
+      <AddEditPublicLink
+        ref="AddEditPublicLink"
       />
     </div>
     <div class="dqbz-footer">
@@ -658,7 +580,7 @@ import CreateFolder from '../components/Modals/home/CreateFolder.vue';
 import DeleteFolder from '../components/Modals/home/DeleteFolder.vue';
 import RenameItem from '../components/Modals/home/RenameItem.vue';
 import ManagePublicLink from '../components/Modals/home/ManagePublicLink.vue';
-import EditPublicLink from'@/components/Modals/link/EditPublicLink.vue';
+import AddEditPublicLink from'@/components/Modals/link/AddEditPublicLink.vue';
 import DDR from 'yoyoo-ddr';
  import 'yoyoo-ddr/dist/yoyoo-ddr.css';
 
@@ -675,7 +597,7 @@ export default {
     RenameItem,
     DeleteFolder,
     ManagePublicLink,
-    EditPublicLink,
+    AddEditPublicLink,
     DDR, 
   },
   data: () => ({
@@ -709,6 +631,8 @@ export default {
     copy: false,//有無複製檔案
     cut: false,
     searchQuery: "",
+    folderTree: {},
+    folderitems: [],
 
   }),
   created(){
@@ -723,7 +647,8 @@ export default {
       this.$set(this.resultQuery, x.id, index)
       return x;
     })
-    
+     this.getFolderTree('a9602080-f4fc-4356-abe3-145d05fab9ac')
+     this.getFolderTable()
   },
   computed:{
     //數checkbox勾選幾個
@@ -767,7 +692,7 @@ export default {
     RenameItem(){ this.$bvModal.show('RenameItem'); },
     DeleteFolder(){ this.$bvModal.show('DeleteFolder'); },
     ManagePublicLink(){this.$bvModal.show('ManagePublicLink');},
-    EditPublicLink(){ this.$bvModal.show('EditPublicLink'); },
+    AddPublicLink(){ this.$bvModal.show('AddEditPublicLink'); },
     // checkbox func
     selectAll() {   
       // this.allFiles.map(item =>{
@@ -792,6 +717,24 @@ export default {
         item.ischecked = !item.ischecked; 
         return item;
       })
+    },
+     getFolderTree(id){
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
+      .then((data) => { 
+        this.folderTree = data.data
+      }).catch(() => {
+        //  console.log(error.response.data);        
+      })
+    },
+    getFolderTable(){
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
+        .then((data) => { 
+          this.folderitems = data.data 
+          // console.log(this.folderitems);
+          
+        }).catch(error => {
+          console.log(error.response.data);        
+        })
     },
   },
 };

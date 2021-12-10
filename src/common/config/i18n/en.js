@@ -181,6 +181,7 @@ export const locale = {
     IMPORTUSER:'Import User',
     RENAME:'Rename',
     USERSETTING:'User Setting',
-    EDITUSERPROPERTIES:'EditUserProperties'
+    EDITUSERPROPERTIES:'EditUserProperties',
+    CREATEPUBLICLINK: 'Create Public Link'
   }
 }

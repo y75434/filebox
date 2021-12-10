@@ -180,6 +180,7 @@ export const locale = {
     IMPORTUSER:'匯入使用者',
     RENAME:'重新命名',
     USERSETTING:'使用者設定',
-    EDITUSERPROPERTIES:'用戶設定'
+    EDITUSERPROPERTIES:'用戶設定',
+    CREATEPUBLICLINK: '新增公共連結'
   }
 }

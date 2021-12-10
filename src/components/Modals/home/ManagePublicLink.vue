@@ -10,7 +10,6 @@
     ok-variant="primary"
     size="lg"
     footer-bg-variant="white"
-    @contextmenu="handler($event)"
     ok-only
   >
     <!-- <form
@@ -34,10 +33,12 @@
       </div>
       <div
         class="w-100 mt-4 overflow-scroll height-400"
-        @contextmenu="showMenu($event)"
+        @contextmenu.prevent="handler($event)"
       >
-        <!-- @contextmenu="operational($event)" @row-selected="rowSelected" -->
-        <table class="table overflow-scroll ">
+        <table
+          class="table overflow-scroll "
+          @contextmenu="showMenu($event)"
+        >
           <thead>
             <tr class="modal-tr">
               <th scope="col">
@@ -69,7 +70,7 @@
               <th scope="row">
                 {{ item.name }}
               </th>
-              <td>{{ item.linkId }}</td>
+              <td>{{ item.creator }}</td>
               <td>{{ item.url }}</td>
               <td>{{ item.viewed }}</td>
               <td>{{ item.dateModified }}</td>
@@ -98,8 +99,14 @@
         </li>
       </ul>
     </ContextMenu>
-    <EditPublicLink ref="EditPublicLink" :tab-data="selected"/>
-    <delete-user ref="DeleteUser" :tab-data="selected"/>
+    <EditPublicLink
+      ref="EditPublicLink"
+      :tab-data="selected"
+    />
+    <delete-user
+      ref="DeleteUser"
+      :tab-data="selected"
+    />
 
     <template #modal-ok>
       {{ $t("GENERAL.CLOSE") }}
@@ -132,7 +139,7 @@ export default {
     this.getLinkTable()
    },
    methods: {
-    handler(event) { event.preventDefault(); },//todo無法右鍵+跑兩次modal
+    handler(event) { event.preventDefault(); },
     operational(event) {
       event.preventDefault();
       event.stopPropagation();
@@ -141,7 +148,7 @@ export default {
     EditPublicLink(){ this.$bvModal.show('EditPublicLink'); },
     rowSelected(item) {
       this.selected = item
-      console.log('147' ,this.selected); 
+      // console.log('147' ,this.selected); 
     },
     showMenu(event) {
       this.$refs.menuLink.open(event);

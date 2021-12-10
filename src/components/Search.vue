@@ -63,20 +63,16 @@
           aria-expanded="false"
         >
           {{ treeSelected }}
-          <!-- {{ new }} -->
         </button>
         <ul class="dropdown-menu">
-          <li>
+          <li
+            v-for="item in subtree"
+            :key="item.id"
+          >
             <a
               class="dropdown-item"
               href="#"
-            >Another action</a>
-          </li>
-          <li>
-            <a
-              class="dropdown-item"
-              href="#"
-            >Something else here</a>
+            >{{ item.name }}</a>
           </li>
         </ul>
       </div>
@@ -126,9 +122,6 @@
       v-model="searchQuery"
       @change="update"
     />
-
-    
-
     <!-- <b-button
       class="text-white"
       style="background-color:#66ACEC;"
@@ -142,35 +135,21 @@
 </template>
 
 <script>
-// import eventBus from "@/bus.js";
 
 export default {
   name: "Search",
-  props: { treeSelected: { type: String, default: "" } },
-
+  props: { 
+    treeSelected: { type: String, default: "" },
+    subTree: { type: Array, default() { return [] } }
+  },
   data() {
     return {
-      showModal: false,
-      new: this.treeSelected,
       searchQuery: null,
     }
-
-
-  },
-  mounted(){
-    // this.get();
-    this.new = this.treeSelected;
-
-  },
-
-  
-  watch:{
-    
   },
   methods: {
    update() {
-    this.$emit('update', this.searchQuery); 
-    
+    this.$emit('update', this.searchQuery);   
     },
     
   },

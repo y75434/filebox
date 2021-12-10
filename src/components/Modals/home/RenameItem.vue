@@ -10,7 +10,7 @@
     ok-variant="primary"
     body-bg-variant="bgmodal"
     footer-bg-variant="bgmodal"
-    @ok="EditName"
+    @ok="putFolder"
   >
     <div class="modal-popout-bg p-3">
       <p class=" m-0">
@@ -20,6 +20,7 @@
         type="email"
         class="form-control"
         :placeholder="$t( 'MODAL.PLEASEFILLOUTTHISFIELD')"
+        v-model="personData.name"
       >
     </div>
 
@@ -53,10 +54,15 @@ export default {
   data() {
     return {
       showModal: false,
-      personData: this.tabData,
+      personData: {},
       type: "",
 
     };
+  },
+  watch:{ 
+    tabData(){ 
+      this.personData = this.tabData 
+    } 
   },
   methods: {
     
@@ -75,28 +81,35 @@ export default {
 
       //if user
       this.axios.post(`${process.env.APIPATH}/api/${this.type}/${this.tabData.id}`)
-        .then((data) => {
+        .then(() => {
           
-          console.log(data);
-
-          this.personData.name = data.userName
+      
         }).catch(error => {
           console.log(error);          
         })
 
       },
     putFolder(){
-      this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`)
-      .then((data) => { 
-        this.folderitems = data.data 
+      const headers = { 
+        'Content-Type': 'application/json', 
+        'Accept':'application/json', 
+        'Access-Control-Allow-Origin': '*' 
+      }; 
+      const data = JSON.stringify(
+        {
+          "id": this.personData.folderId,
+          "name": this.personData.name,
+          "editor": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        }
+        )
+      //editor之後改
+
+      this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RenameFolder`,
+      data,{ headers: headers })
+      .then(() => { 
       }).catch(error => {
         console.log(error.response.data);        
       })
-    },
-    handleSubmit() {
-      // this.$nextTick(() => {
-      this.showModal = false;
-      // });
     },
   },
 };

@@ -32,7 +32,7 @@
               type="Name"
               class="form-control inline-block width-320"
               id="Name"
-              v-model="personData.name"
+              v-model="FolderSettings.name"
               disabled
             >
           </div>
@@ -46,13 +46,13 @@
               class="form-control inline-block width-320"
               id="Description"
               placeholder=""
-              v-model="personData.description"
+              v-model="FolderSettings.description"
             >
           </div>
         </div>
             
         <h5 class="text-dark">
-          {{ tabData }}
+          {{ FolderSettings }}
         </h5>
 
 
@@ -149,7 +149,7 @@
                       >
                         <!-- <p class="text-dark m-0"> -->
                         Design group
-
+                        {{ FolderSettings.accessPermissions }}
                       <!-- </p> -->
                       </label>
                     </div>
@@ -335,7 +335,7 @@
                       </div>
                       <div
                         class="d-flex width-350"
-                      >
+                      >{{ FolderSettings.restrictedFileTypes }}
                         <div class="form-check">
                           <input
                             type="checkbox"
@@ -447,56 +447,63 @@ export default {
   name: "RootFolderProperties",
   props: { 
     title: { type: String, default: "Root Folder Properties" },
-    tabData: { type: Object , default() { return {} }}
+    folderData: { type: Object , default() { return {} }},
   },
   data() {
     return {
       personData: {},
       folderTree: {},
-      FolderSettings:{}
+      FolderSettings:{},
+      // showModal: false,
 
     };
   },
-  //todo優先處理這裡
-  //watch 會loop
-  // watch:{ 
-  //   tabData(){ 
-  //     this.personData = this.tabData 
-  //     this.getFolderTree(this.personData.folderId)
-  //     this.getFolderSettings(this.personData.folderId)
-  //   },
-    
-  //},
-  methods: {  
-    
+  watch:{ 
+    folderData(){ 
+      this.personData = this.folderData 
+    },
+  },  
+  methods: {   
+    start() {
+      this.getFolderTree(this.personData.folderId)
+      this.getFolderSettings(this.personData.folderId)
+    },
     getFolderTree(id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
       .then((data) => { 
         this.folderTree = data.data
-      }).catch(error => {
-        console.log(error.response.data);        
+      }).catch(() => {
+        //  console.log(error.response.data);        
       })
     },
     getFolderSettings(id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => {  
         this.FolderSettings = data.data
-        console.log(this.FolderSettings);
+        // console.log(this.FolderSettings);
          
-      }).catch(error => {
-        console.log(error.response.data);        
+      }).catch(() => {
+        // console.log(error.response.data);        
       })
     },
+    //目前資料不完整無法更新資料
     putFolder(){
-      this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`)
-      .then((data) => { 
-        this.folderitems = data.data 
+      const headers = { 
+        'Content-Type': 'application/json', 
+        'Accept':'application/json', 
+        'Access-Control-Allow-Origin': '*' 
+      }; 
+      const data = JSON.stringify(this.FolderSettings)
+
+      this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
+      data,{ headers: headers }).then((data) => { 
+        console.log(data);
+
       }).catch(error => {
         console.log(error.response.data);        
       })
     },
    
-
   },
 };
 </script>

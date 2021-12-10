@@ -440,7 +440,7 @@
       <AddNewUser ref="AddNewUser" />
       <RootFolderProperties
         ref="RootFolderProperties"
-        :tab-data="selected"
+        :folder-data="selected"
       />
       <AddRootFolderProperties
         ref="AddRootFolderProperties"
@@ -547,16 +547,17 @@ data() {
       eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
       // eventsSelected:[],
       test:[{ "linkId": "168a6d55-8d2c-4414-aa12-30199f5c2e92", "name": "string",
-"isPublic": true, "expire": "2021-12-07T01:46:42.28144", "viewableTimes": 0,
-"viewed": 0, "url": "string", "fileId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-"lastViewed": null, "creator": "string", "dateCreated":
-"2021-12-07T01:46:42.281511", "editor": null, "dateModified": null },{ "linkId": "168a6d55-8d2c-4414-aa12-30199f5c2e92", "name": "string",
-"isPublic": true, "expire": "2021-12-07T01:46:42.28144", "viewableTimes": 0,
-"viewed": 0, "url": "string", "fileId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-"lastViewed": null, "creator": "string", "dateCreated":
-"2021-12-07T01:46:42.281511", "editor": null, "dateModified": null }
+        "isPublic": true, "expire": "2021-12-07T01:46:42.28144", "viewableTimes": 0,
+        "viewed": 0, "url": "string", "fileId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "lastViewed": null, "creator": "string", "dateCreated":
+        "2021-12-07T01:46:42.281511", "editor": null, "dateModified": null },{ "linkId": "168a6d55-8d2c-4414-aa12-30199f5c2e92", "name": "string",
+        "isPublic": true, "expire": "2021-12-07T01:46:42.28144", "viewableTimes": 0,
+        "viewed": 0, "url": "string", "fileId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "lastViewed": null, "creator": "string", "dateCreated":
+        "2021-12-07T01:46:42.281511", "editor": null, "dateModified": null }
 
-],
+        ],
+
   };
 },
 created(){
@@ -682,6 +683,7 @@ methods: {
     },
     RootFolderProperties(){
       this.$bvModal.show('RootFolderProperties');
+      this.$refs.RootFolderProperties.start()
 
     },
     EventProperties(){
@@ -741,8 +743,8 @@ methods: {
         .then((data) => { 
           this.folderitems = data.data 
           this.count = this.folderitems.length
-        }).catch(error => {
-          console.log(error.response.data);        
+        }).catch(() => {
+          // console.log(error.response.data);        
         })
     },
 }

@@ -44,7 +44,6 @@ export default {
 			this.top = (evt.pageY || evt.clientY) - ySpace;
 
 			this.$nextTick(() => this.$el.focus());
-			console.log('open');
 			
 			this.show = true;
 		},

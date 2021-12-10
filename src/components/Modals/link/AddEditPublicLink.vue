@@ -1,19 +1,16 @@
 <template>
   <b-modal
-    id="EditPublicLink"
+    id="AddEditPublicLink"
     class="modal-content"
     body-text-variant="warning"
     centered
-    :title="this.title"
+    :title="$t('TITLE.CREATEPUBLICLINK')"
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"
     footer-bg-variant="white"
     body-bg-variant="bgmodal"
   >
-    <!-- :title="$t('TITLE.EDITPUBLICLINK')" -->
-
-   
     <div
       class="modal-popout-bg p-0"
     >
@@ -49,9 +46,7 @@
         
       <!-- </div> -->
             
-      <p class="text-dark">
-        {{ tabData }}11111111111111
-      </p>
+      
       <hr class="">
 
       <p class="text-dark">
@@ -223,10 +218,7 @@
 
 export default {
   name: "EditPublicLink",
-  props: { 
-    title: { type: String, default: "Edit Public Link" },
-    tabData: { type: Object , default() { return {} }}
-  },
+  
   components:{ 
    
   },
@@ -236,11 +228,6 @@ export default {
       personData: {},
       items: []
     };
-  },
-  watch:{ 
-    tabData(){ 
-      this.personData = this.tabData 
-    } 
   },
   methods: {
     handleOk(bvModalEvt) {
