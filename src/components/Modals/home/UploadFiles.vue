@@ -29,15 +29,18 @@
           @change="onFileChange"
         > -->
         <div class="w-100 d-flex justify-content-start">
-          <div class="">
+          <div
+            v-for="item in image"
+            :key="item.id"
+            class=""
+          >
             <img
-              v-if="url"
-              :src="url"
+              :src="item"
               class="folder-icon"
             >
-            <h6 class="text-dark text-center">
+            <!--  <h6 class="text-dark text-center">
               {{ file.name }}
-            </h6>
+            </h6> -->
           </div>
         </div>
 
@@ -72,7 +75,7 @@
     </form>
 
 
-    <template #modal-footer="{ Addfiles, Addfolder, Remove, Clear, Upload }">
+    <template #modal-footer="{ Addfolder, Remove, Clear, Upload }">
       <div class="d-flex w-100 justify-content-between">
         <div class="">
           <b-button
@@ -97,7 +100,7 @@
 
           <b-button
             class="cancel-btn mx-1"
-            @submit.prevent="Addfolder()"
+            @change="onFolderChange"
           >
             <label
               for="inputFolder"
@@ -149,22 +152,16 @@ export default {
 
   data() {
     return {
-      showModal: false,
       url: [],
-      file:{
+      files:{
         name:null
       },
-      files:[],
-      a:[]
+      image:[],
+
     };
   },
   methods: {
-    show() {
-      this.showModal = true;
-    },
-    hide() {
-      this.showModal = false;
-    },
+    
     handleSubmit() {
       // this.$nextTick(() => {
       this.showModal = false;
@@ -176,33 +173,58 @@ export default {
     onFileChange(e) {
       const file = e.target.files;
       console.log(file);
-      this.file = file 
-      Object.assign(this.file, {url: "value3"});
+      this.files = file;
+      // 
+ 
+      
+      this.files.forEach(x=>{
+          console.log(x);
+          this.image.push(URL.createObjectURL(x));
+
+      })
 
 
-      console.log(this.file);
-      this.url  = this.file[0].url 
+      const formData = new FormData();
+      formData.append('file',file);
 
-      console.log(this.file[0]);
-
-
-      this.url = [...file].map(URL.createObjectURL);
-
-      console.log(this.url);
-
-      this.url.forEach(element =>{
-       element.replace('blob:')
-
-     
-       this.url = element
-       
-       console.log(this.url);
-
-      });
-      console.log(this.file);  
-      // this.url = URL.createObjectURL(file);
-    },
+      //直接axios 再把formData post過去
+      console.log(this.files);
    
+
+
+      //this.url = [...file].map(URL.createObjectURL);
+
+
+      
+     
+    },
+    onFolderChange(e) {
+      const file = e.target.files;
+      console.log(file);
+      this.files = file;
+ 
+      
+      this.files.forEach(x=>{
+          console.log(x);
+          this.image.push(URL.createObjectURL(x));
+
+      })
+
+
+      const formData = new FormData();
+      formData.append('file',file);
+
+      //直接axios 再把formData post過去
+      console.log(this.files);
+   
+
+
+      //this.url = [...file].map(URL.createObjectURL);
+
+
+      
+     
+    },
   },
 };
 </script>

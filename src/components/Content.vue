@@ -282,8 +282,13 @@
             :filter="filter"
           />
 
-        
-
+          <!-- <h1 class="text-dark">
+            {{ picture.treeview.folder }}
+          </h1> -->
+          <img
+            :src="this.picture.treeview.folder"
+            class="icon24px"
+          >
           <div
             v-if="this.currentSelected === 4"
           >
@@ -299,25 +304,20 @@
               hover
               :filter="filter"
             >
-              <template #cell(pic)="">
+              <template #cell(pic)="data">
                 <img
-                  src="@/assets/images/icon/usermanagement@2x.png"
+                  :src="data.item.pic"
                   class="icon32px"
                 >
-              </template>
+              </template> 
               <template #cell(name)="data">
                 {{ data.item.name }} 
               </template>
 
               <template #cell(url)="data">
-                {{ data.item.url }}
+                {{ data.item.eventTypes }}
               </template>
-              <template #cell(creator)="data">
-                {{ data.item.creator }}
-              </template>
-              <template #cell(viewed)="data">
-                {{ data.item.viewed }}
-              </template>
+              
               <template #cell(viewableTimes)="data">
                 {{ data.item.viewableTimes }}
               </template>
@@ -475,7 +475,9 @@ import AddRootFolderProperties from'@/components/Modals/folder/AddRootFolderProp
 import EditPublicLink from'@/components/Modals/link/EditPublicLink.vue';
 import EventProperties from '@/components/Modals/events/EventProperties.vue';
 import RenameItem from '../components/Modals/home/RenameItem.vue';
-
+import {picture
+}
+ from '@/common/images.js';
 
 export default {
 name: "Content",
@@ -490,8 +492,7 @@ components:{
     EditPublicLink,
     EventProperties,
     RenameItem,
-    AddRootFolderProperties
-
+    AddRootFolderProperties,
 },
 data() {
   return {
@@ -520,9 +521,9 @@ data() {
       ],
       folderitems: [],
       eventsitems: [],
-      eventpics: [
-        { id: 0,pic: require('@/assets/images/icon/browse@2x.png'), eventName: this.$t('GENERAL.BROWSE')},
-        { id: 1, pic: require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.LOGIN')},
+      eventpics: [ 
+        { id: 0,pic: require('@/assets/images/icon/browse@2x.png'), eventName: this.$t('GENERAL.BROWSE'),"eventTypes": "Browse",},
+        { id: 1, pic: require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.LOGIN'),"eventTypes": "Login",},
         { id: 2, pic: require('@/assets/images/cmd/preview@2x.png') , eventName: this.$t('GENERAL.PREVIEW')},
         { id: 3, pic: require('@/assets/images/cmd/download@2x.png'), eventName: this.$t('HOME.DOWNLOAD')},
         { id: 4, pic:require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.PUBLICLINK')},
@@ -546,23 +547,35 @@ data() {
       allSelected: true,
       eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
       // eventsSelected:[],
-      test:[{ "linkId": "168a6d55-8d2c-4414-aa12-30199f5c2e92", "name": "string",
-        "isPublic": true, "expire": "2021-12-07T01:46:42.28144", "viewableTimes": 0,
-        "viewed": 0, "url": "string", "fileId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        "lastViewed": null, "creator": "string", "dateCreated":
-        "2021-12-07T01:46:42.281511", "editor": null, "dateModified": null },{ "linkId": "168a6d55-8d2c-4414-aa12-30199f5c2e92", "name": "string",
-        "isPublic": true, "expire": "2021-12-07T01:46:42.28144", "viewableTimes": 0,
-        "viewed": 0, "url": "string", "fileId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        "lastViewed": null, "creator": "string", "dateCreated":
-        "2021-12-07T01:46:42.281511", "editor": null, "dateModified": null }
-
-        ],
-
+      test:[
+        { 
+          "eventId": "168a6d55-8d2c-4414-aa12-30199f5c2e92", 
+          "name": "string",
+          "isPublic": true, 
+          "expire": "2021-12-07T01:46:42.28144", 
+          "eventTypes": "Login",
+        },
+        { 
+          "eventId": "168a6d55-8d2c-4414-aa12-30199f5c2e92", 
+          "name": "string",
+          "isPublic": true, 
+          "expire": "2021-12-07T01:46:42.28144", 
+          "eventTypes": "Browse",
+        } 
+      ],
+      picture:{}
   };
 },
 created(){
   this.getData();
   this.getTable();
+  this.test.map(x=>{
+    const eventpic =  this.eventpics.filter(y=>y.eventTypes == x.eventTypes)[0];
+    x.pic = eventpic.pic;
+    return x
+  });
+  this.picture = picture;
+  console.log(this.picture.treeview.folder);
 },
 watch: {
   eventsSelected(newValue) {
