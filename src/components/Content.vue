@@ -281,22 +281,14 @@
             hover
             :filter="filter"
           />
-
-          <!-- <h1 class="text-dark">
-            {{ picture.treeview.folder }}
-          </h1> -->
-          <img
-            :src="this.picture.treeview.folder"
-            class="icon24px"
-          >
           <div
             v-if="this.currentSelected === 4"
           >
             <b-table
-              :fields="fields"
+              :fields="eventfields"
               responsive="true"
-              :items="test"
-              class="col-12 b-col"
+              :items="eventsitems"
+              class="col-12 b-col text-dark"
               @contextmenu="operational($event)"
               @row-hovered="rowSelected"
               ref="selectableTable"
@@ -310,16 +302,16 @@
                   class="icon32px"
                 >
               </template> 
-              <template #cell(name)="data">
-                {{ data.item.name }} 
+              <template #cell(user)="data">
+                {{ data.item.user }} 
               </template>
 
-              <template #cell(url)="data">
-                {{ data.item.eventTypes }}
+              <template #cell(actionType)="data">
+                {{ data.item.actionType }}
               </template>
               
-              <template #cell(viewableTimes)="data">
-                {{ data.item.viewableTimes }}
+              <template #cell(description)="data">
+                {{ data.item.description }}
               </template>
             </b-table>
           </div>
@@ -475,24 +467,22 @@ import AddRootFolderProperties from'@/components/Modals/folder/AddRootFolderProp
 import EditPublicLink from'@/components/Modals/link/EditPublicLink.vue';
 import EventProperties from '@/components/Modals/events/EventProperties.vue';
 import RenameItem from '../components/Modals/home/RenameItem.vue';
-import {picture
-}
- from '@/common/images.js';
+import picture from '@/common/images.js';
 
 export default {
 name: "Content",
 components:{
   ContextMenu,
   ImportUser,
-    AddNewUser,
-    EditUserProperties,
-    DeleteUser,
-    NewGroupProperties,
-    RootFolderProperties,
-    EditPublicLink,
-    EventProperties,
-    RenameItem,
-    AddRootFolderProperties,
+  AddNewUser,
+  EditUserProperties,
+  DeleteUser,
+  NewGroupProperties,
+  RootFolderProperties,
+  EditPublicLink,
+  EventProperties,
+  RenameItem,
+  AddRootFolderProperties,
 },
 data() {
   return {
@@ -501,13 +491,10 @@ data() {
     countName:'Users',
     currentSelected:1,
     //link
-    fields: [ 
-      { key: 'name', label: 'Name', sortable: true },
-      { key: 'url', label: 'Linked Item' },
-      { key: 'creator', label: 'Created By' },
-      { key: 'viewed', label: 'viewed' },
-      { key: 'viewableTimes', label: 'viewableTimes' },
-      { key: 'expire', label: this.$t("GENERAL.TIME") },
+    eventfields: [ 
+      { key: 'user', label: 'User', sortable: true },
+      { key: 'actionType', label: 'actionType' },
+      { key: 'description', label: 'description' },
       { key: 'pic', label: 'pic' },
     ],
     items: [
@@ -522,20 +509,20 @@ data() {
       folderitems: [],
       eventsitems: [],
       eventpics: [ 
-        { id: 0,pic: require('@/assets/images/icon/browse@2x.png'), eventName: this.$t('GENERAL.BROWSE'),"eventTypes": "Browse",},
-        { id: 1, pic: require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.LOGIN'),"eventTypes": "Login",},
-        { id: 2, pic: require('@/assets/images/cmd/preview@2x.png') , eventName: this.$t('GENERAL.PREVIEW')},
-        { id: 3, pic: require('@/assets/images/cmd/download@2x.png'), eventName: this.$t('HOME.DOWNLOAD')},
-        { id: 4, pic:require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.PUBLICLINK')},
-        { id: 5, pic:require('@/assets/images/file/folder@2x.png'), eventName:this.$t('GENERAL.CREATEMOVE')},
-        { id: 6, pic:require('@/assets/images/cmd/rename@2x.png'), eventName:this.$t('HOME.RENAME')},
-        { id: 7, pic:require('@/assets/images/cmd/cut@2x.png'), eventName:this.$t('GENERAL.MOVE')},
-        { id: 8, pic:require('@/assets/images/file/extractallfiles@2x.png'), eventName:this.$t('GENERAL.EXTRACT')},
-        { id: 9, pic:require('@/assets/images/cmd/logout@2x.png'), eventName:this.$t('GENERAL.LOGOUT')},
-        { id: 10, pic:require('@/assets/images/cmd/delete@2x-2.png'), eventName:this.$t('HOME.DELETE')},
-        { id: 11, pic:require('@/assets/images/cmd/copy@2x.png'), eventName:this.$t('HOME.COPY')},
-        { id: 12, pic:require('@/assets/images/file/addtozip@2x.png'),eventName:this.$t('GENERAL.COMPRESS')},
-        { id: 13, pic:require('@/assets/images/cmd/upload@2x.png'),eventName:this.$t('HOME.UPLOAD')},
+        { id: 0,pic: require('@/assets/images/icon/browse@2x.png'), eventName: this.$t('GENERAL.BROWSE'),"actionType": "Browse",},
+        { id: 1, pic: require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.LOGIN'),"actionType": "Login",},
+        { id: 2, pic: require('@/assets/images/cmd/preview@2x.png') , eventName: this.$t('GENERAL.PREVIEW'),"actionType": "Preview"},
+        { id: 3, pic: require('@/assets/images/cmd/download@2x.png'), eventName: this.$t('HOME.DOWNLOAD'),"actionType": "Download"},
+        { id: 4, pic:require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.PUBLICLINK'),"actionType": "Public links"},
+        { id: 5, pic:require('@/assets/images/file/folder@2x.png'), eventName:this.$t('GENERAL.CREATEMOVE'),"actionType": "Create"},
+        { id: 6, pic:require('@/assets/images/cmd/rename@2x.png'), eventName:this.$t('HOME.RENAME'),"actionType": "Rename"},
+        { id: 7, pic:require('@/assets/images/cmd/cut@2x.png'), eventName:this.$t('GENERAL.MOVE'),"actionType": "Move"},
+        { id: 8, pic:require('@/assets/images/file/extractallfiles@2x.png'), eventName:this.$t('GENERAL.EXTRACT'),"actionType": "Extract"},
+        { id: 9, pic:require('@/assets/images/cmd/logout@2x.png'), eventName:this.$t('GENERAL.LOGOUT'),"actionType": "Log out"},
+        { id: 10, pic:require('@/assets/images/cmd/delete@2x-2.png'), eventName:this.$t('HOME.DELETE'),"actionType": "Delete"},
+        { id: 11, pic:require('@/assets/images/cmd/copy@2x.png'), eventName:this.$t('HOME.COPY'),"actionType": "Copy"},
+        { id: 12, pic:require('@/assets/images/file/addtozip@2x.png'),eventName:this.$t('GENERAL.COMPRESS'),"actionType": "Compress"},
+        { id: 13, pic:require('@/assets/images/cmd/upload@2x.png'),eventName:this.$t('HOME.UPLOAD'),"actionType": "Upload"},
       ],
       linkitems: [],
       // selectedRow : null,
@@ -547,35 +534,15 @@ data() {
       allSelected: true,
       eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
       // eventsSelected:[],
-      test:[
-        { 
-          "eventId": "168a6d55-8d2c-4414-aa12-30199f5c2e92", 
-          "name": "string",
-          "isPublic": true, 
-          "expire": "2021-12-07T01:46:42.28144", 
-          "eventTypes": "Login",
-        },
-        { 
-          "eventId": "168a6d55-8d2c-4414-aa12-30199f5c2e92", 
-          "name": "string",
-          "isPublic": true, 
-          "expire": "2021-12-07T01:46:42.28144", 
-          "eventTypes": "Browse",
-        } 
-      ],
+      
       picture:{}
   };
 },
 created(){
   this.getData();
   this.getTable();
-  this.test.map(x=>{
-    const eventpic =  this.eventpics.filter(y=>y.eventTypes == x.eventTypes)[0];
-    x.pic = eventpic.pic;
-    return x
-  });
+  
   this.picture = picture;
-  console.log(this.picture.treeview.folder);
 },
 watch: {
   eventsSelected(newValue) {
@@ -621,8 +588,16 @@ methods: {
         return this.folderitems;         
        case 4: 
          this.getEventTable();
+         this.eventsitems.map(item=>{ const eventpic =
+          this.picture.eventpics.filter(y=>y.actionType == item.actionType)[0]; 
+          item.pic = eventpic.pic; 
+          return item 
+        });
+
          this.count = this.eventsitems.length
-         return this.eventsitems;        
+        //  return this.eventsitems;  
+        return [];
+      
       case 5: 
         this.getLinkTable();
         this.count = this.linkitems.length
@@ -688,7 +663,6 @@ methods: {
     }
     if (this.currentSelected === 3) {
       this.$bvModal.show('AddRootFolderProperties');
-      console.log('111')
     }
   },
   NewGroupProperties(){
@@ -723,6 +697,7 @@ methods: {
         .then(data => {  
           this.eventsitems = data.data 
           this.count = this.eventsitems.length  
+          // console.log(this.eventsitems.data);
         return this.eventsitems;
 
         }).catch(error => {

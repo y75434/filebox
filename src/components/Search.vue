@@ -66,7 +66,7 @@
         </button>
         <ul class="dropdown-menu">
           <li
-            v-for="item in subtree"
+            v-for="item in personData"
             :key="item.id"
           >
             <a
@@ -140,12 +140,18 @@ export default {
   name: "Search",
   props: { 
     treeSelected: { type: String, default: "" },
-    subTree: { type: Array, default() { return [] } }
+    subTree: { type: Array, default() { return ["a","b"] } }
   },
   data() {
     return {
       searchQuery: null,
+      personData: {},
     }
+  },
+  watch:{ 
+    tabData(){ 
+      this.personData = this.subTree
+    } 
   },
   methods: {
    update() {

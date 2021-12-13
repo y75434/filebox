@@ -8,6 +8,9 @@ import 'bootstrap';
 import i18n from './common/plugins/vue-i18n';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
+import VueCompositionAPI from '@vue/composition-api'
+
+Vue.use(VueCompositionAPI)
 
 import picture from '@/common/images';
 

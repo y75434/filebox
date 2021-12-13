@@ -131,7 +131,9 @@ export default {
   data() {
      return {
       count: 0,
-      linkitems: [],
+      linkitems: {
+        
+      },
       selected: {},
      }
    },

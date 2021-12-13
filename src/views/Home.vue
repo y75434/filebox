@@ -537,36 +537,52 @@
                 >.{{ item.extensions }}</span>
               </h6>     
             </label>
-
-
-
-
-
-
-            <DDR
-              v-model="transform"
-            >
-              <div style="background:#d3eaff;width:100%;height:100%" />
-            </DDR>  
           </Pane>
         </Splitpanes>
-      </div>
-      <div class="dqbz-footer" />
-      <UploadFiles ref="UploadFiles" />
-      <create-folder ref="CreateFolder" />
-      <rename-item ref="RenameItem" />
-      <delete-folder ref="DeleteFolder" />
-      <manage-public-link ref="ManagePublicLink" />
+
+        <!-- <teleport to="body">
+          <div
+            ref="box"
+            :style="boxStyles"
+          />
+          <div
+            ref="point"
+            :style="pointStyles"
+            class="w-2 h-2 rounded-full bg-green-400 shadow"
+          />
+        </teleport>
+        <div class="flex items-center">
+          <span class="mr-4">x:</span>
+          <input
+            v-model="x"
+            type="number"
+          >
+        </div>
+        <div class="flex items-center">
+          <span class="mr-4">y:</span>
+          <input
+            v-model="y"
+            type="number"
+          >
+        </div>
+      </div> -->
+        <div class="dqbz-footer" />
+        <UploadFiles ref="UploadFiles" />
+        <create-folder ref="CreateFolder" />
+        <rename-item ref="RenameItem" />
+        <delete-folder ref="DeleteFolder" />
+        <manage-public-link ref="ManagePublicLink" />
     
-      <AddEditPublicLink
-        ref="AddEditPublicLink"
-      />
-    </div>
-    <div class="dqbz-footer">
-      <p class="mx-3">
-        {{ allFiles.length }} items
-      </p>
-      <p>{{ selectedLength || 0 }} item selected</p>
+        <AddEditPublicLink
+          ref="AddEditPublicLink"
+        />
+      </div>
+      <div class="dqbz-footer">
+        <p class="mx-3">
+          {{ allFiles.length }} items
+        </p>
+        <p>{{ selectedLength || 0 }} item selected</p>
+      </div>
     </div>
   </div>
 </template>
@@ -581,9 +597,9 @@ import DeleteFolder from '../components/Modals/home/DeleteFolder.vue';
 import RenameItem from '../components/Modals/home/RenameItem.vue';
 import ManagePublicLink from '../components/Modals/home/ManagePublicLink.vue';
 import AddEditPublicLink from'@/components/Modals/link/AddEditPublicLink.vue';
-import DDR from 'yoyoo-ddr';
- import 'yoyoo-ddr/dist/yoyoo-ddr.css';
-
+// import {  } from "@vue/composition-api";
+// import {  reactive } from 'vue-demi'
+// import { useElementBounding, useMouse, useEventListener,useElementByPoint } from '@vueuse/core'
 
 export default {
   name: "Home",
@@ -598,10 +614,8 @@ export default {
     DeleteFolder,
     ManagePublicLink,
     AddEditPublicLink,
-    DDR, 
   },
   data: () => ({
-    transform: { x: 500, y: 500, width: 100, height: 100, rotation: 0 },
     selected: false,
     selectMode: 'single',
     paneSize: 15,
@@ -635,6 +649,7 @@ export default {
     folderitems: [],
 
   }),
+  
   created(){
     // this.allFiles.map((x,index)=>{
       this.resultQuery.map((x,index)=>{
@@ -648,7 +663,13 @@ export default {
       return x;
     })
      this.getFolderTree('a9602080-f4fc-4356-abe3-145d05fab9ac')
-     this.getFolderTable()
+     this.getFolderTable();
+    // const { x, y } = useMouse({ type: 'client' })
+    // const { element } = useElementByPoint({ x, y })
+    // const bounding = reactive(useElementBounding(element))
+
+    // useEventListener('scroll', bounding.update, true)
+    
   },
   computed:{
     //數checkbox勾選幾個
@@ -661,9 +682,37 @@ export default {
     resultQuery(){
         return this.allFiles.filter(item =>
           item.name.toLowerCase().includes(this.searchQuery))
-    }
+    },
+  //   boxStyles(){
+  //   if (this.element) {
+  //     return {
+  //       position: 'fixed',
+  //       width: `${this.bounding.width}px`,
+  //       height: `${this.bounding.height}px`,
+  //       left: `${this.bounding.left}px`,
+  //       top: `${this.bounding.top}px`,
+  //       backgroundColor: '#3eaf7c44',
+  //       pointerEvents: 'none',
+  //       zIndex: 9999,
+  //       transition: 'all 0.05s linear',
+  //       border: '1px solid var(--c-brand)',
+  //     }
+  //   }
+  //   return {
+  //     display: 'none',
+  //     }
+  //   },
+  //   pointStyles(){
+  //     return{
+  //     position: 'fixed',
+  //     left: '0px',
+  //     top: '0px',
+  //     pointerEvents: 'none',
+  //     zIndex: 9999,
+  //     transform: `translate(calc(${this.x}px - 50%), calc(${this.y}px - 50%))`,
+  //   }
+  // }
   },
-
   methods: { 
     handler(event) { event.preventDefault(); }, 
     // 子層輸入傳父層
@@ -675,17 +724,9 @@ export default {
     passRoute(e){
       const buttonValue = e.target.value;   
       this.treeSelected = buttonValue;
-      console.log(this.treeSelected);     
+      // console.log(this.treeSelected);     
     },
-     handleDrag(event, transform) {
-      this.transform = transform
-    },
-    handleResize(event, transform) {
-      this.transform = transform
-    },
-    handleRotate(event, transform) {
-      this.transform = transform
-    },
+   
     // modal
     UploadFiles(){ this.$bvModal.show('UploadFiles'); },
     CreateFolder(){ this.$bvModal.show('CreateFolder'); },
@@ -736,6 +777,8 @@ export default {
           console.log(error.response.data);        
         })
     },
+    
+    
   },
 };
 </script>
