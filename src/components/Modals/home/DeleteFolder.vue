@@ -11,11 +11,6 @@
     footer-bg-variant="bgmodal"
     body-bg-variant="bgmodal"
   >
-    <!-- <form
-      class="container"
-      ref="form"
-      @submit.stop.prevent="handleSubmit"
-    > -->
     <div class="modal-popout-bg p-5 justify-content-center d-flex flex-column ">
       <img
         class="mx-auto  m-0"
@@ -27,17 +22,20 @@
            
             
       <h5 class="text-center my-2 font-weight-bold">
-        “Folder One (2)”
+        {{ tabData.name }}
       </h5>
 
-          
+      <p class="text-dark">
+        {{ tabData }}
+      </p>
+
       <input
         type="text"
         class="form-control"
+        v-model="personData.name"
       >
     </div>
 
-    <!-- </form> -->
     
 
     <template #modal-footer>
@@ -63,25 +61,40 @@
 <script>
 export default {
   name: "DeleteFolder",
-  props: { title: { type: String, default: "Delete Folder" } },
-
+  props: { 
+    title: { type: String, default: "Delete Folder" } ,
+    tabData: { type: Object , default() { return {} }}
+  },
   data() {
     return {
-      showModal: false,
+      personData: {},
     };
   },
+   watch:{ 
+    tabData(){ 
+      this.personData = this.tabData 
+    } 
+  },
   methods: {
-    show() {
-      this.showModal = true;
-    },
-    hide() {
-      this.showModal = false;
-    },
-    handleSubmit() {
-      // this.$nextTick(() => {
-      this.showModal = false;
-      // });
+    deleteFolder(){
+    const headers = { 
+      'Content-Type': 'application/json', 
+      'Accept': 'application/json',
+      "Access-Control-Allow-Origin": '*' 
+      };
+    // {"items": [ { id: "item.id", "type": 0 } ], "editor": "vuex.user.id"}
+
+    const data = JSON.stringify(this.personData)
+
+    this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,data,{ headers: headers })
+      .then((data) => {     
+        console.log(data);
+      }).catch(() => {
+        // console.log(error.response.data);        
+      })
     },
   },
 };
 </script>
+
+

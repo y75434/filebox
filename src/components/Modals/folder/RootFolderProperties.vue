@@ -454,7 +454,6 @@ export default {
       personData: {},
       folderTree: {},
       FolderSettings:{},
-      // showModal: false,
 
     };
   },

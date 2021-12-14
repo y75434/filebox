@@ -232,7 +232,6 @@ export default {
   methods: {
     handleOk(bvModalEvt) {
         bvModalEvt.preventDefault()
-        // console.log('245',this.personData);
         if(this.title == 'Edit Public Link'){
           this.put(this.tabData.linkId)
         }else{
@@ -246,13 +245,9 @@ export default {
         "Access-Control-Allow-Origin": '*' 
         };
 
-          const data = JSON.stringify(this.personData)
+        const data = JSON.stringify(this.personData)
 
-        // const data = JSON.stringify(
-        // {"name": "12000", "isPublic": false, "expireDay": 0, "viewableTimes":
-        // 0, "viewed": 0, "password": "aaa", "url": "string", "fileId":
-        // "3fa85f64-5717-4562-b3fc-2c963f66afa6", "creator": "linda" }
-        // );
+        
         console.log(data);
 
 

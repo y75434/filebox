@@ -50,14 +50,27 @@ export default {
 
   data() {
     return {
+
     };
   },
   methods: {
     
-    handleSubmit() {
-      // this.$nextTick(() => {
-      this.showModal = false;
-      // });
+   postFolder(){
+      const headers = { 
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json',
+        "Access-Control-Allow-Origin": '*' 
+        };
+      const data = JSON.stringify(this.personData)
+
+      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CreateRootFolder`,
+      data,{ headers: headers })
+      .then((data) => { 
+        console.log(data);
+
+      }).catch(error => {
+        console.log(error.response.data);        
+      })
     },
   },
 };

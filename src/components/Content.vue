@@ -281,6 +281,35 @@
             hover
             :filter="filter"
           />
+          <div v-if="this.currentSelected === 3">
+            <b-table
+              :fields="folderfields"
+              responsive="true"
+              :items="folderitems"
+              class="col-12 b-col text-dark"
+              @contextmenu="operational($event)"
+              @row-hovered="rowSelected"
+              ref="selectableTable"
+              :select-mode="selectMode"
+              hover
+              :filter="filter"
+            >
+              <template #cell(name)="data">
+                <img
+                  src="@/assets/images/file/folder@2x.png"
+                  class="icon32px"
+                >
+                {{ data.item.name }}
+              </template>
+              <template #cell(createdOn)="data">
+                {{ data.item.createdOn }}
+              </template>
+              <template #cell(modifiedOn)="data">
+                {{ data.item.modifiedOn }}
+              </template>
+            </b-table>
+          </div>
+
           <div
             v-if="this.currentSelected === 4"
           >
@@ -295,23 +324,61 @@
               :select-mode="selectMode"
               hover
               :filter="filter"
+              v-if="eventsSelected.indexOf('Login') !== -1"
             >
-              <template #cell(pic)="data">
-                <img
-                  :src="data.item.pic"
-                  class="icon32px"
-                >
-              </template> 
               <template #cell(user)="data">
                 {{ data.item.user }} 
               </template>
 
               <template #cell(actionType)="data">
+                <img
+                  :src="data.item.pic"
+                  class="icon32px"
+                >
                 {{ data.item.actionType }}
               </template>
               
               <template #cell(description)="data">
                 {{ data.item.description }}
+              </template>
+            </b-table>
+          </div>
+          <div v-if="this.currentSelected === 5">
+            <b-table
+              :fields="linkfields"
+              responsive="true"
+              :items="linkitems"
+              class="col-12 b-col text-dark"
+              @contextmenu="operational($event)"
+              @row-hovered="rowSelected"
+              ref="selectableTable"
+              :select-mode="selectMode"
+              hover
+              :filter="filter"
+            >
+              <template #cell(name)="data">
+                <img
+                  src="@/assets/images/file/publiclink@2x.png"
+                  class="icon32px"
+                >
+                {{ data.item.name }} 
+              </template>
+
+              <template #cell(fileId)="data">
+                {{ data.item.fileId }}
+              </template>
+              
+              <template #cell(creator)="data">
+                {{ data.item.creator }}
+              </template>
+              <template #cell(viewed)="data">
+                {{ data.item.viewed }}
+              </template>
+              <template #cell(expire)="data">
+                {{ data.item.expire }}
+              </template>
+              <template #cell(viewableTimes)="data">
+                {{ data.item.viewableTimes }}
               </template>
             </b-table>
           </div>
@@ -490,13 +557,24 @@ data() {
     title: 'User Management',
     countName:'Users',
     currentSelected:1,
-    //link
     eventfields: [ 
+      { key: 'actionType', label: 'actionType', sortable: true },
       { key: 'user', label: 'User', sortable: true },
-      { key: 'actionType', label: 'actionType' },
       { key: 'description', label: 'description' },
-      { key: 'pic', label: 'pic' },
     ],
+    folderfields: [ 
+      { key: 'name', label: 'Name', sortable: true },
+      { key: 'createdOn', label: 'Created On'},
+      { key: 'modifiedOn', label: 'Modified On' },
+    ],
+    linkfields: [ 
+      { key: 'name', label: 'Name', sortable: true },
+      { key: 'fileId', label: 'Linked Item' },
+      { key: 'creator', label: 'Created By'},
+      { key: 'viewed', label: 'Hit Count' },      
+      { key: 'expire', label: 'Expiration' },
+      { key: 'viewableTimes', label: 'Hit Limit' },
+    ],   
     items: [
         { Name: 'Rachel',FullName:'Rachel Lee', LoginCount: '5',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM', DateModified:'25/02/2007 10:52 AM',Status:'active'},
         { Name: 'David',FullName:'David Kang', LoginCount: '33',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM',Status:'active'},
@@ -532,8 +610,8 @@ data() {
       sortDirection: 'All',
       events: [this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"), this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"), this.$t("GENERAL.PUBLICLINK"), this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
       allSelected: true,
-      eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
-      // eventsSelected:[],
+      // eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
+      eventsSelected:[],
       
       picture:{}
   };
@@ -541,11 +619,13 @@ data() {
 created(){
   this.getData();
   this.getTable();
-  
+  this.getEventType();
   this.picture = picture;
 },
-watch: {
+watch: { //todo undo
   eventsSelected(newValue) {
+    //console.log(this.eventsSelected)
+
     if (newValue.length === 0) {
       this.allSelected = false
     } else if (newValue.length === this.events.length) {
@@ -553,6 +633,7 @@ watch: {
     } else {
       this.allSelected = false
     }
+
   }
 },
 methods: { 
@@ -585,12 +666,13 @@ methods: {
       case 3:
         this.getFolderTable();
         this.count = this.folderitems.length
-        return this.folderitems;         
+         //return this.folderitems;    
+       return [];     
        case 4: 
          this.getEventTable();
-         this.eventsitems.map(item=>{ const eventpic =
-          this.picture.eventpics.filter(y=>y.actionType == item.actionType)[0]; 
-          item.pic = eventpic.pic; 
+         this.eventsitems.map(item=>{ 
+          const eventpic = this.eventpics.filter(y=>y.actionType == item.actionType)[0];
+          item.pic = eventpic.pic;          
           return item 
         });
 
@@ -601,7 +683,8 @@ methods: {
       case 5: 
         this.getLinkTable();
         this.count = this.linkitems.length
-        return this.linkitems;
+        //return this.linkitems;
+        return [];
       default:
         return [];
     }
@@ -705,18 +788,18 @@ methods: {
         })
     },
     // change this.eventsSelected value 
-    // getEventType(){ 
-    //   this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/ActionType/GetAll`,)
-    //     .then((data) => {
-    //       data.data.forEach(item =>{
-    //         this.eventsSelected.push(item.name)
-    //   });
-    //     console.log('766',this.eventsSelected);     
-    //   }).catch(error => {
-    //       console.log(error.response.data);          
-    //     })
+    getEventType(){ 
+      this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/ActionType/GetAll`,)
+        .then((data) => {
+          data.data.forEach(item =>{
+            this.eventsSelected.push(item.name)
+      });
+        console.log('766',this.eventsSelected);     
+      }).catch(error => {
+          console.log(error.response.data);          
+        })
 
-    // },
+    },
     getLinkTable(){
       this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll`)
         .then((data) => { 

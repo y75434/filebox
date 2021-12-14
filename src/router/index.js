@@ -36,7 +36,16 @@ const routes = [
     name: 'reset',
     component: () => import('../views/Reset.vue')
 
-	},
+  },
+  {
+    path: 'Search/:treeSelected',
+    name: 'Search',
+    props: true,
+    component: () => import('@/components/Search.vue')
+
+  }
+
+
 ]
 
 // 驗證是否有登入

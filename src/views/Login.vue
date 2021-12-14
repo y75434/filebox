@@ -19,10 +19,10 @@
           >{{ $t("MODAL.USERNAME") }}</label>
             
           <input
-            class="form-control user-icon"
+            class="form-control user-icon "
             type="text"
             id="email"
-            placeholder="jeff@doqubiz.com"
+            placeholder=" jeff@doqubiz.com"
           >
         </div>
         <div class="form-group">

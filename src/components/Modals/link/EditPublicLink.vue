@@ -50,7 +50,7 @@
       <!-- </div> -->
             
       <p class="text-dark">
-        {{ tabData }}11111111111111
+        {{ tabData }}
       </p>
       <hr class="">
 
@@ -232,7 +232,6 @@ export default {
   },
   data() {
     return {
-      showModal: false,
       personData: {},
       items: []
     };

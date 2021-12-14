@@ -18,6 +18,7 @@
         class="nav-icon"
       >
     </button> -->
+
     <button class="dqbz-previous bg-light">
       <img
         src="@/assets/images/arrow/arrow-up@2x.png"
@@ -62,7 +63,9 @@
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          {{ treeSelected }}
+          <router-link class="text-decoration-none text-dark" :to="'this.treeSelected'">
+            {{ treeSelected }}
+          </router-link>
         </button>
         <ul class="dropdown-menu">
           <li
