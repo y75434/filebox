@@ -37,14 +37,12 @@ const routes = [
     component: () => import('../views/Reset.vue')
 
   },
-  {
-    path: 'Search/:treeSelected',
-    name: 'Search',
-    props: true,
-    component: () => import('@/components/Search.vue')
+{
+		path: '/test',
+    name: 'Test',
+    component: () => import('../views/Test.vue')
 
-  }
-
+  },
 
 ]
 

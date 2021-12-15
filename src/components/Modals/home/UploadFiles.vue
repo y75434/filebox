@@ -185,33 +185,33 @@ export default {
       console.log(file);
       this.files = file;
       // 
- 
+      const formData = new FormData(); 
+
       
-      this.files.forEach(x=>{
+      this.files.forEach((x,i)=>{
           console.log(x);
           this.image.push(URL.createObjectURL(x));
+          formData.append('file'+i,x);//依據數量給檔名所以＋i
 
       })
 
       console.log(this.files);
 
-      const formData = new FormData();
-      formData.append('file',this.file);
-      //直接axios 再把formData post過去
+         //直接axios 再把formData post過去
 
      
 
-      formData.append('uploadData',{
+      formData.append('uploadData',JSON.stringify({
           DestinationFolderId: '4ddb9c06-5f94-40bc-8def-9382c5a30f4d',
           UploadedBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
           ConflictType: 1,
           type: 1
-      });
+      }));
       
 
 
       this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
-      this.files)
+      formData)
       .then((data) => { 
         console.log(data);
 

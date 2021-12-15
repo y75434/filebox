@@ -539,50 +539,23 @@
             </label>
           </Pane>
         </Splitpanes>
-
-        <!-- <teleport to="body">
-          <div
-            ref="box"
-            :style="boxStyles"
-          />
-          <div
-            ref="point"
-            :style="pointStyles"
-            class="w-2 h-2 rounded-full bg-green-400 shadow"
-          />
-        </teleport>
-        <div class="flex items-center">
-          <span class="mr-4">x:</span>
-          <input
-            v-model="x"
-            type="number"
-          >
-        </div>
-        <div class="flex items-center">
-          <span class="mr-4">y:</span>
-          <input
-            v-model="y"
-            type="number"
-          >
-        </div>
-      </div> -->
-        <div class="dqbz-footer" />
-        <UploadFiles ref="UploadFiles" />
-        <create-folder ref="CreateFolder" />
-        <rename-item ref="RenameItem" />
-        <delete-folder ref="DeleteFolder" />
-        <manage-public-link ref="ManagePublicLink" />
+      </div>
+      <div class="dqbz-footer" />
+      <UploadFiles ref="UploadFiles" />
+      <create-folder ref="CreateFolder" />
+      <rename-item ref="RenameItem" />
+      <delete-folder ref="DeleteFolder" />
+      <manage-public-link ref="ManagePublicLink" />
     
-        <AddEditPublicLink
-          ref="AddEditPublicLink"
-        />
-      </div>
-      <div class="dqbz-footer">
-        <p class="mx-3">
-          {{ allFiles.length }} items
-        </p>
-        <p>{{ selectedLength || 0 }} item selected</p>
-      </div>
+      <AddEditPublicLink
+        ref="AddEditPublicLink"
+      />
+    </div>
+    <div class="dqbz-footer">
+      <p class="mx-3">
+        {{ allFiles.length }} items
+      </p>
+      <p>{{ selectedLength || 0 }} item selected</p>
     </div>
   </div>
 </template>
@@ -597,9 +570,6 @@ import DeleteFolder from '../components/Modals/home/DeleteFolder.vue';
 import RenameItem from '../components/Modals/home/RenameItem.vue';
 import ManagePublicLink from '../components/Modals/home/ManagePublicLink.vue';
 import AddEditPublicLink from'@/components/Modals/link/AddEditPublicLink.vue';
-// import {  } from "@vue/composition-api";
-// import {  reactive } from 'vue-demi'
-// import { useElementBounding, useMouse, useEventListener,useElementByPoint } from '@vueuse/core'
 
 export default {
   name: "Home",
@@ -664,11 +634,7 @@ export default {
     })
      this.getFolderTree('a9602080-f4fc-4356-abe3-145d05fab9ac')
      this.getFolderTable();
-    // const { x, y } = useMouse({ type: 'client' })
-    // const { element } = useElementByPoint({ x, y })
-    // const bounding = reactive(useElementBounding(element))
-
-    // useEventListener('scroll', bounding.update, true)
+  
     
   },
   computed:{
@@ -683,35 +649,7 @@ export default {
         return this.allFiles.filter(item =>
           item.name.toLowerCase().includes(this.searchQuery))
     },
-  //   boxStyles(){
-  //   if (this.element) {
-  //     return {
-  //       position: 'fixed',
-  //       width: `${this.bounding.width}px`,
-  //       height: `${this.bounding.height}px`,
-  //       left: `${this.bounding.left}px`,
-  //       top: `${this.bounding.top}px`,
-  //       backgroundColor: '#3eaf7c44',
-  //       pointerEvents: 'none',
-  //       zIndex: 9999,
-  //       transition: 'all 0.05s linear',
-  //       border: '1px solid var(--c-brand)',
-  //     }
-  //   }
-  //   return {
-  //     display: 'none',
-  //     }
-  //   },
-  //   pointStyles(){
-  //     return{
-  //     position: 'fixed',
-  //     left: '0px',
-  //     top: '0px',
-  //     pointerEvents: 'none',
-  //     zIndex: 9999,
-  //     transform: `translate(calc(${this.x}px - 50%), calc(${this.y}px - 50%))`,
-  //   }
-  // }
+    
   },
   methods: { 
     handler(event) { event.preventDefault(); }, 

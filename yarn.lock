@@ -1489,7 +1489,7 @@
   optionalDependencies:
     "prettier" "^1.18.2"
 
-"@vue/composition-api@^1.4.1":
+"@vue/composition-api@^1.0.0-rc.1", "@vue/composition-api@^1.1.0", "@vue/composition-api@^1.4.1":
   "integrity" "sha512-ZTat9ru/rwecveRnFzlO2mduOBpGfnBdXn+WtBcFLV9UsL/D+6nX47RWuLiVdNxNDX0qphGZRC+JDjwt+YTnRA=="
   "resolved" "https://registry.npmjs.org/@vue/composition-api/-/composition-api-1.4.1.tgz"
   "version" "1.4.1"
@@ -1521,6 +1521,21 @@
   "integrity" "sha1-trQKdiVCnSvXwigd26YB7QXcfxo="
   "resolved" "https://registry.npm.taobao.org/@vue/web-component-wrapper/download/@vue/web-component-wrapper-1.3.0.tgz?cache=0&sync_timestamp=1613216503407&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vue%2Fweb-component-wrapper%2Fdownload%2F%40vue%2Fweb-component-wrapper-1.3.0.tgz"
   "version" "1.3.0"
+
+"@vueuse/core@^7.3.0":
+  "integrity" "sha512-gPJyMMAquva9Qwqz63qGQT122m5hWI8Kuy8kfPV/JLQU7m01CXooyv8FIrX9TV8OxVcHBTPXPJHY0oyUiFoNgw=="
+  "resolved" "https://registry.npmjs.org/@vueuse/core/-/core-7.3.0.tgz"
+  "version" "7.3.0"
+  dependencies:
+    "@vueuse/shared" "7.3.0"
+    "vue-demi" "*"
+
+"@vueuse/shared@7.3.0":
+  "integrity" "sha512-vOAeI84tIXKVkzm8s/Mxbrzhj0QN6NyVc/sC6LrW0AjVNdvpD8sB1dZiDn9yh8T77WJmloCEt4zZVIppeq7I+w=="
+  "resolved" "https://registry.npmjs.org/@vueuse/shared/-/shared-7.3.0.tgz"
+  "version" "7.3.0"
+  dependencies:
+    "vue-demi" "*"
 
 "@webassemblyjs/ast@1.9.0":
   "integrity" "sha1-vYUGBLQEJFmlpBzX0zjL7Wle2WQ="
@@ -9376,6 +9391,11 @@
   "resolved" "https://registry.npmjs.org/vue-cli-plugin-contextmenu/-/vue-cli-plugin-contextmenu-1.0.0.tgz"
   "version" "1.0.0"
 
+"vue-demi@*", "vue-demi@^0.12.1":
+  "integrity" "sha512-QL3ny+wX8c6Xm1/EZylbgzdoDolye+VpCXRhI2hug9dJTP3OUJ3lmiKN3CsVV3mOJKwFi0nsstbgob0vG7aoIw=="
+  "resolved" "https://registry.npmjs.org/vue-demi/-/vue-demi-0.12.1.tgz"
+  "version" "0.12.1"
+
 "vue-eslint-parser@^7.0.0":
   "integrity" "sha1-IUtd6pYQB/z/su5luJEjB2KNDa8="
   "resolved" "https://registry.npmmirror.com/vue-eslint-parser/download/vue-eslint-parser-7.11.0.tgz?cache=0&sync_timestamp=1634602895439&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fvue-eslint-parser%2Fdownload%2Fvue-eslint-parser-7.11.0.tgz"
@@ -9450,7 +9470,7 @@
   "resolved" "https://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2 || ^3.0.0-0", "vue@^2.0.0", "vue@^2.5.18", "vue@^2.6.10", "vue@^2.6.11", "vue@^3.0.0 || ^2.0.0", "vue@>= 2.5 < 3":
+"vue@^2 || ^3.0.0-0", "vue@^2.0.0", "vue@^2.5.18", "vue@^2.6.0 || ^3.2.0", "vue@^2.6.10", "vue@^2.6.11", "vue@^3.0.0 || ^2.0.0", "vue@^3.0.0-0 || ^2.6.0", "vue@>= 2.5 < 3":
   "integrity" "sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-2.6.14.tgz"
   "version" "2.6.14"
