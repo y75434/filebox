@@ -8,6 +8,7 @@
     hide-header-close
     no-close-on-backdrop
     no-close-on-esc
+    :ok-disabled="delFormValidity"
     @ok="handleOk"
     @cancel="cancel"
     body-bg-variant="white"
@@ -22,7 +23,7 @@
         <h5 class="text-dark mb-3">
           {{ $t("HOME.DELETE") }}
 
-          <!-- <strong class="text-danger"> {{ dataSource.name }}</strong> -->
+          <strong class="text-danger"> {{ tabData.FullName || tabData.name || tabData.Name }}</strong>
         </h5>
         <h5 class="text-dark mb-3">
           {{ $t("MODAL.PLEASETYPE") }}
@@ -76,7 +77,20 @@ export default {
     handleOk(bvModalEvt) {
         bvModalEvt.preventDefault()
         //之後要加判斷 link group user
-        this.deleteLink(this.tabData.linkId)
+
+       
+    
+        if('FullName' in this.tabData) {
+          console.log('');      
+        }
+        else if('linkId' in this.tabData) {
+          this.deleteLink(this.tabData.linkId)
+        }
+        else {
+          this.deleteFolder(this.tabData.folderId)
+        }
+
+
       },
      deleteGroup(id) {  
       this.axios.delete(`/api/Groups/${id}`)
@@ -96,26 +110,45 @@ export default {
           console.log(error);          
         })
       },
-       deleteLink(id) {  
-         //它不會刪除記錄，而只是將刪除標誌設置為打開或關閉
-         console.log('97',id);
-         
-        this.axios.delete(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/${id}`)
-          .then((data) => {
-          //Input parameters: userId
-            console.log(data);
+      deleteLink(id) {  
+        //它不會刪除記錄，而只是將刪除標誌設置為打開或關閉
+        console.log('97',id);
+        
+      this.axios.delete(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/${id}`)
+        .then((data) => {
+        //Input parameters: userId
+          console.log(data);
 
 
-          // this.$store.dispatch('users/deleteUser', { userId: this.dataSource.id });
-          this.$nextTick(() => { this.userInput = '';
-          this.$bvModal.hide('modal-delete-user'); });
+        // this.$store.dispatch('users/deleteUser', { userId: this.dataSource.id });
+        this.$nextTick(() => { this.userInput = '';
+        this.$bvModal.hide('modal-delete-user'); });
 
 
 
-        }).catch(error => {
-            console.log(error);          
-          })
-      },
+      }).catch(error => {
+          console.log(error);          
+        })
+    },
+    deleteFolder(id) {  
+        console.log('97',id);
+        //目前不能刪資料夾
+      this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/api/Link/${id}`)
+        .then((data) => {
+        //Input parameters: userId
+          console.log(data);
+
+
+        // this.$store.dispatch('users/deleteUser', { userId: this.dataSource.id });
+        this.$nextTick(() => { this.userInput = '';
+        this.$bvModal.hide('modal-delete-user'); });
+
+
+
+      }).catch(error => {
+          console.log(error);          
+        })
+    },
 		cancel() {
 			this.userInput = '';
 		},

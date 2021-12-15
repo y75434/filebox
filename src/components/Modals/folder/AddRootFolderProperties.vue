@@ -32,7 +32,7 @@
               type="Name"
               class="form-control inline-block width-320"
               id="Name"
-              v-model="personData.name"          
+              v-model="FolderSettings.name"
             >
           </div>
           <div class="w-50 d-flex align-items-center justify-content-center">
@@ -45,7 +45,8 @@
               class="form-control inline-block width-320"
               id="Description"
               placeholder=""
-              v-model="personData.description"
+              v-model="FolderSettings.description"
+
             >
           </div>
         </div>
@@ -57,6 +58,15 @@
           <div class="col-4 h-100 ">
             <div class="bg-white h-100 border">
               <ul class="list-group border-0">
+                <li class="list-group-item d-flex align-items-center border-0">
+                  <img
+                    src="@/assets/images/file/single folder@2x.png"
+                    class="icon32px"
+                  >
+                  <p class="text-dark m-0">
+                    {{ this.folderTree.name }}
+                  </p>
+                </li>
                 <li 
                   v-for="item in this.folderTree"
                   :key="item.id"
@@ -123,6 +133,7 @@
             <div class="row modal-selectuser">
               <ul class="list-group d-flex flex-column justify-content-between bg-white col-3 p-0 h-100 border">
                 <div class="">
+                  <!-- input search -->
                   <li class="form-check list-group-item border-0 p-0">
                     <input
                       type="text"
@@ -238,7 +249,7 @@
                   </button>
                 </div>
                 <div
-                  class="tab-content"
+                  class="tab-content h-100 overflow-scroll"
                   id="nav-tabContent"
                 >
                   <div
@@ -248,31 +259,17 @@
                     aria-labelledby="nav-home-tab"
                   >
                     <ul class="justify-content-center flex-column d-flex align-items-center">
-                      <li class="list-group-item w-50 border-0 p-0 justify-content-between d-flex">
-                        <div class="justify-content-center align-items-center p-0  d-flex">
+                      <li
+                        v-for="item in PermissionTypes"
+                        :key="item.id"
+                        class="list-group-item w-50 border-0 p-0 justify-content-between d-flex"
+                      >
+                        <div class="justify-content-start align-items-center p-0  d-flex">
                           <label
                             class="form-check-label w-50"
                             for="flexCheckDefault"
                           >
-                            Full
-                          </label>
-                        </div>
-                        <div class="">
-                          <input
-                            class="form-check-input m-0"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                          >
-                        </div>
-                      </li>
-                      <li class="list-group-item w-50 border-0 p-0 justify-content-between d-flex">
-                        <div class="justify-content-center align-items-center p-0  d-flex">
-                          <label
-                            class="form-check-label w-50"
-                            for="flexCheckDefault"
-                          >
-                            Full
+                            {{ item.name }}
                           </label>
                         </div>
                         <div class="">
@@ -308,13 +305,29 @@
                         for="flexCheckDefault"
                         class="form-check-label"
                       >{{ $t("MODAL.LIMITDISKSPACETO") }}</label>
-                      <input
-                        placeholder="enter code"
-                        type="text"
-                        id="promoCode"
-                        class="form-control m-0"
-                        value=""
-                      >
+
+                      <div class="d-flex">
+                        <input
+                          placeholder="enter code"
+                          type="text"
+                          id="promoCode"
+                          class="form-control m-0 w-50"
+                          value=""
+                        >
+                        <select
+                          class="form-select w-50"
+                          aria-label="Disabled select example"
+                          disabled
+                        >
+                          <option
+                            v-for="item in StorageUnit"
+                            :key="item.id"
+                          >
+                            {{ item.unit }}
+                          </option>
+                        </select>
+                      </div>
+
                       <p class="fw-bold">
                         {{ $t("MODAL.FILETYPE") }}
                       </p>
@@ -331,13 +344,17 @@
                           for="flexCheckDefault"
                           class="form-check-label"
                         > {{ $t("MODAL.RESTRICTFILETYPES") }}
-
                         </label>
-                      </div>
+                      </div>                 
                       <div
-                        class="d-flex width-350"
+                        class="d-flex flex-wrap "
+                        style="width:300px"
                       >
-                        <div class="form-check">
+                        <div
+                          v-for="item in FileTypes"
+                          :key="item.id"
+                          class="form-check mx-2 "
+                        >
                           <input
                             type="checkbox"
                             value=""
@@ -347,74 +364,7 @@
                           <label
                             for="flexCheckDefault"
                             class="form-check-label"
-                          > docx
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                            class="form-check-input"
-                          >
-                          <label
-                            for="flexCheckDefault"
-                            class="form-check-label"
-                          > pdf
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                            class="form-check-input"
-                          >
-                          <label
-                            for="flexCheckDefault"
-                            class="form-check-label"
-                          > pdf
-                          </label>
-                        </div>
-                      </div>
-                      <div class="d-flex">
-                        <div class="form-check">
-                          <input
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                            class="form-check-input"
-                          >
-                          <label
-                            for="flexCheckDefault"
-                            class="form-check-label"
-                          > docx
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                            class="form-check-input"
-                          >
-                          <label
-                            for="flexCheckDefault"
-                            class="form-check-label"
-                          > pdf
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                            class="form-check-input"
-                          >
-                          <label
-                            for="flexCheckDefault"
-                            class="form-check-label"
-                          > pdf
+                          > {{ item.extension }}
                           </label>
                         </div>
                       </div>
@@ -451,15 +401,21 @@ export default {
   },
   data() {
     return {
-      personData: {},
-      folderTree: {}
-
+      folderTree: {},
+      FolderSettings:{},
+      PermissionTypes:{},
+      FileTypes:{},
+      StorageUnit:{},
+      allUser:{}
     };
   },
-  created(){ 
-    this.getFolderTable();
-    },
   methods: {  
+    start() {
+      this.getFolderTable();
+      this.getPermissionTypes()
+      this.getFileTypes()
+      this.getStorageUnit()
+    },
     //ok
     postFolder(){
       const headers = { 
@@ -467,7 +423,34 @@ export default {
         'Accept': 'application/json',
         "Access-Control-Allow-Origin": '*' 
         };
-      const data = JSON.stringify(this.personData)
+      const data = JSON.stringify(this.FolderSettings)
+
+      // {
+      //   "name": "string",
+      //   "description": "string",
+      //   "uploadedBy": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      //   "settings": {
+      //     "storage": {
+      //       "space": 0,
+      //       "unitId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      //     },
+      //     "restrictedFileTypes": [
+      //       "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      //     ],
+      //     "accessPermissions": [
+      //       {
+      //         "memberId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      //         "isGroup": true,
+      //         "allow": [
+      //           "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      //         ],
+      //         "deny": [
+      //           "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      //         ]
+      //       }
+      //     ]
+      //   }
+      // }
 
       this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CreateRootFolder`,
       data,{ headers: headers })
@@ -487,8 +470,48 @@ export default {
         }).catch(error => {
           console.log(error.response.data);        
         })
-    }
-
+    },
+    getPermissionTypes(){
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/PermissionTypes`)
+      .then((data) => {  
+        this.PermissionTypes = data.data
+        //  console.log(this.PermissionTypes);
+         
+      }).catch(() => {
+        // console.log(error.response.data);        
+      })
+    },
+    getFileTypes(){
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileTypes`)
+      .then((data) => {  
+        this.FileTypes = data.data
+         console.log(this.FileTypes);
+          
+      }).catch(() => {
+        // console.log(error.response.data);        
+      })
+    },
+    getStorageUnit(){
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/Storage/Unit`)
+      .then((data) => {  
+        this.StorageUnit = data.data
+         console.log(this.StorageUnit);
+          
+      }).catch(() => {
+        // console.log(error.response.data);        
+      })
+    },
+    //還沒
+    // getUser(){
+    //   this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/`)
+    //   .then((data) => {  
+    //     this.allUser = data.data
+    //      console.log(this.StorageUnit);
+          
+    //   }).catch(() => {
+    //     // console.log(error.response.data);        
+    //   })
+    // },
   },
 };
 </script>

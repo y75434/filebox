@@ -746,6 +746,8 @@ methods: {
     }
     if (this.currentSelected === 3) {
       this.$bvModal.show('AddRootFolderProperties');
+      this.$refs.AddRootFolderProperties.start()
+
     }
   },
   NewGroupProperties(){

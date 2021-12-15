@@ -11,6 +11,7 @@
     footer-bg-variant="bgmodal"
     body-bg-variant="bgmodal"
     size="lg"
+    @ok="Upload"
   >
     <!-- <form
       class="container"
@@ -157,18 +158,27 @@ export default {
         name:null
       },
       image:[],
-
+      formData:{}
     };
   },
   methods: {
-    
-    handleSubmit() {
-      // this.$nextTick(() => {
-      this.showModal = false;
-      // });
-    },
-    Addfiles(){
+    Upload(){
+       const headers = { 
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json',
+        "Access-Control-Allow-Origin": '*' 
+        };
 
+      const data = JSON.stringify(this.formData)
+
+      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
+      data,{ headers: headers })
+      .then((data) => { 
+        console.log(data);
+
+      }).catch(error => {
+        console.log(error.response.data);        
+      })
     },
     onFileChange(e) {
       const file = e.target.files;
@@ -183,13 +193,31 @@ export default {
 
       })
 
+      console.log(this.files);
 
       const formData = new FormData();
-      formData.append('file',file);
-
+      formData.append('file',this.file);
       //直接axios 再把formData post過去
-      console.log(this.files);
-   
+
+     
+
+      formData.append('uploadData',{
+          DestinationFolderId: '4ddb9c06-5f94-40bc-8def-9382c5a30f4d',
+          UploadedBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          ConflictType: 1,
+          type: 1
+      });
+      
+
+
+      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
+      this.files)
+      .then((data) => { 
+        console.log(data);
+
+      }).catch(error => {
+        console.log(error.response.data);        
+      })
 
 
       //this.url = [...file].map(URL.createObjectURL);
