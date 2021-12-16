@@ -622,20 +622,20 @@ created(){
   this.getEventType();
   this.picture = picture;
 },
-watch: { //todo undo
-  eventsSelected(newValue) {
-    //console.log(this.eventsSelected)
+// watch: { //todo undo
+//   eventsSelected(newValue) {
+//     //console.log(this.eventsSelected)
 
-    if (newValue.length === 0) {
-      this.allSelected = false
-    } else if (newValue.length === this.events.length) {
-      this.allSelected = true
-    } else {
-      this.allSelected = false
-    }
+//     if (newValue.length === 0) {
+//       this.allSelected = false
+//     } else if (newValue.length === this.events.length) {
+//       this.allSelected = true
+//     } else {
+//       this.allSelected = false
+//     }
 
-  }
-},
+//   }
+// },
 methods: { 
   toggleAll(checked) { 
     this.eventsSelected = checked ? this.events.slice() : [] 
@@ -820,6 +820,19 @@ methods: {
           // console.log(error.response.data);        
         })
     },
+    //搜尋結果
+    // searchEvent(){
+    //   this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll/?From=2021-12-10&To=2021-12-12&SearchString=dddd&ActionEventType=fff&ActionEventType=`)
+    //     .then(data => {  
+    //       this.searchResult = data.data 
+    //       this.count = this.searchResult.length  
+    //       // console.log(this.eventsitems.data);
+    //     return this.eventsitems;
+
+    //     }).catch(error => {
+    //       console.log(error.response.data);        
+    //     })
+    // },
 }
 }
 </script>

@@ -617,7 +617,7 @@ export default {
     searchQuery: "",
     folderTree: {},
     folderitems: [],
-
+    render: {}
   }),
   
   created(){
@@ -715,8 +715,18 @@ export default {
           console.log(error.response.data);        
         })
     },
-    
-    
+    //到某資料夾
+    // getSelected(folderId){
+    //   this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/GetItems/${folderId}/${userId}`)
+    //     .then((data) => { 
+    //       this.render = data.data 
+    //       // console.log(this.folderitems);
+          
+    //     }).catch(error => {
+    //       console.log(error.response.data);        
+    //     })
+    // },
+    // @click="getSelected(folderId)"
   },
 };
 </script>
