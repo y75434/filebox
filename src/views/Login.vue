@@ -89,7 +89,13 @@ export default {
     ResetNewPassword, 
     ResetSuccess
   },
-	data: () => ({}),
+	data: () => ({
+    loginForm:{
+      account: "",
+      password: "",
+      ip: ""
+    }
+  }),
   methods:{
     login(){
       // this.$api.auth.login({
@@ -111,6 +117,32 @@ export default {
        
       this.axios.post(`${process.env.APIPATH}/api/Users/IsDBUserAuthenticated`,
       {account:this.loginForm.account,password:this.loginForm.password})
+        .then((data) => {
+         
+
+        console.log(data);
+      }).catch(error => {
+          console.log(error);          
+        })
+      
+    },
+    connectad(){
+     
+     const headers = { 
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json',
+        "Access-Control-Allow-Origin": '*' 
+        };
+        
+      const data = JSON.stringify(
+        {
+          account:this.account,
+          password:this.password,
+          ip:this.ip
+        })
+       
+      this.axios.post(`${process.env.APIPATH}api/AD/connectDynamicAD`,
+      data,{ headers: headers })
         .then((data) => {
          
 

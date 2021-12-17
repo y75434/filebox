@@ -89,6 +89,8 @@
                 type="text"
                 :placeholder="$t( 'MODAL.PLEASEFILLOUTTHISFIELD')"
                 class="form-control h-100"
+                v-model="searchQuery"
+                @change="update"
               >
             </div>
             <div class="d-flex flex-column">
@@ -171,37 +173,6 @@
                 <td />
                 <td />
               </tr>
-              <tr>
-                <th scope="row">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  >
-                </th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>Davidkang@doqubiz.com</td>
-                <td />
-                <td />
-              </tr>
-              <tr>
-                <th scope="row">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  >
-                </th>
-                <td colspan="2">
-                  Peter
-                </td>
-                <td>Peterlin@doqubiz.com</td>
-                <td />
-                <td />
-              </tr>
             </tbody>
           </table>
         </div>
@@ -227,13 +198,25 @@ props: { title: { type: String, default: 'Import User' },
 
  data() {
      return {
-      showModal: false
-     }
+      searchQuery: null,
+      allUser:[],
+      selected: [],
+
+    }
    },
    created(){
     this.getUser()
    },
+   computed:{
+    
+    resultQuery(){
+        return this.allUser.filter(item =>
+          item.name.toLowerCase().includes(this.searchQuery))
+    },
+    
+  },
    methods: {
+     //use checkbox
      importUser () {  
       this.axios.post(`${process.env.APIPATH}/api/AD/SaveChildGroupsAndUsersToDB`)
         .then((data) => {
@@ -243,20 +226,30 @@ props: { title: { type: String, default: 'Import User' },
           console.log(error);          
         })
       },
-     show() {
-      this.showModal = true
-     },
-     hide(){
-      this.showModal = false
-     },
-     getUser(){
-      // let promise = this.axios.get('/some/url')
-      //   return promise.then((data) => {
-      //     const items = data.items       
-      //     return(items)
-      //   }).catch(error => {
-      //     return []
-      //   })
+     search() {
+      this.axios.post(`${process.env.APIPATH}/api/AD/GetUsers?searchString=${this.search}`)
+        .then((data) => {
+
+        // description,telephone,loginCount,mustChangePasswordOnNextLogin,cannotChangePassword,passwordNeverExpires
+        // and unlockAccount are not imported from AD domain.
+
+        console.log(data);
+      }).catch(error => {
+          console.log(error);          
+        })
+
+
+    },
+     
+    getUser(){
+      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/AD/GetUsers`)
+      .then((data) => {  
+        this.allUser = data.data
+         console.log(this.allUser);
+          
+      }).catch(() => {
+        // console.log(error.response.data);        
+      })
      },
      handleSubmit() {
 			// this.$nextTick(() => {

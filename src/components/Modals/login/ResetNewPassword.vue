@@ -73,20 +73,38 @@ export default {
 
   data() {
     return {
-      showModal: false,
+      username: "",
+      oldPassword: "",
+      newPassword: ""
+
     };
   },
   methods: {
-    show() {
-      this.showModal = true;
-    },
-    hide() {
-      this.showModal = false;
-    },
-    handleSubmit() {
-      // this.$nextTick(() => {
-      this.showModal = false;
-      // });
+   changePassword(){
+     
+     const headers = { 
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json',
+        "Access-Control-Allow-Origin": '*' 
+        };
+        
+      const data = JSON.stringify(
+        {
+          username: this.username,
+          oldPassword: this.oldPassword,
+          newPassword: this.newPassword
+        })
+       
+      this.axios.post(`${process.env.APIPATH}api/AD/ADUpdateUserPassword`,
+      data,{ headers: headers })
+        .then((data) => {
+         
+
+        console.log(data);
+      }).catch(error => {
+          console.log(error);          
+        })
+      
     },
   },
 };

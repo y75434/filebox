@@ -83,7 +83,10 @@
           </div>
           <div class="divider" />
           <div class="fn-w-100 d-flex align-items-center">
-            <div class="d-flex flex-column w-50">
+            <div
+              @click="download()"
+              class="d-flex flex-column w-50"
+            >
               <img
                 src="@/assets/images/cmd/download@2x.png"
                 alt=""
@@ -417,7 +420,7 @@
                       :src="`${this.treeItems[0].pic}`"
                       class="icon24px"
                     >
-                    {{ folderTree.name }}
+                    {{ folderTree.name }}1111
                   </button>
                 </h2>
                 <div
@@ -455,23 +458,79 @@
                             {{ item.name }}
                           </button>
                         </h2>
-                        <!-- <div
-                          id="collapseOne"
-                          class="accordion-collapse collapse show"
-                          aria-labelledby="headingOne"
-                          data-bs-parent="#accordionExample"
-                        >
-                          <div class="accordion-body ">
-                            <h6 class="text-dark">
-                              ccc
-                            </h6>
-                          </div>
-                        </div> -->
                       </div>
                     </div>
                     <!-- new -->
                   </div>
                 </div>
+              </div>
+
+              <!-- :data-bs-target="['#'+ item.name]" -->
+
+              <div
+                
+                class="accordion-item"
+              >
+                <h2
+                  class="accordion-header"
+                  id="flush-headingThree"
+                >
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="z"
+                    aria-expanded="false"
+                    aria-controls="flush-collapseThree"
+                    v-for="item in folderitems"
+                    :key="item.id"
+                    @click="passRoute($event)"                   
+                    :value="item.name"
+                  >
+                    <img
+                      class="icon24px"
+                      src="@/assets/images/file/single folder@2x.png"
+                    >
+                    {{ item.name }}
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseThree"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="flush-headingThree"
+                  data-bs-parent="z"
+                >
+                  <div class="accordion-body p-1">
+                    <div
+                      class="accordion"
+                      id="accordionExample"
+                    >
+                      <div
+                        class="accordion-item"
+                        v-for="item in this.folderTree.subFolders"
+                        :key="item.id"
+                        @click="passRoute($event)"                   
+                        :value="item.name"
+                      >
+                        <h2
+                          class="accordion-header"
+                          id="headingOne"
+                        >
+                          <button
+                            class="accordion-button"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne"
+                            aria-expanded="true"
+                            aria-controls="collapseOne"
+                          >
+                            {{ item.name }}
+                          </button>
+                        </h2>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
               </div>
             </div>
           </Pane>
@@ -570,6 +629,7 @@ import DeleteFolder from '../components/Modals/home/DeleteFolder.vue';
 import RenameItem from '../components/Modals/home/RenameItem.vue';
 import ManagePublicLink from '../components/Modals/home/ManagePublicLink.vue';
 import AddEditPublicLink from'@/components/Modals/link/AddEditPublicLink.vue';
+// import saveAs from 'file-saver';
 
 export default {
   name: "Home",
@@ -708,12 +768,53 @@ export default {
     getFolderTable(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
         .then((data) => { 
-          this.folderitems = data.data 
-          // console.log(this.folderitems);
+          this.folderitems = data.data
+          console.log(this.folderitems);
           
         }).catch(error => {
           console.log(error.response.data);        
         })
+    },
+    download() {
+
+      // const data =  JSON.stringify(
+      //   {
+      //     "items":[
+      //       {
+      //         "id": `${file.id}`,
+      //         "type": `${file.type}`
+      //       }
+      //     ],
+      //     "user": `${'user' .id}`
+      //   }
+      // );
+      
+
+
+      // this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`,
+      // data)
+      // .then((data) => { 
+
+      //   const blob = new Blob(data, { type: '' })
+      //   const link = document.createElement('a')
+      //   link.href = URL.createObjectURL(blob)
+      //   link.download = label
+      //   link.click()
+
+      //   //調用URL.createObjectURL()方法產生的 URL 對象
+      //   URL.revokeObjectURL(link.href)
+      //   console.log(data);
+
+      // }).catch(error => {
+      //   console.log(error.response.data);        
+      // })
+
+
+      //this.url = [...file].map(URL.createObjectURL);
+
+
+      
+     
     },
     //到某資料夾
     // getSelected(folderId){

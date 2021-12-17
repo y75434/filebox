@@ -341,11 +341,7 @@ export default {
         })
       },
     
-    handleSubmit() {
-      // this.$nextTick(() => {
-      this.showModal = false;
-      // });
-    },
+    
   },
 };
 </script>

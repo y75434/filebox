@@ -111,7 +111,6 @@
                             class="mx-1"
                             aria-label="events"
                             stacked
-                            :filter="filter"
                           />
                         </div>
                       </template>
@@ -133,7 +132,6 @@
               type="text"
               :placeholder="$t( 'GENERAL.SEARCH')"
               class="form-control "
-              v-model="filter"
             >
           </div>        
           <div
@@ -148,7 +146,6 @@
             <select
               class="form-select"
               aria-label="Default select example"
-              v-model="filter"
             >
               <option 
                 selected
@@ -181,7 +178,7 @@
                 month: 'numeric',
                 day: 'numeric',
               }"
-              v-model="filter"
+              v-model="startdate"
               locale="en"
             />
           </div>
@@ -204,7 +201,7 @@
                 day: 'numeric',
               }"
               locale="en"
-              v-model="filter"
+              v-model="enddate"
             />
           </div>
     
@@ -828,6 +825,22 @@ methods: {
     //       this.count = this.searchResult.length  
     //       // console.log(this.eventsitems.data);
     //     return this.eventsitems;
+
+    //     }).catch(error => {
+    //       console.log(error.response.data);        
+    //     })
+    // },
+    //搜尋user
+    // searchUser(){
+    //   this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=ra&UserStatus=${status}`)
+    //     .then(data => {  
+    //       this.searchUser = data.data 
+    //       this.count = this.searchUser.length  
+    //       // console.log(this.eventsitems.data);
+
+            // UserStatus : 0. All Users 1.Active 2.InActive
+
+    //     return this.useritems;
 
     //     }).catch(error => {
     //       console.log(error.response.data);        

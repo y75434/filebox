@@ -1064,6 +1064,11 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
+"@types/file-saver@^2.0.4":
+  "integrity" "sha512-sPZYQEIF/SOnLAvaz9lTuydniP+afBMtElRTdYkeV1QtEgvtJ7qolCPjly6O32QI8CbEmP5O/fztMXEDWfEcrg=="
+  "resolved" "https://registry.npmjs.org/@types/file-saver/-/file-saver-2.0.4.tgz"
+  "version" "2.0.4"
+
 "@types/glob@^7.1.1":
   "integrity" "sha1-6lniHS7lxReRTLS8jkFTuZ5WZnI="
   "resolved" "https://registry.nlark.com/@types/glob/download/@types/glob-7.1.4.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fglob%2Fdownload%2F%40types%2Fglob-7.1.4.tgz"
@@ -4279,6 +4284,11 @@
   dependencies:
     "loader-utils" "^1.2.3"
     "schema-utils" "^2.5.0"
+
+"file-saver@^2.0.5":
+  "integrity" "sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA=="
+  "resolved" "https://registry.npmjs.org/file-saver/-/file-saver-2.0.5.tgz"
+  "version" "2.0.5"
 
 "file-uri-to-path@1.0.0":
   "integrity" "sha1-VTp7hEb/b2hDWcRF8eN6BdrMM90="
