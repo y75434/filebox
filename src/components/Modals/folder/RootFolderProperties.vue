@@ -104,7 +104,10 @@
                     {{ this.folderTree.name }}
                   </p>
                 </div>
-                
+                <p class="fw-bold m-0">
+                  {{ eventsSelected }}
+                </p>
+
                 <div class=" form-check">
                   <input
                     type="checkbox"
@@ -345,9 +348,9 @@
                         >
                           <input
                             type="checkbox"
-                            value=""
                             id="flexCheckDefault"
                             class="form-check-input"
+                            :checked="checkStatusList.indexOf(checkOne.name)>=0"
                           >
                           <label
                             for="flexCheckDefault"
@@ -395,16 +398,44 @@ export default {
       FolderSettings:{},
       PermissionTypes:{},
       FileTypes:{},
-      StorageUnit:{}
+      StorageUnit:{},
+      checkList:[
+        {'name':'老王'},
+        {'name':'小张'},
+        {'name':'王伯'}
+      ],
+      checkStatusList:['老王']
 
     };
   },
   watch:{ 
     folderData(){ 
       this.personData = this.folderData 
-    },
+    }
   },  
-  methods: {   
+  computed: {
+    //获取最终的选择结果
+    checkRes() {
+      var res = [];
+      this.checkList.forEach(function (one) {
+        if(true == one.state) res.push(one.name)
+      });
+      return res;
+    }
+  },
+  methods: { 
+    checkedOne(value) {
+		// 同显示，判断是否存在的同时，获取其索引（如果存在的话）
+      var idIndex = this.checkStatusList.indexOf(value);
+      if (idIndex >= 0) {
+          // 如果已经包含了该id, 则去除(单选按钮由选中变为非选中状态)
+          this.checkStatusList.splice(idIndex, 1)
+      } else {
+          // 选中该checkbox
+          this.checkStatusList.push(value)
+      }
+    },
+
     start() {
       this.getFolderTree(this.personData.folderId)
       this.getFolderSettings(this.personData.folderId)
@@ -425,7 +456,7 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => {  
         this.FolderSettings = data.data
-        // console.log(this.FolderSettings);
+        // console.log(this.FolderSettings.settings.restrictedFileTypes);
          
       }).catch(() => {
         // console.log(error.response.data);        
@@ -478,7 +509,7 @@ export default {
         console.log(error.response.data);        
       })
     },
-   
+    
   },
 };
 </script>

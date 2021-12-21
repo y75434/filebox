@@ -237,6 +237,7 @@ export default {
         }else{
           this.post();
         }
+        this.$bvModal.hide('AddEditPublicLink');
       },
     post() { 
       const headers = { 
@@ -286,7 +287,7 @@ export default {
         })
 
         this.$nextTick(() => { this.personData = {};
-        this.$bvModal.hide('EditPublicLink'); });
+        this.$bvModal.hide('AddEditPublicLink'); });
 
     },
     
@@ -298,7 +299,7 @@ export default {
       console.log('copy url',this.items[0])      
     },
     cancel() { 
-      this.$bvModal.hide('EditPublicLink');
+      this.$bvModal.hide('AddEditPublicLink');
 
      },
 

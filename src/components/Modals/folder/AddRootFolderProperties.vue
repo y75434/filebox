@@ -46,7 +46,6 @@
               id="Description"
               placeholder=""
               v-model="FolderSettings.description"
-
             >
           </div>
         </div>

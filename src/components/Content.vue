@@ -178,9 +178,9 @@
                 month: 'numeric',
                 day: 'numeric',
               }"
-              v-model="startdate"
               locale="en"
             />
+            <!-- v-model="startdate" -->
           </div>
           <div 
             v-if="this.currentSelected === 4"
@@ -201,8 +201,8 @@
                 day: 'numeric',
               }"
               locale="en"
-              v-model="enddate"
             />
+            <!-- v-model="enddate" -->
           </div>
     
         

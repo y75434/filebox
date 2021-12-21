@@ -133,7 +133,7 @@ export default {
     deleteFolder(id) {  
         console.log('97',id);
         //目前不能刪資料夾
-      this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/api/Link/${id}`)
+      this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/api/Link/${id}`)//沒api
         .then((data) => {
         //Input parameters: userId
           console.log(data);

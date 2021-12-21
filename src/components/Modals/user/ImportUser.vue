@@ -90,8 +90,8 @@
                 :placeholder="$t( 'MODAL.PLEASEFILLOUTTHISFIELD')"
                 class="form-control h-100"
                 v-model="searchQuery"
-                @change="update"
               >
+              <!-- @change="update" -->
             </div>
             <div class="d-flex flex-column">
               <label
@@ -205,7 +205,7 @@ props: { title: { type: String, default: 'Import User' },
     }
    },
    created(){
-    this.getUser()
+    // this.getUser()
    },
    computed:{
     
@@ -226,36 +226,32 @@ props: { title: { type: String, default: 'Import User' },
           console.log(error);          
         })
       },
-     search() {
-      this.axios.post(`${process.env.APIPATH}/api/AD/GetUsers?searchString=${this.search}`)
-        .then((data) => {
+    //  search() {
+    //   this.axios.post(`${process.env.APIPATH}/api/AD/GetUsers?searchString=${this.search}`)
+    //     .then((data) => {
 
-        // description,telephone,loginCount,mustChangePasswordOnNextLogin,cannotChangePassword,passwordNeverExpires
-        // and unlockAccount are not imported from AD domain.
+    //     // description,telephone,loginCount,mustChangePasswordOnNextLogin,cannotChangePassword,passwordNeverExpires
+    //     // and unlockAccount are not imported from AD domain.
 
-        console.log(data);
-      }).catch(error => {
-          console.log(error);          
-        })
+    //     console.log(data);
+    //   }).catch(error => {
+    //       console.log(error);          
+    //     })
 
 
-    },
+    // },
      
-    getUser(){
-      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/AD/GetUsers`)
-      .then((data) => {  
-        this.allUser = data.data
-         console.log(this.allUser);
+    // getUser(){
+    //   this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/AD/GetUsers`)
+    //   .then((data) => {  
+    //     this.allUser = data.data
+    //      console.log(this.allUser);
           
-      }).catch(() => {
-        // console.log(error.response.data);        
-      })
-     },
-     handleSubmit() {
-			// this.$nextTick(() => {
-        this.showModal = false
-			// });
-		},
+    //   }).catch(() => {
+    //     // console.log(error.response.data);        
+    //   })
+    //  },
+    
    }
 }
 </script>

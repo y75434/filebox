@@ -297,6 +297,7 @@
         :tree-selected="treeSelected"
         :sub-tree="[this.folderitems]"
         @update="selfUpdate"
+        :folder-tree="folderTree"
       />
       <div />
       <!-- main -->
@@ -420,7 +421,7 @@
                       :src="`${this.treeItems[0].pic}`"
                       class="icon24px"
                     >
-                    {{ folderTree.name }}1111
+                    {{ folderTree.name }}
                   </button>
                 </h2>
                 <div
@@ -692,7 +693,6 @@ export default {
       this.$set(this.resultQuery, x.id, index)
       return x;
     })
-     this.getFolderTree('a9602080-f4fc-4356-abe3-145d05fab9ac')
      this.getFolderTable();
   
     
@@ -722,6 +722,8 @@ export default {
     passRoute(e){
       const buttonValue = e.target.value;   
       this.treeSelected = buttonValue;
+      //點擊某資料夾在傳資料到search
+      this.getFolderTree('a9602080-f4fc-4356-abe3-145d05fab9ac')
       // console.log(this.treeSelected);     
     },
    
@@ -757,10 +759,13 @@ export default {
         return item;
       })
     },
+    //點擊某資料夾在傳資料到search
      getFolderTree(id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
       .then((data) => { 
         this.folderTree = data.data
+        // console.log(this.folderTree);
+        // console.log(this.folderTree.subFolders);
       }).catch(() => {
         //  console.log(error.response.data);        
       })
@@ -769,7 +774,7 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
         .then((data) => { 
           this.folderitems = data.data
-          console.log(this.folderitems);
+          // console.log(this.folderitems);
           
         }).catch(error => {
           console.log(error.response.data);        

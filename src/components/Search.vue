@@ -63,43 +63,25 @@
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          <router-link class="text-decoration-none text-dark" :to="'this.treeSelected'">
+          <router-link
+            class="text-decoration-none text-dark"
+            :to="'this.treeSelected'"
+          >
             {{ treeSelected }}
           </router-link>
         </button>
-        <ul class="dropdown-menu">
+        <ul
+          v-if="this.treeSelected"
+          class="dropdown-menu"
+        >
           <li
-            v-for="item in personData"
+            v-for="item in this.folderTree.subFolders"
             :key="item.id"
           >
             <a
               class="dropdown-item"
               href="#"
             >{{ item.name }}</a>
-          </li>
-        </ul>
-      </div>
-      <div class="btn-group dropend treeviewRoute">
-        <button
-          type="button"
-          class="btn bg-white dropdown-toggle"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          Folder One
-        </button>
-        <ul class="dropdown-menu">
-          <li>
-            <a
-              class="dropdown-item"
-              href="#"
-            >Another action</a>
-          </li>
-          <li>
-            <a
-              class="dropdown-item"
-              href="#"
-            >Something else here</a>
           </li>
         </ul>
       </div>
@@ -143,17 +125,22 @@ export default {
   name: "Search",
   props: { 
     treeSelected: { type: String, default: "" },
-    subTree: { type: Array, default() { return ["a","b"] } }
+    subTree: { type: Array, default() { return ["a","b"] } },
+    folderTree:{ type: Object, default() { return ["a","b"] }}
   },
   data() {
     return {
       searchQuery: null,
       personData: {},
+      tree:{}
     }
   },
   watch:{ 
-    tabData(){ 
-      this.personData = this.subTree
+    // tabData(){ 
+    //   this.personData = this.subTree
+    // },
+    folderTree(){ 
+      this.tree = this.subTree
     } 
   },
   methods: {
