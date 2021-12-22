@@ -321,7 +321,6 @@
               :select-mode="selectMode"
               hover
               :filter="filter"
-              v-if="eventsSelected.indexOf('Login') !== -1"
             >
               <template #cell(user)="data">
                 {{ data.item.user }} 
@@ -361,8 +360,8 @@
                 {{ data.item.name }} 
               </template>
 
-              <template #cell(fileId)="data">
-                {{ data.item.fileId }}
+              <template #cell(linkId)="data">
+                {{ data.item.linkId }}
               </template>
               
               <template #cell(creator)="data">
@@ -566,7 +565,7 @@ data() {
     ],
     linkfields: [ 
       { key: 'name', label: 'Name', sortable: true },
-      { key: 'fileId', label: 'Linked Item' },
+      { key: 'linkId', label: 'Linked Item' },
       { key: 'creator', label: 'Created By'},
       { key: 'viewed', label: 'Hit Count' },      
       { key: 'expire', label: 'Expiration' },
@@ -759,7 +758,7 @@ methods: {
       this.$bvModal.show('EventProperties');
     },
     getUserTable () {  
-      this.axios.get(`/api/Users/GetUsers`)
+      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/AD/GetUsers`)
         .then((data) => {          
           this.items = data       
         }).catch(error => {

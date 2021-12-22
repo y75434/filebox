@@ -287,7 +287,7 @@ export default {
         })
       },
       addUsersToGroup() {  
-      this.axios.post(`${process.env.APIPATH}/api/Groups/AddUsersInGroup`)
+      this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/SaveADUsersToDB`)
         .then((data) => {
         //  {
         //     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",

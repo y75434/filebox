@@ -350,8 +350,9 @@
                             type="checkbox"
                             id="flexCheckDefault"
                             class="form-check-input"
-                            :checked="checkStatusList.indexOf(checkOne.name)>=0"
                           >
+                          <!-- :checked="checkStatusList.indexOf(checkOne.name)>=0" -->
+
                           <label
                             for="flexCheckDefault"
                             class="form-check-label"
@@ -417,9 +418,12 @@ export default {
     //获取最终的选择结果
     checkRes() {
       var res = [];
-      this.checkList.forEach(function (one) {
-        if(true == one.state) res.push(one.name)
+      this.FileTypes.forEach(function (one) {
+        if(true == one.state) 
+        res.push(one.name)
       });
+      console.log(res);
+      
       return res;
     }
   },

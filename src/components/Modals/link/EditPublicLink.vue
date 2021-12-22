@@ -88,7 +88,7 @@
             for=""
           >
             {{ $t("MODAL.LINKEXPIRES") }}<input
-              v-model="personData.expireDay"
+              v-model="personData.expireDays"
 
               type="number"
               class="mx-2 form-control w-25"
@@ -286,17 +286,18 @@ export default {
     // rename + editname
     put(id) { 
      
-      this.tabData =  this.personData
 
       const headers = { 
         'Content-Type': 'application/json', 
         'Accept': 'application/json',
         "Access-Control-Allow-Origin": '*' 
         };
-        const data = JSON.stringify(this.tabData)   
+        const data = JSON.stringify(this.personData)   
+        
+        console.log(data);
 
-      this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/${id}`,
-      data,{ headers: headers }) .then((data) => {
+      this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/`,
+      data,{ headers: headers }).then((data) => {
         console.log(data);
       }).catch(error => {
           console.log(error.response.data);          
