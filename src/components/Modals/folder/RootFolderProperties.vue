@@ -104,9 +104,9 @@
                     {{ this.folderTree.name }}
                   </p>
                 </div>
-                <p class="fw-bold m-0">
+                <!-- <p class="fw-bold m-0">
                   {{ eventsSelected }}
-                </p>
+                </p> -->
 
                 <div class=" form-check">
                   <input

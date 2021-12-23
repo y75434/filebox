@@ -102,7 +102,7 @@
 
               <input
                 type="text"
-                :placeholder="$t( 'MODAL.PLEASEFILLOUTTHISFIELD')"
+                :placeholder="$t('MODAL.PLEASEFILLOUTTHISFIELD')"
                 class="form-control h-100"
               >
             </div>
@@ -128,8 +128,8 @@
             
 
 
-        <div class="w-100 mt-4">
-          <table class="table">
+        <div class="w-100 mt-4 overflow-scroll height-200">
+          <table class="table ">
             <thead>
               <tr class="modal-tr">
                 <th scope="col ">
@@ -137,7 +137,6 @@
                     class="form-check-input"
                     type="checkbox"
                     value=""
-                    id="flexCheckDefault"
                   >
                 </th>
                 <th scope="col">
@@ -157,20 +156,22 @@
                 </th>
               </tr>
             </thead>
-            <tbody class="bg-white">
-              <tr>
+            <tbody class="bg-white ">
+              <tr
+                v-for="item in allUser"
+                :key="item.id"
+              >
                 <th scope="row">
                   <input
                     class="form-check-input"
                     type="checkbox"
                     value=""
-                    id="flexCheckDefault"
                   >
                 </th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>Rachellee@doqubiz.com</td>
-                <td />
+                <td>{{ item.firstName }}</td>
+                <td>{{ item.userName }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.description }}</td>
                 <td />
               </tr>
             </tbody>
@@ -199,13 +200,13 @@ props: { title: { type: String, default: 'Import User' },
  data() {
      return {
       searchQuery: null,
-      allUser:[],
-      selected: [],
+      allUser:{},
+      selected: {},
 
     }
    },
    created(){
-    // this.getUser()
+    this.getUser()
    },
    computed:{
     
@@ -241,16 +242,16 @@ props: { title: { type: String, default: 'Import User' },
 
     // },
      
-    // getUser(){
-    //   this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/AD/GetUsers`)
-    //   .then((data) => {  
-    //     this.allUser = data.data
-    //      console.log(this.allUser);
+    getUser(){
+      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/AD/GetUsers`)
+      .then((data) => {  
+        this.allUser = data.data
+        //  console.log(this.allUser);
           
-    //   }).catch(() => {
-    //     // console.log(error.response.data);        
-    //   })
-    //  },
+      }).catch(() => {
+        // console.log(error.response.data);        
+      })
+     },
     
    }
 }

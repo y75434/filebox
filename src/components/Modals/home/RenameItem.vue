@@ -10,7 +10,7 @@
     ok-variant="primary"
     body-bg-variant="bgmodal"
     footer-bg-variant="bgmodal"
-    @ok="putFolder"
+    @ok="put"
   >
     <div class="modal-popout-bg p-3">
       <p class=" m-0">
@@ -69,47 +69,61 @@ export default {
      EditName () {  
       console.log(this.personData.name);
 
-      if(Object.prototype.hasOwnProperty.call(this.personData, "userName")) { 
-        this.type =='Users/EditUserName'
-       }else if(Object.prototype.hasOwnProperty.call(this.personData, "userName")){
-         this.type =='Groups/EditGroupName'
-       }else if(Object.prototype.hasOwnProperty.call(this.personData, "userName")){ 
-         this.type =='Groups/EditGroupName' 
-         }
-
-      // ${process.env.APIPATH}/api/Groups/EditGroupName
-
-      //if user
-      this.axios.post(`${process.env.APIPATH}/api/${this.type}/${this.tabData.id}`)
-        .then(() => {
-          
       
-        }).catch(error => {
-          console.log(error);          
-        })
+
+
+     
 
       },
-    putFolder(){
+    put(){
       const headers = { 
         'Content-Type': 'application/json', 
         'Accept':'application/json', 
         'Access-Control-Allow-Origin': '*' 
       }; 
-      const data = JSON.stringify(
-        {
-          "id": this.personData.folderId,
-          "name": this.personData.name,
-          "editor": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-        }
-        )
-      //editor之後改
 
-      this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RenameFolder`,
-      data,{ headers: headers })
-      .then(() => { 
-      }).catch(error => {
-        console.log(error.response.data);        
-      })
+
+      if(Object.prototype.hasOwnProperty.call(this.personData, "userName")) { 
+          //if user
+          const username = this.personData.name 
+          
+          const data = JSON.stringify({
+            "id": this.tabData.userId,
+            "userName": username,
+          })
+          console.log(data);
+
+      this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Users/EditUserName`,data)
+        .then(() => {
+             
+      
+        }).catch(error => {
+          console.log(error);          
+        })
+
+       }else if(Object.prototype.hasOwnProperty.call(this.personData, "folderId")){
+            const data = JSON.stringify({
+              "id": this.personData.folderId,
+              "name": this.personData.name,
+              "editor": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            })
+          //editor之後改
+
+          this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RenameFolder`,
+          data,{ headers: headers })
+          .then(() => { 
+          }).catch(error => {
+            console.log(error.response.data);        
+          })
+
+       }else if(Object.prototype.hasOwnProperty.call(this.personData, "groupName")){ 
+
+         console.log('aaaaa');
+         
+         }
+
+
+     
     },
   },
 };

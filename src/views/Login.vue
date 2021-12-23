@@ -2,7 +2,9 @@
   <section class="container-fluid  m-0">
     <div class="col-lg-12 d-none d-md-block  login_pic bg-cover vh-100" />
     <div class="row  justify-content-center align-items-center vh-100 pb-4">
-      <form class="col-lg-4 col-md-6 col-10 text-muted login-form  p-5">
+      <form 
+        class="col-lg-4 col-md-6 col-10 text-muted login-form  p-5"
+      >
         <h1
           class=""
         >
@@ -23,6 +25,7 @@
             type="text"
             id="email"
             placeholder=" jeff@doqubiz.com"
+            v-model="loginForm.username"
           >
         </div>
         <div class="form-group">
@@ -33,9 +36,10 @@
             
           <input
             class="form-control password-icon position-relative"
-            type="text"
+            type="passwords"
             id="passwords"
             placeholder="********"
+            v-model="loginForm.password"
           >
         </div>
 
@@ -51,6 +55,7 @@
           
         <!-- <router-link :to="{ path: '/' }"> -->
         <a
+          @click="login"
           class="dqbz-btn btn btn-primary col-12"
         >{{ $t("GENERAL.LOGIN") }}</a>
         <!-- </router-link> -->
@@ -91,34 +96,39 @@ export default {
   },
 	data: () => ({
     loginForm:{
-      account: "",
+      username: "",
       password: "",
       ip: ""
     }
   }),
   methods:{
     login(){
-      // this.$api.auth.login({
-      //   account:this.loginForm.account,
-      //   password:this.loginForm.password
-      // }).then((res) => {
-      //   let res = res.data;
-      //   let token = "Hello JWT";//res.result.token;
-      //   this.$store.dispatch('auth/setAuth', {
-      //     "token": token,
-      //     "isLogin": true
-      //   });
-      //   this.loginForm = {
-      //     "account": "",
-      //     "password": ""
-      //   }
-      //   this.$router.push('/home');
-      // })
-       
-      this.axios.post(`${process.env.APIPATH}/api/Users/IsDBUserAuthenticated`,
-      {account:this.loginForm.account,password:this.loginForm.password})
-        .then((data) => {
-         
+      const headers = { 
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json',
+        "Access-Control-Allow-Origin": '*' 
+        };
+
+      const data = JSON.stringify({username:this.loginForm.username,password:this.loginForm.password})
+
+      this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/LoginADUser`,
+      data,{ headers: headers }).then((data) => {
+        // let res = res.data;
+        // let token = "Hello JWT";//res.result.token;
+        // this.$store.dispatch('auth/setAuth', {
+        //   "token": token,
+        //   "isLogin": true
+        // });
+
+        
+        if(data.data.success == true){
+          this.loginForm = {
+            username: "",
+            password: ""
+          }
+          this.$router.push('/');
+        }
+        
 
         console.log(data);
       }).catch(error => {

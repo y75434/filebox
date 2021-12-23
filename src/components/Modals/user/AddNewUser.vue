@@ -10,63 +10,69 @@
     ok-variant="primary"
     footer-bg-variant="white"
     body-bg-variant="bgmodal"
+    @ok="addUser"
   >
-    <form
+    <!-- <form
       class="container"
       ref="form"
       @submit.stop.prevent="addUser"
-    >
-      <div class="modal-popout-bg p-0">
-        <form class=" p-3">
-          <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-            <label
-              for="Username"
-              class=""
-            >{{ $t("MODAL.USERNAME") }}</label>
-            <input
-              type="Username"
-              class="form-control inline-block width-320"
-              id="Username"
-            >
-          </div>
+    > -->
+    <div class="modal-popout-bg p-0">
+      <form class=" p-3">
+        <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+          <label
+            for="Username"
+            class=""
+          >{{ $t("MODAL.USERNAME") }}</label>
+          <input
+            type="Username"
+            class="form-control inline-block width-320"
+            id="Username"
+            v-model="personData.firstName"
+          >
+        </div>
 
                 
-          <div class="w-100 d-flex align-items-center justify-content-between mb-2 ">
-            <label
-              for="Fullname"
-              class="form-label"
-            >{{ $t("MODAL.FULLNAME") }}</label>
-            <input
-              type="Fullname"
-              class="form-control width-320"
-              id="Fullname"
-            >
-          </div>
-          <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-            <label
-              for="Email"
-              class="col-form-label"
-            >{{ $t("MODAL.EMAIL") }}</label>
+        <div class="w-100 d-flex align-items-center justify-content-between mb-2 ">
+          <label
+            for="Fullname"
+            class="form-label"
+          >{{ $t("MODAL.FULLNAME") }}</label>
+          <input
+            v-model="personData.userName"
+
+            type="Fullname"
+            class="form-control width-320"
+            id="Fullname"
+          >
+        </div>
+        <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+          <label
+            for="Email"
+            class="col-form-label"
+          >{{ $t("MODAL.EMAIL") }}</label>
                   
-            <input
-              type="Email"
-              id="Email"
-              class="form-control width-320"
-            >
-          </div>
-          <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-            <label
-              for="Description"
-              class="col-form-label"
-            >{{ $t("MODAL.DESCRIPTION") }}</label>
+          <input
+            type="Email"
+            id="Email"
+            class="form-control width-320"
+            v-model="personData.email"
+          >
+        </div>
+        <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+          <label
+            for="Description"
+            class="col-form-label"
+          >{{ $t("MODAL.DESCRIPTION") }}</label>
                   
-            <input
-              type="Description"
-              id="Description"
-              class="form-control width-320"
-            >
-          </div>
-        </form>
+          <input
+            type="Description"
+            id="Description"
+            class="form-control width-320"
+            v-model="personData.description"
+          >
+        </div>
+        <!-- </form> -->
         <!-- </div> -->
             
         <hr class="">
@@ -118,6 +124,7 @@
               type="checkbox"
               value=""
               id="Usermustchangepasswordatnexttime"
+              v-model="personData.mustChangePasswordOnNextLogin"
             >
             <label
               class="form-check-label"
@@ -132,6 +139,7 @@
               type="checkbox"
               value=""
               id="Usercannotchangepassword"
+              v-model="personData.cannotChangePassword"
             >
             <label
               class="form-check-label"
@@ -146,6 +154,7 @@
               type="checkbox"
               value=""
               id="Passwordneverexpires"
+              v-model="personData.passwordNeverExpires"
             >
             <label
               class="form-check-label"
@@ -160,11 +169,12 @@
               class="form-check-input"
               type="checkbox"
               value=""
-              id="Passwordneverexpires"
+              id="ACCOUNTISDISABLED"
+              v-model="personData.isEnabled"
             >
             <label
               class="form-check-label"
-              for="Passwordneverexpires"
+              for="ACCOUNTISDISABLED"
             >
               {{ $t("MODAL.ACCOUNTISDISABLED") }}
 
@@ -175,18 +185,20 @@
               class="form-check-input"
               type="checkbox"
               value=""
-              id="Passwordneverexpires"
+              id="islockedAccount"
+              v-model="personData.islockedAccount"
             >
             <label
               class="form-check-label"
-              for="Passwordneverexpires"
+              for="islockedAccount"
             >
               {{ $t("MODAL.ACCOUNTISLOCKEDOUT") }}
             </label>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
+    <!-- </form> -->
     <template
       #modal-cancel
       variant="outline-primary"
@@ -212,89 +224,54 @@ export default {
   data() {
     return {
       showModal: false,
+      personData: {}
     };
   },
   methods: {
     addUser () {  
-      this.axios.post(`${process.env.APIPATH}/api/AD/SaveADUsersToDB`)
+
+      const headers = { 
+      'Content-Type': 'application/json', 
+      'Accept': 'application/json',
+      "Access-Control-Allow-Origin": '*' 
+      };
+
+      const data = JSON.stringify(this.personData)
+
+      console.log(data);
+
+
+      this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/Users/CreateUser`,
+      data,{ headers: headers })
         .then((data) => {
 
         console.log(data);
       }).catch(error => {
           console.log(error);          
         })
-      },
-      groupAddNewUser () {  
-      this.axios.post(`${process.env.APIPATH}/api/Groups/AddUsersInGroup`)
-        .then((data) => {
 
-          // Input example:
-          // {
-          //   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          //   "groupUserRelations": [
-          //     {
-          //       "groupID": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          //       "userID": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          //       "roleId": 1
-          //     }
-          //   ]
-          // }
-
-        console.log(data);
-      }).catch(error => {
-          console.log(error);          
-        })
+        this.personData = {}
       },
-      addNewUser() {  
-      this.axios.post(`${process.env.APIPATH}/api/Users/CreateUser`)
-        .then((data) => {
-          // {
-          //   "userName": "abc",
-          //   "firstName": "abc",
-          //   "middleName": "string",
-          //   "lastName": "string",
-          //   "email": "abc@example.com",
-          //   "description": "cdsfsdf",
-          //   "telephone": "0986566456",
-          //   "password": "H@rs#A14",
-          //   "confirmPassword": "H@rs#A14",
-          //   "isEnabled": true,
-          //   "mustChangePasswordOnNextLogin": true,
-          //   "cannotChangePassword": true,
-          //   "passwordNeverExpires": true
-          // }
+      // groupAddNewUser () {  
+      // this.axios.post(`${process.env.APIPATH}/api/Groups/AddUsersInGroup`)
+      //   .then((data) => {
 
-          //         userName and password are required.
- 
-
-        console.log(data);
-      }).catch(error => {
-          console.log(error);          
-        })
-      },
-       editUser() {  
-      this.axios.post(`${process.env.APIPATH}/api/Users/EditUser`)
-        .then((data) => {
-         //  {
-          //   "id": "84c43791-c76c-4240-a85a-d1e54bf7ad7f",
-          //   "userName": "string",
-          //   "firstName": "string",
-          //   "middleName": "string",
-          //   "lastName": "string",
-          //   "email": "user@example.com",
-          //   "description": "string",
-          //   "telephone": "0976544666",
-          //   "mustChangePasswordOnNextLogin": true,
-          //   "cannotChangePassword": false,
-          //   "passwordNeverExpires": false,
-          //   "isEnabled": true
-          // }
-          // Note: Only input username and password fields if you want to change otherwise remove them from the list.
-        console.log(data);
-      }).catch(error => {
-          console.log(error);          
-        })
-      },
+         
+      //   console.log(data);
+      // }).catch(error => {
+      //     console.log(error);          
+      //   })
+      // },
+      // addNewUser() {  
+      // this.axios.post(`${process.env.APIPATH}/api/Users/CreateUser`)
+      //   .then((data) => {
+       
+      //   console.log(data);
+      // }).catch(error => {
+      //     console.log(error);          
+      //   })
+      // },
+     
     handleSubmit() {
       // this.$nextTick(() => {
       this.showModal = false;

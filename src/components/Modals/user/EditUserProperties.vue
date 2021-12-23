@@ -29,12 +29,12 @@
               class="form-control inline-block width-320"
               id="Username"
               disabled
-              v-model="tabData.Name"
+              v-model="personData.firstName"
             >
           </div>
-          <h1 class="text-dark">
+          <p class="text-dark">
             {{ tabData }}
-          </h1>
+          </p>
                 
           <div class="w-100 d-flex align-items-center justify-content-between mb-2 ">
             <label
@@ -42,8 +42,7 @@
               class="form-label"
             >{{ $t("MODAL.FULLNAME") }}</label>
             <input
-              v-model="tabData.FullName
-              "
+              v-model="personData.userName"
               type="Fullname"
               class="form-control width-320"
               id="Fullname"
@@ -59,6 +58,7 @@
               type="Email"
               id="Email"
               class="form-control width-320"
+              v-model="personData.email"
             >
           </div>
           <div class="w-100 d-flex align-items-center justify-content-between mb-2">
@@ -71,6 +71,7 @@
               type="Description"
               id="Description"
               class="form-control width-320"
+              v-model="personData.description"
             >
           </div>
         </form>
@@ -124,6 +125,7 @@
               type="checkbox"
               value=""
               id="Usermustchangepasswordatnexttime"
+              v-model="personData.mustChangePasswordOnNextLogin"
             >
             <label
               class="form-check-label"
@@ -138,6 +140,7 @@
               type="checkbox"
               value=""
               id="Usercannotchangepassword"
+              v-model="personData.cannotChangePassword"
             >
             <label
               class="form-check-label"
@@ -152,6 +155,7 @@
               type="checkbox"
               value=""
               id="Passwordneverexpires"
+              v-model="personData.passwordNeverExpires"
             >
             <label
               class="form-check-label"
@@ -170,11 +174,12 @@
               class="form-check-input"
               type="checkbox"
               value=""
-              id="Passwordneverexpires"
+              id="ACCOUNTISDISABLED"
+              v-model="personData.isEnabled"
             >
             <label
               class="form-check-label"
-              for="Passwordneverexpires"
+              for="ACCOUNTISDISABLED"
             >
               {{ $t("MODAL.ACCOUNTISDISABLED") }}
 
@@ -185,11 +190,12 @@
               class="form-check-input"
               type="checkbox"
               value=""
-              id="Passwordneverexpires"
+              id="islockedAccount"
+              v-model="personData.islockedAccount"
             >
             <label
               class="form-check-label"
-              for="Passwordneverexpires"
+              for="islockedAccount"
             >
               {{ $t("MODAL.ACCOUNTISLOCKEDOUT") }}
             </label>
@@ -222,10 +228,14 @@ export default {
   data() {
     return {
       showModal: false,
-      personData: this.tabData
+      personData: {}
     };
   },
-  
+  watch:{ 
+    tabData(){ 
+      this.personData = this.tabData 
+    } 
+  },
   methods: {
     handleSubmit() {
       // this.$nextTick(() => {

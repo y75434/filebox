@@ -267,7 +267,7 @@
     >
       <div class="">
         <b-col xs="12">
-          <b-table
+          <!-- <b-table
             responsive="true"
             :items="getTable()"
             class="col-12 b-col"
@@ -277,7 +277,81 @@
             :select-mode="selectMode"      
             hover
             :filter="filter"
-          />
+          /> -->
+          <div v-if="this.currentSelected === 1">
+            <b-table
+              :fields="usersfields"
+              responsive="true"
+              :items="useritems"
+              class="col-12 b-col text-dark"
+              @contextmenu="operational($event)"
+              @row-hovered="rowSelected"
+              ref="selectableTable"
+              :select-mode="selectMode"
+              hover
+              :filter="filter"
+            >
+              <template #cell(firstName)="data">
+                <img
+                  src="@/assets/images/icon/user@2x.png"
+                  class="icon32px"
+                >
+                {{ data.item.firstName }}
+              </template>
+              <template #cell(userName)="data">
+                {{ data.item.userName }}
+              </template>
+              <template #cell(loginCount)="data">
+                {{ data.item.loginCount }}
+              </template>
+              <template #cell(lastLogon)="data">
+                {{ data.item.lastLogon }}
+              </template>
+              <template #cell(createdOn)="data">
+                {{ data.item.createdOn }}
+              </template>
+              <template #cell(modifiedOn)="data">
+                {{ data.item.modifiedOn }}
+              </template>
+              <template #cell(isEnabled)="data">
+                {{ data.item.isEnabled }}
+              </template>
+            </b-table>
+          </div>
+
+
+          <div v-if="this.currentSelected === 2">
+            <b-table
+              :fields="groupsfields"
+              responsive="true"
+              :items="groupitems"
+              class="col-12 b-col text-dark"
+              @contextmenu="operational($event)"
+              @row-hovered="rowSelected"
+              ref="selectableTable"
+              :select-mode="selectMode"
+              hover
+              :filter="filter"
+            >
+              <template #cell(groupName)="data">
+                <img
+                  src="@/assets/images/icon/group@2x.png"
+                  class="icon32px"
+                >
+                {{ data.item.groupName }}
+              </template>
+              <template #cell(membersCount)="data">
+                {{ data.item.membersCount }}
+              </template>
+              <template #cell(createdOn)="data">
+                {{ data.item.createdOn }}
+              </template>
+              <template #cell(modifiedOn)="data">
+                {{ data.item.modifiedOn }}
+              </template>
+            </b-table>
+          </div>
+
           <div v-if="this.currentSelected === 3">
             <b-table
               :fields="folderfields"
@@ -553,6 +627,22 @@ data() {
     title: 'User Management',
     countName:'Users',
     currentSelected:1,
+    usersfields: [ 
+      { key: 'firstName', label: 'firstName', sortable: true },
+      { key: 'userName', label: 'Full Name', sortable: true },
+      { key: 'loginCount', label: 'Login Count' },
+      { key: 'lastLogon', label: 'Last Login Time' },
+      { key: 'createdOn', label: 'Date Created' },
+      { key: 'modifiedOn', label: 'Date Modified' },
+      { key: 'isEnabled', label: 'Status' },
+
+    ],
+    groupsfields: [ 
+      { key: 'groupName', label: 'groupName', sortable: true },
+      { key: 'membersCount', label: 'membersCount', sortable: true },
+      { key: 'createdOn', label: 'Created On'},
+      { key: 'modifiedOn', label: 'Modified On' },
+    ],
     eventfields: [ 
       { key: 'actionType', label: 'actionType', sortable: true },
       { key: 'user', label: 'User', sortable: true },
@@ -571,45 +661,38 @@ data() {
       { key: 'expire', label: 'Expiration' },
       { key: 'viewableTimes', label: 'Hit Limit' },
     ],   
-    items: [
-        { Name: 'Rachel',FullName:'Rachel Lee', LoginCount: '5',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM', DateModified:'25/02/2007 10:52 AM',Status:'active'},
-        { Name: 'David',FullName:'David Kang', LoginCount: '33',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM',Status:'active'},
-        { Name: 'Peter',FullName:'Peter Lin', LoginCount: '1',LastLoginTime:'25/02/2007 10:52 AM', DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM',Status:'active'}
-      ],
-      groupitems: [
-        { GroupName: 'RD',Members:5,DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
-        { GroupName: 'HR',Members:5,DateCreated:'25/02/2007 10:52 AM',DateModified:'25/02/2007 10:52 AM'},
-      ],
-      folderitems: [],
-      eventsitems: [],
-      eventpics: [ 
-        { id: 0,pic: require('@/assets/images/icon/browse@2x.png'), eventName: this.$t('GENERAL.BROWSE'),"actionType": "Browse",},
-        { id: 1, pic: require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.LOGIN'),"actionType": "Login",},
-        { id: 2, pic: require('@/assets/images/cmd/preview@2x.png') , eventName: this.$t('GENERAL.PREVIEW'),"actionType": "Preview"},
-        { id: 3, pic: require('@/assets/images/cmd/download@2x.png'), eventName: this.$t('HOME.DOWNLOAD'),"actionType": "Download"},
-        { id: 4, pic:require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.PUBLICLINK'),"actionType": "Public links"},
-        { id: 5, pic:require('@/assets/images/file/folder@2x.png'), eventName:this.$t('GENERAL.CREATEMOVE'),"actionType": "Create"},
-        { id: 6, pic:require('@/assets/images/cmd/rename@2x.png'), eventName:this.$t('HOME.RENAME'),"actionType": "Rename"},
-        { id: 7, pic:require('@/assets/images/cmd/cut@2x.png'), eventName:this.$t('GENERAL.MOVE'),"actionType": "Move"},
-        { id: 8, pic:require('@/assets/images/file/extractallfiles@2x.png'), eventName:this.$t('GENERAL.EXTRACT'),"actionType": "Extract"},
-        { id: 9, pic:require('@/assets/images/cmd/logout@2x.png'), eventName:this.$t('GENERAL.LOGOUT'),"actionType": "Log out"},
-        { id: 10, pic:require('@/assets/images/cmd/delete@2x-2.png'), eventName:this.$t('HOME.DELETE'),"actionType": "Delete"},
-        { id: 11, pic:require('@/assets/images/cmd/copy@2x.png'), eventName:this.$t('HOME.COPY'),"actionType": "Copy"},
-        { id: 12, pic:require('@/assets/images/file/addtozip@2x.png'),eventName:this.$t('GENERAL.COMPRESS'),"actionType": "Compress"},
-        { id: 13, pic:require('@/assets/images/cmd/upload@2x.png'),eventName:this.$t('HOME.UPLOAD'),"actionType": "Upload"},
-      ],
-      linkitems: [],
-      // selectedRow : null,
-      selected: {},
-      selectMode: 'single',
-      filter: null,
-      sortDirection: 'All',
-      events: [this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"), this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"), this.$t("GENERAL.PUBLICLINK"), this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
-      allSelected: true,
-      // eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
-      eventsSelected:[],
-      
-      picture:{}
+    useritems: [],
+    groupitems: [],
+    folderitems: [],
+    eventsitems: [],
+    eventpics: [ 
+      { id: 0,pic: require('@/assets/images/icon/browse@2x.png'), eventName: this.$t('GENERAL.BROWSE'),"actionType": "Browse",},
+      { id: 1, pic: require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.LOGIN'),"actionType": "Login",},
+      { id: 2, pic: require('@/assets/images/cmd/preview@2x.png') , eventName: this.$t('GENERAL.PREVIEW'),"actionType": "Preview"},
+      { id: 3, pic: require('@/assets/images/cmd/download@2x.png'), eventName: this.$t('HOME.DOWNLOAD'),"actionType": "Download"},
+      { id: 4, pic:require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.PUBLICLINK'),"actionType": "Public links"},
+      { id: 5, pic:require('@/assets/images/file/folder@2x.png'), eventName:this.$t('GENERAL.CREATEMOVE'),"actionType": "Create"},
+      { id: 6, pic:require('@/assets/images/cmd/rename@2x.png'), eventName:this.$t('HOME.RENAME'),"actionType": "Rename"},
+      { id: 7, pic:require('@/assets/images/cmd/cut@2x.png'), eventName:this.$t('GENERAL.MOVE'),"actionType": "Move"},
+      { id: 8, pic:require('@/assets/images/file/extractallfiles@2x.png'), eventName:this.$t('GENERAL.EXTRACT'),"actionType": "Extract"},
+      { id: 9, pic:require('@/assets/images/cmd/logout@2x.png'), eventName:this.$t('GENERAL.LOGOUT'),"actionType": "Log out"},
+      { id: 10, pic:require('@/assets/images/cmd/delete@2x-2.png'), eventName:this.$t('HOME.DELETE'),"actionType": "Delete"},
+      { id: 11, pic:require('@/assets/images/cmd/copy@2x.png'), eventName:this.$t('HOME.COPY'),"actionType": "Copy"},
+      { id: 12, pic:require('@/assets/images/file/addtozip@2x.png'),eventName:this.$t('GENERAL.COMPRESS'),"actionType": "Compress"},
+      { id: 13, pic:require('@/assets/images/cmd/upload@2x.png'),eventName:this.$t('HOME.UPLOAD'),"actionType": "Upload"},
+    ],
+    linkitems: [],
+    // selectedRow : null,
+    selected: {},
+    selectMode: 'single',
+    filter: null,
+    sortDirection: 'All',
+    events: [this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"), this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"), this.$t("GENERAL.PUBLICLINK"), this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
+    allSelected: true,
+    // eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
+    eventsSelected:[],
+    
+    picture:{}
   };
 },
 created(){
@@ -652,13 +735,15 @@ methods: {
   getTable(){    
     switch (this.currentSelected) {
       case 1:
-        // this.getUserTable();
-        this.count = this.items.length        
-        return this.items;
+        this.getUserTable();
+        this.count = this.useritems.length        
+        // return this.items;
+        return [];
       case 2: 
-        // this.getGroupTable();       
+        this.getGroupTable();       
         this.count = this.groupitems.length
-        return this.groupitems;
+        // return this.groupitems;
+        return [];
       case 3:
         this.getFolderTable();
         this.count = this.folderitems.length
@@ -758,17 +843,21 @@ methods: {
       this.$bvModal.show('EventProperties');
     },
     getUserTable () {  
-      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/AD/GetUsers`)
+      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers`)
         .then((data) => {          
-          this.items = data       
+          this.useritems = data.data
+          console.log(this.items);
+          
+          this.count = this.useritems.length       
         }).catch(error => {
           console.log(error);        
         })
     },
     getGroupTable () {  
-      this.axios.get(`/api/Groups/GetGroups`)
-        .then(data => {          
-          this.groupitems = data       
+      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroups`)
+        .then(data => {  
+          this.groupitems = data.data 
+          this.count = this.groupitems.length      
         }).catch(error => {
           console.log(error.response.data);        
         })

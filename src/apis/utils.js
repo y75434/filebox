@@ -1,9 +1,9 @@
 
-// 錯誤提示
-export const tip = msg => {
-  console.log(msg);
+// // 錯誤提示
+// export const tip = msg => {
+//   console.log(msg);
   
-}
+// }
 
 
 
