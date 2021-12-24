@@ -26,7 +26,6 @@
             class="form-control inline-block width-320"
           >
           <!-- v-model="this.group.groupName" -->
-
         </div>
         <div
           class="p-3 w-100 d-flex align-items-center justify-content-between mb-2"
@@ -37,7 +36,6 @@
             class="form-control inline-block width-320"
           >
           <!-- v-model="this.group.groupDescription" -->
-
         </div>
 
 
@@ -273,14 +271,7 @@ export default {
       addNewGroup () {  
       this.axios.post(`${process.env.APIPATH}/api/Groups/CreateGroup`)
         .then((data) => {
-          // Input parameters:
-          // {
-          //   "groupName": "hello",
-          //   "groupDescription": "hello",
-          //   "groupScope": "Global",
-          //   "isSecurityGroup": true
-          // }
-
+      
         console.log(data);
       }).catch(error => {
           console.log(error);          
@@ -289,16 +280,7 @@ export default {
       addUsersToGroup() {  
       this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/SaveADUsersToDB`)
         .then((data) => {
-        //  {
-        //     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        //     "groupUserRelations": [
-        //       {
-        //         "groupID": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        //         "userID": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        //         "roleId": 1
-        //       }
-        //     ]
-        //   }
+       
 
 
         console.log(data);
@@ -311,28 +293,6 @@ export default {
       this.axios.post(`${process.env.APIPATH}/api/Groups/EditGroup`)
         .then((data) => {
         
-          // {
-          //   "id": "34531a23-5b89-4864-845a-5dafcdcacd73",
-          //   "groupName": "SETgroup",
-          //   "groupDescription": "SET group",
-          //   "groupUserRelations": [
-          //     {
-          //       "groupID": "34531a23-5b89-4864-845a-5dafcdcacd73",
-          //       "userID": "be521f65-7f95-4ca6-a00e-0aa67f08d968",
-          //       "roleId": 1
-          //     },
-          //     {
-          //       "groupID": "34531a23-5b89-4864-845a-5dafcdcacd73",
-          //       "userID": "2623f7d6-e03d-4bf3-b9fe-7844a6c4f736",
-          //       "roleId": 2
-          //     },
-          //     {
-          //       "groupID": "34531a23-5b89-4864-845a-5dafcdcacd73",
-          //       "userID": "05d28b09-648b-4d69-9b39-13fdf664991f",
-          //       "roleId": 2
-          //     }
-          //   ]
-          // }
 
 
         console.log(data);

@@ -70,10 +70,6 @@ export default {
       console.log(this.personData.name);
 
       
-
-
-     
-
       },
     put(){
       const headers = { 
@@ -86,17 +82,18 @@ export default {
       if(Object.prototype.hasOwnProperty.call(this.personData, "userName")) { 
           //if user
           const username = this.personData.name 
-          
+
           const data = JSON.stringify({
             "id": this.tabData.userId,
             "userName": username,
           })
           console.log(data);
 
-      this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Users/EditUserName`,data)
+      this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Users/EditUserName`,data,{ headers: headers })
         .then(() => {
-             
-      
+             this.personData = {}
+            console.log('success');
+
         }).catch(error => {
           console.log(error);          
         })

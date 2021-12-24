@@ -13,182 +13,224 @@
   >
     <!-- :title="$t('TITLE.EDITPUBLICLINK')" -->
 
-   
-    <div
-      class="modal-popout-bg p-0"
+    <validation-observer
+      v-slot="{ invalid }"
+      class="col-md-8"
     >
-      <form class=" p-3">
-        <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-          <label
-            for="Name in link"
-            class=""
-          >{{ $t("MODAL.NAMEINLINK") }}</label>
-          <input
-            type="string"
-            class="form-control inline-block width-320"
-            id="Name in link"
-            v-model="personData.name"
+      <div
+        class="modal-popout-bg p-0"
+      >
+        <form class=" p-3">
+          <validation-provider
+            v-slot="{ errors,classes}"
+            rules="required"
           >
-          <span class="text-danger">Required</span>
-        </div>
-        <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-          <label
-            for="creator"
-            class=""
-          >{{ $t("MODAL.CREATOR") }}</label>
-          <input
-            type="string"
-            class="form-control inline-block width-320"
-            id="creator"
-            v-model="personData.creator"
+            <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+              <label
+                for="Name in link"
+                class=""
+              >{{ $t("MODAL.NAMEINLINK") }}</label>
+              <input
+                type="string"
+                class="form-control inline-block width-320"
+                id="Name in link"
+                v-model="personData.name"
+                :class="classes"
+              >
+            </div>
+            <span class="text-danger">{{ errors[0] }}</span>
+          </validation-provider>
+
+          <validation-provider
+            v-slot="{ errors, classes }"
+            rules="required"
           >
-          <span class="text-danger">Required</span>
-        </div>
-      </form>
+            <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+              <label
+                for="creator"
+                class=""
+              >{{ $t("MODAL.CREATOR") }}</label>
+              <input
+                type="string"
+                class="form-control inline-block width-320"
+                id="creator"
+                v-model="personData.creator"
+                :class="classes"
+              >
+            </div>
+            <span class="text-danger">{{ errors[0] }}</span>
+          </validation-provider>
+        </form>
 
         
-      <!-- </div> -->
+        <!-- </div> -->
             
-      <p class="text-dark">
-        {{ tabData }}
-      </p>
-      <hr class="">
-
-      <p class="text-dark">
-        {{ personData }}
-      </p>
-
-      <div
-        class="d-flex flex-column justify-content-between p-3"
-      >
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="Usermustchangepasswordatnexttime"
-            v-model="personData.isPublic"
-          >
-          <label
-            class="form-check-label"
-            for="Usermustchangepasswordatnexttime"
-          >
-            {{ $t("MODAL.OPENLINKEDFILE") }}
-          </label>
-        </div>
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id=""
-          >
-          <label
-            class="form-check-label align-items-center d-flex"
-            for=""
-          >
-            {{ $t("MODAL.LINKEXPIRES") }}<input
-              v-model="personData.expireDays"
-
-              type="number"
-              class="mx-2 form-control w-25"
-            >{{ $t("MODAL.DAYS") }}
-
-          </label>
-        </div>
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id=""
-          >
-          <label
-            class="form-check-label align-items-center d-flex"
-            for=""
-          >
-            {{ $t("MODAL.LINKCANBEOPENED") }}<input
-              type="number"
-              class="mx-2 form-control w-25"
-              v-model="personData.viewableTimes"
-            >{{ $t("GENERAL.TIMES") }}
-
-
-          </label>
-        </div>
-
-
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            value=""
-            id="Changeuserpassword"
-          >
-          <label
-            class="form-check-label"
-            for="Changeuserpassword"
-          >
-            {{ $t("MODAL.PROTECTLINKWITH") }}
-
-          </label>
-          <div
-            class="w-100 d-flex align-items-center justify-content-between mb-2"
-          >
-            <label
-              for="Password"
-              class="form-label"
-            >{{ $t("GENERAL.PASSWORD") }}</label><input
-              v-model="personData.password"
-              type="Password"
-              id="Password"
-              placeholder="******"
-              class="form-control width-220"
-            >
-          </div>
-          <div
-            class="w-100 d-flex align-items-center justify-content-between mb-2"
-          >
-            <label
-              for="Confirmpassword"
-              class="form-label"
-            >{{ $t("GENERAL.CONFIRMPASSWORD") }}
-            </label><input
-              type="Confirmpassword"
-              id="Confirmpassword"
-              placeholder="******"
-              class="form-control width-220"
-            >
-          </div>
-        </div>
-                
-
+        <p class="text-dark">
+          {{ tabData }}
+        </p>
         <hr class="">
 
-        <span class="text-danger">Required</span>
-        <div class="mb-3">
-          <label
-            for="Public link"
-            class="form-label"
-          >{{ $t("GENERAL.PUBLICLINK") }} </label>
-          <div class="d-flex justify-content-between">
+        <p class="text-dark">
+          {{ personData }}
+        </p>
+
+        <div
+          class="d-flex flex-column justify-content-between p-3"
+        >
+          <div class="form-check">
             <input
-              type="string"
-              class="form-control w-75 obj"
-              id="Public link"
-              v-model="personData.url"
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="Usermustchangepasswordatnexttime"
+              v-model="personData.isPublic"
             >
-             
-            <b-button
-              class="bg-green border-0"
-              @click="copyText()"
+            <label
+              class="form-check-label"
+              for="Usermustchangepasswordatnexttime"
             >
-              {{ $t("GENERAL.COPYLINK") }}
-            </b-button>
+              {{ $t("MODAL.OPENLINKEDFILE") }}
+            </label>
           </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id=""
+            >
+            <label
+              class="form-check-label align-items-center d-flex"
+              for=""
+            >
+              {{ $t("MODAL.LINKEXPIRES") }}<input
+                v-model="personData.expireDays"
+
+                type="number"
+                class="mx-2 form-control w-25"
+              >{{ $t("MODAL.DAYS") }}
+
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id=""
+            >
+            <label
+              class="form-check-label align-items-center d-flex"
+              for=""
+            >
+              {{ $t("MODAL.LINKCANBEOPENED") }}<input
+                type="number"
+                class="mx-2 form-control w-25"
+                v-model="personData.viewableTimes"
+              >{{ $t("GENERAL.TIMES") }}
+
+
+            </label>
+          </div>
+
+
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="Changeuserpassword"
+            >
+            <label
+              class="form-check-label"
+              for="Changeuserpassword"
+            >
+              {{ $t("MODAL.PROTECTLINKWITH") }}
+
+            </label>
+            <validation-provider
+              v-slot="{ errors,classes}"
+              :rules="{ regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).*$/, min:8,}"
+              vid="password"
+            >
+              <div
+                class="w-100 d-flex align-items-center justify-content-between mb-2"
+              >
+                <label
+                  for="Password"
+                  class="form-label"
+                >{{ $t("GENERAL.PASSWORD") }}</label><input
+                  v-model="personData.password"
+                  type="Password"
+                  id="Password"
+                  placeholder="******"
+                  class="form-control width-220"
+                  :class="classes"
+                >
+              </div>
+
+              <span class="text-danger">{{ errors[0] }}</span>
+            </validation-provider>
+
+            <validation-provider
+              v-slot="{ errors, classes}"
+              rules="confirmed:password"
+            >
+              <div
+                class="w-100 d-flex align-items-center justify-content-between mb-2"
+              >
+                <label
+                  for="Confirmpassword"
+                  class="form-label"
+                >{{ $t("GENERAL.CONFIRMPASSWORD") }}
+                </label><input
+                  type="Confirmpassword"
+                  id="Confirmpassword"
+                  placeholder="******"
+                  class="form-control width-220"
+                  v-model="personData.confirmPassword"
+                  :class="classes"
+                >
+              </div>
+              <span class="text-danger">{{ errors[0] }}</span>
+            </validation-provider>
+          </div>
+                
+
+          <hr class="">
+
+          <validation-provider
+            v-slot="{ errors, classes}"
+            rules="required"
+          >
+            <div class="mb-3">
+              <label
+                for="Public link"
+                class="form-label"
+              >{{ $t("GENERAL.PUBLICLINK") }} </label>
+              <div class="d-flex justify-content-between">
+                <input
+                  type="string"
+                  class="form-control w-75 obj"
+                  id="Public link"
+                  v-model="personData.url"
+                  :class="classes"
+                >
+             
+                <b-button
+                  class="bg-green border-0"
+                  @click="copyText()"
+                >
+                  {{ $t("GENERAL.COPYLINK") }}
+                </b-button>
+              </div>
+            </div>
+            <span class="text-danger">{{ errors[0] }}</span>
+          </validation-provider>
         </div>
       </div>
-    </div>
+    </validation-observer>
+
 
     <template
       #modal-footer="{}"

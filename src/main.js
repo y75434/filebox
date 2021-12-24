@@ -9,31 +9,37 @@ import i18n from './common/plugins/vue-i18n';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 import VueCompositionAPI from '@vue/composition-api'
-
-Vue.use(VueCompositionAPI)
-
+import { ValidationObserver, ValidationProvider, extend, localize } from 'vee-validate'
+import * as rules from 'vee-validate/dist/rules'
+import TW from 'vee-validate/dist/locale/zh_TW.json'
+import 'splitpanes/dist/splitpanes.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import $ from 'jquery';
 import picture from '@/common/images';
 
-Vue.prototype.$axios = axios;
 
-import 'splitpanes/dist/splitpanes.css';
+Object.keys(rules).forEach((rule) => {
+  extend(rule, rules[rule])
+})
 
-import 'bootstrap-vue/dist/bootstrap-vue.css';
+localize('zh_TW', TW)
 
-import $ from 'jquery';
+
 window.$ = $;
 
 window.picture = picture;
 
+Vue.component('ValidationObserver', ValidationObserver)
+Vue.component('ValidationProvider', ValidationProvider)
 
 
-// Vue.prototype.$api = api; //掛載api到原型
-
+Vue.use(VueCompositionAPI)
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false
+Vue.prototype.$axios = axios;
 
 new Vue({
   router,

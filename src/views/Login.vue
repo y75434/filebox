@@ -36,7 +36,7 @@
             
           <input
             class="form-control password-icon position-relative"
-            type="passwords"
+            type="password"
             id="passwords"
             placeholder="********"
             v-model="loginForm.password"
@@ -44,7 +44,10 @@
         </div>
 
         <div class="d-flex justify-content-between my-2">
-          <span class="text-danger">
+          <span
+            v-if="wrong"
+            class="text-danger"
+          >
             {{ $t("GENERAL.PASSWORDERRORMSG") }}
           </span>
           <a
@@ -53,12 +56,10 @@
           >{{ $t("GENERAL.FORGOTPASSWORD") }}</a>
         </div>
           
-        <!-- <router-link :to="{ path: '/' }"> -->
         <a
           @click="login"
           class="dqbz-btn btn btn-primary col-12"
         >{{ $t("GENERAL.LOGIN") }}</a>
-        <!-- </router-link> -->
 
         <p class="my-4">
           <span>{{ $t("GENERAL.OR") }}</span>
@@ -69,6 +70,7 @@
           class="login-btn dqbz-btn btn col-12"
         >{{ $t("GENERAL.USESECUREDONGLELOGIN") }}</a>
         <a class="float-end my-3 light-blue">{{ $t("GENERAL.LOSTUSBTOKEN") }}</a>
+        <a @click="ResetNewPassword" class="my-3 light-blue">重設密碼</a>
       </form>
     </div>
     <forgot-password ref="ForgotPassword" />
@@ -99,9 +101,12 @@ export default {
       username: "",
       password: "",
       ip: ""
-    }
+    },
+    wrong: false
   }),
   methods:{
+    ResetNewPassword(){ this.$bvModal.show('ResetNewPassword'); },
+
     login(){
       const headers = { 
         'Content-Type': 'application/json', 
@@ -127,6 +132,8 @@ export default {
             password: ""
           }
           this.$router.push('/');
+        }else{
+          this.wrong = true
         }
         
 
@@ -164,7 +171,6 @@ export default {
     },
     ForgotPassword(){ this.$bvModal.show('ForgotPassword');},
     RequestEmailSent(){ this.$bvModal.show('RequestEmailSent');},
-    ResetNewPassword(){ this.$bvModal.show('ResetNewPassword');},
     ResetSuccess(){ this.$bvModal.show('ResetSuccess');},
 
 

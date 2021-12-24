@@ -400,7 +400,7 @@
                 {{ data.item.user }} 
               </template>
 
-              <template #cell(actionType)="data">
+              <template #cell()="data">
                 <img
                   :src="data.item.pic"
                   class="icon32px"
@@ -561,7 +561,7 @@
       <ImportUser ref="ImportUser" />
       <delete-user
         ref="DeleteUser"
-        :tab-data="selected"
+        :del-data="selected"
       />
       <NewGroupProperties
         ref="NewGroupProperties"
@@ -753,6 +753,7 @@ methods: {
          this.getEventTable();
          this.eventsitems.map(item=>{ 
           const eventpic = this.eventpics.filter(y=>y.actionType == item.actionType)[0];
+          console.log(eventpic)
           item.pic = eventpic.pic;          
           return item 
         });
@@ -846,7 +847,7 @@ methods: {
       this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers`)
         .then((data) => {          
           this.useritems = data.data
-          console.log(this.items);
+          // console.log(this.useritems);
           
           this.count = this.useritems.length       
         }).catch(error => {

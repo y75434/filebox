@@ -8,7 +8,6 @@
     hide-header-close
     no-close-on-backdrop
     no-close-on-esc
-    :ok-disabled="delFormValidity"
     @ok="handleOk"
     @cancel="cancel"
     body-bg-variant="white"
@@ -23,7 +22,7 @@
         <h5 class="text-dark mb-3">
           {{ $t("HOME.DELETE") }}
 
-          <strong class="text-danger"> {{ tabData.FullName || tabData.name || tabData.Name }}</strong>
+          <strong class="text-danger"> {{ delData.name || delData.Name || delData.userName }}</strong>
         </h5>
         <h5 class="text-dark mb-3">
           {{ $t("MODAL.PLEASETYPE") }}
@@ -32,7 +31,7 @@
 
         
         <div class="mx-auto">
-          <span class="badge px-4 py-2 my-2 bg-danger">{{ tabData.FullName || tabData.name || tabData.Name }}</span>
+          <span class="badge px-4 py-2 my-2 bg-danger">{{ delData.name || delData.Name || delData.userName }}</span>
         </div>
 
         <input
@@ -58,36 +57,35 @@ export default {
 	name: 'DeleteUser',
 	props: {
     // dataSource: { type: Object, require: true },
-    tabData: { type: Object , default() { return {} }}
+    delData: { type: Object , default() { return {} }}
 
 	},
 	data() {
 		return {
       userInput: '',
-      personData: this.tabData
+      personData: this.delData
 
 		};
 	},
-	computed: {
-		delFormValidity() {
-			return this.tabData.name !== this.userInput;
-		},
-	},
+	// computed: {
+	// 	delFormValidity() {
+	// 		return this.delData.name || this.delData.userName !== this.userInput;
+	// 	},
+	// },
 	methods: {
     handleOk(bvModalEvt) {
         bvModalEvt.preventDefault()
-        //之後要加判斷 link group user
 
-       
-    
-        if('FullName' in this.tabData) {
-          console.log('');      
+        
+  
+        if('userName' in this.delData && this.delData.userName === this.userInput) {
+          this.deleteUser(this.delData.userId)    
         }
-        else if('linkId' in this.tabData) {
-          this.deleteLink(this.tabData.linkId)
+        else if('linkId' in this.delData && this.delData.username === this.userInput) {//check
+          this.deleteLink(this.delData.linkId)
         }
         else {
-          this.deleteFolder(this.tabData.folderId)
+          this.deleteFolder(this.delData.folderId)
         }
 
 
@@ -102,10 +100,14 @@ export default {
         })
       },
       deleteUser(id) {  
-      this.axios.delete(`/api/Users/${id}`)
-        .then((data) => {
-        //Input parameters: userId
-        console.log(data);
+
+      this.axios.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Users`
+      ,{data:{ "id": id }})
+        .then(() => {
+          this.$nextTick(() => { this.userInput = '';
+          this.$bvModal.hide('modal-delete-user'); });
+
+          // console.log(data);
       }).catch(error => {
           console.log(error);          
         })
@@ -116,15 +118,10 @@ export default {
         
       this.axios.delete(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/${id}`)
         .then((data) => {
-        //Input parameters: userId
           console.log(data);
-
-
         // this.$store.dispatch('users/deleteUser', { userId: this.dataSource.id });
         this.$nextTick(() => { this.userInput = '';
         this.$bvModal.hide('modal-delete-user'); });
-
-
 
       }).catch(error => {
           console.log(error);          

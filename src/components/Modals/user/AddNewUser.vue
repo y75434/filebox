@@ -17,187 +17,245 @@
       ref="form"
       @submit.stop.prevent="addUser"
     > -->
-    <div class="modal-popout-bg p-0">
-      <form class=" p-3">
-        <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-          <label
-            for="Username"
-            class=""
-          >{{ $t("MODAL.USERNAME") }}</label>
-          <input
-            type="Username"
-            class="form-control inline-block width-320"
-            id="Username"
-            v-model="personData.firstName"
+    <validation-observer
+      v-slot="{ invalid }"
+      class="col-md-8"
+    >
+      <div class="modal-popout-bg p-0">
+        <form class=" p-3">
+          <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+            <label
+              for="Username"
+              class=""
+            >{{ $t("MODAL.USERNAME") }}</label>
+            <input
+              type="Username"
+              class="form-control inline-block width-320"
+              id="Username"
+              v-model="personData.firstName"
+            >
+          </div>
+          <validation-provider
+            v-slot="{ errors, classes }"
+            rules="required"
           >
-        </div>
+            <div class="w-100 d-flex align-items-center justify-content-between mb-2 ">
+              <label
+                for="Fullname"
+                class="form-label"
+              >{{ $t("MODAL.FULLNAME") }}</label>
+              <input
+                v-model="personData.userName"
+                :class="classes"
 
-                
-        <div class="w-100 d-flex align-items-center justify-content-between mb-2 ">
-          <label
-            for="Fullname"
-            class="form-label"
-          >{{ $t("MODAL.FULLNAME") }}</label>
-          <input
-            v-model="personData.userName"
+                type="Fullname"
+                class="form-control width-320"
+                id="Fullname"
+              >
+            </div>
+            <span class="text-danger">{{ errors[0] }}</span>
+          </validation-provider>
+          <validation-provider
+            v-slot="{ errors,classes}"
+            rules="email"
+          >
+            <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+              <label
+                for="Email"
+                class="col-form-label"
+              >{{ $t("MODAL.EMAIL") }}</label>
+                  
+              <input
+                type="Email"
+                id="Email"
+                class="form-control width-320"
+                v-model="personData.email"
+                :class="classes"
+              >
+            </div>
+            <span class="text-danger">{{ errors[0] }}</span>
+          </validation-provider>
 
-            type="Fullname"
-            class="form-control width-320"
-            id="Fullname"
+
+          <validation-provider
+            v-slot="{ errors, classes }"
+            rules="min:8|numeric"
           >
-        </div>
-        <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-          <label
-            for="Email"
-            class="col-form-label"
-          >{{ $t("MODAL.EMAIL") }}</label>
+            <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+              <label
+                for="tel"
+                class="col-form-label"
+              >telephone </label>
                   
-          <input
-            type="Email"
-            id="Email"
-            class="form-control width-320"
-            v-model="personData.email"
-          >
-        </div>
-        <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-          <label
-            for="Description"
-            class="col-form-label"
-          >{{ $t("MODAL.DESCRIPTION") }}</label>
+              <input
+                type="number"
+                id="telephone"
+                class="form-control width-320"
+                v-model="personData.telephone"
+                :class="classes"
+              >
+            </div>
+            <span class="text-danger">{{ errors[0] }}</span>
+          </validation-provider>
+
+          <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+            <label
+              for="Description"
+              class="col-form-label"
+            >{{ $t("MODAL.DESCRIPTION") }}</label>
                   
-          <input
-            type="Description"
-            id="Description"
-            class="form-control width-320"
-            v-model="personData.description"
-          >
-        </div>
-        <!-- </form> -->
-        <!-- </div> -->
+            <input
+              type="Description"
+              id="Description"
+              class="form-control width-320"
+              v-model="personData.description"
+            >
+          </div>
+          <!-- </form> -->
+          <!-- </div> -->
             
-        <hr class="">
-
-
-        <div class="d-flex flex-column justify-content-between p-3">
-          <div class="form-check mb-2">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="Changeuserpassword"
-            >
-            <label
-              class="form-check-label"
-              for="Changeuserpassword"
-            >
-              {{ $t("MODAL.CHANGEUSERPASSWORD") }}
-
-            </label>
-            <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-              <label
-                for="Password"
-                class="form-label"
-              >{{ $t("GENERAL.PASSWORD") }}</label>
-              <input
-                type="Password"
-                class="form-control width-220"
-                id="Password"
-                placeholder="******"
-              >
-            </div>
-            <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-              <label
-                for="ConfirmPassword"
-                class="form-label"
-              >{{ $t("GENERAL.CONFIRMPASSWORD") }}</label>
-              <input
-                type="Password"
-                class="form-control width-220"
-                id="ConfirmPassword"
-                placeholder="******"
-              >
-            </div>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="Usermustchangepasswordatnexttime"
-              v-model="personData.mustChangePasswordOnNextLogin"
-            >
-            <label
-              class="form-check-label"
-              for="Usermustchangepasswordatnexttime"
-            >
-              {{ $t("MODAL.USERMUSTCHANGEPASSWORDATNEXTTIME") }}
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="Usercannotchangepassword"
-              v-model="personData.cannotChangePassword"
-            >
-            <label
-              class="form-check-label"
-              for="Usercannotchangepassword"
-            >
-              {{ $t("MODAL.USERCANNOTCHANGEPASSWORD") }}
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="Passwordneverexpires"
-              v-model="personData.passwordNeverExpires"
-            >
-            <label
-              class="form-check-label"
-              for="Passwordneverexpires"
-            >
-              {{ $t("MODAL.PASSWORDNEVEREXPIRES") }}
-            </label>
-          </div>
           <hr class="">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="ACCOUNTISDISABLED"
-              v-model="personData.isEnabled"
-            >
-            <label
-              class="form-check-label"
-              for="ACCOUNTISDISABLED"
-            >
-              {{ $t("MODAL.ACCOUNTISDISABLED") }}
 
-            </label>
+
+          <div class="d-flex flex-column justify-content-between p-3">
+            <div class="form-check mb-2">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="Changeuserpassword"
+              >
+              <label
+                class="form-check-label"
+                for="Changeuserpassword"
+              >
+                {{ $t("MODAL.CHANGEUSERPASSWORD") }}
+
+              </label>
+              <validation-provider
+                v-slot="{ errors,classes}"
+                :rules="{ required: true, regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).*$/, min:8,}"
+                vid="password"
+              >
+                <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+                  <label
+                    for="Password"
+                    class="form-label"
+                  >{{ $t("GENERAL.PASSWORD") }}</label>
+                  <input
+                    type="Password"
+                    class="form-control width-220"
+                    id="Password"
+                    placeholder="******"
+                    v-model="personData.password"
+                    :class="classes"
+                  >
+                </div>
+                <span class="text-danger">{{ errors[0] }}</span>
+              </validation-provider>
+              <validation-provider
+                v-slot="{ errors, classes}"
+                rules="confirmed:password"
+              >
+                <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+                  <label
+                    for="ConfirmPassword"
+                    class="form-label"
+                  >{{ $t("GENERAL.CONFIRMPASSWORD") }}</label>
+                  <input
+                    type="Password"
+                    class="form-control width-220"
+                    id="ConfirmPassword"
+                    placeholder="******"
+                    v-model="personData.confirmPassword"
+                    :class="classes"
+                  >
+                </div>
+                <span class="text-danger">{{ errors[0] }}</span>
+              </validation-provider>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="Usermustchangepasswordatnexttime"
+                v-model="personData.mustChangePasswordOnNextLogin"
+              >
+              <label
+                class="form-check-label"
+                for="Usermustchangepasswordatnexttime"
+              >
+                {{ $t("MODAL.USERMUSTCHANGEPASSWORDATNEXTTIME") }}
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="Usercannotchangepassword"
+                v-model="personData.cannotChangePassword"
+              >
+              <label
+                class="form-check-label"
+                for="Usercannotchangepassword"
+              >
+                {{ $t("MODAL.USERCANNOTCHANGEPASSWORD") }}
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="Passwordneverexpires"
+                v-model="personData.passwordNeverExpires"
+              >
+              <label
+                class="form-check-label"
+                for="Passwordneverexpires"
+              >
+                {{ $t("MODAL.PASSWORDNEVEREXPIRES") }}
+              </label>
+            </div>
+            <hr class="">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="ACCOUNTISDISABLED"
+                v-model="personData.isEnabled"
+              >
+              <label
+                class="form-check-label"
+                for="ACCOUNTISDISABLED"
+              >
+                {{ $t("MODAL.ACCOUNTISDISABLED") }}
+
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="islockedAccount"
+                v-model="personData.islockedAccount"
+              >
+              <label
+                class="form-check-label"
+                for="islockedAccount"
+              >
+                {{ $t("MODAL.ACCOUNTISLOCKEDOUT") }}
+              </label>
+            </div>
           </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="islockedAccount"
-              v-model="personData.islockedAccount"
-            >
-            <label
-              class="form-check-label"
-              for="islockedAccount"
-            >
-              {{ $t("MODAL.ACCOUNTISLOCKEDOUT") }}
-            </label>
-          </div>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </validation-observer>
+
     <!-- </form> -->
     <template
       #modal-cancel
@@ -252,31 +310,7 @@ export default {
 
         this.personData = {}
       },
-      // groupAddNewUser () {  
-      // this.axios.post(`${process.env.APIPATH}/api/Groups/AddUsersInGroup`)
-      //   .then((data) => {
-
-         
-      //   console.log(data);
-      // }).catch(error => {
-      //     console.log(error);          
-      //   })
-      // },
-      // addNewUser() {  
-      // this.axios.post(`${process.env.APIPATH}/api/Users/CreateUser`)
-      //   .then((data) => {
-       
-      //   console.log(data);
-      // }).catch(error => {
-      //     console.log(error);          
-      //   })
-      // },
-     
-    handleSubmit() {
-      // this.$nextTick(() => {
-      this.showModal = false;
-      // });
-    },
+    
   },
 };
 </script>

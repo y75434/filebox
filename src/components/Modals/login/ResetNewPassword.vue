@@ -8,12 +8,10 @@
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"
+    body-bg-variant="bgmodal"
+    footer-bg-variant="bgmodal"
+    @ok="changePassword"
   >
-    <!-- <form
-      class="container"
-      ref="form"
-      @submit.stop.prevent="handleSubmit"
-    > -->
     <div class="modal-popout-bg p-3">
       <h3 class="text-center dark-blue">
         {{ $t("GENERAL.RESETNEWPASSWORD") }}
@@ -21,25 +19,42 @@
 
       <div class="mb-3">
         <label
-          for="Newpassword"
+          for="username"
           class="form-label"
-        >{{ $t("GENERAL.NEWPASSWORD") }}</label>
+        >username</label>
         <input
-          type="Newpassword"
+          type="username"
           class="form-control"
+          v-model="username"
         >
       </div>
 
       <div class="mb-3">
         <label
-          for="Newpassword"
+          for="oldpassword"
           class="form-label"
-        >{{ $t("GENERAL.CONFIRMPASSWORD") }}</label>
+        >oldpassword</label>
         <input
-          type="Newpassword"
+          type="password"
           class="form-control"
+          v-model="oldPassword"
         >
       </div>
+
+
+      <div class="mb-3">
+        <label
+          for="Newpassword"
+          class="form-label"
+        >{{ $t("GENERAL.NEWPASSWORD") }}</label>
+        <input
+          type="password"
+          class="form-control"
+          v-model="newPassword"
+        >
+      </div>
+
+      
 
       <div class="w-100 d-flex justify-content-center mt-5">
         <button
@@ -51,7 +66,6 @@
       </div>
     </div>
 
-    <!-- </form> -->
     <template
       #modal-cancel
       variant="outline-primary"
@@ -95,7 +109,7 @@ export default {
           newPassword: this.newPassword
         })
        
-      this.axios.post(`${process.env.APIPATH}api/AD/ADUpdateUserPassword`,
+      this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/ADUpdateUserPassword`,
       data,{ headers: headers })
         .then((data) => {
          
