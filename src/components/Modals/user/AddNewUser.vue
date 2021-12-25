@@ -18,7 +18,6 @@
       @submit.stop.prevent="addUser"
     > -->
     <validation-observer
-      v-slot="{ invalid }"
       class="col-md-8"
     >
       <div class="modal-popout-bg p-0">

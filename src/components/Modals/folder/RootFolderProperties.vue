@@ -265,10 +265,12 @@
                         </div>
                         <div class="">
                           <input
+                            v-model="item.active"
                             class="form-check-input m-0"
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
+                            @change="typeSelected(item)"
                           >
                         </div>
                       </li>
@@ -397,7 +399,7 @@ export default {
       personData: {},
       folderTree: {},
       FolderSettings:{},
-      PermissionTypes:{},
+      PermissionTypes:[],
       FileTypes:{},
       StorageUnit:{},
       checkList:[
@@ -470,11 +472,22 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/PermissionTypes`)
       .then((data) => {  
         this.PermissionTypes = data.data
+        this.PermissionTypes.map(x=>x.active = false);
         //  console.log(this.PermissionTypes);
          
       }).catch(() => {
         // console.log(error.response.data);        
       })
+    },
+    typeSelected(item){
+console.log(this.FolderSettings);
+      if(item.active){
+        this.FolderSettings.settings.accessPermissions.push(item.permissionTypeId) 
+      } else {
+        this.FolderSettings.settings.accessPermissions=this.FolderSettings.settings.accessPermissions.filter(x=>x
+ !==item.permissionTypeId);
+
+      }
     },
     getFileTypes(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileTypes`)

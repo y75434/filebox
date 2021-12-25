@@ -12,7 +12,6 @@
     body-bg-variant="bgmodal"
   >
     <validation-observer
-      v-slot="{ invalid }"
       class="col-md-8"
     >
       <div

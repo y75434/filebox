@@ -129,6 +129,8 @@
               class="m-2 text-dark"
             >{{ $t("GENERAL.SEARCH") }}</label>
             <input
+              v-model="searchText"
+              @keyup="search()"
               type="text"
               :placeholder="$t( 'GENERAL.SEARCH')"
               class="form-control "
@@ -146,16 +148,21 @@
             <select
               class="form-select"
               aria-label="Default select example"
+              v-model="status"
+              @change="search()"
             >
               <option 
                 selected
+                value="0"
               >
                 All
               </option>
-              <option>
+              <option
+                value="1"
+              >
                 active
               </option>
-              <option>
+              <option value="2">
                 disabled
               </option>
             </select>
@@ -691,7 +698,8 @@ data() {
     allSelected: true,
     // eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
     eventsSelected:[],
-    
+    searchText:"",
+    status:"",
     picture:{}
   };
 },
@@ -920,21 +928,21 @@ methods: {
     //     })
     // },
     //搜尋user
-    // searchUser(){
-    //   this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=ra&UserStatus=${status}`)
-    //     .then(data => {  
-    //       this.searchUser = data.data 
-    //       this.count = this.searchUser.length  
-    //       // console.log(this.eventsitems.data);
+    search(){
+      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}&UserStatus=${this.status}`)
+        .then(data => {  
+          console.log(data);
+          this.useritems = data.data 
+          this.count = this.useritems.length  
+          // console.log(this.eventsitems.data);
 
-            // UserStatus : 0. All Users 1.Active 2.InActive
 
-    //     return this.useritems;
+        return this.useritems;
 
-    //     }).catch(error => {
-    //       console.log(error.response.data);        
-    //     })
-    // },
+        }).catch(error => {
+          console.log(error.response.data);        
+        })
+    },
 }
 }
 </script>

@@ -14,7 +14,6 @@
     <!-- :title="$t('TITLE.EDITPUBLICLINK')" -->
 
     <validation-observer
-      v-slot="{ invalid }"
       class="col-md-8"
     >
       <div
