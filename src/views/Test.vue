@@ -41,7 +41,7 @@ export default {
       console.log(this.x1,this.y1)
       this.reCalc();
     },
-    mouseUp(e){ 
+    mouseUp(){ 
       let div = this.$refs.div;
       div.hidden = 1;
 

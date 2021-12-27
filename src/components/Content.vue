@@ -111,6 +111,7 @@
                             class="mx-1"
                             aria-label="events"
                             stacked
+                            :value="events"
                           />
                         </div>
                       </template>
@@ -121,6 +122,7 @@
             </div>
           </div>
          
+          
 
 
           <div class="d-flex flex-column">
@@ -168,7 +170,6 @@
             </select>
           </div>
           <!-- datepicker -->
-          
           <div 
             v-if="this.currentSelected === 4"
             class="d-flex flex-column"
@@ -180,14 +181,12 @@
             <b-form-datepicker
               id="datepicker-dateformat1"
               :placeholder="$t('GENERAL.NODATESELECTED')"
-              :date-format-options="{
-                year: 'numeric',
-                month: 'numeric',
-                day: 'numeric',
-              }"
+              :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+
               locale="en"
+              @keyup="search()"
+              v-model="startdate"
             />
-            <!-- v-model="startdate" -->
           </div>
           <div 
             v-if="this.currentSelected === 4"
@@ -208,8 +207,9 @@
                 day: 'numeric',
               }"
               locale="en"
+              v-model="enddate"
+              @keyup="search()"
             />
-            <!-- v-model="enddate" -->
           </div>
     
         
@@ -642,7 +642,6 @@ data() {
       { key: 'createdOn', label: 'Date Created' },
       { key: 'modifiedOn', label: 'Date Modified' },
       { key: 'isEnabled', label: 'Status' },
-
     ],
     groupsfields: [ 
       { key: 'groupName', label: 'groupName', sortable: true },
@@ -700,7 +699,12 @@ data() {
     eventsSelected:[],
     searchText:"",
     status:"",
-    picture:{}
+    picture:{},
+    startdate: "",
+    enddate: "",
+    value:"",
+    eventTypeId:"",
+    aa: ""
   };
 },
 created(){
@@ -709,20 +713,23 @@ created(){
   this.getEventType();
   this.picture = picture;
 },
-// watch: { //todo undo
-//   eventsSelected(newValue) {
-//     //console.log(this.eventsSelected)
+computed:{
+  
+},
+watch: { //todo undo
+  eventsSelected(newValue) {
+    //console.log(this.eventsSelected)
 
-//     if (newValue.length === 0) {
-//       this.allSelected = false
-//     } else if (newValue.length === this.events.length) {
-//       this.allSelected = true
-//     } else {
-//       this.allSelected = false
-//     }
+    if (newValue.length === 0) {
+      this.allSelected = false
+    } else if (newValue.length === this.events.length) {
+      this.allSelected = true
+    } else {
+      this.allSelected = false
+    }
 
-//   }
-// },
+  }
+},
 methods: { 
   toggleAll(checked) { 
     this.eventsSelected = checked ? this.events.slice() : [] 
@@ -745,35 +752,28 @@ methods: {
       case 1:
         this.getUserTable();
         this.count = this.useritems.length        
-        // return this.items;
         return [];
       case 2: 
         this.getGroupTable();       
         this.count = this.groupitems.length
-        // return this.groupitems;
         return [];
       case 3:
         this.getFolderTable();
         this.count = this.folderitems.length
-         //return this.folderitems;    
        return [];     
        case 4: 
          this.getEventTable();
          this.eventsitems.map(item=>{ 
           const eventpic = this.eventpics.filter(y=>y.actionType == item.actionType)[0];
-          console.log(eventpic)
+        
           item.pic = eventpic.pic;          
           return item 
         });
-
          this.count = this.eventsitems.length
-        //  return this.eventsitems;  
-        return [];
-      
+        return [];    
       case 5: 
         this.getLinkTable();
         this.count = this.linkitems.length
-        //return this.linkitems;
         return [];
       default:
         return [];
@@ -914,35 +914,102 @@ methods: {
           // console.log(error.response.data);        
         })
     },
-    //搜尋結果
-    // searchEvent(){
-    //   this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll/?From=2021-12-10&To=2021-12-12&SearchString=dddd&ActionEventType=fff&ActionEventType=`)
-    //     .then(data => {  
-    //       this.searchResult = data.data 
-    //       this.count = this.searchResult.length  
-    //       // console.log(this.eventsitems.data);
-    //     return this.eventsitems;
-
-    //     }).catch(error => {
-    //       console.log(error.response.data);        
-    //     })
-    // },
-    //搜尋user
+    //搜尋
     search(){
-      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}&UserStatus=${this.status}`)
-        .then(data => {  
-          console.log(data);
-          this.useritems = data.data 
-          this.count = this.useritems.length  
-          // console.log(this.eventsitems.data);
+      switch (this.currentSelected) {
+        case 1:
+
+          this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}&UserStatus=${this.status}`)
+            .then(data => {  
+              console.log(data);
+              this.useritems = data.data 
+              this.count = this.useritems.length  
+            return this.useritems;
+            }).catch(error => {
+              console.log(error.response.data);        
+            })
+          break;
+        case 2: 
+          this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroups?searchString=${this.searchText}`)
+            .then(data => {  
+              this.groupitems = data.data 
+              this.count = this.groupitems.length  
+            return this.useritems;
+
+            }).catch(error => {
+              console.log(error.response.data);        
+            })
+          break;
+        case 3:
+          //目前沒有api
+          // this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}&UserStatus=${this.status}`)
+          //   .then(data => {  
+          //     console.log(data);
+          //     this.useritems = data.data 
+          //     this.count = this.useritems.length  
+
+          //   return this.useritems;
+
+          //   }).catch(error => {
+          //     console.log(error.response.data);        
+          //   })
+          break;
+  
+        case 4: {
+          const eventURL = new URL(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`);
+          let searchParams = {
+            From: this.value,
+            To: this.enddate,
+            SearchString: this.searchText,
+            ActionEventType: this.eventTypeId,
+            
+          }
 
 
-        return this.useritems;
+         Object.keys(searchParams).forEach(key => searchParams[key] === undefined ? delete searchParams[key] : {});
 
-        }).catch(error => {
-          console.log(error.response.data);        
-        })
+
+          console.log('976',searchParams)
+          
+          let a = new URLSearchParams(searchParams);
+
+          console.log('984',a.toString());
+
+           
+            eventURL.search = a;
+
+          // `${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll?From=${this.value}&To=${this.enddate}&SearchString=${this.searchText}&ActionEventType=${this.eventTypeId}&ActionEventType=${this.eventTypeId}`
+
+          this.axios.get(eventURL.href)
+            .then(data => {  
+              console.log(eventURL.href);
+              this.eventsitems = data.data 
+              this.count = this.eventsitems.length  
+            return this.useritems;
+
+            }).catch(error => {
+              console.log(error.response.data);        
+            })
+        break;
+        }
+        case 5: 
+        this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
+            .then(data => {  
+              this.linkitems = data.data 
+              this.count = this.linkitems.length  
+
+            return this.useritems;
+
+            }).catch(error => {
+              console.log(error.response.data);        
+            })
+            break;
+        default:
+          return [];
+      } 
+
+      
     },
-}
+  }
 }
 </script>

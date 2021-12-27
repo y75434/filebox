@@ -11,11 +11,12 @@
     ok-variant="primary"
     size="lg"
     footer-bg-variant="white"
+    @ok="connectAD()"
   >
     <form
       class="container"
       ref="form"
-      @submit.stop.prevent="importUser"
+      @submit.stop.prevent=""
     >
       <div class="modal-popout-bg bg-bgmodal p-3">
         <div class="w-50 d-flex align-items-center justify-content-center mb-2">
@@ -217,9 +218,9 @@ props: { title: { type: String, default: 'Import User' },
     
   },
    methods: {
-     //use checkbox
+     // 目前不能用
      importUser () {  
-      this.axios.post(`${process.env.APIPATH}/api/AD/SaveChildGroupsAndUsersToDB`)
+      this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/SaveADUsersToDB`)
         .then((data) => {
 
         console.log(data);
@@ -227,32 +228,49 @@ props: { title: { type: String, default: 'Import User' },
           console.log(error);          
         })
       },
-    //  search() {
-    //   this.axios.post(`${process.env.APIPATH}/api/AD/GetUsers?searchString=${this.search}`)
-    //     .then((data) => {
+      getUser(){
+        //  ?searchString=${this.search}
+        //description,telephone,loginCount,mustChangePasswordOnNextLogin,cannotChangePassword,passwordNeverExpires
+        // and unlockAccount are not imported from AD domain.
 
-    //     // description,telephone,loginCount,mustChangePasswordOnNextLogin,cannotChangePassword,passwordNeverExpires
-    //     // and unlockAccount are not imported from AD domain.
+        this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/AD/GetUsers`)
+        .then((data) => {  
+          this.allUser = data.data
+          //  console.log(this.allUser);
+            
+        }).catch(() => {
+          // console.log(error.response.data);        
+        })
+      },
+      connectAD() {
+        const headers = { 
+          'Content-Type': 'application/json', 
+          'Accept': 'application/json',
+          "Access-Control-Allow-Origin": '*' 
+        };
 
-    //     console.log(data);
-    //   }).catch(error => {
-    //       console.log(error);          
-    //     })
+        const data = JSON.stringify({ 
+          "domainIP": "192.168.110.179", 
+          "user": "administrator", 
+          "password":"p@ssw0rd@82923262", 
+          "baseContainerDn": "OU=doqubiz,DC=doqubiz,DC=local",
+          "adminDn": "CN=administrator,CN=Users,DC=doqubiz,DC=local", 
+          "domainName":"AD.doqubiz.local", 
+          "port": "636"
+        })
+
+        this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/connectDynamicAD`,
+        data,{ headers: headers })
+          .then((data) => {
 
 
-    // },
-     
-    getUser(){
-      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/AD/GetUsers`)
-      .then((data) => {  
-        this.allUser = data.data
-        //  console.log(this.allUser);
-          
-      }).catch(() => {
-        // console.log(error.response.data);        
-      })
-     },
-    
+          console.log(data);
+        }).catch(error => {
+            console.log(error);          
+          })
+
+
+    },
    }
 }
 </script>

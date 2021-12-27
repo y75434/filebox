@@ -269,8 +269,7 @@
                             class="form-check-input m-0"
                             type="checkbox"
                             value=""
-                            id="flexCheckDefault"
-                            @change="typeSelected(item)"
+                            @change="permissionSelected(item)"
                           >
                         </div>
                       </li>
@@ -350,11 +349,10 @@
                         >
                           <input
                             type="checkbox"
-                            id="flexCheckDefault"
                             class="form-check-input"
+                            v-model="item.active"
+                            @change="typeSelected(item)"
                           >
-                          <!-- :checked="checkStatusList.indexOf(checkOne.name)>=0" -->
-
                           <label
                             for="flexCheckDefault"
                             class="form-check-label"
@@ -400,14 +398,8 @@ export default {
       folderTree: {},
       FolderSettings:{},
       PermissionTypes:[],
-      FileTypes:{},
+      FileTypes:[],
       StorageUnit:{},
-      checkList:[
-        {'name':'老王'},
-        {'name':'小张'},
-        {'name':'王伯'}
-      ],
-      checkStatusList:['老王']
 
     };
   },
@@ -416,32 +408,9 @@ export default {
       this.personData = this.folderData 
     }
   },  
-  computed: {
-    //获取最终的选择结果
-    checkRes() {
-      var res = [];
-      this.FileTypes.forEach(function (one) {
-        if(true == one.state) 
-        res.push(one.name)
-      });
-      console.log(res);
-      
-      return res;
-    }
-  },
+  
   methods: { 
-    checkedOne(value) {
-		// 同显示，判断是否存在的同时，获取其索引（如果存在的话）
-      var idIndex = this.checkStatusList.indexOf(value);
-      if (idIndex >= 0) {
-          // 如果已经包含了该id, 则去除(单选按钮由选中变为非选中状态)
-          this.checkStatusList.splice(idIndex, 1)
-      } else {
-          // 选中该checkbox
-          this.checkStatusList.push(value)
-      }
-    },
-
+  
     start() {
       this.getFolderTree(this.personData.folderId)
       this.getFolderSettings(this.personData.folderId)
@@ -479,13 +448,12 @@ export default {
         // console.log(error.response.data);        
       })
     },
-    typeSelected(item){
-console.log(this.FolderSettings);
+    permissionSelected(item){
       if(item.active){
         this.FolderSettings.settings.accessPermissions.push(item.permissionTypeId) 
       } else {
         this.FolderSettings.settings.accessPermissions=this.FolderSettings.settings.accessPermissions.filter(x=>x
- !==item.permissionTypeId);
+          !==item.permissionTypeId);
 
       }
     },
@@ -493,11 +461,26 @@ console.log(this.FolderSettings);
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileTypes`)
       .then((data) => {  
         this.FileTypes = data.data
+        //  console.log(this.FileTypes);
+        this.FileTypes.map(x=>x.active = false);
          console.log(this.FileTypes);
           
       }).catch(() => {
         // console.log(error.response.data);        
       })
+    },
+    // todo api為null 等格式確定再改
+    typeSelected(item){
+      // console.log(this.FolderSettings);
+      let arr = []
+      if(item.active){
+        arr.push(item.fileTypeId)
+      } else {
+        this.FolderSettings.settings.restrictedFileTypes=this.FolderSettings.settings.restrictedFileTypes.filter(x=>x
+          !==item.fileTypeId);
+
+      }
+      this.FolderSettings.settings.restrictedFileTypes = arr
     },
     getStorageUnit(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/Storage/Unit`)
