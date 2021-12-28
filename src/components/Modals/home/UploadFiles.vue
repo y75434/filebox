@@ -13,11 +13,6 @@
     size="lg"
     @ok="Upload"
   >
-    <!-- <form
-      class="container"
-      ref="form"
-      @submit.stop.prevent="handleSubmit"
-    > -->
     <div class="modal-popout-bg  p-0">
       <p class="m-0">
         <img src="@/assets/images/cmd/upload@2x.png">
@@ -130,6 +125,12 @@
           >
             {{ $t("GENERAL.CLEAR") }}
           </b-button>
+          <b-button
+            class="cancel-btn mx-1"
+            @click="FilesConflict()"
+          >
+            UploadFilesConflict
+          </b-button>
         </div>
 
          
@@ -141,16 +142,19 @@
         </b-button>
       </div>
     </template>
-
-    <!-- </form> -->
+    <UploadFilesConflict ref="UploadFilesConflict" />
   </b-modal>
 </template>
 
 <script>
+import UploadFilesConflict from '@/components/Modals/home/UploadFilesConflict.vue';
+
 export default {
   name: "UploadFiles",
   props: { title: { type: String, default: "Upload Files - Root Folder" } },
-
+  components: {
+    UploadFilesConflict
+  },
   data() {
     return {
       url: [],
@@ -162,6 +166,9 @@ export default {
     };
   },
   methods: {
+    FilesConflict(){
+      this.$bvModal.show('UploadFilesConflict');
+    },
     Upload(){
        const headers = { 
         'Content-Type': 'application/json', 

@@ -22,16 +22,19 @@
         <h5 class="text-dark mb-3">
           {{ $t("HOME.DELETE") }}
 
-          <strong class="text-danger"> {{ delData.name || delData.Name || delData.userName }}</strong>
+          <strong class="text-danger"> {{ delData.name || delData.Name || delData.userName || delData.groupName }}</strong>
         </h5>
         <h5 class="text-dark mb-3">
           {{ $t("MODAL.PLEASETYPE") }}
         </h5>
-      
+        <h5 class="text-dark mb-3">
+          {{ delData }}
+        </h5>
+
 
         
         <div class="mx-auto">
-          <span class="badge px-4 py-2 my-2 bg-danger">{{ delData.name || delData.Name || delData.userName }}</span>
+          <span class="badge px-4 py-2 my-2 bg-danger">{{ delData.name || delData.Name || delData.userName || delData.groupName }}</span>
         </div>
 
         <input
@@ -56,17 +59,21 @@
 export default {
 	name: 'DeleteUser',
 	props: {
-    // dataSource: { type: Object, require: true },
     delData: { type: Object , default() { return {} }}
 
 	},
 	data() {
 		return {
       userInput: '',
-      personData: this.delData
+      personData: {}
 
 		};
-	},
+  },
+  watch:{ 
+    delData(){ 
+      this.personData = this.delData
+    } 
+  },
 	// computed: {
 	// 	delFormValidity() {
 	// 		return this.delData.name || this.delData.userName !== this.userInput;
@@ -78,20 +85,31 @@ export default {
 
         
   
-        if('userName' in this.delData && this.delData.userName === this.userInput) {
+        if('userName' in this.personData && this.delData.userName === this.userInput) {
           this.deleteUser(this.delData.userId)    
         }
-        else if('linkId' in this.delData && this.delData.username === this.userInput) {//check
+        else if('linkId' in this.personData  && this.delData.name === this.userInput) {
           this.deleteLink(this.delData.linkId)
         }
-        else {
-          this.deleteFolder(this.delData.folderId)
+        else if('groupName' in this.personData && this.delData.groupName === this.userInput){
+          this.deleteGroup(this.delData.id) 
         }
+
+        else {
+          //還沒有
+          // this.deleteFolder(this.delData.folderId) 
+        }
+
+        this.$nextTick(() => { 
+          this.userInput = '';
+          this.$bvModal.hide('modal-delete-user'); 
+        });
+
 
 
       },
      deleteGroup(id) {  
-      this.axios.delete(`/api/Groups/${id}`)
+      this.axios.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/`,{data:{ "id": id }})
         .then((data) => {
         
         console.log(data);
@@ -116,7 +134,7 @@ export default {
         //它不會刪除記錄，而只是將刪除標誌設置為打開或關閉
         console.log('97',id);
         
-      this.axios.delete(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/${id}`)
+      this.axios.delete(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link`,{data:{ "id": id }})
         .then((data) => {
           console.log(data);
         // this.$store.dispatch('users/deleteUser', { userId: this.dataSource.id });
@@ -127,25 +145,25 @@ export default {
           console.log(error);          
         })
     },
-    deleteFolder(id) {  
-        console.log('97',id);
-        //目前不能刪資料夾
-      this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/api/Link/${id}`)//沒api
-        .then((data) => {
-        //Input parameters: userId
-          console.log(data);
+    // deleteFolder(id) {  
+    //     console.log('97',id);
+    //     //目前不能刪資料夾
+    //   this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/api/Link/${id}`)//沒api
+    //     .then((data) => {
+    //     //Input parameters: userId
+    //       console.log(data);
 
 
-        // this.$store.dispatch('users/deleteUser', { userId: this.dataSource.id });
-        this.$nextTick(() => { this.userInput = '';
-        this.$bvModal.hide('modal-delete-user'); });
+    //     // this.$store.dispatch('users/deleteUser', { userId: this.dataSource.id });
+    //     this.$nextTick(() => { this.userInput = '';
+    //     this.$bvModal.hide('modal-delete-user'); });
 
 
 
-      }).catch(error => {
-          console.log(error);          
-        })
-    },
+    //   }).catch(error => {
+    //       console.log(error);          
+    //     })
+    // },
 		cancel() {
 			this.userInput = '';
 		},

@@ -44,20 +44,19 @@
                 href="#"
               >{{ $t("GENERAL.USERSETTING") }}</a>
             </li>
-            <li class="d-flex align-items-center">
+            <router-link
+              :to="{ path: '/admin' }"
+              class="text-decoration-none d-flex align-items-center"
+            >
               <img
                 src="@/assets/images/icon/administrator@2x.png"
                 class="icon24px"
               >
-              <router-link
-                :to="{ path: '/admin' }"
-                class="text-decoration-none"
-              >
-                <a
-                  class="dropdown-item p-0"
-                >{{ $t("GENERAL.ADMINISTRATION") }}</a>
-              </router-link>
-            </li>
+              
+              <a
+                class="dropdown-item p-0"
+              >{{ $t("GENERAL.ADMINISTRATION") }}</a>
+            </router-link>
           </ul>
         </li>
       </ul>

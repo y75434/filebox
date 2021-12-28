@@ -1,5 +1,5 @@
 <template>
-  <div @contextmenu="handler($event)">
+  <div>
     <Navbar />
     <div class="dqbz-body">
       <div class="dqbz-fnlist">
@@ -277,7 +277,7 @@
                 type="checkbox"
                 value="2"
                 id="File extensions"
-                v-model="extensions"
+                v-model="extension"
               >
               <label
                 class="form-check-label"
@@ -301,7 +301,10 @@
       />
       <div />
       <!-- main -->
-      <div class="dqbz-main">
+      <div
+        class="dqbz-main"
+        @contextmenu="showMenu(null, $event)"
+      >
         <Splitpanes class="h-100">
           <Pane
             :size="paneSize"
@@ -538,40 +541,8 @@
           <Pane
             :size="100 - paneSize"
             class="d-flex align-items-start justify-content-start"
-          >
-            <!-- v-for="item in items" :key="item.message" -->
-            
-            
-
-            <!-- 原版 -->
-            <!-- <label      
-              v-for="item in allFiles"
-              :key="item.id"
-              class="d-flex flex-column position-relative"
-              @change="ischecked = !ischecked"
-              :style="item.ischecked ? {backgroundColor: '#d3eaff'} : {backgroundColor:'transparent'}"
-            >
-              <input
-                class="form-check-input itemCheckbox"
-                type="checkbox"
-                v-model="item.ischecked"
-                v-if="renderCheckboxs"
-              >
-              <img
-                :src="item.pic"
-                class="folder-icon"
-              >
-              <h6 class="text-dark text-center">
-                {{ item.name }}<span
-                  class="text-dark"
-                  v-if="extensions"
-                >.{{ item.extensions }}</span>
-              </h6>     
-            </label> -->
-            
-
-
-            
+            @contextmenu="handler($event)"
+          >     
             <label
               class="d-flex flex-column position-relative"
               :key="item.id"
@@ -579,6 +550,8 @@
               @change="ischecked = !ischecked"
               :style="item.ischecked ? {backgroundColor:
                 '#d3eaff'} : {backgroundColor:'transparent'}"
+              @contextmenu="operational($event)"
+              @row-hovered="rowSelected"
             >
               <input
                 class="form-check-input itemCheckbox"
@@ -590,17 +563,35 @@
                 :src="item.pic"
                 class="folder-icon"
               >
-              <h6 class="text-dark text-center">
+              <h6
+                class="text-dark text-center text-truncate d-inline-block"
+                style="max-width: 100px;"
+              >
                 {{ item.name }}<span
                   class="text-dark"
-                  v-if="extensions"
-                >.{{ item.extensions }}</span>
+                  v-if="extension"
+                >.{{ item.extension }}</span>
               </h6>     
             </label>
           </Pane>
         </Splitpanes>
       </div>
       <div class="dqbz-footer" />
+
+      <ContextMenu ref="menu">
+        <ul class="text-dark">
+          <li
+            @click="CreateFolder"
+          >
+            <img
+              src="@/assets/images/icon/user setting@2x.png"
+              class="icon24px"
+            >{{ $t("GENERAL.ADDFOLDER") }}
+          </li>
+        </ul>
+      </ContextMenu>
+
+
       <UploadFiles ref="UploadFiles" />
       <create-folder ref="CreateFolder" />
       <rename-item ref="RenameItem" />
@@ -630,11 +621,14 @@ import DeleteFolder from '../components/Modals/home/DeleteFolder.vue';
 import RenameItem from '../components/Modals/home/RenameItem.vue';
 import ManagePublicLink from '../components/Modals/home/ManagePublicLink.vue';
 import AddEditPublicLink from'@/components/Modals/link/AddEditPublicLink.vue';
+import ContextMenu from '@/components/ContextMenu.vue';
+
 // import saveAs from 'file-saver';
 
 export default {
   name: "Home",
   components: {
+    ContextMenu,
     Splitpanes,
     Pane,
     Navbar,
@@ -653,26 +647,26 @@ export default {
     fileSelected: false,
     selectedItems: [],//邊框
     treeItems: [
-      { id: 0, name: 'Folder',pic: require('@/assets/images/file/single folder@2x.png')},
-      { id: 1, name: '7Z', pic: require('@/assets/images/file/7zip@2x.png')},
-      { id: 2, name: 'RAR', pic: require('@/assets/images/file/rar@2x.png')},
-      { id: 3, name: 'TAR' , pic: require('@/assets/images/file/tar@2x.png')},
-      { id: 4, name: 'ZIP' , pic:require('@/assets/images/file/addtozip@2x.png')},
+      { id: 0, name: 'Folder',pic: require('@/assets/images/file/single folder@2x.png'),extension:'.folder'},
+      { id: 1, name: '7Z', pic: require('@/assets/images/file/7zip@2x.png'),extension:'.7zip'},
+      { id: 2, name: 'RAR', pic: require('@/assets/images/file/rar@2x.png'),extension:'.rar'},
+      { id: 3, name: 'TAR' , pic: require('@/assets/images/file/tar@2x.png'),extension:'.tar'},
+      { id: 4, name: 'ZIP' , pic:require('@/assets/images/file/addtozip@2x.png'),extension:'.zip'},
+      { id: 5, name: 'html' ,pic:require('@/assets/images/file/addtozip@2x.png'),extension:'.html'},
+      { id: 6, name: 'png',pic:require('@/assets/images/file/tile@2x.png'),extension:'.png'},
+      { id: 7, name:'jpeg',pic:require('@/assets/images/file/tile@2x.png'),extension:'.jpeg'},
+      { id: 8,name:'ppt',pic:require('@/assets/images/file/ppt@2x.png'),extension:'.ppt'},
+      { id: 9,name:'word',pic:require('@/assets/images/file/word@2x.png'),extension:'.word'},
+      { id: 10, name:'excel',pic:require('@/assets/images/file/excel@2x.png'),extension:'.excel'},
+      { id: 11, name:'null',pic:require('@/assets/images/file/single folder@2x.png'),extension:null},
+
+
     ],
     renderCheckboxs: false,
     treeSelected: null,
     allSelected: false,
-    allFiles:[{
-        name:'word',
-        extensions:'docx',
-        pic: require('@/assets/images/file/single folder@2x.png')
-    },
-    {
-        name:'abc',
-        extensions:'pdf',
-        pic: require('@/assets/images/file/single folder@2x.png')
-    },],//所有檔案過濾後把id放入這個陣列
-    extensions: false,
+    allFiles:[],//所有檔案過濾後把id放入這個陣列
+    extension: false,
     copy: false,//有無複製檔案
     cut: false,
     searchQuery: "",
@@ -694,7 +688,8 @@ export default {
       return x;
     })
      this.getFolderTable();
-  
+     this.getSelected()
+
     
   },
   computed:{
@@ -713,11 +708,17 @@ export default {
   },
   methods: { 
     handler(event) { event.preventDefault(); }, 
+    showMenu(event) {this.$refs.menu.open(event); },
     // 子層輸入傳父層
     selfUpdate(val) {
       this.searchQuery = val;
-      console.log('885',this.searchQuery);
+      // console.log('885',this.searchQuery);
       
+    },
+     //hover一個資料 並將資料傳遞子層 
+    rowSelected(items) {
+      this.selected = items
+      //  console.log(this.selected);     
     },
     passRoute(e){
       const buttonValue = e.target.value;   
@@ -776,6 +777,7 @@ export default {
           this.folderitems = data.data
           // console.log(this.folderitems);
           
+      
         }).catch(error => {
           console.log(error.response.data);        
         })
@@ -821,17 +823,26 @@ export default {
       
      
     },
-    //到某資料夾
-    // getSelected(folderId){
-    //   this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/GetItems/${folderId}/${userId}`)
-    //     .then((data) => { 
-    //       this.render = data.data 
-    //       // console.log(this.folderitems);
+    //到kaoh資料夾
+    // ${process.env.VUE_APP_FOLDER_APIPATH}/GetItems/${folderId}/${userId}
+    getSelected(){
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/GetItems/4ddb9c06-5f94-40bc-8def-9382c5a30f4d/3fa85f64-5717-4562-b3fc-2c963f66afa6`)
+        .then((data) => { 
+          this.allFiles = data.data
+          console.log(this.allFiles);
           
-    //     }).catch(error => {
-    //       console.log(error.response.data);        
-    //     })
-    // },
+
+        this.allFiles.map(item=>{ 
+          const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
+        
+          item.pic = datapic.pic;          
+          return item 
+        });
+
+        }).catch(error => {
+          console.log(error.response.data);        
+        })
+    },
     // @click="getSelected(folderId)"
   },
 };

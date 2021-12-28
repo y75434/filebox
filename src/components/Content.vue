@@ -296,7 +296,6 @@
               ref="selectableTable"
               :select-mode="selectMode"
               hover
-              :filter="filter"
             >
               <template #cell(firstName)="data">
                 <img
@@ -833,6 +832,8 @@ methods: {
     }
     if (this.currentSelected === 2) {
       this.$bvModal.show('NewGroupProperties');
+      this.$refs.NewGroupProperties.start()
+
     }
     if (this.currentSelected === 3) {
       this.$bvModal.show('AddRootFolderProperties');

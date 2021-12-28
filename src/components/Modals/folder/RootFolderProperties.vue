@@ -104,10 +104,7 @@
                     {{ this.folderTree.name }}
                   </p>
                 </div>
-                <!-- <p class="fw-bold m-0">
-                  {{ eventsSelected }}
-                </p> -->
-
+              
                 <div class=" form-check">
                   <input
                     type="checkbox"
@@ -123,18 +120,23 @@
             </div>
 
             <div class="row modal-selectuser">
-              <ul class="list-group d-flex flex-column justify-content-between bg-white col-3 p-0 h-100 border">
-                <div class="">
+              <ul class=" list-group d-flex flex-column justify-content-between bg-white col-3 p-0 h-100 border">
+                <div class="overflow-scroll">
                   <li class="form-check list-group-item border-0 p-0">
                     <input
                       type="text"
                       placeholder="Selected Groups/users"
                       class="form-control"
-                      id=""
+                      v-model="searchText"
+                      @keyup="getUserTable()"
                     >
                   </li>
 
-                  <li class="list-group-item border-0 p-0">
+                  <li
+                    v-for="item in useritems"
+                    :key="item.id"
+                    class="list-group-item border-0 p-0 text-left"
+                  >
                     <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
                       <input
                         class="form-check-input m-0"
@@ -150,10 +152,7 @@
                         class="form-check-label"
                         for="flexCheckDefault"
                       >
-                        <!-- <p class="text-dark m-0"> -->
-                        Design group
-                        {{ FolderSettings.accessPermissions }}
-                      <!-- </p> -->
+                        {{ item.userName }}
                       </label>
                     </div>
                   </li>
@@ -163,7 +162,7 @@
                   <p>
                     <span>{{ $t("MODAL.TOTAL") }}
                     </span>
-                    <span class=" fw-bold">500</span>
+                    <span class=" fw-bold">{{ this.count }}</span>
                   </p>
                 </li>
               </ul>
@@ -189,10 +188,7 @@
                         class="form-check-label"
                         for="flexCheckDefault"
                       >
-                        <!-- <p class="text-dark m-0"> -->
                         Design group
-
-                      <!-- </p> -->
                       </label>
                     </div>
                   </li>
@@ -400,6 +396,9 @@ export default {
       PermissionTypes:[],
       FileTypes:[],
       StorageUnit:{},
+      useritems: [],
+      searchText:"",
+      count:0
 
     };
   },
@@ -417,7 +416,7 @@ export default {
       this.getPermissionTypes()
       this.getFileTypes()
       this.getStorageUnit()
-
+      this.getUserTable()
     },
     getFolderTree(id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
@@ -471,16 +470,12 @@ export default {
     },
     // todo api為null 等格式確定再改
     typeSelected(item){
-      // console.log(this.FolderSettings);
-      let arr = []
       if(item.active){
-        arr.push(item.fileTypeId)
+        this.FolderSettings.settings.push(item.fileTypeId)
       } else {
         this.FolderSettings.settings.restrictedFileTypes=this.FolderSettings.settings.restrictedFileTypes.filter(x=>x
           !==item.fileTypeId);
-
       }
-      this.FolderSettings.settings.restrictedFileTypes = arr
     },
     getStorageUnit(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/Storage/Unit`)
@@ -509,7 +504,23 @@ export default {
         console.log(error.response.data);        
       })
     },
-    
+    getUserTable () {  
+      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
+        .then((data) => {          
+          this.useritems = data.data
+          
+          this.count = this.useritems.length       
+        }).catch(error => {
+          console.log(error);        
+        })
+    },//目前沒有欄位
+    // userSelected(item){
+    //   if(item.active){
+    //     this.FolderSettings.settings.push(item.fileTypeId)
+    //   } else {
+    //     this.FolderSettings.settings.restrictedFileTypes=this.FolderSettings.settings.restrictedFileTypes.filter(x=>x !==item.fileTypeId);
+    //   }
+    // },
   },
 };
 </script>

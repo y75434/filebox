@@ -12,11 +12,7 @@
     body-bg-variant="bgmodal"
     @ok="addUser"
   >
-    <!-- <form
-      class="container"
-      ref="form"
-      @submit.stop.prevent="addUser"
-    > -->
+    
     <validation-observer
       class="col-md-8"
     >
@@ -26,15 +22,15 @@
             <label
               for="Username"
               class=""
-            >{{ $t("MODAL.USERNAME") }}</label>
+            >{{ $t("MODAL.USERNAME") }}required</label>
             <input
               type="Username"
               class="form-control inline-block width-320"
               id="Username"
-              v-model="personData.firstName"
+              v-model="personData.userName"
             >
           </div>
-          <validation-provider
+          <!-- <validation-provider
             v-slot="{ errors, classes }"
             rules="required"
           >
@@ -53,7 +49,7 @@
               >
             </div>
             <span class="text-danger">{{ errors[0] }}</span>
-          </validation-provider>
+          </validation-provider> -->
           <validation-provider
             v-slot="{ errors,classes}"
             rules="email"
@@ -101,7 +97,7 @@
             <label
               for="Description"
               class="col-form-label"
-            >{{ $t("MODAL.DESCRIPTION") }}</label>
+            >{{ $t("MODAL.DESCRIPTION") }}required</label>
                   
             <input
               type="Description"
@@ -140,7 +136,7 @@
                   <label
                     for="Password"
                     class="form-label"
-                  >{{ $t("GENERAL.PASSWORD") }}</label>
+                  >{{ $t("GENERAL.PASSWORD") }}required</label>
                   <input
                     type="Password"
                     class="form-control width-220"
@@ -154,13 +150,13 @@
               </validation-provider>
               <validation-provider
                 v-slot="{ errors, classes}"
-                rules="confirmed:password"
+                rules="confirmed:password|required"
               >
                 <div class="w-100 d-flex align-items-center justify-content-between mb-2">
                   <label
                     for="ConfirmPassword"
                     class="form-label"
-                  >{{ $t("GENERAL.CONFIRMPASSWORD") }}</label>
+                  >{{ $t("GENERAL.CONFIRMPASSWORD") }}required</label>
                   <input
                     type="Password"
                     class="form-control width-220"
@@ -255,7 +251,6 @@
       </div>
     </validation-observer>
 
-    <!-- </form> -->
     <template
       #modal-cancel
       variant="outline-primary"

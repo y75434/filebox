@@ -12,11 +12,6 @@
     footer-bg-variant="white"
     ok-only
   >
-    <!-- <form
-      class="container"
-      ref="form"
-      @submit.stop.prevent="handleSubmit"
-    > -->
     <div
       class="modal-popout-bg bg-bgmodal p-3"
     >
@@ -81,7 +76,6 @@
       </div>
     </div>
 
-    <!-- </form> -->
    
     <ContextMenu ref="menuLink">
       <ul class="text-dark">   
