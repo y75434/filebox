@@ -96,13 +96,14 @@ export default {
         }
 
         else {
-          //還沒有
-          // this.deleteFolder(this.delData.folderId) 
+          this.deleteFolder(this.delData.folderId) 
         }
 
         this.$nextTick(() => { 
           this.userInput = '';
           this.$bvModal.hide('modal-delete-user'); 
+          this.$parent.getTable()//不能
+
         });
 
 
@@ -145,25 +146,27 @@ export default {
           console.log(error);          
         })
     },
-    // deleteFolder(id) {  
-    //     console.log('97',id);
-    //     //目前不能刪資料夾
-    //   this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/api/Link/${id}`)//沒api
-    //     .then((data) => {
-    //     //Input parameters: userId
-    //       console.log(data);
+    deleteFolder(id) {  
+      this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
+      {data:{  
+        "items": [ { "id": id, "type": 0 }],
+        "editor": "3fa85f64-5717-4562-b3fc-2c963f66afa6" }})
+        .then((data) => {
+          console.log(data);
+
+          
 
 
-    //     // this.$store.dispatch('users/deleteUser', { userId: this.dataSource.id });
-    //     this.$nextTick(() => { this.userInput = '';
-    //     this.$bvModal.hide('modal-delete-user'); });
+        // this.$store.dispatch('users/deleteUser', { userId: this.dataSource.id });
+        // this.$nextTick(() => { this.userInput = '';
+        // this.$bvModal.hide('modal-delete-user'); });
 
 
 
-    //   }).catch(error => {
-    //       console.log(error);          
-    //     })
-    // },
+      }).catch(error => {
+          console.log(error);          
+        })
+    },
 		cancel() {
 			this.userInput = '';
 		},

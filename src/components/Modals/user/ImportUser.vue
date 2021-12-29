@@ -294,7 +294,7 @@ props: { title: { type: String, default: 'Import User' },
         this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/AD/GetUsers?searchString=${this.searchText}`)
         .then((data) => {  
           this.allUser = data.data
-           console.log(this.allUser);
+          //  console.log(this.allUser);
             
         }).catch(() => {
           // console.log(error.response.data);        

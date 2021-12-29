@@ -13,11 +13,6 @@
     size="xl"
     @ok="putFolder"
   >
-    <!-- <form
-      class="container"
-      ref="form"
-      @submit.stop.prevent="handleSubmit"
-    > -->
     <div class="modal-popout-bg ">
       <div
         class="modal-body bg-gray p-3"
@@ -367,7 +362,6 @@
     </div>
    
 
-    <!-- </form> -->
     <template
       #modal-cancel
       variant="danger"

@@ -112,6 +112,7 @@
                             aria-label="events"
                             stacked
                             :value="events"
+                            @change="search()"
                           />
                         </div>
                       </template>
@@ -495,7 +496,7 @@
             >
             {{ $t("HOME.RENAME") }}
           </li>
-          <li @click="NewGroupProperties">
+          <li @click="EditGroupProperties">
             <img
               src="@/assets/images/icon/user setting@2x.png"
               class="icon24px"
@@ -569,8 +570,10 @@
         ref="DeleteUser"
         :del-data="selected"
       />
-      <NewGroupProperties
-        ref="NewGroupProperties"
+      <NewGroupProperties ref="NewGroupProperties" />
+      <EditGroupProperties 
+        :tab-data="selected"
+        ref="EditGroupProperties"
       />
       <AddNewUser ref="AddNewUser" />
       <RootFolderProperties
@@ -605,6 +608,7 @@ import AddNewUser from '@/components/Modals/user/AddNewUser.vue'
 import EditUserProperties from './Modals/user/EditUserProperties.vue';
 import DeleteUser from '@/components/Modals/user/DeleteUser.vue';
 import NewGroupProperties from '@/components/Modals/group/NewGroupProperties.vue';
+import EditGroupProperties from'@/components/Modals/group/EditGroupProperties.vue';
 import RootFolderProperties from '@/components/Modals/folder/RootFolderProperties.vue';
 import AddRootFolderProperties from'@/components/Modals/folder/AddRootFolderProperties.vue';
 import EditPublicLink from'@/components/Modals/link/EditPublicLink.vue';
@@ -626,6 +630,7 @@ components:{
   EventProperties,
   RenameItem,
   AddRootFolderProperties,
+  EditGroupProperties
 },
 data() {
   return {
@@ -703,7 +708,6 @@ data() {
     enddate: "",
     value:"",
     eventTypeId:"",
-    aa: ""
   };
 },
 created(){
@@ -842,172 +846,177 @@ methods: {
     }
   },
   NewGroupProperties(){
-      this.$bvModal.show('NewGroupProperties');
-    },
-    RootFolderProperties(){
-      this.$bvModal.show('RootFolderProperties');
-      this.$refs.RootFolderProperties.start()
+    this.$bvModal.show('NewGroupProperties');
+  },
+  EditGroupProperties(){
+    this.$bvModal.show('EditGroupProperties');
+    this.$refs.EditGroupProperties.start()
 
-    },
-    EventProperties(){
-      this.$bvModal.show('EventProperties');
-    },
-    getUserTable () {  
-      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers`)
-        .then((data) => {          
-          this.useritems = data.data
-          // console.log(this.useritems);
-          
-          this.count = this.useritems.length       
-        }).catch(error => {
-          console.log(error);        
-        })
-    },
-    getGroupTable () {  
-      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroups`)
-        .then(data => {  
-          this.groupitems = data.data 
-          this.count = this.groupitems.length      
-        }).catch(error => {
-          console.log(error.response.data);        
-        })
-    },
-    getEventTable(){
-      this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`)
-        .then(data => {  
-          this.eventsitems = data.data 
-          this.count = this.eventsitems.length  
-          // console.log(this.eventsitems.data);
-        return this.eventsitems;
+  },
+  RootFolderProperties(){
+    this.$bvModal.show('RootFolderProperties');
+    this.$refs.RootFolderProperties.start()
 
-        }).catch(error => {
-          console.log(error.response.data);        
-        })
-    },
-    // change this.eventsSelected value 
-    getEventType(){ 
-      this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/ActionType/GetAll`,)
-        .then((data) => {
-          data.data.forEach(item =>{
-            this.eventsSelected.push(item.name)
-      });
-        console.log('766',this.eventsSelected);     
+  },
+  EventProperties(){
+    this.$bvModal.show('EventProperties');
+  },
+  getUserTable () {  
+    this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers`)
+      .then((data) => {          
+        this.useritems = data.data
+        // console.log(this.useritems);
+        
+        this.count = this.useritems.length       
       }).catch(error => {
-          console.log(error.response.data);          
-        })
+        console.log(error);        
+      })
+  },
+  getGroupTable () {  
+    this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroups`)
+      .then(data => {  
+        this.groupitems = data.data 
+        this.count = this.groupitems.length      
+      }).catch(error => {
+        console.log(error.response.data);        
+      })
+  },
+  getEventTable(){
+    this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`)
+      .then(data => {  
+        this.eventsitems = data.data 
+        this.count = this.eventsitems.length  
+        // console.log(this.eventsitems.data);
+      return this.eventsitems;
 
-    },
-    getLinkTable(){
-      this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll`)
-        .then((data) => { 
-          this.linkitems = data.data 
-          this.count = this.linkitems.length
-        }).catch(error => {
-          console.log(error.response.data);        
-        })
-    },
-    getFolderTable(){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
-        .then((data) => { 
-          this.folderitems = data.data 
-          this.count = this.folderitems.length
-        }).catch(() => {
-          // console.log(error.response.data);        
-        })
-    },
-    //搜尋
-    search(){
-      switch (this.currentSelected) {
-        case 1:
+      }).catch(error => {
+        console.log(error.response.data);        
+      })
+  },
+  // change this.eventsSelected value 
+  getEventType(){ 
+    this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/ActionType/GetAll`,)
+      .then((data) => {
+        data.data.forEach(item =>{
+          this.eventsSelected.push(item.name)
+    });
+      // console.log('766',this.eventsSelected);     
+    }).catch(error => {
+        console.log(error.response.data);          
+      })
 
-          this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}&UserStatus=${this.status}`)
-            .then(data => {  
-              console.log(data);
-              this.useritems = data.data 
-              this.count = this.useritems.length  
-            return this.useritems;
-            }).catch(error => {
-              console.log(error.response.data);        
-            })
-          break;
-        case 2: 
-          this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroups?searchString=${this.searchText}`)
-            .then(data => {  
-              this.groupitems = data.data 
-              this.count = this.groupitems.length  
-            return this.useritems;
+  },
+  getLinkTable(){
+    this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll`)
+      .then((data) => { 
+        this.linkitems = data.data 
+        this.count = this.linkitems.length
+      }).catch(error => {
+        console.log(error.response.data);        
+      })
+  },
+  getFolderTable(){
+    this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
+      .then((data) => { 
+        this.folderitems = data.data 
+        this.count = this.folderitems.length
+      }).catch(() => {
+        // console.log(error.response.data);        
+      })
+  },
+  //搜尋
+  search(){
+    switch (this.currentSelected) {
+      case 1:
 
-            }).catch(error => {
-              console.log(error.response.data);        
-            })
-          break;
-        case 3:
-          //目前沒有api
-          // this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}&UserStatus=${this.status}`)
-          //   .then(data => {  
-          //     console.log(data);
-          //     this.useritems = data.data 
-          //     this.count = this.useritems.length  
-
-          //   return this.useritems;
-
-          //   }).catch(error => {
-          //     console.log(error.response.data);        
-          //   })
-          break;
-  
-        case 4: {
-          const eventURL = new URL(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`);
-          let searchParams = {
-            From: this.value,
-            To: this.enddate,
-            SearchString: this.searchText,
-            ActionEventType: this.eventTypeId,
-            
-          }
-
-
-         Object.keys(searchParams).forEach(key => searchParams[key] === undefined ? delete searchParams[key] : {});
-
-
-          console.log('976',searchParams)
-          
-          let a = new URLSearchParams(searchParams);
-
-          console.log('984',a.toString());
-
-           
-            eventURL.search = a;
-
-          // `${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll?From=${this.value}&To=${this.enddate}&SearchString=${this.searchText}&ActionEventType=${this.eventTypeId}&ActionEventType=${this.eventTypeId}`
-
-          this.axios.get(eventURL.href)
-            .then(data => {  
-              console.log(eventURL.href);
-              this.eventsitems = data.data 
-              this.count = this.eventsitems.length  
-            return this.useritems;
-
-            }).catch(error => {
-              console.log(error.response.data);        
-            })
+        this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}&UserStatus=${this.status}`)
+          .then(data => {  
+            console.log(data);
+            this.useritems = data.data 
+            this.count = this.useritems.length  
+          return this.useritems;
+          }).catch(error => {
+            console.log(error.response.data);        
+          })
         break;
+      case 2: 
+        this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroups?searchString=${this.searchText}`)
+          .then(data => {  
+            this.groupitems = data.data 
+            this.count = this.groupitems.length  
+          return this.useritems;
+
+          }).catch(error => {
+            console.log(error.response.data);        
+          })
+        break;
+      case 3:
+        //目前沒有api
+        // this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}&UserStatus=${this.status}`)
+        //   .then(data => {  
+        //     console.log(data);
+        //     this.useritems = data.data 
+        //     this.count = this.useritems.length  
+
+        //   return this.useritems;
+
+        //   }).catch(error => {
+        //     console.log(error.response.data);        
+        //   })
+        break;
+
+      case 4: {
+        const eventURL = new URL(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`);
+        let searchParams = {
+          From: this.value,
+          To: this.enddate,
+          SearchString: this.searchText,
+          ActionEventType: this.eventTypeId,
+          
         }
-        case 5: 
-        this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
-            .then(data => {  
-              this.linkitems = data.data 
-              this.count = this.linkitems.length  
 
-            return this.useritems;
 
-            }).catch(error => {
-              console.log(error.response.data);        
-            })
-            break;
-        default:
-          return [];
-      } 
+        Object.keys(searchParams).forEach(key => searchParams[key] === undefined ? delete searchParams[key] : {});
+
+
+        console.log('976',searchParams)
+        
+        let a = new URLSearchParams(searchParams);
+
+        console.log('984',a.toString());
+
+          
+          eventURL.search = a;
+
+        // `${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll?From=${this.value}&To=${this.enddate}&SearchString=${this.searchText}&ActionEventType=${this.eventTypeId}&ActionEventType=${this.eventTypeId}`
+
+        this.axios.get(eventURL.href)
+          .then(data => {  
+            console.log(eventURL.href);
+            this.eventsitems = data.data 
+            this.count = this.eventsitems.length  
+          return this.useritems;
+
+          }).catch(error => {
+            console.log(error.response.data);        
+          })
+      break;
+      }
+      case 5: 
+      this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
+          .then(data => {  
+            this.linkitems = data.data 
+            this.count = this.linkitems.length  
+
+          return this.useritems;
+
+          }).catch(error => {
+            console.log(error.response.data);        
+          })
+          break;
+      default:
+        return [];
+    } 
 
       
     },

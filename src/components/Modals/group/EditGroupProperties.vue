@@ -1,6 +1,6 @@
 <template>
   <b-modal
-    id="NewGroupProperties"
+    id="EditGroupProperties"
     class="modal-content modal-popout-bg"
     centered
     :title="$t('TITLE.NEWGROUPPROPERTIES')"
@@ -36,6 +36,7 @@
         >
       </div>
 
+      {{ group }}
 
 
 
@@ -74,8 +75,6 @@
         </div>
       </div>
 
-      {{ group }}
-
       <div class="row p-4">
         <div class="col-8 overflow-scroll height-400">
           <table
@@ -107,6 +106,7 @@
                     <input
                       class="form-check-input"
                       type="checkbox"
+                      value=""
                       id="flexCheckDefault"
                     >
                     <label
@@ -133,21 +133,20 @@
                 v-for="item in useritems"
                 :key="item.id"
               >
-                <th scope="row ">
+                <th scope="row">
                   <input
                     v-model="item.one"
-                    class="form-check-input"
-                    type="radio"
-                    :value="item.id"
                     @change="userSelected(item)"
+                    class="form-check-input"
+                    type="checkbox"
+                    value=""
                   >
                 </th>
                 <td>
                   <input
-                    v-model="item.two"
-                    type="radio" 
-                    :value="item.id"
+                    type="checkbox" 
                     class="form-check-input"
+                    v-model="item.two"
                     @change="userSelected(item)"
                   >
                 </td>
@@ -158,14 +157,12 @@
             </tbody>
           </table>
         </div>
-        <ul
-          v-if="editGroup.groupUserRelations.length>0"
-          class="list-group col-4 p-0  bg-white border overflow-auto overflow-scroll"
-        >
+
+        <ul class="list-group col-4 p-0  bg-white border overflow-auto ">
           <!-- <li class="list-group-item  d-flex align-items-center border-0 overflow-scroll" /> -->
-          <li 
-            v-for="item in editGroup.groupUserRelations"
-            :key="item.userID"
+          <li
+            v-for="item in groupUsers"
+            :key="item.userId"
             class="list-group-item bg-white  border-0"
           >
             <button
@@ -176,7 +173,6 @@
                 src="@/assets/images/icon/admin-solid.png"
                 class="icon-16px"
               >
-
               {{ item.userName }}
               <img
                 src="@/assets/images/cmd/del.png"
@@ -194,7 +190,7 @@
           <span class=" fw-bold">{{ this.count }}</span>
         </p>
         <p class="ms-3">
-          <span class="dark-blue fw-bold">4
+          <span class="dark-blue fw-bold">{{ groupUsers.length }}
           </span>
           <span>{{ $t("MODAL.SELECTED") }}</span>
         </p>
@@ -216,8 +212,12 @@
 
 <script>
 export default {
-  name: "NewGroupProperties",
-  props: { title: { type: String, default: "New Group Properties" } },
+  name: "EditGroupProperties",
+  props: { 
+    title: { type: String, default: "Edit Group Properties" },
+    tabData: { type: Object , default() { return {} }}
+
+  },
 
   data() {
     return {
@@ -227,94 +227,99 @@ export default {
       searchText:"",
       count:0,
       group:{ 
-        
+        groupID: "3ab7ebf0-772a-4b62-8642-2cc2c1ce16d5", 
+        userID:"5ac418a0-832e-4854-9bf7-b2676dc75dce", 
+        roleId: 1 
       },
       editGroup:{
         id: "",
         groupUserRelations: []
       },
+      groupUsers:{}//目前成員
 
     };
   },
+  watch:{ 
+    tabData(){ 
+      this.group = this.tabData 
+      this.editGroup.id = this.group.id
+    } 
+  },
+  
   methods: {
     start() {
       this.getUserTable()
-      
+      this.getGroupUsers()
     },
-      addNewGroup () {  
-      this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/CreateGroup`,this.group)
-        .then((data) => {
       
-        console.log(data);
-      }).catch(error => {
-          console.log(error);          
-        })
-      },
-      addUsersToGroup() {  
+      
+      //編輯資料外也可以設定層級和新增使用者
+      updateGroup() {  
         const headers = { 
         'Content-Type': 'application/json', 
         'Accept': 'application/json',
         "Access-Control-Allow-Origin": '*' 
         };
 
-       
-      const data = JSON.stringify({
-        "id": "3ab7ebf0-772a-4b62-8642-2cc2c1ce16d5", 
-        "groupUserRelations":[{
-          "groupID": "3ab7ebf0-772a-4b62-8642-2cc2c1ce16d5", 
-          "userID": "5ac418a0-832e-4854-9bf7-b2676dc75dce", 
-          "roleId": 1 
-        }]
+        const data = JSON.stringify({
+          "id": "3ab7ebf0-772a-4b62-8642-2cc2c1ce16d5", 
+          "groupUserRelations":[{
+            "groupID": "3ab7ebf0-772a-4b62-8642-2cc2c1ce16d5", 
+            "userID": "5ac418a0-832e-4854-9bf7-b2676dc75dce", 
+            "roleId": 1 
+          }]
+        })
 
-      })
-
-
-      this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/AddUsersInGroup`,
-      data,{ headers: headers } )
+      this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroup`,
+      data,{ headers: headers })
         .then((data) => {
-       
+        
+
+
 
         console.log(data);
       }).catch(error => {
           console.log(error);          
         })
       },
-      
-    
       getUserTable () {  
         this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
           .then((data) => {          
             this.useritems = data.data
+            console.log('285',this.useritems);
             
             this.count = this.useritems.length       
           }).catch(error => {
             console.log(error);        
           })
       },
-     userSelected(item){
-        // console.log('317', item);
+      userSelected(item){
+        console.log('317', item);
         if(item.one){
-          const data = { "groupID": this.group.id, "userID": item.userId, "roleId": 1 , "userName": item.userName}
-          // console.log(data);
+          const data = JSON.stringify({ "groupID": this.group.id, "userID": item.userId, "roleId": 1 })
+          console.log(data);
 
           this.editGroup.groupUserRelations.push(data)
-          console.log('add normal', this.editGroup);
+          console.log('userselect', this.editGroup);
             
-        } else if (item.two){
-          const data = { "groupID": this.group.id, "userID": item.userId,"roleId": 2 , "userName": item.userName}
-          this.editGroup.groupUserRelations.push(data)
-          console.log('add admin', this.editGroup);
+        } else if (!item.one){
+          this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x
+            !==item.userId);
+          console.log('userselect', this.editGroup);
 
-        }else{
-            // this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.splice(index, 1);
-            
-            if(this.editGroup.groupUserRelations.indexOf(item)){ this.editGroup.groupUserRelations.splice(item,1); }
-
-            console.log('remove user', this.editGroup);
         }
       },
-      
-
+      getGroupUsers(){
+        this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroupUsers?groupID=${this.editGroup.id}`)
+          .then((data) => {          
+            this.groupUsers = data.data
+            console.log('285',this.groupUsers);
+            
+            this.count = this.useritems.length       
+          }).catch(error => {
+            console.log(error);        
+          })
+      }
   },
 };
 </script>
