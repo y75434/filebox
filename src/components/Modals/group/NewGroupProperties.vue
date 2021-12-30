@@ -137,16 +137,14 @@
                   <input
                     v-model="item.one"
                     class="form-check-input"
-                    type="radio"
-                    :value="item.id"
+                    type="checkbox"
                     @change="userSelected(item)"
                   >
                 </th>
                 <td>
                   <input
                     v-model="item.two"
-                    type="radio" 
-                    :value="item.id"
+                    type="checkbox"
                     class="form-check-input"
                     @change="userSelected(item)"
                   >
@@ -159,31 +157,32 @@
           </table>
         </div>
         <ul
-          v-if="editGroup.groupUserRelations.length>0"
           class="list-group col-4 p-0  bg-white border overflow-auto overflow-scroll"
         >
-          <!-- <li class="list-group-item  d-flex align-items-center border-0 overflow-scroll" /> -->
-          <li 
-            v-for="item in editGroup.groupUserRelations"
-            :key="item.userID"
-            class="list-group-item bg-white  border-0"
-          >
-            <button
-              type="button"
-              class="table-btn  d-flex align-items-center"
+          <div v-if="editGroup.groupUserRelations.length>0">
+            <!-- <li class="list-group-item  d-flex align-items-center border-0 overflow-scroll" /> -->
+            <li 
+              v-for="item in editGroup.groupUserRelations"
+              :key="item.userID"
+              class="list-group-item bg-white  border-0"
             >
-              <img
-                src="@/assets/images/icon/admin-solid.png"
-                class="icon-16px"
+              <button
+                type="button"
+                class="table-btn  d-flex align-items-center"
               >
+                <img
+                  src="@/assets/images/icon/admin-solid.png"
+                  class="icon-16px"
+                >
 
-              {{ item.userName }}
-              <img
-                src="@/assets/images/cmd/del.png"
-                class="icon-20px"
-              >
-            </button>
-          </li>
+                {{ item.userName }}
+                <img
+                  src="@/assets/images/cmd/del.png"
+                  class="icon-20px"
+                >
+              </button>
+            </li>
+          </div>
         </ul>
       </div>
       <div class="d-flex justify-content-end p-3">
@@ -194,7 +193,7 @@
           <span class=" fw-bold">{{ this.count }}</span>
         </p>
         <p class="ms-3">
-          <span class="dark-blue fw-bold">4
+          <span class="dark-blue fw-bold">{{ editGroup.groupUserRelations.length }}
           </span>
           <span>{{ $t("MODAL.SELECTED") }}</span>
         </p>
@@ -233,6 +232,7 @@ export default {
         id: "",
         groupUserRelations: []
       },
+      groupUsers:{}//目前成員
 
     };
   },

@@ -10,7 +10,7 @@
     ok-variant="primary"
     footer-bg-variant="white"
     body-bg-variant="bgmodal"
-    @ok="addNewGroup()"
+    @ok="updateGroup()"
   >
     <div class="modal-popout-bg p-0">
       <div
@@ -158,28 +158,33 @@
           </table>
         </div>
 
-        <ul class="list-group col-4 p-0  bg-white border overflow-auto ">
-          <!-- <li class="list-group-item  d-flex align-items-center border-0 overflow-scroll" /> -->
-          <li
-            v-for="item in groupUsers"
-            :key="item.userId"
-            class="list-group-item bg-white  border-0"
-          >
-            <button
-              type="button"
-              class="table-btn  d-flex align-items-center"
+        <ul
+          class="list-group col-4 p-0  bg-white border overflow-auto "
+        >
+          <div v-if="editGroup.groupUserRelations.length>0">
+            <!-- <li class="list-group-item  d-flex align-items-center border-0 overflow-scroll" /> -->
+            <li
+              v-for="item in editGroup.groupUserRelations"
+              :key="item.userId"
+
+              class="list-group-item bg-white  border-0"
             >
-              <img
-                src="@/assets/images/icon/admin-solid.png"
-                class="icon-16px"
+              <button
+                type="button"
+                class="table-btn  d-flex align-items-center"
               >
-              {{ item.userName }}
-              <img
-                src="@/assets/images/cmd/del.png"
-                class="icon-20px"
-              >
-            </button>
-          </li>
+                <img
+                  src="@/assets/images/icon/admin-solid.png"
+                  class="icon-16px"
+                >
+                {{ item.userName }}
+                <img
+                  src="@/assets/images/cmd/del.png"
+                  class="icon-20px"
+                >
+              </button>
+            </li>
+          </div>
         </ul>
       </div>
       <div class="d-flex justify-content-end p-3">
@@ -190,7 +195,7 @@
           <span class=" fw-bold">{{ this.count }}</span>
         </p>
         <p class="ms-3">
-          <span class="dark-blue fw-bold">{{ groupUsers.length }}
+          <span class="dark-blue fw-bold">{{ editGroup.groupUserRelations.length }}
           </span>
           <span>{{ $t("MODAL.SELECTED") }}</span>
         </p>
@@ -227,8 +232,8 @@ export default {
       searchText:"",
       count:0,
       group:{ 
-        groupID: "3ab7ebf0-772a-4b62-8642-2cc2c1ce16d5", 
-        userID:"5ac418a0-832e-4854-9bf7-b2676dc75dce", 
+        groupID: "", 
+        userID:"", 
         roleId: 1 
       },
       editGroup:{
@@ -242,7 +247,7 @@ export default {
   watch:{ 
     tabData(){ 
       this.group = this.tabData 
-      this.editGroup.id = this.group.id
+      this.editGroup.id = this.group.id     
     } 
   },
   
@@ -262,20 +267,28 @@ export default {
         };
 
         const data = JSON.stringify({
-          "id": "3ab7ebf0-772a-4b62-8642-2cc2c1ce16d5", 
-          "groupUserRelations":[{
-            "groupID": "3ab7ebf0-772a-4b62-8642-2cc2c1ce16d5", 
-            "userID": "5ac418a0-832e-4854-9bf7-b2676dc75dce", 
-            "roleId": 1 
-          }]
+
+            "id": this.editGroup.id,
+            "groupName": this.group.groupName,
+            "groupDescription": this.group.groupDescription,
+            "groupScope": "string",
+            "isSecurityGroup": true,
+            "groupUserRelations": this.editGroup.groupUserRelations,
+            //之後設定
+            // "parentChildGroupRelations": [
+            //   {
+            //     "childGroupID": "",
+            //     "parentGroupID": ""
+            //   }
+            // ]
+
         })
+        console.log(data);
+          
 
       this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroup`,
       data,{ headers: headers })
         .then((data) => {
-        
-
-
 
         console.log(data);
       }).catch(error => {
@@ -286,7 +299,7 @@ export default {
         this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
           .then((data) => {          
             this.useritems = data.data
-            console.log('285',this.useritems);
+            // console.log('304',this.useritems);
             
             this.count = this.useritems.length       
           }).catch(error => {
@@ -294,26 +307,43 @@ export default {
           })
       },
       userSelected(item){
-        console.log('317', item);
+        // console.log('317', item);
         if(item.one){
-          const data = JSON.stringify({ "groupID": this.group.id, "userID": item.userId, "roleId": 1 })
-          console.log(data);
+          const data = { "groupID": this.group.id, "userId": item.userId, "roleId": 1 , "userName": item.userName}
+          // console.log(data);
 
           this.editGroup.groupUserRelations.push(data)
-          console.log('userselect', this.editGroup);
+          console.log('add normal', this.editGroup);
             
-        } else if (!item.one){
-          this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x
-            !==item.userId);
-          console.log('userselect', this.editGroup);
+        } else if (item.two){
+          const data = { "groupID": this.group.id, "userId": item.userId,"roleId": 2 , "userName": item.userName}
+          this.editGroup.groupUserRelations.push(data)
+          console.log('add admin', this.editGroup);
 
+        }else{            
+            if(this.editGroup.groupUserRelations.indexOf(item)){ 
+
+              // this.editGroup.groupUserRelations.splice(item,1);
+              this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x!==item.userId)
+              console.log(this.editGroup.groupUserRelations);
+
+              
+              }
+
+            console.log('remove user', this.editGroup);
         }
       },
       getGroupUsers(){
         this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroupUsers?groupID=${this.editGroup.id}`)
-          .then((data) => {          
+          .then((data) => {  
+            //Groups/GetGroupUsers api目前沒 roleid 無法編輯群組成員        
             this.groupUsers = data.data
-            console.log('285',this.groupUsers);
+            // console.log(this.groupUsers);
+            
+            this.editGroup.groupUserRelations = this.groupUsers
+            this.editGroup.groupUserRelations.map(item => item.groupID = this.editGroup.id)
+
+            console.log('335',this.editGroup.groupUserRelations);
             
             this.count = this.useritems.length       
           }).catch(error => {

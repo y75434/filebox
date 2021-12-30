@@ -65,12 +65,6 @@ export default {
     } 
   },
   methods: {
-    
-     EditName () {  
-      console.log(this.personData.name);
-
-      
-      },
     put(){
       const headers = { 
         'Content-Type': 'application/json', 
@@ -115,7 +109,20 @@ export default {
 
        }else if(Object.prototype.hasOwnProperty.call(this.personData, "groupName")){ 
 
-         console.log('aaaaa');
+          const data = JSON.stringify({
+            "id": this.personData.id,
+            "groupName": this.personData.name,
+          })
+
+          this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroup`,
+          data,{ headers: headers })
+          .then(() => { 
+          }).catch(error => {
+            console.log(error.response.data);        
+          })
+
+
+         console.log('group');
          
          }
 

@@ -136,8 +136,9 @@
                       <input
                         class="form-check-input m-0"
                         type="checkbox"
-                        value=""
-                        id="flexCheckDefault"
+                        v-model="item.active"
+                        @change="userSelected(item)"
+                        :id="item.userName"
                       >
                       <img
                         src="@/assets/images/icon/Union.png"
@@ -145,7 +146,7 @@
                       >
                       <label
                         class="form-check-label"
-                        for="flexCheckDefault"
+                        :for="item.userName"
                       >
                         {{ item.userName }}
                       </label>
@@ -162,20 +163,29 @@
                 </li>
               </ul>
               <ul class="list-group d-flex flex-column justify-content-between bg-white col-3 p-0 h-100 border">
-                <div class="">
-                  <li class="form-check list-group-item border-0 p-0">
-                    <p
-                      type="text"
-                      class="form-control fw-bold"
-                      id=""
-                    >
-                      {{ $t("MODAL.SELECTEDGROUPSUSERS") }}
-                    </p>
-                  </li>
-
-                  <li class="list-group-item border-0 p-0">
+                <li                
+                  class="form-check list-group-item border-0 p-0"
+                >
+                  <p
+                    type="text"
+                    class="form-control fw-bold"
+                  >
+                    {{ $t("MODAL.SELECTEDGROUPSUSERS") }}
+                  </p>
+                </li>
+                <div
+                  v-if="editGroup.groupUserRelations.length>0"
+                  class=""
+                >
+                  <li
+                    v-for="item in editGroup.groupUserRelations"
+                    :key="item.userId"
+                    class="list-group-item border-0 p-0"
+                  >
                     <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
                       <img
+                        @click="userCan(item)"
+
                         src="@/assets/images/icon/Union.png"
                         class="icon24px"
                       >
@@ -183,7 +193,7 @@
                         class="form-check-label"
                         for="flexCheckDefault"
                       >
-                        Design group
+                        {{ item.userName }}
                       </label>
                     </div>
                   </li>
@@ -191,7 +201,7 @@
                 
                 <li class="list-group-item d-flex justify-content-end border p-2">
                   <p class="ms-3 justify-content-end d-flex align-items-center">
-                    <span class="dark-blue fw-bold">4
+                    <span class="dark-blue fw-bold">{{ editGroup.groupUserRelations.length }}
                     </span>
                     <span>{{ $t("MODAL.SELECTED") }}</span>
                   </p>
@@ -249,7 +259,7 @@
                         <div class="justify-content-start align-items-center p-0  d-flex">
                           <label
                             class="form-check-label w-50"
-                            for="flexCheckDefault"
+                            :for="item.id"
                           >
                             {{ item.name }}
                           </label>
@@ -259,8 +269,8 @@
                             v-model="item.active"
                             class="form-check-input m-0"
                             type="checkbox"
-                            value=""
                             @change="permissionSelected(item)"
+                            :id="item.id"
                           >
                         </div>
                       </li>
@@ -326,7 +336,6 @@
                           for="flexCheckDefault"
                           class="form-check-label"
                         > {{ $t("MODAL.RESTRICTFILETYPES") }}
-
                         </label>
                       </div>
                       <div
@@ -337,6 +346,7 @@
                           v-for="item in FileTypes"
                           :key="item.id"
                           class="form-check mx-2 "
+                          :id="item.id"
                         >
                           <input
                             type="checkbox"
@@ -345,7 +355,7 @@
                             @change="typeSelected(item)"
                           >
                           <label
-                            for="flexCheckDefault"
+                            :for="item.id"
                             class="form-check-label"
                           > {{ item.extension }}
                           </label>
@@ -392,8 +402,11 @@ export default {
       StorageUnit:{},
       useritems: [],
       searchText:"",
-      count:0
-
+      count:0,
+      editGroup:{
+        groupUserRelations: []
+      },
+      aUserInfo:{}
     };
   },
   watch:{ 
@@ -456,7 +469,7 @@ export default {
         this.FileTypes = data.data
         //  console.log(this.FileTypes);
         this.FileTypes.map(x=>x.active = false);
-         console.log(this.FileTypes);
+        //  console.log(this.FileTypes);
           
       }).catch(() => {
         // console.log(error.response.data);        
@@ -475,7 +488,7 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/Storage/Unit`)
       .then((data) => {  
         this.StorageUnit = data.data
-         console.log(this.StorageUnit);
+        //  console.log(this.StorageUnit);
           
       }).catch(() => {
         // console.log(error.response.data);        
@@ -502,19 +515,33 @@ export default {
       this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
         .then((data) => {          
           this.useritems = data.data
-          
+          console.log(this.useritems);
+
           this.count = this.useritems.length       
         }).catch(error => {
           console.log(error);        
         })
     },//目前沒有欄位
-    // userSelected(item){
-    //   if(item.active){
-    //     this.FolderSettings.settings.push(item.fileTypeId)
-    //   } else {
-    //     this.FolderSettings.settings.restrictedFileTypes=this.FolderSettings.settings.restrictedFileTypes.filter(x=>x !==item.fileTypeId);
-    //   }
-    // },
+    userSelected(item){
+      if(item.active){
+          const data = { "userId": item.userId, "roleId": 1 , "userName": item.userName}
+          // console.log(data);
+
+          this.editGroup.groupUserRelations.push(data)
+          console.log('add normal', this.editGroup);
+            
+        }else{            
+            if(this.editGroup.groupUserRelations.indexOf(item)){ 
+               console.log(this.editGroup.groupUserRelations);
+              //目前remove不掉
+              this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x!==item.userId)
+              console.log(this.editGroup.groupUserRelations);
+       
+            }
+
+            console.log('remove user', this.editGroup);
+        }
+    },
   },
 };
 </script>

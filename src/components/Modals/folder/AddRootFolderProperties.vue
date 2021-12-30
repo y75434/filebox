@@ -13,11 +13,6 @@
     size="xl"
     @ok="postFolder"
   >
-    <!-- <form
-      class="container"
-      ref="form"
-      @submit.stop.prevent="handleSubmit"
-    > -->
     <div class="modal-popout-bg ">
       <div
         class="modal-body bg-gray p-3"
@@ -32,7 +27,7 @@
               type="Name"
               class="form-control inline-block width-320"
               id="Name"
-              v-model="FolderSettings.name"
+              v-model="editGroup.name"
             >
           </div>
           <div class="w-50 d-flex align-items-center justify-content-center">
@@ -45,12 +40,15 @@
               class="form-control inline-block width-320"
               id="Description"
               placeholder=""
-              v-model="FolderSettings.description"
+              v-model="editGroup.description"
             >
           </div>
         </div>
             
-        
+        <h5 class="text-dark">
+          {{ editGroup }}
+        </h5>
+
 
 
         <div class="row p-5 modal-sidebar">
@@ -63,10 +61,10 @@
                     class="icon32px"
                   >
                   <p class="text-dark m-0">
-                    {{ this.folderTree.name }}
+                    {{ editGroup.name }}
                   </p>
                 </li>
-                <li 
+                <!-- <li 
                   v-for="item in this.folderTree"
                   :key="item.id"
                   class="list-group-item d-flex align-items-center border-0"
@@ -78,7 +76,7 @@
                   <p class="text-dark m-0">
                     {{ item.name }}
                   </p>
-                </li>
+                </li> -->
 
 
                 <!-- 目前無全部資料夾樹狀api -->
@@ -90,7 +88,7 @@
                     class="icon32px px-1"
                   >
                   <p class="text-dark m-0">
-                    {{ item.name }}
+                    樹狀
                   </p>
                 </li> -->
               </ul>
@@ -111,7 +109,7 @@
                     class="icon32px"
                   >
                   <p class="fw-bold m-0">
-                    3. Another Root Folder
+                    {{ editGroup.name }}
                   </p>
                 </div>
                 
@@ -131,24 +129,29 @@
 
             <div class="row modal-selectuser">
               <ul class="list-group d-flex flex-column justify-content-between bg-white col-3 p-0 h-100 border">
-                <div class="">
-                  <!-- input search -->
+                <div class="overflow-scroll">
                   <li class="form-check list-group-item border-0 p-0">
                     <input
                       type="text"
                       placeholder="Selected Groups/users"
                       class="form-control"
-                      id=""
+                      v-model="searchText"
+                      @keyup="getUserTable()"
                     >
                   </li>
 
-                  <li class="list-group-item border-0 p-0">
+                  <li 
+                    v-for="item in useritems"
+                    :key="item.id"
+                    class="list-group-item border-0 p-0"
+                  >
                     <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
                       <input
                         class="form-check-input m-0"
                         type="checkbox"
-                        value=""
-                        id="flexCheckDefault"
+                        v-model="item.active"
+                        @change="userSelected(item)"
+                        :id="item.userName"
                       >
                       <img
                         src="@/assets/images/icon/Union.png"
@@ -156,10 +159,10 @@
                       >
                       <label
                         class="form-check-label"
-                        for="flexCheckDefault"
+                        :for="item.userName"
                       >
                         <!-- <p class="text-dark m-0"> -->
-                        Design group
+                        {{ item.userName }}
 
                       <!-- </p> -->
                       </label>
@@ -171,7 +174,7 @@
                   <p>
                     <span>{{ $t("MODAL.TOTAL") }}
                     </span>
-                    <span class=" fw-bold">500</span>
+                    <span class=" fw-bold">{{ this.count }}</span>
                   </p>
                 </li>
               </ul>
@@ -181,13 +184,16 @@
                     <p
                       type="text"
                       class="form-control fw-bold"
-                      id=""
                     >
                       {{ $t("MODAL.SELECTEDGROUPSUSERS") }}
                     </p>
                   </li>
 
-                  <li class="list-group-item border-0 p-0">
+                  <li 
+                    v-for="item in editGroup.groupUserRelations"
+                    :key="item.userId"
+                    class="list-group-item border-0 p-0"
+                  >
                     <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
                       <img
                         src="@/assets/images/icon/Union.png"
@@ -198,7 +204,7 @@
                         for="flexCheckDefault"
                       >
                         <!-- <p class="text-dark m-0"> -->
-                        Design group
+                        {{ item.userName }}
 
                       <!-- </p> -->
                       </label>
@@ -208,7 +214,7 @@
                 
                 <li class="list-group-item d-flex justify-content-end border p-2">
                   <p class="ms-3 justify-content-end d-flex align-items-center">
-                    <span class="dark-blue fw-bold">4
+                    <span class="dark-blue fw-bold">{{ editGroup.groupUserRelations.length }}
                     </span>
                     <span>{{ $t("MODAL.SELECTED") }}</span>
                   </p>
@@ -266,7 +272,7 @@
                         <div class="justify-content-start align-items-center p-0  d-flex">
                           <label
                             class="form-check-label w-50"
-                            for="flexCheckDefault"
+                            :for="item.id"
                           >
                             {{ item.name }}
                           </label>
@@ -275,8 +281,9 @@
                           <input
                             class="form-check-input m-0"
                             type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
+                            v-model="item.active"
+                            @change="permissionSelected(item)"
+                            :id="item.id"
                           >
                         </div>
                       </li>
@@ -356,12 +363,13 @@
                         >
                           <input
                             type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
                             class="form-check-input"
+                            v-model="item.active"
+                            @change="typeSelected(item)"
+                            :id="item.id"
                           >
                           <label
-                            for="flexCheckDefault"
+                            :for="item.id"
                             class="form-check-label"
                           > {{ item.extension }}
                           </label>
@@ -377,8 +385,6 @@
       </div>
     </div>
    
-
-    <!-- </form> -->
     <template
       #modal-cancel
       variant="danger"
@@ -400,20 +406,27 @@ export default {
   },
   data() {
     return {
-      folderTree: {},
-      FolderSettings:{},
-      PermissionTypes:{},
-      FileTypes:{},
+      PermissionTypes:[],
+      FileTypes:[],
       StorageUnit:{},
-      allUser:{}
+      useritems: [],
+      searchText:"",
+      count:0,
+      editGroup:{
+        settings:{
+          accessPermissions:[],
+          restrictedFileTypes: [],
+        },
+        groupUserRelations: []
+      },
     };
   },
   methods: {  
     start() {
-      this.getFolderTable();
       this.getPermissionTypes()
       this.getFileTypes()
       this.getStorageUnit()
+      this.getUserTable()
     },
     //ok
     postFolder(){
@@ -422,7 +435,8 @@ export default {
         'Accept': 'application/json',
         "Access-Control-Allow-Origin": '*' 
         };
-      const data = JSON.stringify(this.FolderSettings)
+      const data = JSON.stringify(this.editGroup)
+      console.log(data);
 
       // {
       //   "name": "string",
@@ -460,16 +474,7 @@ export default {
         console.log(error.response.data);        
       })
     },
-    //ok
-    getFolderTable(){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
-        .then((data) => { 
-          
-          this.folderTree = data.data 
-        }).catch(error => {
-          console.log(error.response.data);        
-        })
-    },
+   
     getPermissionTypes(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/PermissionTypes`)
       .then((data) => {  
@@ -480,37 +485,93 @@ export default {
         // console.log(error.response.data);        
       })
     },
+     permissionSelected(item){
+      if(item.active){
+        this.editGroup.settings.accessPermissions.push(item.permissionTypeId) 
+
+
+      } else {
+        this.editGroup.settings.accessPermissions=this.editGroup.settings.accessPermissions.filter(x=>x
+          !==item.permissionTypeId);
+
+      }
+    },
     getFileTypes(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileTypes`)
       .then((data) => {  
         this.FileTypes = data.data
-         console.log(this.FileTypes);
+        //  console.log(this.FileTypes);
           
       }).catch(() => {
         // console.log(error.response.data);        
       })
+    },
+    // todo api為null 等格式確定再改
+    typeSelected(item){
+      if(item.active){
+        this.editGroup.settings.restrictedFileTypes.push(item.fileTypeId)
+      } else {
+        this.editGroup.settings.restrictedFileTypes=this.editGroup.settings.restrictedFileTypes.filter(x=>x
+          !==item.fileTypeId);
+      }
     },
     getStorageUnit(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/Storage/Unit`)
       .then((data) => {  
         this.StorageUnit = data.data
-         console.log(this.StorageUnit);
+        //  console.log(this.StorageUnit);
           
       }).catch(() => {
         // console.log(error.response.data);        
       })
     },
-    //還沒
-    // getUser(){
-    //   this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/`)
-    //   .then((data) => {  
-    //     this.allUser = data.data
-    //      console.log(this.StorageUnit);
-          
-    //   }).catch(() => {
-    //     // console.log(error.response.data);        
-    //   })
-    // },
+    getUserTable () {  
+        this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
+          .then((data) => {          
+            this.useritems = data.data
+            console.log(this.useritems);
+            
+            this.count = this.useritems.length       
+          }).catch(error => {
+            console.log(error);        
+          })
+      },//目前沒有欄位
+      userSelected(item){
+        if(item.active){
+            const data = { "userId": item.userId, "roleId": 1 , "userName": item.userName}
+
+            // console.log(data);
+
+            this.editGroup.groupUserRelations.push(data)
+            console.log('add normal', this.editGroup);
+              
+          }else{            
+              if(this.editGroup.groupUserRelations.indexOf(item)){ 
+                console.log(this.editGroup.groupUserRelations);
+                //目前remove不掉
+                this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x!==item.userId)
+                console.log(this.editGroup.groupUserRelations);
+        
+              }
+
+              console.log('remove user', this.editGroup);
+          }
+      },
+      //click 個別設定user 允許
+      userCan(item){
+        console.log('000');
+        console.log(item.userId);
+        
+        const data =
+        { 
+          "memberId": item.userId, 
+          "isGroup": true, 
+          "allow": this.aUserInfo.settings.accessPermissions,
+          "deny": this.aUserInfo.settings.denyPermissions,
+        }
+         console.log(data);
+
+      }
   },
 };
 </script>
