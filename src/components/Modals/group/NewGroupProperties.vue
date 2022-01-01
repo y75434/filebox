@@ -137,14 +137,16 @@
                   <input
                     v-model="item.one"
                     class="form-check-input"
-                    type="checkbox"
+                    type="radio"
+                    name="name"
                     @change="userSelected(item)"
                   >
                 </th>
                 <td>
                   <input
                     v-model="item.two"
-                    type="checkbox"
+                    type="radio"
+                    name="name"
                     class="form-check-input"
                     @change="userSelected(item)"
                   >

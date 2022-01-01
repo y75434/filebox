@@ -135,18 +135,22 @@
               >
                 <th scope="row">
                   <input
-                    v-model="item.one"
+                    v-model="item.selected
+                    "
                     @change="userSelected(item)"
                     class="form-check-input"
-                    type="checkbox"
-                    value=""
+                    type="radio"
+                    value="1"
+                    :name="item.userId"
                   >
                 </th>
                 <td>
                   <input
-                    type="checkbox" 
+                    type="radio"
+                    :name="item.userId"
                     class="form-check-input"
-                    v-model="item.two"
+                    v-model="item.selected"
+                    value="2"
                     @change="userSelected(item)"
                   >
                 </td>
@@ -179,6 +183,7 @@
                 >
                 {{ item.userName }}
                 <img
+                  @click="del(item)"
                   src="@/assets/images/cmd/del.png"
                   class="icon-20px"
                 >
@@ -228,7 +233,7 @@ export default {
     return {
       showModal: false,
       filter: null,
-      useritems: {},
+      useritems: [],
       searchText:"",
       count:0,
       group:{ 
@@ -256,7 +261,10 @@ export default {
       this.getUserTable()
       this.getGroupUsers()
     },
-      
+      del(user){
+        this.editGroup.groupUserRelations =this.editGroup.groupUserRelations.filter(x=>x.userId !== user.userId);
+
+      },
       
       //編輯資料外也可以設定層級和新增使用者
       updateGroup() {  
@@ -299,7 +307,7 @@ export default {
         this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
           .then((data) => {          
             this.useritems = data.data
-            // console.log('304',this.useritems);
+            console.log('304',this.useritems);
             
             this.count = this.useritems.length       
           }).catch(error => {
@@ -307,31 +315,35 @@ export default {
           })
       },
       userSelected(item){
-        // console.log('317', item);
-        if(item.one){
-          const data = { "groupID": this.group.id, "userId": item.userId, "roleId": 1 , "userName": item.userName}
-          // console.log(data);
+        console.log('317', item);
+        this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId !== item.userId);
+        const data = { "groupID": this.group.id, "userId": item.userId, "roleId": item.selected ,"userName": item.userName}
+        this.editGroup.groupUserRelations.push(data)
 
-          this.editGroup.groupUserRelations.push(data)
-          console.log('add normal', this.editGroup);
+        // if(item.one){
+        //   const data = { "groupID": this.group.id, "userId": item.userId, "roleId": 1 , "userName": item.userName}
+        //   // console.log(data);
+
+        //   this.editGroup.groupUserRelations.push(data)
+        //   console.log('add normal', this.editGroup);
             
-        } else if (item.two){
-          const data = { "groupID": this.group.id, "userId": item.userId,"roleId": 2 , "userName": item.userName}
-          this.editGroup.groupUserRelations.push(data)
-          console.log('add admin', this.editGroup);
+        // } else if (item.two){
+        //   const data = { "groupID": this.group.id, "userId": item.userId,"roleId": 2 , "userName": item.userName}
+        //   this.editGroup.groupUserRelations.push(data)
+        //   console.log('add admin', this.editGroup);
 
-        }else{            
-            if(this.editGroup.groupUserRelations.indexOf(item)){ 
+        // }else{            
+        //     if(this.editGroup.groupUserRelations.indexOf(item)){ 
 
-              // this.editGroup.groupUserRelations.splice(item,1);
-              this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x!==item.userId)
-              console.log(this.editGroup.groupUserRelations);
+        //       // this.editGroup.groupUserRelations.splice(item,1);
+        //       this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x!==item.userId)
+        //       console.log(this.editGroup.groupUserRelations);
 
               
-              }
+        //       }
 
-            console.log('remove user', this.editGroup);
-        }
+        //     console.log('remove user', this.editGroup);
+        // }
       },
       getGroupUsers(){
         this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroupUsers?groupID=${this.editGroup.id}`)
@@ -342,6 +354,17 @@ export default {
             
             this.editGroup.groupUserRelations = this.groupUsers
             this.editGroup.groupUserRelations.map(item => item.groupID = this.editGroup.id)
+
+            this.editGroup.groupUserRelations.forEach(x=>{
+              this.useritems.map(item=>{
+                if(item.userId == x.userId) {
+                  item.selected = x.roleId
+                }
+                return item;
+              })
+            });
+
+
 
             console.log('335',this.editGroup.groupUserRelations);
             

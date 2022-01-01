@@ -427,11 +427,13 @@
                     {{ folderTree.name }}
                   </button>
                 </h2>
+
+                <!-- id="flush-collapseThree" 原因出在這 -->
+
                 <div
                   id="flush-collapseThree"
                   class="accordion-collapse collapse"
                   aria-labelledby="flush-headingThree"
-                  data-bs-parent="#accordionFlushExample"
                 >
                   <div class="accordion-body p-1">
                     <!-- new -->
@@ -445,19 +447,13 @@
                         v-for="item in this.folderTree.subFolders"
                         :key="item.id"
                         @click="passRoute($event)"                   
-                        :value="item.name"
                       >
                         <h2
                           class="accordion-header"
-                          id="headingOne"
                         >
                           <button
                             class="accordion-button"
                             type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapseOne"
-                            aria-expanded="true"
-                            aria-controls="collapseOne"
                           >
                             {{ item.name }}
                           </button>
@@ -483,7 +479,6 @@
                     class="accordion-button collapsed"
                     type="button"
                     data-bs-toggle="collapse"
-                    data-bs-target="z"
                     aria-expanded="false"
                     aria-controls="flush-collapseThree"
                     v-for="item in folderitems"

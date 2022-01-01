@@ -107,11 +107,13 @@
                             id="events"
                             v-model="eventsSelected"
                             :options="events"
+                            value-field="actionTypeId"
+                            text-field="name"
+
                             :aria-describedby="ariaDescribedby"
                             class="mx-1"
                             aria-label="events"
                             stacked
-                            :value="events"
                             @change="search()"
                           />
                         </div>
@@ -185,7 +187,7 @@
               :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
 
               locale="en"
-              @keyup="search()"
+              @input="search()"
               v-model="startdate"
             />
           </div>
@@ -209,7 +211,7 @@
               }"
               locale="en"
               v-model="enddate"
-              @keyup="search()"
+              @change="search()"
             />
           </div>
     
@@ -697,7 +699,8 @@ data() {
     selectMode: 'single',
     filter: null,
     sortDirection: 'All',
-    events: [this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"), this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"), this.$t("GENERAL.PUBLICLINK"), this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
+    events: [],
+    //["string","Browse","Login","Preview","Download","Public links","Create","Rename","Move","Extract","Logout","Delete","Copy","Compress","Upload"]
     allSelected: true,
     // eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
     eventsSelected:[],
@@ -898,9 +901,9 @@ methods: {
     this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/ActionType/GetAll`,)
       .then((data) => {
         data.data.forEach(item =>{
-          this.eventsSelected.push(item.name)
+          this.events.push(item)
+      console.log('766',item);     
     });
-      // console.log('766',this.eventsSelected);     
     }).catch(error => {
         console.log(error.response.data);          
       })
@@ -968,10 +971,9 @@ methods: {
       case 4: {
         const eventURL = new URL(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`);
         let searchParams = {
-          From: this.value,
+          From: this.startdate,
           To: this.enddate,
           SearchString: this.searchText,
-          ActionEventType: this.eventTypeId,
           
         }
 
