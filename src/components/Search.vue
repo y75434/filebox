@@ -19,7 +19,7 @@
       >
     </button> -->
 
-    <button class="dqbz-previous bg-light">
+    <button @click="back()" class="dqbz-previous bg-light">
       <img
         src="@/assets/images/arrow/arrow-up@2x.png"
         class="nav-icon"
@@ -149,5 +149,10 @@ export default {
     },
     
   },
+  //返回上一層
+  back(){
+    this.$emit('update', this.nowfolder);
+
+  }
 }
 </script>

@@ -74,12 +74,11 @@ export default {
 
 
       if(Object.prototype.hasOwnProperty.call(this.personData, "userName")) { 
-          //if user
-          const username = this.personData.name 
+        
 
           const data = JSON.stringify({
             "id": this.tabData.userId,
-            "userName": username,
+            "name": this.personData.name
           })
           console.log(data);
 
@@ -107,11 +106,11 @@ export default {
             console.log(error.response.data);        
           })
 
-       }else if(Object.prototype.hasOwnProperty.call(this.personData, "groupName")){ 
+       }else if(Object.prototype.hasOwnProperty.call(this.personData, "name")){ 
 
           const data = JSON.stringify({
             "id": this.personData.id,
-            "groupName": this.personData.name,
+            "name": this.personData.name,
           })
 
           this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroup`,

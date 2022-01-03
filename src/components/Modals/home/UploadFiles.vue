@@ -209,12 +209,13 @@ export default {
      
 
       formData.append('uploadData',JSON.stringify({
-          DestinationFolderId: '4ddb9c06-5f94-40bc-8def-9382c5a30f4d',
+          DestinationFolderId: '195ddee6-fcfa-4ee4-ba61-0c72dafeb289',
           UploadedBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
           ConflictType: 1,
           type: 1
       }));
       
+      console.log('DestinationFolderId: 195ddee6-fcfa-4ee4-ba61-0c72dafeb289');
 
 
       this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,

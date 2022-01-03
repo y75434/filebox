@@ -902,7 +902,7 @@ methods: {
       .then((data) => {
         data.data.forEach(item =>{
           this.events.push(item)
-      console.log('766',item);     
+      // console.log('766',item);     
     });
     }).catch(error => {
         console.log(error.response.data);          

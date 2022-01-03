@@ -299,6 +299,8 @@
         @update="selfUpdate"
         :folder-tree="folderTree"
       />
+      <!-- @back="getSelected" -->
+
       <div />
       <!-- main -->
       <div
@@ -408,29 +410,32 @@
               >
                 <h2
                   class="accordion-header"
-                  id="flush-headingThree"
+                  v-for="item in rootFolder"
+                  :key="item.folderId"
+
+                  :id="item.folderId"
                 >
                   <button
                     class="accordion-button collapsed"
                     type="button"
                     data-bs-toggle="collapse"
-                    data-bs-target="#flush-collapseThree"
+                    :data-bs-target="['#'+ item.folderId]"
                     aria-expanded="false"
                     aria-controls="flush-collapseThree"
-                    @click="passRoute($event)"                   
-                    :value="this.folderTree.name"
+                    @click="passRoute($event,item)"                   
+                    :value="item.name"
                   >
-                    <img
+                    <!-- <img
                       :src="`${this.treeItems[0].pic}`"
                       class="icon24px"
-                    >
-                    {{ folderTree.name }}
+                    > -->
+                    {{ item.name }}
                   </button>
                 </h2>
 
-                <!-- id="flush-collapseThree" 原因出在這 -->
 
                 <div
+                  v-if="this.folderTree.subFolders>0"
                   id="flush-collapseThree"
                   class="accordion-collapse collapse"
                   aria-labelledby="flush-headingThree"
@@ -465,7 +470,6 @@
                 </div>
               </div>
 
-              <!-- :data-bs-target="['#'+ item.name]" -->
 
               <div
                 
@@ -493,43 +497,6 @@
                     {{ item.name }}
                   </button>
                 </h2>
-                <div
-                  id="flush-collapseThree"
-                  class="accordion-collapse collapse"
-                  aria-labelledby="flush-headingThree"
-                  data-bs-parent="z"
-                >
-                  <div class="accordion-body p-1">
-                    <div
-                      class="accordion"
-                      id="accordionExample"
-                    >
-                      <div
-                        class="accordion-item"
-                        v-for="item in this.folderTree.subFolders"
-                        :key="item.id"
-                        @click="passRoute($event)"                   
-                        :value="item.name"
-                      >
-                        <h2
-                          class="accordion-header"
-                          id="headingOne"
-                        >
-                          <button
-                            class="accordion-button"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapseOne"
-                            aria-expanded="true"
-                            aria-controls="collapseOne"
-                          >
-                            {{ item.name }}
-                          </button>
-                        </h2>
-                      </div>
-                    </div>
-                  </div>
-                </div> 
               </div>
             </div>
           </Pane>
@@ -537,11 +504,16 @@
             :size="100 - paneSize"
             class="d-flex align-items-start justify-content-start"
             @contextmenu="handler($event)"
-          >     
+          >
+            <p class="text-dark">
+              {{ this.folderTree.subFolders }}
+            </p>
+
             <label
-              class="d-flex flex-column position-relative"
+              class="d-flex flex-column position-relative mx-2 my-2"
               :key="item.id"
               v-for="item in resultQuery"
+              @dblclick="detectClick(item)"
               @change="ischecked = !ischecked"
               :style="item.ischecked ? {backgroundColor:
                 '#d3eaff'} : {backgroundColor:'transparent'}"
@@ -618,7 +590,6 @@ import ManagePublicLink from '../components/Modals/home/ManagePublicLink.vue';
 import AddEditPublicLink from'@/components/Modals/link/AddEditPublicLink.vue';
 import ContextMenu from '@/components/ContextMenu.vue';
 
-// import saveAs from 'file-saver';
 
 export default {
   name: "Home",
@@ -654,8 +625,6 @@ export default {
       { id: 9,name:'word',pic:require('@/assets/images/file/word@2x.png'),extension:'.word'},
       { id: 10, name:'excel',pic:require('@/assets/images/file/excel@2x.png'),extension:'.excel'},
       { id: 11, name:'null',pic:require('@/assets/images/file/single folder@2x.png'),extension:null},
-
-
     ],
     renderCheckboxs: false,
     treeSelected: null,
@@ -667,31 +636,25 @@ export default {
     searchQuery: "",
     folderTree: {},
     folderitems: [],
-    render: {}
+    render: {},
+    id:"4ddb9c06-5f94-40bc-8def-9382c5a30f4d",//目前所在的資料夾
+    rootFolder:[]//sidebar
   }),
   
   created(){
-    // this.allFiles.map((x,index)=>{
       this.resultQuery.map((x,index)=>{
 
-      // this.$set(this.allFiles, x.ischecked, false)
-      // this.$set(this.allFiles, x.showCheckbox, false)
-      // this.$set(this.allFiles, x.id, index)
       this.$set(this.resultQuery, x.ischecked, false)
       this.$set(this.resultQuery, x.showCheckbox, false)
       this.$set(this.resultQuery, x.id, index)
       return x;
     })
-     this.getFolderTable();
-     this.getSelected()
-
-    
+     this.getFolderTable()
   },
   computed:{
     //數checkbox勾選幾個
     selectedLength(){ 
-      // return Object.keys(this.allFiles).filter(key =>
-      //     this.allFiles[key].ischecked === true).length
+      
       return Object.keys(this.resultQuery).filter(key =>
           this.resultQuery[key].ischecked === true).length
     },
@@ -715,12 +678,12 @@ export default {
       this.selected = items
       //  console.log(this.selected);     
     },
-    passRoute(e){
+    passRoute(e,item){
       const buttonValue = e.target.value;   
       this.treeSelected = buttonValue;
       //點擊某資料夾在傳資料到search
-      this.getFolderTree('a9602080-f4fc-4356-abe3-145d05fab9ac')
-      // console.log(this.treeSelected);     
+      console.log(e,item);     
+      this.getFolderTree(item.folderId)
     },
    
     // modal
@@ -755,22 +718,16 @@ export default {
         return item;
       })
     },
-    //點擊某資料夾在傳資料到search
-     getFolderTree(id){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
-      .then((data) => { 
-        this.folderTree = data.data
-        // console.log(this.folderTree);
-        // console.log(this.folderTree.subFolders);
-      }).catch(() => {
-        //  console.log(error.response.data);        
-      })
-    },
+    //預設畫面在這
     getFolderTable(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
         .then((data) => { 
-          this.folderitems = data.data
-          // console.log(this.folderitems);
+          this.allFiles = data.data
+          this.rootFolder = this.allFiles
+        
+        // console.log(this.rootFolder);
+      
+          
           
       
         }).catch(error => {
@@ -818,14 +775,35 @@ export default {
       
      
     },
+   
+    //點擊某資料夾在傳資料到search
+    //回上頁 如果是root folder 就無法按上一層
+     getFolderTree(id){
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
+      .then((data) => { 
+        this.folderTree = data.data
+        console.log(this.folderTree);
+      }).catch(() => {
+        //  console.log(error.response.data);        
+      })
+    },
+    //點擊跳轉該路徑
     //到kaoh資料夾
     // ${process.env.VUE_APP_FOLDER_APIPATH}/GetItems/${folderId}/${userId}
-    getSelected(){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/GetItems/4ddb9c06-5f94-40bc-8def-9382c5a30f4d/3fa85f64-5717-4562-b3fc-2c963f66afa6`)
+    getSelected(id){
+      console.log('換路徑囉',id);
+
+      if(!id){
+        id = this.id
+        console.log('預設路徑', );
+        
+      }
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/GetItems/${id}/3fa85f64-5717-4562-b3fc-2c963f66afa6`)
         .then((data) => { 
           this.allFiles = data.data
-          console.log(this.allFiles);
-          
+
+          //點擊後上層開始顯示路徑
+
 
         this.allFiles.map(item=>{ 
           const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
@@ -835,11 +813,25 @@ export default {
         });
 
         }).catch(error => {
-          console.log(error.response.data);        
+          console.log(error.response.data);  
+           if(!id){
+              id = this.id
+              console.log('預設路徑', );
+              
+            }      
         })
     },
-    // @click="getSelected(folderId)"
-  },
+
+    detectClick(item) {
+      console.log('double click ', );
+      
+      this.getSelected(item.folderId)
+    }
+        
+         
+    
+  }
+  
 };
 </script>
 
