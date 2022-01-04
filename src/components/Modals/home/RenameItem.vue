@@ -106,22 +106,23 @@ export default {
             console.log(error.response.data);        
           })
 
-       }else if(Object.prototype.hasOwnProperty.call(this.personData, "name")){ 
+       }else if(Object.prototype.hasOwnProperty.call(this.personData, "groupName")){ 
 
           const data = JSON.stringify({
             "id": this.personData.id,
             "name": this.personData.name,
           })
 
-          this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroup`,
+          this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroupName`,
           data,{ headers: headers })
           .then(() => { 
+            console.log('success');
+
           }).catch(error => {
             console.log(error.response.data);        
           })
 
 
-         console.log('group');
          
          }
 

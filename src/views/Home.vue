@@ -1,7 +1,10 @@
 <template>
-  <div>
+  <div @contextmenu="handler($event)">
     <Navbar />
-    <div class="dqbz-body">
+    <div
+      class="dqbz-body"
+      @contextmenu="showMenu($event)"
+    >
       <div class="dqbz-fnlist">
         <div class="fn-box bg-light">
           <div class="d-flex fn-w-150 align-items-center">
@@ -295,17 +298,16 @@
       </div>
       <Search
         :tree-selected="treeSelected"
-        :sub-tree="[this.folderitems]"
         @update="selfUpdate"
-        :folder-tree="folderTree"
+        :folder-tree="this.folderTree"
+        @back="getSelected"
       />
-      <!-- @back="getSelected" -->
+      <!--  -->
 
       <div />
       <!-- main -->
       <div
         class="dqbz-main"
-        @contextmenu="showMenu(null, $event)"
       >
         <Splitpanes class="h-100">
           <Pane
@@ -470,8 +472,8 @@
                 </div>
               </div>
 
-
-              <div
+              <!-- 先註解 -->
+              <!-- <div
                 
                 class="accordion-item"
               >
@@ -497,17 +499,28 @@
                     {{ item.name }}
                   </button>
                 </h2>
-              </div>
+              </div> -->
             </div>
           </Pane>
           <Pane
             :size="100 - paneSize"
             class="d-flex align-items-start justify-content-start"
-            @contextmenu="handler($event)"
           >
             <p class="text-dark">
-              {{ this.folderTree.subFolders }}
+              目前所在的資料夾{{ this.folderTree.name }} 
             </p>
+            <div
+              v-if="this.folderTree.subFolders !== null"
+              class=""
+            >
+              <p
+                v-for="item in this.folderTree.subFolders"
+                :key="item.folderId"
+                class="text-dark"
+              >
+                所有子資料夾{{ item.name }} 
+              </p>
+            </div>
 
             <label
               class="d-flex flex-column position-relative mx-2 my-2"
@@ -517,8 +530,7 @@
               @change="ischecked = !ischecked"
               :style="item.ischecked ? {backgroundColor:
                 '#d3eaff'} : {backgroundColor:'transparent'}"
-              @contextmenu="operational($event)"
-              @row-hovered="rowSelected"
+              @mouseover="rowSelected(item)"
             >
               <input
                 class="form-check-input itemCheckbox"
@@ -547,22 +559,32 @@
 
       <ContextMenu ref="menu">
         <ul class="text-dark">
-          <li
-            @click="CreateFolder"
-          >
+          <li @click="CreateFolder">
             <img
               src="@/assets/images/icon/user setting@2x.png"
               class="icon24px"
             >{{ $t("GENERAL.ADDFOLDER") }}
+          </li>
+          <li @click="DeleteFolder">
+            <img
+              src="@/assets/images/cmd/delete@2x-2.png"
+              class="icon24px"
+            >{{ $t("HOME.DELETE") }}
           </li>
         </ul>
       </ContextMenu>
 
 
       <UploadFiles ref="UploadFiles" />
-      <create-folder ref="CreateFolder" />
+      <create-folder
+        ref="CreateFolder"
+        :parent="id"
+      />
       <rename-item ref="RenameItem" />
-      <delete-folder ref="DeleteFolder" />
+      <delete-folder
+        ref="DeleteFolder"
+        :del-data="nowSelected"
+      />
       <manage-public-link ref="ManagePublicLink" />
     
       <AddEditPublicLink
@@ -638,7 +660,9 @@ export default {
     folderitems: [],
     render: {},
     id:"4ddb9c06-5f94-40bc-8def-9382c5a30f4d",//目前所在的資料夾
-    rootFolder:[]//sidebar
+    rootFolder:[],//sidebar
+    nowSelected: {},
+
   }),
   
   created(){
@@ -666,24 +690,25 @@ export default {
   },
   methods: { 
     handler(event) { event.preventDefault(); }, 
-    showMenu(event) {this.$refs.menu.open(event); },
+    showMenu(event) { this.$refs.menu.open(event); },
     // 子層輸入傳父層
     selfUpdate(val) {
       this.searchQuery = val;
       // console.log('885',this.searchQuery);
-      
     },
      //hover一個資料 並將資料傳遞子層 
     rowSelected(items) {
-      this.selected = items
-      //  console.log(this.selected);     
+      this.nowSelected = items
+      // console.log(this.nowSelected);     
     },
     passRoute(e,item){
       const buttonValue = e.target.value;   
       this.treeSelected = buttonValue;
       //點擊某資料夾在傳資料到search
-      console.log(e,item);     
+      console.log(item);     
       this.getFolderTree(item.folderId)
+      this.getSelected(item.folderId)
+
     },
    
     // modal
@@ -695,25 +720,19 @@ export default {
     AddPublicLink(){ this.$bvModal.show('AddEditPublicLink'); },
     // checkbox func
     selectAll() {   
-      // this.allFiles.map(item =>{
       this.resultQuery.map(item =>{
-
         item.ischecked = true
         return item;
       })
     },
     selectNone(){
-    //this.allFiles.map(item =>{ 
       this.resultQuery.map(item =>{
-
       item.ischecked = false;
       return item;
       })
     },
     invert(){
-      //this.allFiles.map(item =>{ 
         this.resultQuery.map(item =>{
-
         item.ischecked = !item.ischecked; 
         return item;
       })
@@ -725,10 +744,7 @@ export default {
           this.allFiles = data.data
           this.rootFolder = this.allFiles
         
-        // console.log(this.rootFolder);
-      
-          
-          
+        // console.log(this.rootFolder);        
       
         }).catch(error => {
           console.log(error.response.data);        
@@ -740,11 +756,11 @@ export default {
       //   {
       //     "items":[
       //       {
-      //         "id": `${file.id}`,
-      //         "type": `${file.type}`
+      //         "id": this.file.id,
+      //         "type": this.file.type
       //       }
       //     ],
-      //     "user": `${'user' .id}`
+      //     "editor": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
       //   }
       // );
       
@@ -754,14 +770,7 @@ export default {
       // data)
       // .then((data) => { 
 
-      //   const blob = new Blob(data, { type: '' })
-      //   const link = document.createElement('a')
-      //   link.href = URL.createObjectURL(blob)
-      //   link.download = label
-      //   link.click()
-
-      //   //調用URL.createObjectURL()方法產生的 URL 對象
-      //   URL.revokeObjectURL(link.href)
+     
       //   console.log(data);
 
       // }).catch(error => {
@@ -769,7 +778,6 @@ export default {
       // })
 
 
-      //this.url = [...file].map(URL.createObjectURL);
 
 
       
@@ -782,7 +790,7 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
       .then((data) => { 
         this.folderTree = data.data
-        console.log(this.folderTree);
+        console.log(this.folderTree,);
       }).catch(() => {
         //  console.log(error.response.data);        
       })
@@ -795,12 +803,16 @@ export default {
 
       if(!id){
         id = this.id
+        //把預設路經歸0 避免跳錯
+        this.id = ''
         console.log('預設路徑', );
         
       }
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/GetItems/${id}/3fa85f64-5717-4562-b3fc-2c963f66afa6`)
         .then((data) => { 
           this.allFiles = data.data
+          //顯示路徑
+          this.getFolderTree(id)
 
           //點擊後上層開始顯示路徑
 
@@ -813,20 +825,31 @@ export default {
         });
 
         }).catch(error => {
-          console.log(error.response.data);  
-           if(!id){
-              id = this.id
-              console.log('預設路徑', );
+          console.log(error);  
+          //  if(!id){
+          //     id = this.id
+          //     console.log('預設路徑', );
               
-            }      
+          //   }      
         })
     },
 
     detectClick(item) {
-      console.log('double click ', );
-      
-      this.getSelected(item.folderId)
-    }
+      console.log('double click ',item);
+       if('folderId' in item ) {
+          this.getSelected(item.folderId)
+          this.treeSelected = item.name;
+
+        }
+        else if('id' in item ) {
+          this.getSelected(item.id)
+          this.treeSelected = item.name;
+        }
+        else {
+          console.log('err');         
+        }
+    },
+ 
         
          
     

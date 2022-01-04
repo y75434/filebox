@@ -8,8 +8,6 @@
     hide-header-close
     no-close-on-backdrop
     no-close-on-esc
-    @ok="handleOk"
-    @cancel="cancel"
     body-bg-variant="white"
     footer-bg-variant="white"
     cancel-variant="outline-secondary"
@@ -44,14 +42,28 @@
         >
       </div>
     </div>
-    <template #modal-cancel>
-      {{ $t("GENERAL.CANCEL") }}
-    </template>
+ 
 
-    <template
-      #modal-ok
-    >
-      {{ $t("GENERAL.OK") }}
+
+    <template #modal-footer>
+      <div class="w-100 justify-content-end d-flex">
+        <button
+          @click="cancel"
+          type="button"
+          class="sm-btn cancel-btn mx-3 btn justify-content-center d-flex"
+        >
+          {{ $t("GENERAL.CANCEL") }}
+        </button>
+        <!-- :disabled="delFormValidity" -->
+
+        <button
+          @click="handleOk"
+          type="button"
+          class="sm-btn btn btn-danger text-white justify-content-center d-flex"
+        >
+          {{ $t("HOME.DELETE") }}
+        </button>
+      </div>
     </template>
   </b-modal>
 </template>
@@ -74,9 +86,10 @@ export default {
       this.personData = this.delData
     } 
   },
+  //因key不同無法
 	// computed: {
 	// 	delFormValidity() {
-	// 		return this.delData.name || this.delData.userName !== this.userInput;
+	// 		return this.delData.name || this.delData.userName || this.delData.Name || this.delData.groupName !== this.userInput;
 	// 	},
 	// },
 	methods: {
@@ -85,17 +98,17 @@ export default {
 
         
   
-        if('userName' in this.personData && this.delData.userName === this.userInput) {
+        if(('userName' in this.personData) && (this.delData.userName === this.userInput)) {
           this.deleteUser(this.delData.userId)    
         }
-        else if('linkId' in this.personData  && this.delData.name === this.userInput) {
+        else if(('linkId' in this.personData ) && (this.delData.name === this.userInput)) {
           this.deleteLink(this.delData.linkId)
         }
-        else if('groupName' in this.personData && this.delData.groupName === this.userInput){
+        else if(('groupName' in this.personData) && (this.delData.groupName === this.userInput)){
           this.deleteGroup(this.delData.id) 
         }
 
-        else {
+        else if(('folderId' in this.personData) && (this.delData.name === this.userInput)){
           this.deleteFolder(this.delData.folderId) 
         }
 
@@ -168,7 +181,8 @@ export default {
         })
     },
 		cancel() {
-			this.userInput = '';
+      this.userInput = '';
+      this.$bvModal.hide('modal-delete-user');
 		},
 	},
 };

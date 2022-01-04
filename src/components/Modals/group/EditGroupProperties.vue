@@ -320,30 +320,6 @@ export default {
         const data = { "groupID": this.group.id, "userId": item.userId, "roleId": item.selected ,"userName": item.userName}
         this.editGroup.groupUserRelations.push(data)
 
-        // if(item.one){
-        //   const data = { "groupID": this.group.id, "userId": item.userId, "roleId": 1 , "userName": item.userName}
-        //   // console.log(data);
-
-        //   this.editGroup.groupUserRelations.push(data)
-        //   console.log('add normal', this.editGroup);
-            
-        // } else if (item.two){
-        //   const data = { "groupID": this.group.id, "userId": item.userId,"roleId": 2 , "userName": item.userName}
-        //   this.editGroup.groupUserRelations.push(data)
-        //   console.log('add admin', this.editGroup);
-
-        // }else{            
-        //     if(this.editGroup.groupUserRelations.indexOf(item)){ 
-
-        //       // this.editGroup.groupUserRelations.splice(item,1);
-        //       this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x!==item.userId)
-        //       console.log(this.editGroup.groupUserRelations);
-
-              
-        //       }
-
-        //     console.log('remove user', this.editGroup);
-        // }
       },
       getGroupUsers(){
         this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroupUsers?groupID=${this.editGroup.id}`)

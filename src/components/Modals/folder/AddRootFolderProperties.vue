@@ -414,6 +414,7 @@ export default {
       count:0,
       editGroup:{
         settings:{
+          storage: { space: 0, unitId: "3fa85f64-5717-4562-b3fc-2c963f66afa6" },
           accessPermissions:[],
           restrictedFileTypes: [],
         },
@@ -529,7 +530,7 @@ export default {
         this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
           .then((data) => {          
             this.useritems = data.data
-            console.log(this.useritems);
+            // console.log(this.useritems);
             
             this.count = this.useritems.length       
           }).catch(error => {

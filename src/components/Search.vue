@@ -19,7 +19,10 @@
       >
     </button> -->
 
-    <button @click="back()" class="dqbz-previous bg-light">
+    <button
+      @click="back()"
+      class="dqbz-previous bg-light"
+    >
       <img
         src="@/assets/images/arrow/arrow-up@2x.png"
         class="nav-icon"
@@ -56,28 +59,30 @@
       <option selected />
     </select> -->
     <div class="input-group float-left">
-      <div class="btn-group dropend treeviewRoute">
+      <div class="btn-group dropend ">
         <button
           type="button"
-          class="btn bg-white dropdown-toggle"
+          class="btn bg-white "
+        >
+          {{ treeSelected }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-white dropdown-toggle dropdown-toggle-split"
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          <router-link
-            class="text-decoration-none text-dark"
-            :to="'this.treeSelected'"
-          >
-            {{ treeSelected }}
-          </router-link>
+          <span class="visually-hidden">Toggle Dropright</span>
         </button>
-        <ul
-          v-if="this.treeSelected"
-          class="dropdown-menu"
-        >
-          <li
-            v-for="item in this.folderTree.subFolders"
-            :key="item.id"
-          >
+        
+        <!-- 不行 -->
+        <!-- v-if="this.treeSelected.subFolders!== undefined && this.treeSelected.subFolders.length>0" -->
+        <!-- v-if="this.folderTree.subFolders !== null" -->
+
+        <ul class="dropdown-menu">
+          <!-- Dropdown menu links -->
+
+          <li v-for="item in this.folderTree.subFolders" :key="item.id">
             <a
               class="dropdown-item"
               href="#"
@@ -85,13 +90,6 @@
           </li>
         </ul>
       </div>
-
-
-
-      <input
-        type="text"
-        class="form-control treeviewRoute"
-      >
     </div>
 
     <button class="dqbz-previous">
@@ -100,7 +98,6 @@
         class="nav-icon"
       >
     </button>
-    <!-- @change -->
     <b-form-input
       type="text"
       placeholder="Search"
@@ -120,13 +117,14 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 
 export default {
   name: "Search",
   props: { 
-    treeSelected: { type: String, default: "" },
-    subTree: { type: Array, default() { return ["a","b"] } },
-    folderTree:{ type: Object, default() { return ["a","b"] }}
+    treeSelected: { type: String, default: "" },//父層
+    folderTree:{ type: Object, default() { }}
   },
   data() {
     return {
@@ -136,23 +134,27 @@ export default {
     }
   },
   watch:{ 
-    // tabData(){ 
-    //   this.personData = this.subTree
-    // },
+   
     folderTree(){ 
-      this.tree = this.subTree
+      this.tree = this.folderTree
+      console.log('tree',this.tree);
+      
     } 
   },
   methods: {
+   ...mapMutations(["setUserId"]),
+
    update() {
     this.$emit('update', this.searchQuery);   
     },
     
-  },
-  //返回上一層
-  back(){
-    this.$emit('update', this.nowfolder);
+  
+    //返回上一層
+    back(){
+      this.setUserId(Id);
+      this.$emit('back', this.nowfolder);
 
+    }
   }
 }
 </script>

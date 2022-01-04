@@ -19,20 +19,21 @@
       <h5 class="text-center m-0">
         {{ $t("MODAL.SURETODELETE") }}
       </h5>
-           
+      
+
             
       <h5 class="text-center my-2 font-weight-bold">
-        {{ tabData.name }}
+        <strong class="text-danger"> {{ delData.name }}</strong>
       </h5>
 
       <p class="text-dark">
-        {{ tabData }}
+        {{ folderData }}
       </p>
 
       <input
         type="text"
         class="form-control"
-        v-model="personData.name"
+        v-model="userInput"
       >
     </div>
 
@@ -41,6 +42,7 @@
     <template #modal-footer>
       <div class="w-100 justify-content-center d-flex">
         <button
+          @click="cancel"
           type="button"
           class="sm-btn cancel-btn mx-3 btn justify-content-center d-flex"
         >
@@ -48,6 +50,9 @@
         </button>
 
         <button
+          :disabled="delFormValidity"
+
+          @click="deleteDoc"
           type="button"
           class="sm-btn btn btn-danger text-white justify-content-center d-flex"
         >
@@ -63,36 +68,76 @@ export default {
   name: "DeleteFolder",
   props: { 
     title: { type: String, default: "Delete Folder" } ,
-    tabData: { type: Object , default() { return {} }}
+    delData: { type: Object , default() { return {} }}
+
   },
+  
   data() {
     return {
-      personData: {},
+      userInput: '',
+      folderData: {},
+      id: "", //區分是資料夾還是一般文件
+      type: 0
     };
   },
    watch:{ 
-    tabData(){ 
-      this.personData = this.tabData 
+    delData(){ 
+      this.folderData = this.delData 
     } 
   },
+  computed: {
+		delFormValidity() {
+			return this.delData.name !== this.userInput;
+		},
+	},
   methods: {
-    deleteFolder(){
-    const headers = { 
-      'Content-Type': 'application/json', 
-      'Accept': 'application/json',
-      "Access-Control-Allow-Origin": '*' 
-      };
-    // {"items": [ { id: "item.id", "type": 0 } ], "editor": "vuex.user.id"}
+    deleteDoc(){
+      
+      if('folderId' in this.folderData && this.delData.name === this.userInput) {
+              this.id = this.delData.folderId
+        }
+        else if('id' in this.folderData  && this.delData.name === this.userInput) {
+              this.id = this.delData.id
+              this.type = 1
+        }
 
-    const data = JSON.stringify(this.personData)
+        else {
+          console.log('err');
+          
+        }
+      // {"items": [ { id: "item.id", "type": 0 } ], "editor": "vuex.user.id"}
 
-    this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,data,{ headers: headers })
-      .then((data) => {     
-        console.log(data);
-      }).catch(() => {
-        // console.log(error.response.data);        
-      })
-    },
+    //   const data = { 
+    //     "items": [{ "id": this.id, "type": 0 }], 
+    //     "editor": "3fa85f64-5717-4562-b3fc-2c963f66afa6" //之後改 
+    //   }
+
+
+    //  console.log(data);
+
+      console.log(this.id);
+
+      //刪一般資料夾ok
+
+      this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
+       {data:{ "items": [{ "id": this.id, "type": this.type }], "editor":"3fa85f64-5717-4562-b3fc-2c963f66afa6"}})
+        .then((data) => {     
+          console.log(data);
+        }).catch((error) => {
+          console.log(error.response.data);        
+        })
+
+        this.$nextTick(() => { 
+          this.userInput = '';
+          this.$bvModal.hide('DeleteFolder'); 
+
+        });
+      },
+      cancel() { 
+        this.userInput = '';
+        this.$bvModal.hide('DeleteFolder'); 
+      },
+
   },
 };
 </script>
