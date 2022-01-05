@@ -215,6 +215,13 @@
                   {{ $t("GENERAL.COPYLINK") }}
                 </b-button>
               </div>
+
+              <b-button
+                class="bg-green border-0"
+                @click="GenerateURL()"
+              >
+                GenerateURL
+              </b-button>
             </div>
             <span class="text-danger">{{ errors[0] }}</span>
           </validation-provider>
@@ -266,6 +273,12 @@ export default {
       items: []
     };
   },
+  // 無法馬上更新值
+  // computed:{
+  //   personData(){
+  //     return this.personData
+  //   }
+  // },
   methods: {
     handleOk(bvModalEvt) {
         bvModalEvt.preventDefault()
@@ -284,26 +297,16 @@ export default {
         };
 
         const data = JSON.stringify(this.personData)
-
-        
         console.log(data);
 
 
       this.axios.post(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/Create`,
       data,{ headers: headers }) .then((data) => {
-
-
- 
-
-
         console.log(data);
       }).catch(error => {
           console.log(error.response.data);          
         })
     },
-
-
-
     // rename + editname
     put(id) { 
      
@@ -327,7 +330,15 @@ export default {
         this.$bvModal.hide('AddEditPublicLink'); });
 
     },
-    
+    GenerateURL() { 
+      this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GenerateURL`) 
+        .then((data) => {
+          this.personData.url = data.data.url
+          console.log(data.data.url);
+      }).catch(error => {
+          console.log(error.response.data);          
+        })
+    },    
     clear(){
       this.personData = ""
     },
@@ -337,7 +348,6 @@ export default {
     },
     cancel() { 
       this.$bvModal.hide('AddEditPublicLink');
-
      },
 
   },

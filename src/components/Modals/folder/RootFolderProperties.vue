@@ -46,9 +46,15 @@
           </div>
         </div>
             
-        <h5 class="text-dark">
-          {{ FolderSettings }}
+        <!-- <h5 class="text-dark">
+          FolderSettings{{ FolderSettings }}
         </h5>
+
+        <h5 class="text-dark">
+          editGroup{{ editGroup }}
+        </h5> -->
+
+
 
 
         <div class="row p-5 modal-sidebar">
@@ -133,10 +139,12 @@
                     class="list-group-item border-0 p-0 text-left"
                   >
                     <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
+                      <!-- 還沒想到統整checkbox和render用法 -->
                       <input
                         class="form-check-input m-0"
                         type="checkbox"
-                        v-model="item.active"
+                        :value="item.userId"
+                        v-model="item.selected"
                         @change="userSelected(item)"
                         :id="item.userName"
                       >
@@ -180,12 +188,11 @@
                   <li
                     v-for="item in editGroup.groupUserRelations"
                     :key="item.userId"
-                    class="list-group-item border-0 p-0"
+                    class="list-group-item border-0 p-0 mb-2"
                   >
                     <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
                       <img
-                        @click="userCan(item)"
-
+                        @dblclick="userCan(item)"
                         src="@/assets/images/icon/Union.png"
                         class="icon24px"
                       >
@@ -194,6 +201,11 @@
                         for="flexCheckDefault"
                       >
                         {{ item.userName }}
+                        <img
+                          @click="del(item)"
+                          src="@/assets/images/cmd/del.png"
+                          class="icon-20px"
+                        >
                       </label>
                     </div>
                   </li>
@@ -250,7 +262,9 @@
                     role="tabpanel"
                     aria-labelledby="nav-home-tab"
                   >
-                    <ul class="justify-content-center flex-column d-flex align-items-center">
+                    <ul
+                      class="justify-content-center flex-column d-flex align-items-center"
+                    >
                       <li
                         v-for="item in PermissionTypes"
                         :key="item.id"
@@ -274,6 +288,12 @@
                           >
                         </div>
                       </li>
+                      <b-button
+                        class="bg-green border-0"
+                        @click="addToSettings()"
+                      >
+                        add to settings
+                      </b-button>
                     </ul>
                   </div>
                   <div
@@ -309,11 +329,13 @@
                         <select
                           class="form-select w-50"
                           aria-label="Disabled select example"
-                          disabled
+                          @change="storageSelected($event)"
                         >
                           <option
-                            v-for="item in StorageUnit"
+                            v-for="(item,index) in StorageUnit"
                             :key="item.id"
+                            :value="item.storageUnitId"
+                            :selected="index === 0"
                           >
                             {{ item.unit }}
                           </option>
@@ -353,6 +375,7 @@
                             class="form-check-input"
                             v-model="item.active"
                             @change="typeSelected(item)"
+                            :id="item.id"
                           >
                           <label
                             :for="item.id"
@@ -394,7 +417,6 @@ export default {
   },
   data() {
     return {
-      personData: {},
       folderTree: {},
       FolderSettings:{},
       PermissionTypes:[],
@@ -406,20 +428,35 @@ export default {
       editGroup:{
         groupUserRelations: []
       },
-      aUserInfo:{}
+      nowUser:{
+        memberId: "",
+        isGroup: true,
+        allow: [],
+        deny: []
+      },
+      haveUser: false,
+      unitId: "04510aa7-e1f6-409c-8982-f2ac9de45bd9"
     };
   },
   watch:{ 
     folderData(){ 
-      this.personData = this.folderData 
-    }
-  },  
-  
+      this.FolderSettings = this.folderData 
+      this.deleteNull()
+    },
+  },
   methods: { 
-  
+    deleteNull(){
+      Object.keys(this.FolderSettings).forEach(key => {
+            if (this.FolderSettings[key] === null) {
+              this.FolderSettings[key] = '';
+            }
+          });
+        return this.FolderSettings;
+    },
+
     start() {
-      this.getFolderTree(this.personData.folderId)
-      this.getFolderSettings(this.personData.folderId)
+      this.getFolderTree(this.FolderSettings.folderId)
+      this.getFolderSettings(this.FolderSettings.folderId)
       this.getPermissionTypes()
       this.getFileTypes()
       this.getStorageUnit()
@@ -456,26 +493,24 @@ export default {
     },
     permissionSelected(item){
       if(item.active){
-        this.FolderSettings.settings.accessPermissions.push(item.permissionTypeId) 
+        this.nowUser.allow.push(item.permissionTypeId) 
       } else {
-        this.FolderSettings.settings.accessPermissions=this.FolderSettings.settings.accessPermissions.filter(x=>x
-          !==item.permissionTypeId);
+        this.nowUser = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
 
       }
+      console.log('this.nowUser',this.nowUser);
+
     },
     getFileTypes(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileTypes`)
       .then((data) => {  
         this.FileTypes = data.data
-        //  console.log(this.FileTypes);
         this.FileTypes.map(x=>x.active = false);
-        //  console.log(this.FileTypes);
           
       }).catch(() => {
         // console.log(error.response.data);        
       })
     },
-    // todo api為null 等格式確定再改
     typeSelected(item){
       if(item.active){
         this.FolderSettings.settings.push(item.fileTypeId)
@@ -488,11 +523,16 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/Storage/Unit`)
       .then((data) => {  
         this.StorageUnit = data.data
-        //  console.log(this.StorageUnit);
-          
       }).catch(() => {
         // console.log(error.response.data);        
       })
+    },
+    storageSelected(event){
+      console.log(event.target.value)
+      console.log(this.FolderSettings)
+      
+        this.unitId = event.target.value
+      
     },
     //目前資料不完整無法更新資料
     putFolder(){
@@ -501,7 +541,18 @@ export default {
         'Accept':'application/json', 
         'Access-Control-Allow-Origin': '*' 
       }; 
+
+      this.FolderSettings.editor = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+      this.FolderSettings.settings.storage = {};
+      this.FolderSettings.settings.storage.unitId = this.unitId;
+      this.FolderSettings.settings.restrictedFileTypes = [];
+
+
+
       const data = JSON.stringify(this.FolderSettings)
+
+      console.log(data);
+
 
       this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
       data,{ headers: headers }).then((data) => { 
@@ -521,27 +572,40 @@ export default {
         }).catch(error => {
           console.log(error);        
         })
-    },//目前沒有欄位
-    userSelected(item){
-      if(item.active){
-          const data = { "userId": item.userId, "roleId": 1 , "userName": item.userName}
-          // console.log(data);
-
-          this.editGroup.groupUserRelations.push(data)
-          console.log('add normal', this.editGroup);
-            
-        }else{            
-            if(this.editGroup.groupUserRelations.indexOf(item)){ 
-               console.log(this.editGroup.groupUserRelations);
-              //目前remove不掉
-              this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x!==item.userId)
-              console.log(this.editGroup.groupUserRelations);
-       
-            }
-
-            console.log('remove user', this.editGroup);
-        }
     },
+    //點擊針對個人允許行為
+    userCan(item){
+      
+      
+      console.log('usercan',item);
+      this.haveUser = true
+      //點擊新用戶全部取消勾選
+      this.PermissionTypes.map(x=>{
+        this.$set(this.PermissionTypes, x.active, false)
+      });
+
+      this.nowUser.memberId = item.memberId 
+    },
+    userSelected(item){
+          
+      this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId !== item.userId);
+      const data = {  "memberId": item.userId,"userName": item.userName }
+
+      this.editGroup.groupUserRelations.push(data)
+      console.log('目前選擇名單',this.editGroup.groupUserRelations);       
+    },//ok
+    del(user){
+      console.log('user',user);
+
+      this.editGroup.groupUserRelations =this.editGroup.groupUserRelations.filter(x=>x.memberId !== user.memberId);
+    },
+    addToSettings(){
+      console.log(this.nowUser,'this.nowUser');
+
+      this.FolderSettings.settings.accessPermissions.push(this.nowUser)
+      console.log(this.FolderSettings,'新增至設定');
+      
+    }
   },
 };
 </script>

@@ -300,6 +300,7 @@
         :tree-selected="treeSelected"
         @update="selfUpdate"
         :folder-tree="this.folderTree"
+        :now-root-folder="nowRootFolder"
         @back="getSelected"
       />
       <!--  -->
@@ -662,7 +663,7 @@ export default {
     id:"4ddb9c06-5f94-40bc-8def-9382c5a30f4d",//目前所在的資料夾
     rootFolder:[],//sidebar
     nowSelected: {},
-
+    nowRootFolder: "" //還沒點進任何資料夾時為空
   }),
   
   created(){
@@ -743,8 +744,8 @@ export default {
         .then((data) => { 
           this.allFiles = data.data
           this.rootFolder = this.allFiles
-        
-        // console.log(this.rootFolder);        
+
+        console.log(this.rootFolder);        
       
         }).catch(error => {
           console.log(error.response.data);        
@@ -790,7 +791,7 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
       .then((data) => { 
         this.folderTree = data.data
-        console.log(this.folderTree,);
+        console.log(this.folderTree,'folderTree');
       }).catch(() => {
         //  console.log(error.response.data);        
       })
@@ -799,6 +800,17 @@ export default {
     //到kaoh資料夾
     // ${process.env.VUE_APP_FOLDER_APIPATH}/GetItems/${folderId}/${userId}
     getSelected(id){
+      console.log('換路徑囉',id);
+ 
+      //驗證 root
+      const result = this.rootFolder.filter(item => id == item.folderId);      
+      if(result.length != 0){
+        if( 'name' in result[0]){
+          this.nowRootFolder = result[0].name
+        }
+      }
+      
+
       console.log('換路徑囉',id);
 
       if(!id){

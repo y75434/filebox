@@ -57,6 +57,7 @@
               type="text"
               placeholder="Name, Fullname"
               class="form-control "
+              @keyup="getUserTable"
             >
                   
             <button
@@ -135,18 +136,20 @@
               >
                 <th scope="row ">
                   <input
-                    v-model="item.one"
+                    v-model="item.selected"
+                    :name="item.userId"
+                    value="1"
                     class="form-check-input"
                     type="radio"
-                    name="name"
                     @change="userSelected(item)"
                   >
                 </th>
                 <td>
                   <input
-                    v-model="item.two"
+                    v-model="item.selected"
+                    value="2"
+                    :name="item.userId"
                     type="radio"
-                    name="name"
                     class="form-check-input"
                     @change="userSelected(item)"
                   >
@@ -165,7 +168,7 @@
             <!-- <li class="list-group-item  d-flex align-items-center border-0 overflow-scroll" /> -->
             <li 
               v-for="item in editGroup.groupUserRelations"
-              :key="item.userID"
+              :key="item.userId"
               class="list-group-item bg-white  border-0"
             >
               <button
@@ -179,6 +182,7 @@
 
                 {{ item.userName }}
                 <img
+                  @click="del(item)"
                   src="@/assets/images/cmd/del.png"
                   class="icon-20px"
                 >
@@ -241,18 +245,23 @@ export default {
   methods: {
     start() {
       this.getUserTable()
-      
+      this.editGroup.groupUserRelations = []
     },
+     del(user){
+        this.editGroup.groupUserRelations =this.editGroup.groupUserRelations.filter(x=>x.userId !== user.userId);
+
+      },//ok
       addNewGroup () {  
       this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/CreateGroup`,this.group)
         .then((data) => {
-      
-        console.log(data);
+        //接著把選擇名單放入群組
+        this.addUsersToGroup(data.data)
+
       }).catch(error => {
           console.log(error);          
         })
-      },
-      addUsersToGroup() {  
+      },//ok
+      addUsersToGroup(id) {  
         const headers = { 
         'Content-Type': 'application/json', 
         'Accept': 'application/json',
@@ -261,22 +270,18 @@ export default {
 
        
       const data = JSON.stringify({
-        "id": "3ab7ebf0-772a-4b62-8642-2cc2c1ce16d5", 
-        "groupUserRelations":[{
-          "groupID": "3ab7ebf0-772a-4b62-8642-2cc2c1ce16d5", 
-          "userID": "5ac418a0-832e-4854-9bf7-b2676dc75dce", 
-          "roleId": 1 
-        }]
+        "id": id, 
+        "groupUserRelations": this.editGroup.groupUserRelations
 
       })
 
+      console.log(data);
 
-      this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/AddUsersInGroup`,
+
+      this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/AddUsersInGroup`,
       data,{ headers: headers } )
         .then((data) => {
-       
-
-        console.log(data);
+          console.log(data);
       }).catch(error => {
           console.log(error);          
         })
@@ -295,25 +300,14 @@ export default {
       },
      userSelected(item){
         // console.log('317', item);
-        if(item.one){
-          const data = { "groupID": this.group.id, "userID": item.userId, "roleId": 1 , "userName": item.userName}
           // console.log(data);
+          this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId !== item.userId);
+          const data = { "groupID": this.group.id, "userID": item.userId, "roleId": item.selected ,"userName": item.userName}
 
           this.editGroup.groupUserRelations.push(data)
-          console.log('add normal', this.editGroup);
-            
-        } else if (item.two){
-          const data = { "groupID": this.group.id, "userID": item.userId,"roleId": 2 , "userName": item.userName}
-          this.editGroup.groupUserRelations.push(data)
-          console.log('add admin', this.editGroup);
-
-        }else{
-            // this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.splice(index, 1);
-            
-            if(this.editGroup.groupUserRelations.indexOf(item)){ this.editGroup.groupUserRelations.splice(item,1); }
-
-            console.log('remove user', this.editGroup);
-        }
+          console.log('目前選擇名單',this.editGroup.groupUserRelations);
+          
+      
       },
       
 

@@ -954,18 +954,18 @@ methods: {
           })
         break;
       case 3:
-        //目前沒有api
-        // this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}&UserStatus=${this.status}`)
-        //   .then(data => {  
-        //     console.log(data);
-        //     this.useritems = data.data 
-        //     this.count = this.useritems.length  
+        
+        this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders?searchString=${this.searchText}`)
+          .then(data => {  
+            console.log(data);
+            this.folderitems = data.data 
+            this.count = this.folderitems.length  
 
-        //   return this.useritems;
+          return this.useritems;
 
-        //   }).catch(error => {
-        //     console.log(error.response.data);        
-        //   })
+          }).catch(error => {
+            console.log(error.response.data);        
+          })
         break;
 
       case 4: {

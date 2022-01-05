@@ -149,7 +149,8 @@
                       <input
                         class="form-check-input m-0"
                         type="checkbox"
-                        v-model="item.active"
+                        :value="item.userId"
+                        v-model="item.selected"
                         @change="userSelected(item)"
                         :id="item.userName"
                       >
@@ -196,6 +197,7 @@
                   >
                     <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
                       <img
+                        @dblclick="userCan(item)"
                         src="@/assets/images/icon/Union.png"
                         class="icon24px"
                       >
@@ -205,7 +207,11 @@
                       >
                         <!-- <p class="text-dark m-0"> -->
                         {{ item.userName }}
-
+                        <img
+                          @click="del(item)"
+                          src="@/assets/images/cmd/del.png"
+                          class="icon-20px"
+                        >
                       <!-- </p> -->
                       </label>
                     </div>
@@ -287,6 +293,12 @@
                           >
                         </div>
                       </li>
+                      <b-button
+                        class="bg-green border-0"
+                        @click="addToSettings()"
+                      >
+                        add to settings
+                      </b-button>
                     </ul>
                   </div>
                   <div
@@ -323,11 +335,13 @@
                         <select
                           class="form-select w-50"
                           aria-label="Disabled select example"
-                          disabled
+                          @change="storageSelected($event)"
                         >
                           <option
-                            v-for="item in StorageUnit"
+                            v-for="(item,index) in StorageUnit"
                             :key="item.id"
+                            :value="item.storageUnitId"
+                            :selected="index === 0"
                           >
                             {{ item.unit }}
                           </option>
@@ -360,6 +374,7 @@
                           v-for="item in FileTypes"
                           :key="item.id"
                           class="form-check mx-2 "
+                          :id="item.id"
                         >
                           <input
                             type="checkbox"
@@ -413,6 +428,7 @@ export default {
       searchText:"",
       count:0,
       editGroup:{
+        editor:"3fa85f64-5717-4562-b3fc-2c963f66afa6",
         settings:{
           storage: { space: 0, unitId: "3fa85f64-5717-4562-b3fc-2c963f66afa6" },
           accessPermissions:[],
@@ -420,6 +436,13 @@ export default {
         },
         groupUserRelations: []
       },
+      nowUser:{
+        memberId: "",
+        isGroup: true,
+        allow: [],
+        deny: []
+      },
+      haveUser: false,
     };
   },
   methods: {  
@@ -470,6 +493,7 @@ export default {
       data,{ headers: headers })
       .then((data) => { 
         console.log(data);
+        this.editGroup = {}
 
       }).catch(error => {
         console.log(error.response.data);        
@@ -488,14 +512,12 @@ export default {
     },
      permissionSelected(item){
       if(item.active){
-        this.editGroup.settings.accessPermissions.push(item.permissionTypeId) 
-
-
+        this.nowUser.allow.push(item.permissionTypeId) 
       } else {
-        this.editGroup.settings.accessPermissions=this.editGroup.settings.accessPermissions.filter(x=>x
-          !==item.permissionTypeId);
+        this.nowUser = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
 
       }
+      console.log('this.nowUser',this.nowUser);
     },
     getFileTypes(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileTypes`)
@@ -507,7 +529,6 @@ export default {
         // console.log(error.response.data);        
       })
     },
-    // todo api為null 等格式確定再改
     typeSelected(item){
       if(item.active){
         this.editGroup.settings.restrictedFileTypes.push(item.fileTypeId)
@@ -526,53 +547,55 @@ export default {
         // console.log(error.response.data);        
       })
     },
+    storageSelected(event){
+      console.log(event.target.value)
+      
+        this.editGroup.settings.storage.unitId = event.target.value
+      
+    },
     getUserTable () {  
         this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
           .then((data) => {          
-            this.useritems = data.data
-            // console.log(this.useritems);
-            
+            this.useritems = data.data            
             this.count = this.useritems.length       
           }).catch(error => {
             console.log(error);        
           })
-      },//目前沒有欄位
-      userSelected(item){
-        if(item.active){
-            const data = { "userId": item.userId, "roleId": 1 , "userName": item.userName}
-
-            // console.log(data);
-
-            this.editGroup.groupUserRelations.push(data)
-            console.log('add normal', this.editGroup);
-              
-          }else{            
-              if(this.editGroup.groupUserRelations.indexOf(item)){ 
-                console.log(this.editGroup.groupUserRelations);
-                //目前remove不掉
-                this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x!==item.userId)
-                console.log(this.editGroup.groupUserRelations);
-        
-              }
-
-              console.log('remove user', this.editGroup);
-          }
       },
-      //click 個別設定user 允許
+      //點擊針對個人允許行為
       userCan(item){
-        console.log('000');
-        console.log(item.userId);
         
-        const data =
-        { 
-          "memberId": item.userId, 
-          "isGroup": true, 
-          "allow": this.aUserInfo.settings.accessPermissions,
-          "deny": this.aUserInfo.settings.denyPermissions,
-        }
-         console.log(data);
+        
+        console.log('usercan',item);
+        this.haveUser = true
+        //點擊新用戶全部取消勾選
+        this.PermissionTypes.map(x=>{
+          this.$set(this.PermissionTypes, x.active, false)
+        });
 
+        this.nowUser.memberId = item.memberId 
+      },
+      
+      //目前沒有欄位
+      userSelected(item){
+        this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId !== item.userId);
+        const data = {  "memberId": item.userId,"userName": item.userName }
+
+        this.editGroup.groupUserRelations.push(data)
+        console.log('目前選擇名單',this.editGroup.groupUserRelations);   
+      },
+      del(user){
+        console.log('user',user);
+        this.editGroup.groupUserRelations =this.editGroup.groupUserRelations.filter(x=>x.memberId !== user.memberId);
+      },
+      addToSettings(){
+        console.log(this.nowUser,'this.nowUser');
+
+        this.editGroup.settings.accessPermissions.push(this.nowUser)
+        console.log(this.editGroup,'新增至設定');
+        
       }
+      
   },
 };
 </script>

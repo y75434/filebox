@@ -58,13 +58,13 @@
     >
       <option selected />
     </select> -->
-    <div class="input-group float-left">
+    <div class="input-group float-left bg-white">
       <div class="btn-group dropend ">
         <button
           type="button"
           class="btn bg-white "
         >
-          {{ treeSelected }}
+          {{ nowRootFolder }}
         </button>
         <button
           type="button"
@@ -82,7 +82,10 @@
         <ul class="dropdown-menu">
           <!-- Dropdown menu links -->
 
-          <li v-for="item in this.folderTree.subFolders" :key="item.id">
+          <li
+            v-for="item in this.folderTree.subFolders"
+            :key="item.id"
+          >
             <a
               class="dropdown-item"
               href="#"
@@ -90,7 +93,50 @@
           </li>
         </ul>
       </div>
+
+
+      <!-- 子層  this.folderTree.subFolders != null-->
+      <div v-if="treeSelected != nowRootFolder">
+        <div class="btn-group dropend ">
+          <button
+            type="button"
+            class="btn bg-white "
+          >
+            {{ treeSelected }}
+          </button>
+          <button
+            type="button"
+            class="btn btn-white dropdown-toggle dropdown-toggle-split"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <span class="visually-hidden">Toggle Dropright</span>
+          </button>
+
+          <ul
+            v-if="this.folderTree.subFolders != null"
+            class="dropdown-menu"
+          >
+            <!-- Dropdown menu links -->
+
+            <li
+              v-for="item in this.folderTree.subFolders"
+              :key="item.id"
+            >
+              <a
+                class="dropdown-item"
+                href="#"
+              >{{ item.name }}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
+
+    
+
+
+
 
     <button class="dqbz-previous">
       <img
@@ -117,14 +163,15 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
 
 
 export default {
   name: "Search",
   props: { 
     treeSelected: { type: String, default: "" },//父層
-    folderTree:{ type: Object, default() { }}
+    folderTree:{ type: Object, default() { }},
+    nowRootFolder: { type: String, default: "" },//root
+
   },
   data() {
     return {
@@ -142,7 +189,6 @@ export default {
     } 
   },
   methods: {
-   ...mapMutations(["setUserId"]),
 
    update() {
     this.$emit('update', this.searchQuery);   
@@ -151,7 +197,6 @@ export default {
   
     //返回上一層
     back(){
-      this.setUserId(Id);
       this.$emit('back', this.nowfolder);
 
     }

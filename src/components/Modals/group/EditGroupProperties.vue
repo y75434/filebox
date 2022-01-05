@@ -58,6 +58,7 @@
               type="text"
               placeholder="Name, Fullname"
               class="form-control "
+              @keyup="getUserTable"
             >
                   
             <button
@@ -135,8 +136,7 @@
               >
                 <th scope="row">
                   <input
-                    v-model="item.selected
-                    "
+                    v-model="item.selected"
                     @change="userSelected(item)"
                     class="form-check-input"
                     type="radio"
@@ -315,7 +315,7 @@ export default {
           })
       },
       userSelected(item){
-        console.log('317', item);
+        // console.log('317', item);
         this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId !== item.userId);
         const data = { "groupID": this.group.id, "userId": item.userId, "roleId": item.selected ,"userName": item.userName}
         this.editGroup.groupUserRelations.push(data)
