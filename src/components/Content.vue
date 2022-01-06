@@ -937,7 +937,7 @@ methods: {
             console.log(data);
             this.useritems = data.data 
             this.count = this.useritems.length  
-          return this.useritems;
+          // return this.useritems;
           }).catch(error => {
             console.log(error.response.data);        
           })
@@ -947,7 +947,7 @@ methods: {
           .then(data => {  
             this.groupitems = data.data 
             this.count = this.groupitems.length  
-          return this.useritems;
+          // return this.useritems;
 
           }).catch(error => {
             console.log(error.response.data);        
@@ -961,7 +961,7 @@ methods: {
             this.folderitems = data.data 
             this.count = this.folderitems.length  
 
-          return this.useritems;
+          // return this.useritems;
 
           }).catch(error => {
             console.log(error.response.data);        

@@ -86,7 +86,7 @@ import RequestEmailSent from '../components/Modals/login/RequestEmailSent.vue';
 import ResetNewPassword from '../components/Modals/login/ResetNewPassword.vue';
 import ResetSuccess from '../components/Modals/login/ResetSuccess.vue';
 
-
+// import { mapActions } from "vuex";
 
 export default {
 	name: 'Login',
@@ -118,12 +118,8 @@ export default {
 
       this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/LoginADUser`,
       data,{ headers: headers }).then((data) => {
-        // let res = res.data;
-        // let token = "Hello JWT";//res.result.token;
-        // this.$store.dispatch('auth/setAuth', {
-        //   "token": token,
-        //   "isLogin": true
-        // });
+     
+        
 
         
         if(data.data.success == true){
@@ -131,6 +127,10 @@ export default {
             username: "",
             password: ""
           }
+
+        this.$store.dispatch('setAuth', data.data.success);
+        // this.$store.dispatch('setAuth', data.data.success);
+
           this.$router.push('/');
         }else{
           this.wrong = true

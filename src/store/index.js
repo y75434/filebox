@@ -8,15 +8,14 @@ export default new Vuex.Store({
   namescaped: true,
   state: {
     currentUser: null,
-    fatherFolder: "", //記錄父層資料夾id
     isAdmin: false,
-    token: "", // 存放jwt token
+    // token: "", // 存放jwt token
     isLogin: false
   },
   mutations: {
-      SET_AUTH(state, options){
-        state.token = options.token
-        state.isLogin = options.isLogin
+      SET_AUTH(state, isLogin){
+        // state.token = options.token
+        state.isLogin = isLogin
       },
      SET_USER (state, user) {
         state.currentUser = user
@@ -26,11 +25,8 @@ export default new Vuex.Store({
       },
   },
   actions: {
-    setAuth(context, options){
-      context.commit('SET_AUTH', {
-        token: options.token,
-        isLogin: options.isLogin
-      })
+    setAuth(state,isLogin){
+      state.commit('SET_AUTH', isLogin)
     },
     setUser (state, user) {
       state.commit('SET_USER', user)
@@ -42,6 +38,8 @@ export default new Vuex.Store({
   getters: {
     currentUser: state => state.currentUser,
     isAdmin: state => state.isAdmin,
+    isLogin: state => state.isLogin,
+
   },
   
   plugins: [createPersistedState({
