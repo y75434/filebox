@@ -214,7 +214,7 @@
                   class="form-check-input"
                   type="checkbox"
                   v-model="item.active"
-                  @change="typeSelected(item)"
+                  @change="userSelected(item)"
                 >
               </th>
               <td>{{ item.firstName }}</td>
@@ -267,7 +267,7 @@ props: { title: { type: String, default: 'Import User' },
     this.getUser()
    },
    methods: {
-     typeSelected(item){
+     userSelected(item){
       if(item.active){
         this.addUser.push(item.userId)
         console.log('import 274',this.addUser);
@@ -279,8 +279,23 @@ props: { title: { type: String, default: 'Import User' },
       },
      // 目前不能用
      importUser () {  
-      this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/SaveADUsersToDB`)
-        .then((data) => {
+
+      const headers = { 
+        'Content-Type': 'application/json', 
+        'Accept':'application/json', 
+        'Access-Control-Allow-Origin': '*' 
+      }; 
+
+      
+      const data = JSON.stringify({"userIDs": this.addUser}
+)
+
+      console.log(data);
+
+
+
+      this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/SaveADUsersToDB`,
+      data,{ headers: headers }).then((data) => {
 
         console.log(data);
       }).catch(error => {
@@ -288,9 +303,7 @@ props: { title: { type: String, default: 'Import User' },
         })
       },
       getUser(){
-        //description,telephone,loginCount,mustChangePasswordOnNextLogin,cannotChangePassword,passwordNeverExpires
-        // and unlockAccount are not imported from AD domain.
-
+       
         this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/AD/GetUsers?searchString=${this.searchText}`)
         .then((data) => {  
           this.allUser = data.data

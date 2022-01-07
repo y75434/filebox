@@ -95,7 +95,9 @@ export default {
             const data = JSON.stringify({
               "id": this.personData.folderId,
               "name": this.personData.name,
-              "editor": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+              "editor":  this.$store.getters.userId,
+              "editorName":  this.$store.getters.currentUser
+
             })
           //editor之後改
 

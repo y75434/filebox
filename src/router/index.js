@@ -6,7 +6,10 @@ import store from '@/store/index.js';
 Vue.use(VueRouter)
 
 
-
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+};
 
 const router = new VueRouter({
   routes:[
@@ -44,7 +47,11 @@ const router = new VueRouter({
       component: () => import('../views/Test.vue')
   
     },
-  
+    // {
+    //   path: '*',
+    //   redirect: '/',
+    //   hidden: true
+    // }
   ]
 })
 
@@ -74,3 +81,5 @@ router.beforeEach(function (to, from, next) {
 })
 
 export default router;
+
+

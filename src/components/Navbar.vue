@@ -60,8 +60,7 @@
           </ul>
         </li>
       </ul>
-      <router-link
-        to="/login"
+      <li
         class="border-start px-1 nav-item d-flex align-items-center text-decoration-none"
       >
         <!-- <li class="border-start px-1 nav-item d-flex align-items-center"> -->
@@ -70,26 +69,25 @@
           class="icon24px"
         >
         <a
+          @click="logout"
           class="nav-link py-0 px-1 "
           aria-current="page"
           href="#"
         >{{ $t("GENERAL.LOGOUT") }}</a>
       <!-- </li> -->
-      </router-link>
+      </li>
     </div>
     <UserSetting />
   </div>
 </template>
 
 <script>
-import UserSetting from
-'../components/Modals/UserSetting.vue';
+import UserSetting from '../components/Modals/UserSetting.vue';
 
 export default {
 name: "Navbar",
   components: {
-    UserSetting
-
+    UserSetting,
 
 
   },
@@ -104,7 +102,22 @@ name: "Navbar",
   }),
   methods: {
     usersetting(){ this.$bvModal.show('UserSetting'); },
+ 
 
+    logout(){
+
+    // this.$router.push('/login');
+
+    // this.$store.dispatch('setToken', "");
+
+    this.$router.push('/login').catch(err => {err})
+
+    this.$store.dispatch('setAuth', false);
+ 
+      // this.$router.push('/login', () => {}, (e) => {
+      //     console.log('输出报错',e) 
+      // })
+    }
   }
 
 

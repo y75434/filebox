@@ -10,9 +10,8 @@
     ok-variant="primary"
     body-bg-variant="bgmodal"
     footer-bg-variant="bgmodal"
-    @ok="changePassword"
   >
-    <div class="modal-popout-bg p-3">
+    <validation-observer class="modal-popout-bg p-3">
       <h3 class="text-center dark-blue">
         {{ $t("GENERAL.RESETNEWPASSWORD") }}
       </h3>
@@ -23,9 +22,10 @@
           class="form-label"
         >username</label>
         <input
+          disabled
           type="username"
           class="form-control"
-          v-model="username"
+          v-model="this.$store.getters.currentUser"
         >
       </div>
 
@@ -33,7 +33,7 @@
         <label
           for="oldpassword"
           class="form-label"
-        >oldpassword</label>
+        >old password</label>
         <input
           type="password"
           class="form-control"
@@ -43,28 +43,41 @@
 
 
       <div class="mb-3">
-        <label
-          for="Newpassword"
-          class="form-label"
-        >{{ $t("GENERAL.NEWPASSWORD") }}</label>
-        <input
-          type="password"
-          class="form-control"
-          v-model="newPassword"
+        <validation-provider
+          v-slot="{ errors,classes}"
+          :rules="{ required: true, regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).*$/, min:8,}"
+          vid="password"
         >
+          <label
+            for="Newpassword"
+            class="form-label"
+          >{{ $t("GENERAL.NEWPASSWORD") }}</label>
+          <input
+            type="password"
+            class="form-control"
+            v-model="newPassword"
+            :class="classes"
+          >
+          <span class="text-danger">{{ errors[0] }}</span>
+        </validation-provider>
       </div>
 
-      
+      <p
+        v-if="this.status != ''"
+        class="text-danger"
+      >
+        {{ status }}
+      </p>
 
-      <div class="w-100 d-flex justify-content-center mt-5">
+      <!-- <div class="w-100 d-flex justify-content-center mt-5">
         <button
           type="button"
           class="modal-btn px-5 btn  justify-content-center d-flex btn-lg"
         >
           {{ $t("GENERAL.UPDATEPASSWORD") }}
         </button>
-      </div>
-    </div>
+      </div> -->
+    </validation-observer>
 
     <template
       #modal-cancel
@@ -75,7 +88,27 @@
     </template>
 
     <template #modal-ok>
-      {{ $t("GENERAL.OK") }}
+      {{ $t("GENERAL.UPDATEPASSWORD") }}
+    </template>
+
+    <template #modal-footer>
+      <div class="w-100 justify-content-center d-flex">
+        <button
+          @click="cancel"
+          type="button"
+          class="sm-btn cancel-btn mx-3 btn justify-content-center d-flex"
+        >
+          {{ $t("GENERAL.CANCEL") }}
+        </button>
+
+        <button
+          @click="changePassword"
+          type="button"
+          class="sm-btn btn btn-danger text-white justify-content-center d-flex"
+        >
+          {{ $t("GENERAL.UPDATEPASSWORD") }}
+        </button>
+      </div>
     </template>
   </b-modal>
 </template>
@@ -87,12 +120,13 @@ export default {
 
   data() {
     return {
-      username: "",
       oldPassword: "",
-      newPassword: ""
-
+      newPassword: "",
+      status: ""
     };
   },
+  
+
   methods: {
    changePassword(){
      
@@ -104,22 +138,35 @@ export default {
         
       const data = JSON.stringify(
         {
-          username: this.username,
+          username: this.$store.getters.currentUser,
           oldPassword: this.oldPassword,
           newPassword: this.newPassword
         })
        
-      this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/ADUpdateUserPassword`,
+      this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/AD/ADUpdateUserPassword`,
       data,{ headers: headers })
         .then((data) => {
          
+         this.status = data.data.message
+
+         if(data.data.success){
+            this.cancel();
+
+         }
 
         console.log(data);
       }).catch(error => {
           console.log(error);          
         })
-      
+
+
     },
+    cancel() { 
+        this.oldPassword = ""
+        this.newPassword = ""
+        this.status = ""
+        this.$bvModal.hide('ResetNewPassword'); 
+      },
   },
 };
 </script>

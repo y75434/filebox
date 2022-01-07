@@ -102,11 +102,25 @@ export default {
       password: "",
       ip: ""
     },
-    wrong: false
+    wrong: false,
+    userId: ""
   }),
   methods:{
     ResetNewPassword(){ this.$bvModal.show('ResetNewPassword'); },
+    getUserTable (name) {
 
+    this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers`)
+    .then((data) => {
+      this.useritems = data.data
+      const ans = this.useritems.filter(item=>item.userName == name)[0];
+      this.userId = ans.userId;
+      this.$store.dispatch('setUserId', this.userId);
+
+      }).catch(error => {
+      console.log(error);
+      })
+
+    },
     login(){
       const headers = { 
         'Content-Type': 'application/json', 
@@ -123,14 +137,20 @@ export default {
 
         
         if(data.data.success == true){
+          
+
+        this.$store.dispatch('setAuth', data.data.success);
+        this.$store.dispatch('setUser', this.loginForm.username);
+        this.getUserTable(this.loginForm.username)
+
+        // this.$store.dispatch('setToken', res.token);
+
+
           this.loginForm = {
             username: "",
             password: ""
           }
-
-        this.$store.dispatch('setAuth', data.data.success);
-        // this.$store.dispatch('setAuth', data.data.success);
-
+          
           this.$router.push('/');
         }else{
           this.wrong = true

@@ -566,6 +566,12 @@
               class="icon24px"
             >{{ $t("GENERAL.ADDFOLDER") }}
           </li>
+          <li @click="download(nowSelected)">
+            <img
+              src="@/assets/images/cmd/download@2x-1.png"
+              class="icon24px"
+            >{{ $t("HOME.DOWNLOAD") }}
+          </li>
           <li @click="DeleteFolder">
             <img
               src="@/assets/images/cmd/delete@2x-2.png"
@@ -612,7 +618,6 @@ import RenameItem from '../components/Modals/home/RenameItem.vue';
 import ManagePublicLink from '../components/Modals/home/ManagePublicLink.vue';
 import AddEditPublicLink from'@/components/Modals/link/AddEditPublicLink.vue';
 import ContextMenu from '@/components/ContextMenu.vue';
-
 
 export default {
   name: "Home",
@@ -663,7 +668,8 @@ export default {
     id:"4ddb9c06-5f94-40bc-8def-9382c5a30f4d",//目前所在的資料夾
     rootFolder:[],//sidebar
     nowSelected: {},
-    nowRootFolder: "" //還沒點進任何資料夾時為空
+    nowRootFolder: "", //還沒點進任何資料夾時為空
+    fileType: 0
   }),
   
   created(){
@@ -700,7 +706,7 @@ export default {
      //hover一個資料 並將資料傳遞子層 
     rowSelected(items) {
       this.nowSelected = items
-      // console.log(this.nowSelected);     
+      console.log(this.nowSelected);     
     },
     passRoute(e,item){
       const buttonValue = e.target.value;   
@@ -745,38 +751,85 @@ export default {
           this.allFiles = data.data
           this.rootFolder = this.allFiles
 
-        console.log(this.rootFolder);        
+        // console.log(this.rootFolder);        
       
         }).catch(error => {
           console.log(error.response.data);        
         })
-    },
-    download() {
+    },//success
+    download(item) {
+       
+         if(item.extension){
+          this.fileType = 1
+        }else{
+          this.fileType = 0
 
-      // const data =  JSON.stringify(
-      //   {
-      //     "items":[
-      //       {
-      //         "id": this.file.id,
-      //         "type": this.file.type
-      //       }
-      //     ],
-      //     "editor": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-      //   }
-      // );
+        }
+
+       
+      const data =  JSON.stringify(
+        {
+          "items":[
+            {
+              "id": item.id,
+              "type": this.fileType
+            }
+          ],
+          "user":  this.$store.getters.userId
+        }
+      );
       
 
-
-      // this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`,
-      // data)
-      // .then((data) => { 
+      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`,
+      data,{ headers: window.headers })
+      .then((data) => { 
 
      
-      //   console.log(data);
+        console.log(data);
 
-      // }).catch(error => {
-      //   console.log(error.response.data);        
-      // })
+      }).catch(error => {
+        console.log(error.response.data);        
+      })
+
+
+
+
+      
+     
+    },
+    copy(item) {
+      const headers = { 
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json',
+        "Access-Control-Allow-Origin": '*' 
+        };
+
+     
+      const data =  JSON.stringify(
+        {
+          "items":[
+            {
+              "id": item.id,
+              "type": this.fileType
+            }
+          ],
+          "editor":  this.$store.getters.userId
+        }
+      );
+      
+      console.log(data);
+
+
+      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`,
+      data,{ headers: headers })
+      .then((data) => { 
+
+     
+        console.log(data);
+
+      }).catch(error => {
+        console.log(error.response.data);        
+      })
 
 
 
@@ -810,9 +863,6 @@ export default {
         }
       }
       
-
-      console.log('換路徑囉',id);
-
       if(!id){
         id = this.id
         //把預設路經歸0 避免跳錯

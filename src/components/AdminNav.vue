@@ -71,14 +71,11 @@
           src="@/assets/images/cmd/logout@2x.png"
           class="icon24px"
         >
-        <router-link
-          :to="{ path: '/login' }"
-          class="text-decoration-none"
-        >
-          <a
-            class="nav-link py-0 px-1"
-          >{{ $t("GENERAL.LOGOUT") }}</a>
-        </router-link>
+        
+        <a
+          @click="logout"
+          class="nav-link py-0 px-1 text-decoration-none"
+        >{{ $t("GENERAL.LOGOUT") }}</a>
       </li>
     </div>
     <UserSetting />
@@ -92,23 +89,23 @@ export default {
   name: "AdminNav",
   components: {
     UserSetting
-
-
-
   },
   data: () => ({
-    
-      
-     
-      
-      
-      
 
   }),
   methods: {
     usersetting(){ this.$bvModal.show('UserSetting'); },
+    logout(){
+    // this.$router.push('/login');
+    // this.$store.dispatch('setToken', "");
+
+    this.$router.push('/login').catch(err => {err})
+
+    // this.$store.dispatch('setAuth', false);
 
   }
+  },
+  
 };
 </script>
 

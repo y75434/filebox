@@ -16,6 +16,7 @@ import 'splitpanes/dist/splitpanes.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import $ from 'jquery';
 import picture from '@/common/images';
+import headers from '@/apis/utils.js';
 
 
 Object.keys(rules).forEach((rule) => {
@@ -28,6 +29,7 @@ localize('zh_TW', TW)
 window.$ = $;
 
 window.picture = picture;
+window.headers = headers;
 
 Vue.component('ValidationObserver', ValidationObserver)
 Vue.component('ValidationProvider', ValidationProvider)
@@ -46,5 +48,6 @@ new Vue({
   store,
   i18n,
   picture,
+  headers,
   render: h => h(App)
 }).$mount('#app')

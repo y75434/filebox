@@ -33,8 +33,12 @@
           <option data-lang="tw">
             繁體中文
           </option> -->
-            <option value="en">English</option>
-            <option value="tw">繁體中文</option>
+            <option value="en">
+              English
+            </option>
+            <option value="tw">
+              繁體中文
+            </option>
           </select>
         </div>
             
@@ -48,10 +52,10 @@
               class="d-flex justify-content-between mb-5"
             >
               <span class="text-dark">
-                {{ $t("GENERAL.PASSWORD") }}
+                currentUser
               </span>
               <p class="mx-5 m-0 text-gray">
-                ********
+                {{ this.$store.getters.currentUser }}
               </p>
             </div>
             
@@ -67,11 +71,13 @@
             </div>
           </div>
           <a
+            @click="ResetNewPassword()"
             href="#"
             class="text-decoration-none ml-auto text-primary"
           >{{ $t("GENERAL.CHANGEPASSWORD") }}</a>
         </div>
       </div>
+      <ResetNewPassword />
     </form>
     <template
       #modal-cancel
@@ -89,34 +95,44 @@
 </template>
 
 <script>
+import ResetNewPassword from '@/components/Modals/login/ResetNewPassword.vue';
+
+
 export default {
-name: "UserSetting",
-data() {
-     return {
+  name: "UserSetting",
+  components: {
+    ResetNewPassword
+  },
+  data() {
+    return {
       showModal: false,
       locale: localStorage.getItem("locale") || "en"
-     }
-   },
-   created() {
+    }
+  },
+  created() {
       this.$i18n.locale = this.locale;
       console.log(this.$i18n.locale);
       
     },
-   methods: {
-     show() {
+  methods: {
+    show() {
       this.showModal = true
-     },
-     hide(){
+    },
+    hide(){
       this.showModal = false
-     },
-     changeLocale(){
-       this.$i18n.locale = this.locale;
-       localStorage.setItem('locale', this.locale)
-     },
-     handleSubmit(){
-       this.showModal = false
-     }
-   }
+    },
+    changeLocale(){
+      this.$i18n.locale = this.locale;
+      localStorage.setItem('locale', this.locale)
+    },
+    handleSubmit(){
+      this.showModal = false
+    },
+     ResetNewPassword(){ 
+       this.$bvModal.show('ResetNewPassword');
+    },
+      
+  }
 }
 </script>
 
