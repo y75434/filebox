@@ -178,6 +178,12 @@
                 class="table-btn  d-flex align-items-center"
               >
                 <img
+                  v-if="item.roleId == 1"
+                  src="@/assets/images/icon/Union.png"
+                  class="icon-16px"
+                >
+                <img
+                  v-else
                   src="@/assets/images/icon/admin-solid.png"
                   class="icon-16px"
                 >
@@ -324,7 +330,6 @@ export default {
       getGroupUsers(){
         this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroupUsers?groupID=${this.editGroup.id}`)
           .then((data) => {  
-            //Groups/GetGroupUsers api目前沒 roleid 無法編輯群組成員        
             this.groupUsers = data.data
             // console.log(this.groupUsers);
             

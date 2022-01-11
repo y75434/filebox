@@ -536,18 +536,11 @@ export default {
     },
     //目前資料不完整無法更新資料
     putFolder(){
-      const headers = { 
-        'Content-Type': 'application/json', 
-        'Accept':'application/json', 
-        'Access-Control-Allow-Origin': '*' 
-      }; 
-
-      this.FolderSettings.editor = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
+    
+      this.FolderSettings.editor = this.$store.getters.currentUser;
       this.FolderSettings.settings.storage = {};
       this.FolderSettings.settings.storage.unitId = this.unitId;
       this.FolderSettings.settings.restrictedFileTypes = [];
-
-
 
       const data = JSON.stringify(this.FolderSettings)
 
@@ -555,7 +548,7 @@ export default {
 
 
       this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
-      data,{ headers: headers }).then((data) => { 
+      data,{  headers: window.headers }).then((data) => { 
         console.log(data);
 
       }).catch(error => {

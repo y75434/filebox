@@ -23,9 +23,7 @@
         v-model="name"
       >
     </div>
-    <p class="text-dark">
-      {{ parentFolderId }}
-    </p>
+    
 
     <template
       #modal-cancel
@@ -46,29 +44,24 @@ export default {
   name: "CreateFolder",
   props: { 
     title: { type: String, default: "Create Folder" },
-    parent: { type: String , default: ""}
   },
 
   data() {
     return {
       name: "",
-      parentFolderId: this.parent
     };
   },
  
   methods: {
     //success
    postFolder(){
-      const headers = { 
-        'Content-Type': 'application/json', 
-        'Accept': 'application/json',
-        "Access-Control-Allow-Origin": '*' 
-      };
-
+      
       const data = JSON.stringify(
-        { "parentFolderId": this.parentFolderId, 
+        { 
+          "parentFolderId": this.$store.getters.nowFolderId, 
           "name": this.name,
-          "uploadedBy": "3fa85f64-5717-4562-b3fc-2c963f66afa6" //之後改
+          "uploadedBy": this.$store.getters.userId,
+          "uploaderName":  this.$store.getters.currentUser
         }
 
       )
@@ -76,7 +69,7 @@ export default {
       
 
       this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CreateFolder`,
-      data,{ headers: headers })
+      data,{ headers: window.headers })
       .then((data) => { 
         console.log(data);
 

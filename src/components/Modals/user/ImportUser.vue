@@ -274,28 +274,17 @@ props: { title: { type: String, default: 'Import User' },
       } else {
         this.addUser = this.addUser.filter(x=>x
           !==item.userId);
-
       }
-      },
+    },
      // 目前不能用
      importUser () {  
-
-      const headers = { 
-        'Content-Type': 'application/json', 
-        'Accept':'application/json', 
-        'Access-Control-Allow-Origin': '*' 
-      }; 
-
       
-      const data = JSON.stringify({"userIDs": this.addUser}
-)
+      const data = JSON.stringify({"userIDs": this.addUser})
 
       console.log(data);
 
-
-
       this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/SaveADUsersToDB`,
-      data,{ headers: headers }).then((data) => {
+      data,{  headers: window.headers }).then((data) => {
 
         console.log(data);
       }).catch(error => {

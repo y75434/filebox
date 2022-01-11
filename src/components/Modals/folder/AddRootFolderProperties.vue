@@ -428,7 +428,7 @@ export default {
       searchText:"",
       count:0,
       editGroup:{
-        editor:"3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        editor: this.$store.getters.currentUser,
         settings:{
           storage: { space: 0, unitId: "3fa85f64-5717-4562-b3fc-2c963f66afa6" },
           accessPermissions:[],
@@ -454,43 +454,12 @@ export default {
     },
     //ok
     postFolder(){
-      const headers = { 
-        'Content-Type': 'application/json', 
-        'Accept': 'application/json',
-        "Access-Control-Allow-Origin": '*' 
-        };
+      
       const data = JSON.stringify(this.editGroup)
       console.log(data);
 
-      // {
-      //   "name": "string",
-      //   "description": "string",
-      //   "uploadedBy": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      //   "settings": {
-      //     "storage": {
-      //       "space": 0,
-      //       "unitId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-      //     },
-      //     "restrictedFileTypes": [
-      //       "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-      //     ],
-      //     "accessPermissions": [
-      //       {
-      //         "memberId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      //         "isGroup": true,
-      //         "allow": [
-      //           "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-      //         ],
-      //         "deny": [
-      //           "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-      //         ]
-      //       }
-      //     ]
-      //   }
-      // }
-
       this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CreateRootFolder`,
-      data,{ headers: headers })
+      data,{ headers:  window.headers })
       .then((data) => { 
         console.log(data);
         this.editGroup = {}

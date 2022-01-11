@@ -86,7 +86,6 @@ import RequestEmailSent from '../components/Modals/login/RequestEmailSent.vue';
 import ResetNewPassword from '../components/Modals/login/ResetNewPassword.vue';
 import ResetSuccess from '../components/Modals/login/ResetSuccess.vue';
 
-// import { mapActions } from "vuex";
 
 export default {
 	name: 'Login',
@@ -122,20 +121,11 @@ export default {
 
     },
     login(){
-      const headers = { 
-        'Content-Type': 'application/json', 
-        'Accept': 'application/json',
-        "Access-Control-Allow-Origin": '*' 
-        };
-
       const data = JSON.stringify({username:this.loginForm.username,password:this.loginForm.password})
 
       this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/LoginADUser`,
-      data,{ headers: headers }).then((data) => {
+      data,{ headers: window.headers }).then((data) => {
      
-        
-
-        
         if(data.data.success == true){
           
 
@@ -156,7 +146,6 @@ export default {
           this.wrong = true
         }
         
-
         console.log(data);
       }).catch(error => {
           console.log(error);          
@@ -164,25 +153,16 @@ export default {
       
     },
     connectad(){
-     
-     const headers = { 
-        'Content-Type': 'application/json', 
-        'Accept': 'application/json',
-        "Access-Control-Allow-Origin": '*' 
-        };
-        
-      const data = JSON.stringify(
-        {
-          account:this.account,
-          password:this.password,
-          ip:this.ip
-        })
+      const data = JSON.stringify({
+        account:this.account,
+        password:this.password,
+        ip:this.ip
+      })
        
       this.axios.post(`${process.env.APIPATH}api/AD/connectDynamicAD`,
-      data,{ headers: headers })
+      data,{ headers: window.headers })
         .then((data) => {
          
-
         console.log(data);
       }).catch(error => {
           console.log(error);          

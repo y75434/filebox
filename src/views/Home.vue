@@ -309,6 +309,10 @@
       <!-- main -->
       <div
         class="dqbz-main"
+        @mousedown="mouseDown($event)"
+        @mousemove="mouseMove($event)"
+        @mouseup="mouseUp($event)"
+        style="background:white;position: relative;width:100vw;height:100vh"
       >
         <Splitpanes class="h-100">
           <Pane
@@ -503,7 +507,7 @@
               </div> -->
             </div>
           </Pane>
-          <Pane
+          <Pane         
             :size="100 - paneSize"
             class="d-flex align-items-start justify-content-start"
           >
@@ -524,7 +528,8 @@
             </div>
 
             <label
-              class="d-flex flex-column position-relative mx-2 my-2"
+              ref="sel"
+              class="d-flex flex-column  mx-2 my-2"
               :key="item.id"
               v-for="item in resultQuery"
               @dblclick="detectClick(item)"
@@ -553,6 +558,11 @@
                 >.{{ item.extension }}</span>
               </h6>     
             </label>
+            <div
+              ref="div"
+              style="border: 1px solid #33CCFF;background:#33CCFF;opacity:0.5;position:absolute;z-index:999"
+              hidden="0"
+            />
           </Pane>
         </Splitpanes>
       </div>
@@ -565,6 +575,18 @@
               src="@/assets/images/icon/user setting@2x.png"
               class="icon24px"
             >{{ $t("GENERAL.ADDFOLDER") }}
+          </li>
+          <li @click="copyFile(nowSelected)">
+            <img
+              src="@/assets/images/cmd/download@2x-1.png"
+              class="icon24px"
+            >{{ $t("HOME.COPY") }}
+          </li>
+          <li @click="cutFile(nowSelected)">
+            <img
+              src="@/assets/images/cmd/download@2x-1.png"
+              class="icon24px"
+            >{{ $t("HOME.CUT") }}
           </li>
           <li @click="download(nowSelected)">
             <img
@@ -583,10 +605,7 @@
 
 
       <UploadFiles ref="UploadFiles" />
-      <create-folder
-        ref="CreateFolder"
-        :parent="id"
-      />
+      <create-folder ref="CreateFolder" />
       <rename-item ref="RenameItem" />
       <delete-folder
         ref="DeleteFolder"
@@ -665,11 +684,12 @@ export default {
     folderTree: {},
     folderitems: [],
     render: {},
-    id:"4ddb9c06-5f94-40bc-8def-9382c5a30f4d",//目前所在的資料夾
     rootFolder:[],//sidebar
     nowSelected: {},
     nowRootFolder: "", //還沒點進任何資料夾時為空
-    fileType: 0
+    fileType: 0,
+    x1 : 0, y1 : 0, x2 :0, y2 : 0,
+
   }),
   
   created(){
@@ -681,11 +701,12 @@ export default {
       return x;
     })
      this.getFolderTable()
+     this.$store.dispatch('setNowFolderId', null);
+
   },
   computed:{
     //數checkbox勾選幾個
-    selectedLength(){ 
-      
+    selectedLength(){      
       return Object.keys(this.resultQuery).filter(key =>
           this.resultQuery[key].ischecked === true).length
     },
@@ -751,21 +772,22 @@ export default {
           this.allFiles = data.data
           this.rootFolder = this.allFiles
 
-        // console.log(this.rootFolder);        
-      
+        this.allFiles.map(item=>{
+          const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
+          item.pic = datapic.pic;
+          return item
+          });        
         }).catch(error => {
           console.log(error.response.data);        
         })
     },//success
-    download(item) {
-       
+    download(item) {    
          if(item.extension){
           this.fileType = 1
         }else{
           this.fileType = 0
 
         }
-
        
       const data =  JSON.stringify(
         {
@@ -779,31 +801,21 @@ export default {
         }
       );
       
-
       this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`,
       data,{ headers: window.headers })
       .then((data) => { 
-
-     
         console.log(data);
-
       }).catch(error => {
         console.log(error.response.data);        
-      })
-
-
-
-
-      
-     
+      })   
     },
-    copy(item) {
-      const headers = { 
-        'Content-Type': 'application/json', 
-        'Accept': 'application/json',
-        "Access-Control-Allow-Origin": '*' 
-        };
+    copyFile(item) {
+       if(item.extension){
+          this.fileType = 1
+        }else{
+          this.fileType = 0
 
+        }
      
       const data =  JSON.stringify(
         {
@@ -813,31 +825,60 @@ export default {
               "type": this.fileType
             }
           ],
-          "editor":  this.$store.getters.userId
+          "editor":  this.$store.getters.userId,
+          "editorName": this.$store.getters.currentUser,
+          "destination": this.$store.getters.nowFolderId
         }
       );
       
       console.log(data);
 
 
-      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`,
-      data,{ headers: headers })
-      .then((data) => { 
-
-     
+      this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CopyAndPaste`,
+      data,{  headers: window.headers })
+      .then((data) => {  
         console.log(data);
 
       }).catch(error => {
         console.log(error.response.data);        
       })
-
-
-
-
-      
-     
+  
     },
-   
+    cutFile(item) {
+       if(item.extension){
+          this.fileType = 1
+        }else{
+          this.fileType = 0
+
+        }
+     
+      const data =  JSON.stringify(
+        {
+          "items":[
+            {
+              "id": item.id,
+              "type": this.fileType
+            }
+          ],
+          "editor":  this.$store.getters.userId,
+          "editorName": this.$store.getters.currentUser,
+          "destination": this.$store.getters.nowFolderId
+        }
+      );
+      
+      console.log(data);
+
+
+      this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CutAndPaste`,
+      data,{  headers: window.headers })
+      .then((data) => {  
+        console.log(data);
+
+      }).catch(error => {
+        console.log(error.response.data);        
+      })
+  
+    },
     //點擊某資料夾在傳資料到search
     //回上頁 如果是root folder 就無法按上一層
      getFolderTree(id){
@@ -854,7 +895,10 @@ export default {
     // ${process.env.VUE_APP_FOLDER_APIPATH}/GetItems/${folderId}/${userId}
     getSelected(id){
       console.log('換路徑囉',id);
- 
+      
+      this.$store.dispatch('setNowFolderId', id);
+
+
       //驗證 root
       const result = this.rootFolder.filter(item => id == item.folderId);      
       if(result.length != 0){
@@ -870,7 +914,7 @@ export default {
         console.log('預設路徑', );
         
       }
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/GetItems/${id}/3fa85f64-5717-4562-b3fc-2c963f66afa6`)
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/GetItems/${id}/${this.$store.getters.userId}`)
         .then((data) => { 
           this.allFiles = data.data
           //顯示路徑
@@ -912,11 +956,82 @@ export default {
         }
     },
  
-        
-         
-    
+    selected(){
+      let selected = []
+      let imgs = document.querySelectorAll('img');
+      imgs.forEach(x=>{
+         if(x.dataset.selected==='true'){
+           selected.push(x);
+         }
+      })
+      console.log(selected);
+    },
+    mouseDown(e){
+      let div = this.$refs.div;
+      div.hidden = 0;
+      this.x1 = e.clientX; 
+      this.y1 = e.clientY;
+      this.reCalc();
+    },
+    mouseUp(){ 
+      let div = this.$refs.div;
+      div.hidden = 1;
+     },
+    mouseMove(e){ 
+      this.x2 = e.clientX; 
+      this.y2 = e.clientY;
+      this.reCalc();
+    },
+    reCalc() {
+      let div = this.$refs.div;
+      if(div.hidden==0) {
+        var x3 = Math.min(this.x1,this.x2); 
+        var x4 = Math.max(this.x1,this.x2); 
+        var y3 =Math.min(this.y1,this.y2); 
+        var y4 = Math.max(this.y1,this.y2); 
+        div.style.left = x3 + 'px';
+        div.style.top = y3 + 'px'; 
+        div.style.width = x4 - x3 + 'px'; 
+        div.style.height =y4 - y3 + 'px'; 
+
+        let imgs = document.querySelectorAll('img');
+        imgs.forEach(img=>{
+          if(this.collide(div.getBoundingClientRect(),img.getBoundingClientRect())) {
+            img.setAttribute("style","background-color:red");
+            img.setAttribute('data-selected','true')
+          } else {
+            img.setAttribute("style","background-color:none");
+            img.setAttribute('data-selected','false')
+          }
+        })
+       
+      }
+     
+      },
+
+      collide(rect1, rect2) {
+
+        const maxX = Math.max(rect1.x + rect1.width, rect2.x + rect2.width);
+        const maxY = Math.max(rect1.y + rect1.height, rect2.y + rect2.height);
+        const minX = Math.min(rect1.x, rect2.x);
+        const minY = Math.min(rect1.y, rect2.y);
+       
+        if (maxX - minX <= rect1.width + rect2.width && maxY - minY <= rect1.height + rect2.height) {
+          return true;
+        } else {
+          return false;
+        }
+      } 
   }
   
 };
 </script>
 
+<style>
+  sel{
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -o-user-select:none;
+    user-select:none;
+  }
+</style>

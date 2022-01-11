@@ -93,8 +93,9 @@ export default {
   methods: {
     deleteDoc(){
       
-      if('folderId' in this.folderData && this.delData.name === this.userInput) {
-              this.id = this.delData.folderId
+      if(this.folderData.extension == null && this.delData.name === this.userInput) {
+              this.id = this.delData.id
+
         }
         else if('id' in this.folderData  && this.delData.name === this.userInput) {
               this.id = this.delData.id
@@ -105,22 +106,25 @@ export default {
           console.log('err');
           
         }
-      // {"items": [ { id: "item.id", "type": 0 } ], "editor": "vuex.user.id"}
-
-    //   const data = { 
-    //     "items": [{ "id": this.id, "type": 0 }], 
-    //     "editor": "3fa85f64-5717-4562-b3fc-2c963f66afa6" //之後改 
-    //   }
+    
 
 
-    //  console.log(data);
+      const pl =  JSON.stringify({ 
+        "items": [{ "id": this.id, "type": this.type }], 
+        "editor":this.$store.getters.userId,
+        "editorName":this.$store.getters.currentUser
+      })
 
-      console.log(this.id);
+     console.log(pl);
 
-      //刪一般資料夾ok
 
-      this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
-       {data:{ "items": [{ "id": this.id, "type": this.type }], "editor":"3fa85f64-5717-4562-b3fc-2c963f66afa6"}})
+      //刪一般file , folder ok 
+
+      this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,{ data: { 
+        "items": [{ "id": this.id, "type": this.type }], 
+        "editor":this.$store.getters.userId,
+        "editorName":this.$store.getters.currentUser
+      }, headers: window.headers })
         .then((data) => {     
           console.log(data);
         }).catch((error) => {
@@ -129,6 +133,7 @@ export default {
 
         this.$nextTick(() => { 
           this.userInput = '';
+          this.type = 0;
           this.$bvModal.hide('DeleteFolder'); 
 
         });

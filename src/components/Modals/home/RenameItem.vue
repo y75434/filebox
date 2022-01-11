@@ -66,23 +66,16 @@ export default {
   },
   methods: {
     put(){
-      const headers = { 
-        'Content-Type': 'application/json', 
-        'Accept':'application/json', 
-        'Access-Control-Allow-Origin': '*' 
-      }; 
-
-
+      
       if(Object.prototype.hasOwnProperty.call(this.personData, "userName")) { 
         
+        const data = JSON.stringify({
+          "id": this.tabData.userId,
+          "name": this.personData.name
+        })
+        console.log(data);
 
-          const data = JSON.stringify({
-            "id": this.tabData.userId,
-            "name": this.personData.name
-          })
-          console.log(data);
-
-      this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Users/EditUserName`,data,{ headers: headers })
+      this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Users/EditUserName`,data,{  headers: window.headers })
         .then(() => {
              this.personData = {}
             console.log('success');
@@ -102,7 +95,7 @@ export default {
           //editor之後改
 
           this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RenameFolder`,
-          data,{ headers: headers })
+          data,{ headers: window.headers })
           .then(() => { 
           }).catch(error => {
             console.log(error.response.data);        
@@ -116,7 +109,7 @@ export default {
           })
 
           this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroupName`,
-          data,{ headers: headers })
+          data,{ headers: window.headers })
           .then(() => { 
             console.log('success');
 

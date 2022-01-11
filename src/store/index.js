@@ -11,7 +11,8 @@ export default new Vuex.Store({
     isAdmin: false,
     // token: "", // 存放jwt token
     isLogin: false,
-    userId: null
+    userId: null,
+    nowFolderId: null
   },
   mutations: {
     SET_AUTH(state, isLogin){
@@ -24,19 +25,26 @@ export default new Vuex.Store({
     SET_ADMIN (state, isAdmin) {
       state.isAdmin = isAdmin
     },
-    SET_USERID(state, userId){
-      state.userId = userId
+    SET_USERID(state, id){
+      state.userId = id
+    },
+    SET_NOWFOLDERID(state, folderId){
+      state.nowFolderId = folderId
+
     }
   },
   actions: {
-    setAuth(state,isLogin){
-      state.commit('SET_AUTH', isLogin)
+    setAuth({ commit },isLogin){
+      commit('SET_AUTH', isLogin)
     },
-    setUser (state, user) {
-      state.commit('SET_USER', user)
+    setUser ({ commit }, user) {
+      commit('SET_USER', user)
     },
-    setUserId (state, userId) {
-      state.commit('SET_USERID', userId)
+    setUserId ({ commit }, id) {
+      commit('SET_USERID', id)
+    },
+    setNowFolderId ({ commit }, nowFolder) {
+      commit('SET_NOWFOLDERID', nowFolder)
     },
     setAdmin ({ commit }, isAdmin) {
       commit('SET_ADMIN', isAdmin)
@@ -47,7 +55,7 @@ export default new Vuex.Store({
     isAdmin: state => state.isAdmin,
     isLogin: state => state.isLogin,
     userId: state => state.userId,
-
+    nowFolderId: state => state.nowFolderId
 
   },
   

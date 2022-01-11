@@ -11,7 +11,6 @@
     footer-bg-variant="bgmodal"
     body-bg-variant="bgmodal"
     size="lg"
-    @ok="Upload"
   >
     <div class="modal-popout-bg  p-0">
       <p class="m-0">
@@ -33,6 +32,11 @@
             <img
               :src="item"
               class="folder-icon"
+            >
+            <img
+              @click="del(item)"
+              src="@/assets/images/cmd/del.png"
+              class="icon-20px"
             >
             <!--  <h6 class="text-dark text-center">
               {{ file.name }}
@@ -69,9 +73,9 @@
         -->
       <!-- </div> -->
     </form>
+   
 
-
-    <template #modal-footer="{ Addfolder, Remove, Clear, Upload }">
+    <template #modal-footer="{ }">
       <div class="d-flex w-100 justify-content-between">
         <div class="">
           <b-button
@@ -121,7 +125,7 @@
           </b-button>
           <b-button
             class="cancel-btn mx-1"
-            @click="Clear()"
+            @click="clear()"
           >
             {{ $t("GENERAL.CLEAR") }}
           </b-button>
@@ -136,7 +140,7 @@
          
         <b-button
           variant="primary"
-          @click="Upload()"
+          @click="upload()"
         >
           {{ $t("HOME.UPLOAD") }}
         </b-button>
@@ -151,87 +155,77 @@ import UploadFilesConflict from '@/components/Modals/home/UploadFilesConflict.vu
 
 export default {
   name: "UploadFiles",
-  props: { title: { type: String, default: "Upload Files - Root Folder" } },
+  props: { 
+    title: { type: String, default: "Upload Files - Root Folder" },
+
+  },
   components: {
     UploadFilesConflict
   },
   data() {
     return {
       url: [],
-      files:{
-        name:null
-      },
+      files:{},
       image:[],
-      formData:{}
+      formData:{},
     };
   },
   methods: {
     FilesConflict(){
       this.$bvModal.show('UploadFilesConflict');
     },
-    Upload(){
-       const headers = { 
-        'Content-Type': 'application/json', 
-        'Accept': 'application/json',
-        "Access-Control-Allow-Origin": '*' 
-        };
-
-      const data = JSON.stringify(this.formData)
-
-      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
-      data,{ headers: headers })
-      .then((data) => { 
-        console.log(data);
-
-      }).catch(error => {
-        console.log(error.response.data);        
-      })
-    },
-    onFileChange(e) {
-      const file = e.target.files;
-      console.log(file);
-      this.files = file;
-      // 
+    //ok
+    upload(){
+ 
       const formData = new FormData(); 
 
       
-      this.files.forEach((x,i)=>{
-          console.log(x);
-          this.image.push(URL.createObjectURL(x));
-          formData.append('file'+i,x);//依據數量給檔名所以＋i
+      // this.files.forEach((x,i)=>{
+      //     console.log(x);
+      //     formData.append('file'+i,x);//依據數量給檔名所以＋i
 
-      })
+      // })
 
-      console.log(this.files);
+      //console.log(this.files);
 
-         //直接axios 再把formData post過去
+       formData.append('file0', this.files[0]);
 
      
 
       formData.append('uploadData',JSON.stringify({
-          DestinationFolderId: '195ddee6-fcfa-4ee4-ba61-0c72dafeb289',
-          UploadedBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          ConflictType: 1,
-          type: 1
+          DestinationFolderId: this.$store.getters.nowFolderId,
+          UploadedBy: this.$store.getters.userId,
+          UploaderName:  this.$store.getters.currentUser,
+          ConflictType: 0,
       }));
-      
-      console.log('DestinationFolderId: 195ddee6-fcfa-4ee4-ba61-0c72dafeb289');
 
 
       this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
       formData)
       .then((data) => { 
         console.log(data);
+        if(data.data.code == 1005){
+          this.$bvModal.show('UploadFilesConflict');
+
+        }
 
       }).catch(error => {
         console.log(error.response.data);        
       })
 
+      this.clear()
+      // this.$bvModal.hide('UploadFiles');
 
-      //this.url = [...file].map(URL.createObjectURL);
+    },
+    onFileChange(e) {
+      const file = e.target.files;
+      console.log(file);
+      this.files = file;
 
-
-      
+      this.files.forEach((x)=>{
+          this.image.push(URL.createObjectURL(x));
+      })
+     
      
     },
     onFolderChange(e) {
@@ -250,17 +244,37 @@ export default {
       const formData = new FormData();
       formData.append('file',file);
 
+       formData.append('uploadData',JSON.stringify({
+          DestinationFolderId: this.$store.getters.nowFolderId,
+          UploadedBy: this.$store.getters.userId,
+          UploaderName:  this.$store.getters.currentUser,
+          ConflictType: 0,
+      }));
+
+      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
+      formData)
+      .then((data) => { 
+        console.log(data);
+        if(data.data.code == 1005){
+          this.$bvModal.show('UploadFilesConflict');
+
+        }
+
+      }).catch(error => {
+        console.log(error.response.data);        
+      })
+
+
       //直接axios 再把formData post過去
       console.log(this.files);
-   
-
-
-      //this.url = [...file].map(URL.createObjectURL);
-
-
-      
-     
+        
     },
+    del(url){
+      this.image = this.image.filter(x=>x!==url);
+    },
+    clear(){
+      this.image = []
+    }
   },
 };
 </script>

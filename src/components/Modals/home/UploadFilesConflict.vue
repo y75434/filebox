@@ -21,10 +21,10 @@
         >
           <img
             src="@/assets/images/cmd/upload@2x.png"
-            class="folder-icon"
+            class="folder-icon mx-auto"
           >
           <h6 class="text-dark text-center">
-            replace
+            1 replace
           </h6>
         </div>
         <div
@@ -33,10 +33,10 @@
         >
           <img
             src="@/assets/images/cmd/upload@2x.png"
-            class="folder-icon"
+            class="folder-icon mx-auto"
           >
           <h6 class="text-dark text-center">
-            skip
+            2 Skip
           </h6>
         </div>
         <div
@@ -45,10 +45,10 @@
         >
           <img
             src="@/assets/images/cmd/upload@2x.png"
-            class="folder-icon"
+            class="folder-icon mx-auto"
           >
           <h6 class="text-dark text-center">
-            keepboth
+            3 keepboth
           </h6>
         </div>
       </div>
@@ -68,38 +68,59 @@ export default {
 
   data() {
     return {
-
+      data:{
+        obj:{
+          DestinationFolderId: this.destinationId,
+          UploadedBy: this.$store.getters.userId,
+          UploaderName:  this.$store.getters.currentUser,
+          ConflictType: 0,
+        }
+      }
     }
   },
   methods: {
-    replace(){
-       const headers = { 
-        'Content-Type': 'application/json', 
-        'Accept': 'application/json',
-        "Access-Control-Allow-Origin": '*' 
-        };
+    replace(){      
+      this.ConflictType = 1
+      this.sent()     
+    },
+    skip() {
+      this.ConflictType = 2
+      this.sent()    
+    },
+    keepboth() {
+      this.ConflictType = 3
+      this.sent()
+    },
+    close(){
+      this.$bvModal.hide('UploadFilesConflict');
+    },
+    sent(){
+      const formData = new FormData(); 
 
-      const data = JSON.stringify(this.formData)
+      // this.files.forEach((x,i)=>{
+      //     console.log(x);
+      //     formData.append('file'+i,x);//依據數量給檔名所以＋i
 
-      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
-      data,{ headers: headers })
+      // })
+
+      console.log(this.files);
+    
+      formData.append('file0', this.files[0]);
+
+
+      formData.append('uploadData',JSON.stringify(this.obj));
+       
+
+      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,formData)
       .then((data) => { 
         console.log(data);
 
       }).catch(error => {
         console.log(error.response.data);        
       })
-    },
-    skip() {
-  
-     
-    },
-    keepboth() {
-      
-     
-    },
-    close(){
-      this.$bvModal.hide('UploadFilesConflict');
+
+      // this.$bvModal.close('UploadFilesConflict');
+
     }
   },
 };
