@@ -12,7 +12,11 @@ export default new Vuex.Store({
     // token: "", // 存放jwt token
     isLogin: false,
     userId: null,
-    nowFolderId: null
+    nowFolderId: null,
+    cutFile: null,
+    copyFile: null,
+    nowFile: null,
+
   },
   mutations: {
     SET_AUTH(state, isLogin){
@@ -30,7 +34,15 @@ export default new Vuex.Store({
     },
     SET_NOWFOLDERID(state, folderId){
       state.nowFolderId = folderId
-
+    },
+    CUT(state, cutFile){
+      state.cutFile = cutFile
+    },
+    COPY(state, copyFile){
+      state.copyFile = copyFile
+    },
+    NOWFILE(state, nowFile){
+      state.nowFile = nowFile
     }
   },
   actions: {
@@ -48,14 +60,26 @@ export default new Vuex.Store({
     },
     setAdmin ({ commit }, isAdmin) {
       commit('SET_ADMIN', isAdmin)
-    } 
+    },
+    cut ({ commit }, cutFile) {
+      commit('CUT', cutFile)
+    },
+    copy ({ commit }, copyFile) {
+      commit('COPY', copyFile)
+    },
+    nowFile ({ commit }, nowFile) {
+      commit('NOWFILE', nowFile)
+    }  
   },
   getters: {
     currentUser: state => state.currentUser,
     isAdmin: state => state.isAdmin,
     isLogin: state => state.isLogin,
     userId: state => state.userId,
-    nowFolderId: state => state.nowFolderId
+    nowFolderId: state => state.nowFolderId,
+    cutFile: state => state.cutFile,
+    copyFile: state => state.copyFile,
+    nowFile: state => state.nowFile
 
   },
   

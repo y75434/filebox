@@ -39,6 +39,7 @@ Vue.use(VueCompositionAPI)
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 Vue.use(VueAxios, axios);
+Vue.prototype.$bus = new Vue();
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios;

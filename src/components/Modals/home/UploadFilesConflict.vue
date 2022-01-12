@@ -53,6 +53,9 @@
         </div>
       </div>
     </div>
+    <h6 class="text-dark text-center">
+      {{ good }}
+    </h6>
 
 
     <template #modal-ok>
@@ -64,37 +67,47 @@
 <script>
 export default {
   name: "UploadFilesConflict",
-  props: { title: { type: String, default: "UploadFilesConflict" } },
+  props: { 
+    title: { type: String, default: "UploadFilesConflict" },
+    file: { type: Object , default() { return {} }},
+
+  },
 
   data() {
     return {
-      data:{
-        obj:{
-          DestinationFolderId: this.destinationId,
-          UploadedBy: this.$store.getters.userId,
-          UploaderName:  this.$store.getters.currentUser,
-          ConflictType: 0,
-        }
-      }
+      obj:{
+        DestinationFolderId: this.destinationId,
+        UploadedBy: this.$store.getters.userId,
+        UploaderName:  this.$store.getters.currentUser,
+        ConflictType: 0,
+      },
+      good: ""
+      
     }
   },
+  watch:{ 
+    file(){ 
+      this.good = this.file 
+    },
+  },
   methods: {
-    replace(){      
-      this.ConflictType = 1
+    replace(){   
+      this.obj.ConflictType = 1
       this.sent()     
     },
     skip() {
-      this.ConflictType = 2
+      this.obj.ConflictType = 2
       this.sent()    
     },
     keepboth() {
-      this.ConflictType = 3
+      this.obj.ConflictType = 3
       this.sent()
     },
     close(){
       this.$bvModal.hide('UploadFilesConflict');
     },
     sent(){
+
       const formData = new FormData(); 
 
       // this.files.forEach((x,i)=>{
@@ -103,10 +116,10 @@ export default {
 
       // })
 
-      console.log(this.files);
     
-      formData.append('file0', this.files[0]);
+      formData.append('file0', this.good );
 
+      console.log(this.good);
 
       formData.append('uploadData',JSON.stringify(this.obj));
        

@@ -576,23 +576,35 @@
               class="icon24px"
             >{{ $t("GENERAL.ADDFOLDER") }}
           </li>
-          <li @click="copyFile(nowSelected)">
+          <li v-if="canUse" @click="copyFile(nowSelected)">
             <img
               src="@/assets/images/cmd/download@2x-1.png"
               class="icon24px"
             >{{ $t("HOME.COPY") }}
           </li>
-          <li @click="cutFile(nowSelected)">
+          <li v-if="canUse" @click="cutFile(nowSelected)">
             <img
               src="@/assets/images/cmd/download@2x-1.png"
               class="icon24px"
             >{{ $t("HOME.CUT") }}
+          </li>
+          <li v-if="this.$store.getters.nowFolderId && this.$store.getters.nowFile" @click="paste(nowSelected)">
+            <img
+              src="@/assets/images/cmd/download@2x-1.png"
+              class="icon24px"
+            >{{ $t("HOME.PASTE") }}
           </li>
           <li @click="download(nowSelected)">
             <img
               src="@/assets/images/cmd/download@2x-1.png"
               class="icon24px"
             >{{ $t("HOME.DOWNLOAD") }}
+          </li>
+          <li @click="RenameItem(nowSelected)">
+            <img
+              src="@/assets/images/cmd/delete@2x-2.png"
+              class="icon24px"
+            >{{ $t("HOME.RENAME") }}
           </li>
           <li @click="DeleteFolder">
             <img
@@ -714,7 +726,11 @@ export default {
         return this.allFiles.filter(item =>
           item.name.toLowerCase().includes(this.searchQuery))
     },
-    
+    canUse() {
+      return Object.hasOwn(this.nowSelected, 'id')
+
+      //  this.nowSelected.some(id);  
+    }
   },
   methods: { 
     handler(event) { event.preventDefault(); }, 
@@ -809,74 +825,100 @@ export default {
         console.log(error.response.data);        
       })   
     },
-    copyFile(item) {
-       if(item.extension){
-          this.fileType = 1
-        }else{
-          this.fileType = 0
-
-        }
-     
-      const data =  JSON.stringify(
-        {
-          "items":[
-            {
-              "id": item.id,
-              "type": this.fileType
-            }
-          ],
-          "editor":  this.$store.getters.userId,
-          "editorName": this.$store.getters.currentUser,
-          "destination": this.$store.getters.nowFolderId
-        }
-      );
-      
-      console.log(data);
-
-
-      this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CopyAndPaste`,
-      data,{  headers: window.headers })
-      .then((data) => {  
-        console.log(data);
-
-      }).catch(error => {
-        console.log(error.response.data);        
-      })
-  
+    cutFile(item){
+        this.$store.dispatch('nowFile', item.id);
+        this.$store.dispatch('cut', item.id);
+        this.$store.dispatch('copy', "");
     },
-    cutFile(item) {
-       if(item.extension){
-          this.fileType = 1
-        }else{
-          this.fileType = 0
+    copyFile(item){
+        this.$store.dispatch('nowFile', item.id);
+        this.$store.dispatch('copy', item.id);
+        this.$store.dispatch('cut', "");
+    },
+    //paste
+    paste() {
 
-        }
-     
-      const data =  JSON.stringify(
-        {
-          "items":[
-            {
-              "id": item.id,
-              "type": this.fileType
-            }
-          ],
-          "editor":  this.$store.getters.userId,
-          "editorName": this.$store.getters.currentUser,
-          "destination": this.$store.getters.nowFolderId
-        }
-      );
       
-      console.log(data);
+
+          this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileInfo/${this.$store.getters.nowFile}`)
+          .then(() => {  
+              this.fileType = 1
+              console.log('success');        
+
+            
+          }).catch(() => {
+              this.fileType = 0
+
+            // console.log(error.response.data);        
+          })
+     
+      //   this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderInfo/${this.$store.getters.nowFile}`)
+      //     .then((data) => {  
 
 
-      this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CutAndPaste`,
-      data,{  headers: window.headers })
-      .then((data) => {  
-        console.log(data);
+            
+      //     }).catch(() => {
+      //       // console.log(error.response.data);        
+      //     })
+      // }
+      
+      
 
-      }).catch(error => {
-        console.log(error.response.data);        
-      })
+      const data =  JSON.stringify(
+              {
+                "items":[
+                  {
+                    "id": this.$store.getters.nowFile,
+                    "type": this.fileType
+                  }
+                ],
+                "editor":  this.$store.getters.userId,
+                "editorName": this.$store.getters.currentUser,
+                "destination": this.$store.getters.nowFolderId
+              }
+            );
+            
+            console.log(data);
+
+
+      if(this.$store.getters.copyFile){
+        
+          // copy post ok
+              this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CopyAndPaste`,
+            data,{  headers: window.headers })
+            .then((data) => {  
+              console.log(data);
+              this.fileType = 0
+
+
+            }).catch(error => {
+              console.log(error.response.data);        
+            })
+
+      }else{    
+      // cut paste
+            this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CutAndPaste`,
+            data,{  headers: window.headers })
+            .then((data) => {  
+              console.log(data);
+              this.fileType = 0
+
+
+            }).catch(error => {
+              console.log(error.response.data);        
+            })
+        }
+
+            
+
+
+
+
+    
+
+       
+     
+     
   
     },
     //點擊某資料夾在傳資料到search

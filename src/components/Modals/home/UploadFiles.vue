@@ -146,7 +146,7 @@
         </b-button>
       </div>
     </template>
-    <UploadFilesConflict ref="UploadFilesConflict" />
+    <UploadFilesConflict ref="UploadFilesConflict" :file="this.files[0]" />
   </b-modal>
 </template>
 
@@ -173,6 +173,7 @@ export default {
   methods: {
     FilesConflict(){
       this.$bvModal.show('UploadFilesConflict');
+
     },
     //ok
     upload(){
@@ -189,6 +190,7 @@ export default {
       //console.log(this.files);
 
        formData.append('file0', this.files[0]);
+       console.log(this.files[0]);
 
      
 
@@ -241,32 +243,32 @@ export default {
       })
 
 
-      const formData = new FormData();
-      formData.append('file',file);
+      // const formData = new FormData();
+      // formData.append('file',this.files[0]);
 
-       formData.append('uploadData',JSON.stringify({
-          DestinationFolderId: this.$store.getters.nowFolderId,
-          UploadedBy: this.$store.getters.userId,
-          UploaderName:  this.$store.getters.currentUser,
-          ConflictType: 0,
-      }));
+      //  formData.append('uploadData',JSON.stringify({
+      //     DestinationFolderId: this.$store.getters.nowFolderId,
+      //     UploadedBy: this.$store.getters.userId,
+      //     UploaderName:  this.$store.getters.currentUser,
+      //     ConflictType: 0,
+      // }));
 
-      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
-      formData)
-      .then((data) => { 
-        console.log(data);
-        if(data.data.code == 1005){
-          this.$bvModal.show('UploadFilesConflict');
+      // this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
+      // formData)
+      // .then((data) => { 
+      //   console.log(data);
+      //   if(data.data.code == 1005){
+      //     this.$bvModal.show('UploadFilesConflict');
 
-        }
+      //   }
 
-      }).catch(error => {
-        console.log(error.response.data);        
-      })
+      // }).catch(error => {
+      //   console.log(error.response.data);        
+      // })
 
 
-      //直接axios 再把formData post過去
-      console.log(this.files);
+      // //直接axios 再把formData post過去
+      // console.log(this.files);
         
     },
     del(url){
@@ -274,7 +276,8 @@ export default {
     },
     clear(){
       this.image = []
-    }
+    },
+    
   },
 };
 </script>
