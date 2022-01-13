@@ -92,7 +92,7 @@ export default {
               "editorName":  this.$store.getters.currentUser
 
             })
-          //editor之後改
+        
 
           this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RenameFolder`,
           data,{ headers: window.headers })

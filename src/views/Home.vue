@@ -1,5 +1,9 @@
 <template>
-  <div @contextmenu="handler($event)">
+  <div
+    @contextmenu="handler($event)"
+    ref="sel"
+    style="position: relative;"
+  >
     <Navbar />
     <div
       class="dqbz-body"
@@ -312,7 +316,7 @@
         @mousedown="mouseDown($event)"
         @mousemove="mouseMove($event)"
         @mouseup="mouseUp($event)"
-        style="background:white;position: relative;width:100vw;height:100vh"
+        style="background:white;"
       >
         <Splitpanes class="h-100">
           <Pane
@@ -411,100 +415,41 @@
                 </div>
               </div>
               
-              <div
-                
-                class="accordion-item"
+
+            
+              <ul
+                class="text-dark"
+                v-for="item in rootFolder"
+                :key="item.folderId"
+                :id="item.folderId"
+                @click="passRoute($event,item)"                   
+                :value="item.name"
               >
-                <h2
-                  class="accordion-header"
-                  v-for="item in rootFolder"
-                  :key="item.folderId"
-
-                  :id="item.folderId"
+                <img
+                  src="@/assets/images/file/single folder@2x.png"
+                  class="icon24px"
                 >
-                  <button
-                    class="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    :data-bs-target="['#'+ item.folderId]"
-                    aria-expanded="false"
-                    aria-controls="flush-collapseThree"
-                    @click="passRoute($event,item)"                   
-                    :value="item.name"
-                  >
-                    <!-- <img
-                      :src="`${this.treeItems[0].pic}`"
-                      class="icon24px"
-                    > -->
-                    {{ item.name }}
-                  </button>
-                </h2>
-
-
+                {{ item.name }}
                 <div
-                  v-if="this.folderTree.subFolders>0"
-                  id="flush-collapseThree"
-                  class="accordion-collapse collapse"
-                  aria-labelledby="flush-headingThree"
+                  class=""
+                  v-if="!open"
+                />
+
+                <li
+                  
+                  v-else
+                  v-for="sub in this.folderTree.subFolders"
+                  :key="sub.id"
+                  @click="passRoute($event)"   
                 >
-                  <div class="accordion-body p-1">
-                    <!-- new -->
-
-                    <div
-                      class="accordion"
-                      id="accordionExample"
-                    >
-                      <div
-                        class="accordion-item"
-                        v-for="item in this.folderTree.subFolders"
-                        :key="item.id"
-                        @click="passRoute($event)"                   
-                      >
-                        <h2
-                          class="accordion-header"
-                        >
-                          <button
-                            class="accordion-button"
-                            type="button"
-                          >
-                            {{ item.name }}
-                          </button>
-                        </h2>
-                      </div>
-                    </div>
-                    <!-- new -->
-                  </div>
-                </div>
-              </div>
-
-              <!-- 先註解 -->
-              <!-- <div
-                
-                class="accordion-item"
+                  {{ sub }}
+                </li>
+              </ul>
+              <ul
+                class="text-dark"
               >
-                <h2
-                  class="accordion-header"
-                  id="flush-headingThree"
-                >
-                  <button
-                    class="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    aria-expanded="false"
-                    aria-controls="flush-collapseThree"
-                    v-for="item in folderitems"
-                    :key="item.id"
-                    @click="passRoute($event)"                   
-                    :value="item.name"
-                  >
-                    <img
-                      class="icon24px"
-                      src="@/assets/images/file/single folder@2x.png"
-                    >
-                    {{ item.name }}
-                  </button>
-                </h2>
-              </div> -->
+                <!--  -->
+              </ul>
             </div>
           </Pane>
           <Pane         
@@ -528,14 +473,14 @@
             </div>
 
             <label
-              ref="sel"
-              class="d-flex flex-column  mx-2 my-2"
+              
+              class="d-flex flex-column  mx-2 my-2 position-relative"
               :key="item.id"
               v-for="item in resultQuery"
               @dblclick="detectClick(item)"
               @change="ischecked = !ischecked"
-              :style="item.ischecked ? {backgroundColor:
-                '#d3eaff'} : {backgroundColor:'transparent'}"
+              :style=" { backgroundColor: (item.ischecked ? '#d3eaff' : 'transparent' ), 
+                         opacity: item.changed ? {opacity:'1'} : {opacity:'0.3'}}"
               @mouseover="rowSelected(item)"
             >
               <input
@@ -576,19 +521,28 @@
               class="icon24px"
             >{{ $t("GENERAL.ADDFOLDER") }}
           </li>
-          <li v-if="canUse" @click="copyFile(nowSelected)">
+          <li
+            v-if="canUse"
+            @click="copyFile(nowSelected)"
+          >
             <img
               src="@/assets/images/cmd/download@2x-1.png"
               class="icon24px"
             >{{ $t("HOME.COPY") }}
           </li>
-          <li v-if="canUse" @click="cutFile(nowSelected)">
+          <li
+            v-if="canUse"
+            @click="cutFile(nowSelected)"
+          >
             <img
               src="@/assets/images/cmd/download@2x-1.png"
               class="icon24px"
             >{{ $t("HOME.CUT") }}
           </li>
-          <li v-if="this.$store.getters.nowFolderId && this.$store.getters.nowFile" @click="paste(nowSelected)">
+          <li
+            v-if="this.$store.getters.nowFolderId && this.$store.getters.nowFile"
+            @click="paste(nowSelected)"
+          >
             <img
               src="@/assets/images/cmd/download@2x-1.png"
               class="icon24px"
@@ -618,7 +572,10 @@
 
       <UploadFiles ref="UploadFiles" />
       <create-folder ref="CreateFolder" />
-      <rename-item ref="RenameItem" />
+      <rename-item
+        ref="RenameItem"
+        :tab-data="nowSelected"
+      />
       <delete-folder
         ref="DeleteFolder"
         :del-data="nowSelected"
@@ -649,6 +606,8 @@ import RenameItem from '../components/Modals/home/RenameItem.vue';
 import ManagePublicLink from '../components/Modals/home/ManagePublicLink.vue';
 import AddEditPublicLink from'@/components/Modals/link/AddEditPublicLink.vue';
 import ContextMenu from '@/components/ContextMenu.vue';
+// import TreeItem from '@/components/Modals/home/TreeItem.vue';
+
 
 export default {
   name: "Home",
@@ -664,6 +623,7 @@ export default {
     DeleteFolder,
     ManagePublicLink,
     AddEditPublicLink,
+    // TreeItem
   },
   data: () => ({
     selected: false,
@@ -701,6 +661,8 @@ export default {
     nowRootFolder: "", //還沒點進任何資料夾時為空
     fileType: 0,
     x1 : 0, y1 : 0, x2 :0, y2 : 0,
+    open: false   //tree 收縮
+    
 
   }),
   
@@ -714,7 +676,6 @@ export default {
     })
      this.getFolderTable()
      this.$store.dispatch('setNowFolderId', null);
-
   },
   computed:{
     //數checkbox勾選幾個
@@ -730,9 +691,11 @@ export default {
       return Object.hasOwn(this.nowSelected, 'id')
 
       //  this.nowSelected.some(id);  
-    }
+    },
+    
   },
   methods: { 
+    
     handler(event) { event.preventDefault(); }, 
     showMenu(event) { this.$refs.menu.open(event); },
     // 子層輸入傳父層
@@ -752,7 +715,7 @@ export default {
       console.log(item);     
       this.getFolderTree(item.folderId)
       this.getSelected(item.folderId)
-
+      
     },
    
     // modal
@@ -797,7 +760,9 @@ export default {
           console.log(error.response.data);        
         })
     },//success
-    download(item) {    
+    download(item) {   
+        this.$refs.menu.close();
+ 
          if(item.extension){
           this.fileType = 1
         }else{
@@ -826,11 +791,15 @@ export default {
       })   
     },
     cutFile(item){
+        this.$refs.menu.close();
+
         this.$store.dispatch('nowFile', item.id);
         this.$store.dispatch('cut', item.id);
         this.$store.dispatch('copy', "");
     },
     copyFile(item){
+        this.$refs.menu.close();
+
         this.$store.dispatch('nowFile', item.id);
         this.$store.dispatch('copy', item.id);
         this.$store.dispatch('cut', "");
@@ -838,7 +807,8 @@ export default {
     //paste
     paste() {
 
-      
+          this.$refs.menu.close();
+
 
           this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileInfo/${this.$store.getters.nowFile}`)
           .then(() => {  
@@ -909,17 +879,6 @@ export default {
             })
         }
 
-            
-
-
-
-
-    
-
-       
-     
-     
-  
     },
     //點擊某資料夾在傳資料到search
     //回上頁 如果是root folder 就無法按上一層
@@ -928,6 +887,9 @@ export default {
       .then((data) => { 
         this.folderTree = data.data
         console.log(this.folderTree,'folderTree');
+        if(this.folderTree.subFolders){
+        this.open = !this.open
+      }
       }).catch(() => {
         //  console.log(error.response.data);        
       })
@@ -1039,7 +1001,7 @@ export default {
         let imgs = document.querySelectorAll('img');
         imgs.forEach(img=>{
           if(this.collide(div.getBoundingClientRect(),img.getBoundingClientRect())) {
-            img.setAttribute("style","background-color:red");
+            img.setAttribute("style","background-color:#d3eaff");
             img.setAttribute('data-selected','true')
           } else {
             img.setAttribute("style","background-color:none");

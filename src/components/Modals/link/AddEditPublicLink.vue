@@ -334,6 +334,7 @@ export default {
       this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GenerateURL`) 
         .then((data) => {
           this.personData.url = data.data.url
+
           console.log(data.data.url);
       }).catch(error => {
           console.log(error.response.data);          

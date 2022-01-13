@@ -412,8 +412,9 @@
 export default {
   name: "RootFolderProperties",
   props: { 
-    title: { type: String, default: "Root Folder Properties" },
-    folderData: { type: Object , default() { return {} }},
+    title: { 
+      type: String, default: "Root Folder Properties" },
+      folderData: { type: Object , default() { return {} }},
   },
   data() {
     return {
