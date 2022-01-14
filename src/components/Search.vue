@@ -63,8 +63,9 @@
         <button
           type="button"
           class="btn bg-white "
+          @click="getSelected(nowRootFolder.folderId)"
         >
-          {{ nowRootFolder }}
+          {{ nowRootFolder.name }}
         </button>
         <button
           type="button"
@@ -75,15 +76,13 @@
           <span class="visually-hidden">Toggle Dropright</span>
         </button>
         
-        <!-- 不行 -->
-        <!-- v-if="this.treeSelected.subFolders!== undefined && this.treeSelected.subFolders.length>0" -->
-        <!-- v-if="this.folderTree.subFolders !== null" -->
 
-        <ul class="dropdown-menu">
-          <!-- Dropdown menu links -->
+        <ul v-show="this.rootFolderTree.subFolders"  class="dropdown-menu">
+          <!-- rootfolder sub -->
 
           <li
-            v-for="item in this.folderTree.subFolders"
+            @click="getSelected(item.id)"
+            v-for="item in this.rootFolderTree.subFolders"
             :key="item.id"
           >
             <a
@@ -95,8 +94,8 @@
       </div>
 
 
-      <!-- 子層  this.folderTree.subFolders != null-->
-      <div v-if="treeSelected != nowRootFolder">
+      <!-- 子層  this.folderTree.subFolders != null   v-if="treeSelected.folderId != nowRootFolder.folderId"-->
+      <div >
         <div class="btn-group dropend ">
           <button
             type="button"
@@ -114,10 +113,10 @@
           </button>
 
           <ul
-            v-if="this.folderTree.subFolders != null"
+            v-show="this.folderTree.subFolders"
             class="dropdown-menu"
           >
-            <!-- Dropdown menu links -->
+            <!-- subfolder sub -->
 
             <li
               v-for="item in this.folderTree.subFolders"
@@ -134,10 +133,6 @@
     </div>
 
     
-
-
-
-
     <button class="dqbz-previous">
       <img
         src="@/assets/images/cmd/refresh@2x.png"
@@ -169,23 +164,28 @@ export default {
   name: "Search",
   props: { 
     treeSelected: { type: String, default: "" },//父層
-    folderTree:{ type: Object, default() { }},
-    nowRootFolder: { type: String, default: "" },//root
+    // folderTree:{ type: Object, default() { }},
+    nowRootFolder: { type: Object, default() { }},//root
 
   },
   data() {
     return {
       searchQuery: null,
       personData: {},
-      tree:{}
+      folderTree:{},
+      rootFolderTree:{},
+      nowfolder: ""
     }
   },
-  watch:{ 
-   
-    folderTree(){ 
-      this.tree = this.folderTree
-      console.log('tree',this.tree);
-      
+  watch:{   
+    // folderTree(){ 
+    //   this.tree = this.folderTree
+    //   console.log('外部傳進來的子層',this.tree);   
+    // },
+    nowRootFolder(){ 
+      this.rootFolderTree = this.nowRootFolder
+      console.log('rootFolderTree',this.rootFolderTree);  
+      // this.getFolderTree(this.nowRootFolder.folderId) 
     } 
   },
   methods: {
@@ -197,9 +197,35 @@ export default {
   
     //返回上一層
     back(){
-      this.$emit('back', this.nowfolder);
+      this.$emit('back', this.folderTree.folderId);
+      console.log(this.folderTree);
 
-    }
+    },
+    //點擊到該路徑
+    getSelected(id){
+      this.$emit('back', id);
+
+    },
+    // getRootFolderTree(id){
+    //   this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
+    //   .then((data) => { 
+    //     this.rootFolderTree = data.data
+    //     console.log(this.rootFolderTree,'rootfolderTree');
+       
+    //   }).catch((error) => {
+    //      console.log(error.response.data);        
+    //   })
+    // },
+    getFolderTree(id){
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
+      .then((data) => { 
+        this.FolderTree = data.data
+        console.log(this.FolderTree,'子資料夾每次更改folderTree');
+       
+      }).catch((error) => {
+         console.log(error.response.data);        
+      })
+    },
   }
 }
 </script>

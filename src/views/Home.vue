@@ -305,7 +305,7 @@
         @update="selfUpdate"
         :folder-tree="this.folderTree"
         :now-root-folder="nowRootFolder"
-        @back="getSelected"
+        @back="getSelected(id)"
       />
       <!--  -->
 
@@ -654,11 +654,9 @@ export default {
     cut: false,
     searchQuery: "",
     folderTree: {},
-    folderitems: [],
-    render: {},
     rootFolder:[],//sidebar
     nowSelected: {},
-    nowRootFolder: "", //還沒點進任何資料夾時為空
+    nowRootFolder: {}, //還沒點進任何資料夾時為空
     fileType: 0,
     x1 : 0, y1 : 0, x2 :0, y2 : 0,
     open: false   //tree 收縮
@@ -907,7 +905,7 @@ export default {
       const result = this.rootFolder.filter(item => id == item.folderId);      
       if(result.length != 0){
         if( 'name' in result[0]){
-          this.nowRootFolder = result[0].name
+          this.nowRootFolder = result[0]
         }
       }
       

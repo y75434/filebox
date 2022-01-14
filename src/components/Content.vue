@@ -293,6 +293,8 @@
               :fields="usersfields"
               responsive="true"
               :items="useritems"
+              :per-page="perPage"
+              :current-page="currentPage"
               class="col-12 b-col text-dark"
               @contextmenu="operational($event)"
               @row-hovered="rowSelected"
@@ -326,6 +328,15 @@
                 {{ data.item.isEnabled }}
               </template>
             </b-table>
+
+            <!-- 不用這個會跳頁 :pages="useritems" -->
+
+            <b-pagination-nav
+              :pages="useritems"
+              v-model="currentPage"
+              :total-rows="Math.ceil(useritems.length / 10)"
+              :per-page="perPage"
+            />
           </div>
 
 
@@ -341,6 +352,8 @@
               :select-mode="selectMode"
               hover
               :filter="filter"
+              :per-page="perPage"
+              :current-page="currentPage"
             >
               <template #cell(groupName)="data">
                 <img
@@ -359,6 +372,12 @@
                 {{ data.item.modifiedOn }}
               </template>
             </b-table>
+
+            <b-pagination-nav
+              :pages="groupitems"
+              v-model="currentPage"
+              :per-page="perPage"
+            />
           </div>
 
           <div v-if="this.currentSelected === 3">
@@ -373,6 +392,8 @@
               :select-mode="selectMode"
               hover
               :filter="filter"
+              :per-page="perPage"
+              :current-page="currentPage"
             >
               <template #cell(name)="data">
                 <img
@@ -388,6 +409,12 @@
                 {{ data.item.modifiedOn }}
               </template>
             </b-table>
+
+            <b-pagination-nav
+              :pages="folderitems"
+              v-model="currentPage"
+              :per-page="perPage"
+            />
           </div>
 
           <div
@@ -404,6 +431,8 @@
               :select-mode="selectMode"
               hover
               :filter="filter"
+              :per-page="perPage"
+              :current-page="currentPage"
             >
               <template #cell(user)="data">
                 {{ data.item.user }} 
@@ -421,7 +450,15 @@
                 {{ data.item.description }}
               </template>
             </b-table>
+
+            <b-pagination-nav
+              :pages="eventsitems"
+              v-model="currentPage"
+              :per-page="perPage"
+            />
           </div>
+
+
           <div v-if="this.currentSelected === 5">
             <b-table
               :fields="linkfields"
@@ -434,6 +471,8 @@
               :select-mode="selectMode"
               hover
               :filter="filter"
+              :per-page="perPage"
+              :current-page="currentPage"
             >
               <template #cell(name)="data">
                 <img
@@ -460,6 +499,12 @@
                 {{ data.item.viewableTimes }}
               </template>
             </b-table>
+
+            <b-pagination-nav
+              :pages="linkitems"
+              v-model="currentPage"
+              :per-page="perPage"
+            />
           </div>
         </b-col>
       </div>
@@ -711,6 +756,9 @@ data() {
     enddate: "",
     value:"",
     eventTypeId:"",
+    //nav page
+    perPage: 10,
+    currentPage: 1,
   };
 },
 created(){
@@ -719,9 +767,11 @@ created(){
   this.getEventType();
   this.picture = picture;
 },
-computed:{
-  
-},
+// computed:{
+//    userRows() {
+//     return this.useritems.length 
+//   }
+// },
 watch: { //todo undo
   eventsSelected(newValue) {
     //console.log(this.eventsSelected)
