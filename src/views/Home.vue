@@ -269,6 +269,7 @@
                 type="checkbox"
                 value="1"
                 id="Item check boxes"
+                @click="selectAllCheckbox()"
                 v-model="renderCheckboxs"
               >
               <label
@@ -311,6 +312,7 @@
 
       <div />
       <!-- main -->
+           <!-- -->
       <div
         class="dqbz-main"
         @mousedown="mouseDown($event)"
@@ -422,28 +424,27 @@
                 v-for="item in rootFolder"
                 :key="item.folderId"
                 :id="item.folderId"
-                @click="passRoute($event,item)"                   
                 :value="item.name"
               >
                 <img
                   src="@/assets/images/file/single folder@2x.png"
                   class="icon24px"
+                @click.stop="FolderOpen(item)"                   
+
                 >
-                {{ item.name }}
+                <div> {{ item.name }}</div> 
                 <div
                   class=""
-                  v-if="!open"
-                />
-
-                <li
-                  
-                  v-else
-                  v-for="sub in this.folderTree.subFolders"
-                  :key="sub.id"
-                  @click="passRoute($event)"   
+                  v-if="item.isOpen"
                 >
-                  {{ sub }}
-                </li>
+
+                  <li
+                    v-for="sub in item.subFolders"
+                    :key="sub.id"
+                  >
+                    {{ sub.name }}
+                  </li>
+                </div>
               </ul>
               <ul
                 class="text-dark"
@@ -452,7 +453,7 @@
               </ul>
             </div>
           </Pane>
-          <Pane         
+         <Pane         
             :size="100 - paneSize"
             class="d-flex align-items-start justify-content-start"
           >
@@ -491,6 +492,7 @@
               >
               <img
                 :src="item.pic"
+                :id="item.folderId"
                 class="folder-icon"
               >
               <h6
@@ -508,7 +510,7 @@
               style="border: 1px solid #33CCFF;background:#33CCFF;opacity:0.5;position:absolute;z-index:999"
               hidden="0"
             />
-          </Pane>
+          </Pane> -->
         </Splitpanes>
       </div>
       <div class="dqbz-footer" />
@@ -693,7 +695,20 @@ export default {
     
   },
   methods: { 
-    
+    selectAllCheckbox(){
+      if(this.renderCheckboxs) {
+        console.log('cancel')
+        let imgs = document.querySelectorAll('img');
+        imgs.forEach(img=>{
+            if(img.id!=='') {
+              this.resultQuery.filter(x=>x.folderId===img.id)[0].ischecked = false;
+              img.setAttribute("style","background-color:white");
+              img.setAttribute('data-selected','false')
+            }
+           
+        });
+      }
+    },
     handler(event) { event.preventDefault(); }, 
     showMenu(event) { this.$refs.menu.open(event); },
     // 子層輸入傳父層
@@ -704,14 +719,13 @@ export default {
      //hover一個資料 並將資料傳遞子層 
     rowSelected(items) {
       this.nowSelected = items
-      console.log(this.nowSelected);     
     },
     passRoute(e,item){
       const buttonValue = e.target.value;   
       this.treeSelected = buttonValue;
       //點擊某資料夾在傳資料到search
       console.log(item);     
-      this.getFolderTree(item.folderId)
+     // this.getFolderTree(item.folderId)
       this.getSelected(item.folderId)
       
     },
@@ -742,18 +756,31 @@ export default {
         return item;
       })
     },
+    FolderOpen(folder){
+      console.log(folder);
+      folder.isOpen =true;
+    },
     //預設畫面在這
     getFolderTable(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
         .then((data) => { 
           this.allFiles = data.data
           this.rootFolder = this.allFiles
-
-        this.allFiles.map(item=>{
-          const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
-          item.pic = datapic.pic;
-          return item
-          });        
+          this.rootFolder.map(x=>{
+            x.subFolders =[];
+            x.isOpen = false;
+            return x;
+          });
+          this.rootFolder.forEach(x=>{
+            console.log(x);
+             this.getFolderTree(x,x.folderId);
+          })
+         
+          this.allFiles.map(item=>{
+            const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
+            item.pic = datapic.pic;
+            return item
+            });        
         }).catch(error => {
           console.log(error.response.data);        
         })
@@ -880,14 +907,17 @@ export default {
     },
     //點擊某資料夾在傳資料到search
     //回上頁 如果是root folder 就無法按上一層
-     getFolderTree(id){
+     getFolderTree(rootFolder,id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
       .then((data) => { 
         this.folderTree = data.data
+        rootFolder.subFolders = data.data.subFolders;
+        console.log(rootFolder);
+
         console.log(this.folderTree,'folderTree');
-        if(this.folderTree.subFolders){
-        this.open = !this.open
-      }
+        // if(this.folderTree.subFolders){
+        // this.open = !this.open
+     // }
       }).catch(() => {
         //  console.log(error.response.data);        
       })
@@ -920,7 +950,7 @@ export default {
         .then((data) => { 
           this.allFiles = data.data
           //顯示路徑
-          this.getFolderTree(id)
+         // this.getFolderTree(id)
 
           //點擊後上層開始顯示路徑
 
@@ -973,18 +1003,24 @@ export default {
       div.hidden = 0;
       this.x1 = e.clientX; 
       this.y1 = e.clientY;
-      this.reCalc();
+      console.log('按下去')
+    //  this.reCalc();
     },
     mouseUp(){ 
       let div = this.$refs.div;
       div.hidden = 1;
+      console.log('起來')
      },
     mouseMove(e){ 
       this.x2 = e.clientX; 
       this.y2 = e.clientY;
-      this.reCalc();
+      let div = this.$refs.div;
+      if(div.hidden==0) {
+       this.reCalc();
+      }
     },
     reCalc() {
+      console.log('計算碰撞');
       let div = this.$refs.div;
       if(div.hidden==0) {
         var x3 = Math.min(this.x1,this.x2); 
@@ -998,13 +1034,21 @@ export default {
 
         let imgs = document.querySelectorAll('img');
         imgs.forEach(img=>{
-          if(this.collide(div.getBoundingClientRect(),img.getBoundingClientRect())) {
-            img.setAttribute("style","background-color:#d3eaff");
-            img.setAttribute('data-selected','true')
-          } else {
-            img.setAttribute("style","background-color:none");
+           if(img.id!=='') {
+              if(this.collide(div.getBoundingClientRect(),img.getBoundingClientRect())) {
+                this.resultQuery.filter(x=>x.folderId===img.id)[0].ischecked = true;
+                img.setAttribute("style","background-color:#d3eaff");
+                img.setAttribute('data-selected','true')
+            } else {
+                let unselected =  this.resultQuery.filter(x=>x.folderId===img.id);
+                if(unselected.length==1) {
+                  unselected[0].ischecked = false;
+            }
+            img.setAttribute("style","background-color:white");
             img.setAttribute('data-selected','false')
           }
+          }
+          
         })
        
       }
