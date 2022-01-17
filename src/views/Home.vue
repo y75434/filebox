@@ -306,13 +306,13 @@
         @update="selfUpdate"
         :folder-tree="this.folderTree"
         :now-root-folder="nowRootFolder"
-        @back="getSelected(id)"
+        @back="getSelected"
       />
       <!--  -->
 
       <div />
       <!-- main -->
-           <!-- -->
+      <!-- -->
       <div
         class="dqbz-main"
         @mousedown="mouseDown($event)"
@@ -320,7 +320,7 @@
         @mouseup="mouseUp($event)"
         style="background:white;"
       >
-        <Splitpanes class="h-100">
+        <Splitpanes class="h-100 sel">
           <Pane
             :size="paneSize"
             min-size="10"
@@ -426,19 +426,21 @@
                 :id="item.folderId"
                 :value="item.name"
               >
-                <img
-                  src="@/assets/images/file/single folder@2x.png"
-                  class="icon24px"
-                @click.stop="FolderOpen(item)"                   
-
-                >
-                <div> {{ item.name }}</div> 
+                <div>
+                  <img
+                    src="@/assets/images/file/single folder@2x.png"
+                    class="icon24px"
+                    @click.stop="FolderOpen(item)"
+                    @dblclick="detectClick(item)"
+                  >
+                  {{ item.name }}
+                </div> 
                 <div
                   class=""
-                  v-if="item.isOpen"
+                  v-if="item.isOpen = !item.isOpen"
                 >
-
                   <li
+                    class="list-unstyled"
                     v-for="sub in item.subFolders"
                     :key="sub.id"
                   >
@@ -453,12 +455,13 @@
               </ul>
             </div>
           </Pane>
-         <Pane         
+          <Pane         
             :size="100 - paneSize"
-            class="d-flex align-items-start justify-content-start"
+            class="d-flex align-items-start justify-content-start sel"
           >
             <p class="text-dark">
               目前所在的資料夾{{ this.folderTree.name }} 
+              {{ this.$store.getters.nowFolderId }} 
             </p>
             <div
               v-if="this.folderTree.subFolders !== null"
@@ -472,9 +475,10 @@
                 所有子資料夾{{ item.name }} 
               </p>
             </div>
-
+            <!-- <p class="text-dark">
+              {{ this.resultQuery.map(x=>x.ischecked == true) }}
+            </p> -->
             <label
-              
               class="d-flex flex-column  mx-2 my-2 position-relative"
               :key="item.id"
               v-for="item in resultQuery"
@@ -492,7 +496,7 @@
               >
               <img
                 :src="item.pic"
-                :id="item.folderId"
+                :id="item.id"
                 class="folder-icon"
               >
               <h6
@@ -510,7 +514,7 @@
               style="border: 1px solid #33CCFF;background:#33CCFF;opacity:0.5;position:absolute;z-index:999"
               hidden="0"
             />
-          </Pane> -->
+          </Pane> 
         </Splitpanes>
       </div>
       <div class="dqbz-footer" />
@@ -650,6 +654,7 @@ export default {
     renderCheckboxs: false,
     treeSelected: null,
     allSelected: false,
+    selectedTrue: [],// 勾選的放這
     allFiles:[],//所有檔案過濾後把id放入這個陣列
     extension: false,
     copy: false,//有無複製檔案
@@ -683,6 +688,7 @@ export default {
       return Object.keys(this.resultQuery).filter(key =>
           this.resultQuery[key].ischecked === true).length
     },
+    
     resultQuery(){
         return this.allFiles.filter(item =>
           item.name.toLowerCase().includes(this.searchQuery))
@@ -694,6 +700,18 @@ export default {
     },
     
   },
+  // watch:{
+  //   // 被選取的ARR
+  // aa(){     
+  //     let imgs = document.querySelectorAll('img');
+  //     imgs.forEach(img=>{ 
+  //       if(this.resultQuery.filter(x=>x.folderId===img.id)[0].ischecked = true){
+  //               this.selectedTrue=_.without(img)
+  //           }else{
+  //               this.selectedTrue.push(img)
+  //           }
+  //     }
+  // )},
   methods: { 
     selectAllCheckbox(){
       if(this.renderCheckboxs) {
@@ -714,13 +732,15 @@ export default {
     // 子層輸入傳父層
     selfUpdate(val) {
       this.searchQuery = val;
-      // console.log('885',this.searchQuery);
+      console.log('子層輸入傳父層',this.searchQuery);
     },
      //hover一個資料 並將資料傳遞子層 
     rowSelected(items) {
       this.nowSelected = items
     },
     passRoute(e,item){
+      console.log(e,item);     
+
       const buttonValue = e.target.value;   
       this.treeSelected = buttonValue;
       //點擊某資料夾在傳資料到search
@@ -771,6 +791,7 @@ export default {
             x.isOpen = false;
             return x;
           });
+          //顯示左側sidebar
           this.rootFolder.forEach(x=>{
             console.log(x);
              this.getFolderTree(x,x.folderId);
@@ -846,18 +867,6 @@ export default {
 
             // console.log(error.response.data);        
           })
-     
-      //   this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderInfo/${this.$store.getters.nowFile}`)
-      //     .then((data) => {  
-
-
-            
-      //     }).catch(() => {
-      //       // console.log(error.response.data);        
-      //     })
-      // }
-      
-      
 
       const data =  JSON.stringify(
               {
@@ -1003,13 +1012,13 @@ export default {
       div.hidden = 0;
       this.x1 = e.clientX; 
       this.y1 = e.clientY;
-      console.log('按下去')
+      // console.log('按下去')
     //  this.reCalc();
     },
     mouseUp(){ 
       let div = this.$refs.div;
       div.hidden = 1;
-      console.log('起來')
+      // console.log('起來')
      },
     mouseMove(e){ 
       this.x2 = e.clientX; 
@@ -1036,7 +1045,10 @@ export default {
         imgs.forEach(img=>{
            if(img.id!=='') {
               if(this.collide(div.getBoundingClientRect(),img.getBoundingClientRect())) {
-                this.resultQuery.filter(x=>x.folderId===img.id)[0].ischecked = true;
+                this.resultQuery.filter(x=>x.id===img.id)[0].ischecked = true;
+             
+               
+             
                 img.setAttribute("style","background-color:#d3eaff");
                 img.setAttribute('data-selected','true')
             } else {
@@ -1046,13 +1058,11 @@ export default {
             }
             img.setAttribute("style","background-color:white");
             img.setAttribute('data-selected','false')
-          }
-          }
-          
-        })
-       
-      }
-     
+            }
+          }     
+
+        })     
+        }   
       },
 
       collide(rect1, rect2) {
@@ -1069,12 +1079,12 @@ export default {
         }
       } 
   }
-  
+   
 };
 </script>
 
 <style>
-  sel{
+  .sel{
     -webkit-user-select:none;
     -moz-user-select:none;
     -o-user-select:none;

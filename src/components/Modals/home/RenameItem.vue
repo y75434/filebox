@@ -55,7 +55,6 @@ export default {
     return {
       showModal: false,
       personData: {},
-      type: "",
 
     };
   },
@@ -84,22 +83,6 @@ export default {
           console.log(error);          
         })
 
-       }else if(Object.prototype.hasOwnProperty.call(this.personData, "folderId")){
-            const data = JSON.stringify({
-              "id": this.personData.folderId,
-              "name": this.personData.name,
-              "editor":  this.$store.getters.userId,
-              "editorName":  this.$store.getters.currentUser
-
-            })
-        
-
-          this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RenameFolder`,
-          data,{ headers: window.headers })
-          .then(() => { 
-          }).catch(error => {
-            console.log(error.response.data);        
-          })
 
        }else if(Object.prototype.hasOwnProperty.call(this.personData, "groupName")){ 
 
@@ -119,9 +102,27 @@ export default {
 
 
          
+         }else {
+            const data = JSON.stringify({
+              "id": this.personData.id,
+              "type": this.personData.type,
+              "name": this.personData.name,
+              "editor":  this.$store.getters.userId,
+              "editorName":  this.$store.getters.currentUser
+
+            })
+            
+            console.log('data',data);         
+
+
+          this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Rename`,
+          data,{ headers: window.headers })
+          .then(() => { 
+          }).catch(error => {
+            console.log(error.response.data);        
+          })
+
          }
-
-
      
     },
   },

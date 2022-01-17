@@ -225,6 +225,8 @@
               class="btn btn-blue"
               :disabled="!filter"
               @click="filter = ''"
+                            @change="search()"
+
             >
               <img
                 src="@/assets/images/icon/magnifier.png"

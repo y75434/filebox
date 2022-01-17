@@ -19,6 +19,8 @@
       >
     </button> -->
 
+
+    <!-- 傳入的參數是rootfolder id -->
     <button
       @click="back()"
       class="dqbz-previous bg-light"
@@ -80,8 +82,10 @@
         <ul v-show="this.rootFolderTree.subFolders"  class="dropdown-menu">
           <!-- rootfolder sub -->
 
+          <!-- 傳入的參數是 id -->
+
           <li
-            @click="getSelected(item.id)"
+            @click="getSelected(item.folderId)"
             v-for="item in this.rootFolderTree.subFolders"
             :key="item.id"
           >
@@ -164,7 +168,6 @@ export default {
   name: "Search",
   props: { 
     treeSelected: { type: String, default: "" },//父層
-    // folderTree:{ type: Object, default() { }},
     nowRootFolder: { type: Object, default() { }},//root
 
   },
@@ -197,25 +200,16 @@ export default {
   
     //返回上一層
     back(){
-      this.$emit('back', this.folderTree.folderId);
-      console.log(this.folderTree);
+      this.$emit('back', this.rootFolderTree.folderId);
+      console.log(this.rootFolderTree);
 
     },
     //點擊到該路徑
     getSelected(id){
+      console.log(id,'tree li');
       this.$emit('back', id);
 
     },
-    // getRootFolderTree(id){
-    //   this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
-    //   .then((data) => { 
-    //     this.rootFolderTree = data.data
-    //     console.log(this.rootFolderTree,'rootfolderTree');
-       
-    //   }).catch((error) => {
-    //      console.log(error.response.data);        
-    //   })
-    // },
     getFolderTree(id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
       .then((data) => { 
