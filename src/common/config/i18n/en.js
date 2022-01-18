@@ -1,5 +1,6 @@
 export const locale = {
   GENERAL: {
+    DELSUCCESS: 'Success',
     WELCOME_WORD: 'Hello,Welcome to FileVista.Please enter your credentials',
     OK: 'ok',
     CONTINUE: 'Continue',

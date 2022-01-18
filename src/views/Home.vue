@@ -91,7 +91,7 @@
           <div class="divider" />
           <div class="fn-w-100 d-flex align-items-center">
             <div
-              @click="download()"
+              @click="download(this.selectedTrue)"
               class="d-flex flex-column w-50"
             >
               <img
@@ -436,15 +436,23 @@
                   {{ item.name }}
                 </div> 
                 <div
-                  class=""
+                  class="d-flex flex-column p-2"
                   v-if="item.isOpen = !item.isOpen"
                 >
                   <li
-                    class="list-unstyled"
+                    class="list-unstyled "
                     v-for="sub in item.subFolders"
                     :key="sub.id"
                   >
-                    {{ sub.name }}
+                    <div>
+                      <img
+                        src="@/assets/images/file/single folder@2x.png"
+                        class="icon24px"
+                        @click.stop="FolderOpen(sub)"
+                        @dblclick="detectClick(sub)"
+                      >
+                      {{ sub.name }}
+                    </div>
                   </li>
                 </div>
               </ul>
@@ -460,8 +468,7 @@
             class="d-flex align-items-start justify-content-start sel"
           >
             <p class="text-dark">
-              目前所在的資料夾{{ this.folderTree.name }} 
-              {{ this.$store.getters.nowFolderId }} 
+              目前所在的資料夾(不對){{ this.folderTree.name }} 
             </p>
             <div
               v-if="this.folderTree.subFolders !== null"
@@ -475,9 +482,8 @@
                 所有子資料夾{{ item.name }} 
               </p>
             </div>
-            <!-- <p class="text-dark">
-              {{ this.resultQuery.map(x=>x.ischecked == true) }}
-            </p> -->
+         
+
             <label
               class="d-flex flex-column  mx-2 my-2 position-relative"
               :key="item.id"
@@ -697,21 +703,13 @@ export default {
       return Object.hasOwn(this.nowSelected, 'id')
 
       //  this.nowSelected.some(id);  
-    },
-    
+    }
+
   },
-  // watch:{
-  //   // 被選取的ARR
-  // aa(){     
-  //     let imgs = document.querySelectorAll('img');
-  //     imgs.forEach(img=>{ 
-  //       if(this.resultQuery.filter(x=>x.folderId===img.id)[0].ischecked = true){
-  //               this.selectedTrue=_.without(img)
-  //           }else{
-  //               this.selectedTrue.push(img)
-  //           }
-  //     }
-  // )},
+  watch:{
+    // 被選取的ARR
+   
+  },
   methods: { 
     selectAllCheckbox(){
       if(this.renderCheckboxs) {
@@ -745,7 +743,7 @@ export default {
       this.treeSelected = buttonValue;
       //點擊某資料夾在傳資料到search
       console.log(item);     
-     // this.getFolderTree(item.folderId)
+      this.getFolderTree(item.folderId)
       this.getSelected(item.folderId)
       
     },
@@ -776,6 +774,7 @@ export default {
         return item;
       })
     },
+     
     FolderOpen(folder){
       console.log(folder);
       folder.isOpen =true;
@@ -793,7 +792,7 @@ export default {
           });
           //顯示左側sidebar
           this.rootFolder.forEach(x=>{
-            console.log(x);
+            // console.log(x);
              this.getFolderTree(x,x.folderId);
           })
          
@@ -817,13 +816,19 @@ export default {
         }
        
       const data =  JSON.stringify(
+        //old
+        // {
+        //   "items":[
+        //     {
+        //       "id": item.id,
+        //       "type": this.fileType
+        //     }
+        //   ],
+        //   "user":  this.$store.getters.userId
+        // }
+        //new
         {
-          "items":[
-            {
-              "id": item.id,
-              "type": this.fileType
-            }
-          ],
+          "items": this.selectedTrue,//array
           "user":  this.$store.getters.userId
         }
       );
@@ -921,9 +926,9 @@ export default {
       .then((data) => { 
         this.folderTree = data.data
         rootFolder.subFolders = data.data.subFolders;
-        console.log(rootFolder);
+        // console.log(rootFolder);
 
-        console.log(this.folderTree,'folderTree');
+        // console.log(this.folderTree,'folderTree');
         // if(this.folderTree.subFolders){
         // this.open = !this.open
      // }
@@ -933,7 +938,6 @@ export default {
     },
     //點擊跳轉該路徑
     //到kaoh資料夾
-    // ${process.env.VUE_APP_FOLDER_APIPATH}/GetItems/${folderId}/${userId}
     getSelected(id){
       console.log('換路徑囉',id);
       
@@ -961,9 +965,7 @@ export default {
           //顯示路徑
          // this.getFolderTree(id)
 
-          //點擊後上層開始顯示路徑
-
-
+        //點擊後上層開始顯示路徑
         this.allFiles.map(item=>{ 
           const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
         
@@ -995,17 +997,6 @@ export default {
         else {
           console.log('err');         
         }
-    },
- 
-    selected(){
-      let selected = []
-      let imgs = document.querySelectorAll('img');
-      imgs.forEach(x=>{
-         if(x.dataset.selected==='true'){
-           selected.push(x);
-         }
-      })
-      console.log(selected);
     },
     mouseDown(e){
       let div = this.$refs.div;
@@ -1042,17 +1033,23 @@ export default {
         div.style.height =y4 - y3 + 'px'; 
 
         let imgs = document.querySelectorAll('img');
+
         imgs.forEach(img=>{
            if(img.id!=='') {
               if(this.collide(div.getBoundingClientRect(),img.getBoundingClientRect())) {
-                this.resultQuery.filter(x=>x.id===img.id)[0].ischecked = true;
-             
-               
+                this.selectedTrue = []
+
+                this.resultQuery.filter(x=>x.id===img.id)[0].ischecked = true;             
+                this.selectedTrue.push({ "id": img.id, "type": this.fileType });
+                
+
+                console.log(this.selectedTrue,'被選擇的檔案');
+
              
                 img.setAttribute("style","background-color:#d3eaff");
                 img.setAttribute('data-selected','true')
             } else {
-                let unselected =  this.resultQuery.filter(x=>x.folderId===img.id);
+                let unselected =  this.resultQuery.filter(x=>x.id===img.id);
                 if(unselected.length==1) {
                   unselected[0].ischecked = false;
             }
@@ -1060,9 +1057,8 @@ export default {
             img.setAttribute('data-selected','false')
             }
           }     
-
-        })     
-        }   
+          })    
+        }  
       },
 
       collide(rect1, rect2) {
@@ -1078,8 +1074,7 @@ export default {
           return false;
         }
       } 
-  }
-   
+  }   
 };
 </script>
 

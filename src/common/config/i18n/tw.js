@@ -1,5 +1,6 @@
 export const locale = {
   GENERAL: {
+    DELSUCCESS: '刪除成功',
     WELCOME_WORD: '您好，歡迎來到 FileVista。請輸入您的資訊',
     OK: '確定',
     CONTINUE: '繼續',

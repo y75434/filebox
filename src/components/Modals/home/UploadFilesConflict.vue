@@ -76,7 +76,7 @@ export default {
   data() {
     return {
       obj:{
-        DestinationFolderId: this.destinationId,
+        DestinationFolderId: this.$store.getters.nowFolderId,
         UploadedBy: this.$store.getters.userId,
         UploaderName:  this.$store.getters.currentUser,
         ConflictType: 0,
@@ -123,6 +123,7 @@ export default {
 
       formData.append('uploadData',JSON.stringify(this.obj));
        
+      console.log(this.obj);
 
       this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,formData)
       .then((data) => { 

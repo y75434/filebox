@@ -77,10 +77,10 @@ export default {
       this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Users/EditUserName`,data,{  headers: window.headers })
         .then(() => {
              this.personData = {}
-            console.log('success');
+            this.$swal.fire({ title: 'success', icon: 'success' })
 
         }).catch(error => {
-          console.log(error);          
+            this.$swal.fire({ title: error.response.data, icon: 'error' })
         })
 
 
@@ -94,17 +94,17 @@ export default {
           this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroupName`,
           data,{ headers: window.headers })
           .then(() => { 
-            console.log('success');
+            this.$swal.fire({ title: 'success', icon: 'success' })
 
           }).catch(error => {
-            console.log(error.response.data);        
+            this.$swal.fire({ title: error.response.data, icon: 'error' })
           })
 
 
          
          }else {
             const data = JSON.stringify({
-              "id": this.personData.id,
+              "id": this.personData.id || this.personData.folderId,
               "type": this.personData.type,
               "name": this.personData.name,
               "editor":  this.$store.getters.userId,
@@ -118,11 +118,16 @@ export default {
           this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Rename`,
           data,{ headers: window.headers })
           .then(() => { 
+            this.$swal.fire({ title: 'success', icon: 'success' })
+
+
           }).catch(error => {
-            console.log(error.response.data);        
+            this.$swal.fire({ title: error.response.data, icon: 'error' })
+       
           })
 
          }
+
      
     },
   },

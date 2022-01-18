@@ -104,7 +104,8 @@ export default {
 
         else {
           console.log('err');
-          
+          this.$swal.fire({ title: '{{ $t("MODAL.FAILURE") }}', icon: 'error' })
+
         }
     
 
@@ -125,10 +126,11 @@ export default {
         "editor":this.$store.getters.userId,
         "editorName":this.$store.getters.currentUser
       }, headers: window.headers })
-        .then((data) => {     
-          console.log(data);
-        }).catch((error) => {
-          console.log(error.response.data);        
+        .then(() => {     
+          this.$swal.fire({ title: '$t("GENERAL.DELSUCCESS")', icon: 'success' })
+        }).catch(() => {
+          this.$swal.fire({ title: '{{ $t("MODAL.FAILURE") }}', icon: 'error' })
+      
         })
 
         this.$nextTick(() => { 

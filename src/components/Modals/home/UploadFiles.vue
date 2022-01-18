@@ -201,11 +201,16 @@ export default {
           ConflictType: 0,
       }));
 
+      console.log(formData);
+
+
 
       this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
       formData)
       .then((data) => { 
         console.log(data);
+        this.$swal.fire({ title: data.data, icon: 'success' })
+
         if(data.data.code == 1005){
           this.$bvModal.show('UploadFilesConflict');
 
@@ -216,7 +221,7 @@ export default {
       })
 
       this.clear()
-      // this.$bvModal.hide('UploadFiles');
+      this.$bvModal.hide('UploadFiles');
 
     },
     onFileChange(e) {

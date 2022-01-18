@@ -17,7 +17,12 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 import $ from 'jquery';
 import picture from '@/common/images';
 import headers from '@/apis/utils.js';
+import VueSweetalert2 from 'vue-sweetalert2';
 
+// If you don't need the styles, do not connect
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+Vue.use(VueSweetalert2);
 
 Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule])

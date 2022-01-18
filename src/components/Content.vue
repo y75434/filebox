@@ -134,8 +134,16 @@
               class="m-2 text-dark"
             >{{ $t("GENERAL.SEARCH") }}</label>
             <input
+              v-if="this.currentSelected != 3"
               v-model="searchText"
               @keyup="search()"
+              type="text"
+              :placeholder="$t( 'GENERAL.SEARCH')"
+              class="form-control "
+            >
+            <input
+              v-if="this.currentSelected === 3"
+              v-model="filter"
               type="text"
               :placeholder="$t( 'GENERAL.SEARCH')"
               class="form-control "
@@ -225,8 +233,6 @@
               class="btn btn-blue"
               :disabled="!filter"
               @click="filter = ''"
-                            @change="search()"
-
             >
               <img
                 src="@/assets/images/icon/magnifier.png"
@@ -1007,17 +1013,13 @@ methods: {
         break;
       case 3:
         
-        this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders?searchString=${this.searchText}`)
-          .then(data => {  
-            console.log(data);
-            this.folderitems = data.data 
-            this.count = this.folderitems.length  
+        
+            // this.folderitems = 
+            // this.count = this.folderitems.length  
 
           // return this.useritems;
 
-          }).catch(error => {
-            console.log(error.response.data);        
-          })
+        
         break;
 
       case 4: {
