@@ -209,7 +209,7 @@ export default {
       formData)
       .then((data) => { 
         console.log(data);
-        this.$swal.fire({ title: data.data, icon: 'success' })
+        this.$swal.fire({ title: data.data.msg, icon: 'success' })
 
         if(data.data.code == 1005){
           this.$bvModal.show('UploadFilesConflict');

@@ -467,23 +467,6 @@
             :size="100 - paneSize"
             class="d-flex align-items-start justify-content-start sel"
           >
-            <p class="text-dark">
-              目前所在的資料夾(不對){{ this.folderTree.name }} 
-            </p>
-            <div
-              v-if="this.folderTree.subFolders !== null"
-              class=""
-            >
-              <p
-                v-for="item in this.folderTree.subFolders"
-                :key="item.folderId"
-                class="text-dark"
-              >
-                所有子資料夾{{ item.name }} 
-              </p>
-            </div>
-         
-
             <label
               class="d-flex flex-column  mx-2 my-2 position-relative"
               :key="item.id"
@@ -706,10 +689,6 @@ export default {
     }
 
   },
-  watch:{
-    // 被選取的ARR
-   
-  },
   methods: { 
     selectAllCheckbox(){
       if(this.renderCheckboxs) {
@@ -736,17 +715,17 @@ export default {
     rowSelected(items) {
       this.nowSelected = items
     },
-    passRoute(e,item){
-      console.log(e,item);     
+    // passRoute(e,item){
+    //   console.log(e,item);     
 
-      const buttonValue = e.target.value;   
-      this.treeSelected = buttonValue;
-      //點擊某資料夾在傳資料到search
-      console.log(item);     
-      this.getFolderTree(item.folderId)
-      this.getSelected(item.folderId)
+    //   const buttonValue = e.target.value;   
+    //   this.treeSelected = buttonValue;
+    //   //點擊某資料夾在傳資料到search
+    //   console.log(item);     
+    //   this.getFolderTree(item.folderId)
+    //   this.getSelected(item.folderId)
       
-    },
+    // },
    
     // modal
     UploadFiles(){ this.$bvModal.show('UploadFiles'); },
@@ -820,8 +799,8 @@ export default {
         // {
         //   "items":[
         //     {
-        //       "id": item.id,
-        //       "type": this.fileType
+        //       "id": "e0b9ed19-8ad1-493e-8acb-98116326632e",
+        //       "type": 1
         //     }
         //   ],
         //   "user":  this.$store.getters.userId
@@ -832,11 +811,36 @@ export default {
           "user":  this.$store.getters.userId
         }
       );
+
+      const config = {
+        header:{
+          Accept: 'application/zip',
+        },
+        responseType: 'arraybuffer'
+      }
       
       this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`,
-      data,{ headers: window.headers })
+      data,config,{ headers: window.headers })
       .then((data) => { 
+        const dataFromHeader = data.headers['content-disposition'];
+
+        const buf = Buffer.from(data.data, 'binary');
+        const blob = new Blob([buf], { type: 'arraybuffer' });
+        const temp = document.createElement('a');
+        temp.download = this.getFileNameBeforeDownload(dataFromHeader)
+        temp.href = URL.createObjectURL(blob)
+        document.body.appendChild(temp)
+        temp.click();
+        document.body.removeChild(temp)
+
         console.log(data);
+
+        // const buf = Buffer.from(data.data, 'binary');
+        // const blob = new Blob([buf], { type: 'application/zip' });
+        // var url = window.URL.createObjectURL(blob);         
+        // window.location.assign(url);
+
+
       }).catch(error => {
         console.log(error.response.data);        
       })   
@@ -987,12 +991,15 @@ export default {
       console.log('double click ',item);
        if('folderId' in item ) {
           this.getSelected(item.folderId)
-          this.treeSelected = item.name;
+          this.treeSelected = item;
 
         }
         else if('id' in item ) {
           this.getSelected(item.id)
-          this.treeSelected = item.name;
+          console.log('975',item);
+
+          //讓search顯示你目前在哪個資料夾裡
+          this.treeSelected = item;
         }
         else {
           console.log('err');         
@@ -1020,7 +1027,7 @@ export default {
       }
     },
     reCalc() {
-      console.log('計算碰撞');
+      // console.log('計算碰撞');
       let div = this.$refs.div;
       if(div.hidden==0) {
         var x3 = Math.min(this.x1,this.x2); 
@@ -1037,17 +1044,33 @@ export default {
         imgs.forEach(img=>{
            if(img.id!=='') {
               if(this.collide(div.getBoundingClientRect(),img.getBoundingClientRect())) {
+                
                 this.selectedTrue = []
-
                 this.resultQuery.filter(x=>x.id===img.id)[0].ischecked = true;             
                 this.selectedTrue.push({ "id": img.id, "type": this.fileType });
                 
-
                 console.log(this.selectedTrue,'被選擇的檔案');
 
+                
+                // const add = [];
+                // const del= [];
+
+                // console.log(this.selectedTrue,'被選擇的檔案');
+
+                //   if (this.resultQuery.includes(img.id)) {
+                //     del.push({ "id": img.id, "type": this.fileType });
+                //   } else{
+                //     add.push({ "id": img.id, "type": this.fileType });
+
+                //   }
+
+                // this.selectedTrue = this.selectedTrue.concat(add) .filter((item) =>!del.includes(item)); 
+
+
+              }
              
-                img.setAttribute("style","background-color:#d3eaff");
-                img.setAttribute('data-selected','true')
+              img.setAttribute("style","background-color:#d3eaff");
+              img.setAttribute('data-selected','true')
             } else {
                 let unselected =  this.resultQuery.filter(x=>x.id===img.id);
                 if(unselected.length==1) {
@@ -1056,11 +1079,11 @@ export default {
             img.setAttribute("style","background-color:white");
             img.setAttribute('data-selected','false')
             }
-          }     
-          })    
-        }  
-      },
 
+          })  
+ 
+        }        
+      }, 
       collide(rect1, rect2) {
 
         const maxX = Math.max(rect1.x + rect1.width, rect2.x + rect2.width);
@@ -1069,7 +1092,7 @@ export default {
         const minY = Math.min(rect1.y, rect2.y);
        
         if (maxX - minX <= rect1.width + rect2.width && maxY - minY <= rect1.height + rect2.height) {
-          return true;
+          return true;     
         } else {
           return false;
         }

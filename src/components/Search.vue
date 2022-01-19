@@ -79,7 +79,7 @@
         </button>
         
 
-        <ul v-show="this.rootFolderTree.subFolders"  class="dropdown-menu">
+        <ul v-if="this.rootFolderTree.subFolders"  class="dropdown-menu">
           <!-- rootfolder sub -->
 
           <!-- 傳入的參數是 id -->
@@ -99,13 +99,14 @@
 
 
       <!-- 子層  this.folderTree.subFolders != null   v-if="treeSelected.folderId != nowRootFolder.folderId"-->
-      <div >
+      <div v-if="this.treeSelected && this.treeSelected.name != this.nowRootFolder.name">
         <div class="btn-group dropend ">
           <button
             type="button"
             class="btn bg-white "
+            @click="getSelected(treeSelected.id)"
           >
-            {{ treeSelected }}
+            {{ treeSelected.name }}
           </button>
           <button
             type="button"
@@ -117,13 +118,12 @@
           </button>
 
           <ul
-            v-show="this.folderTree.subFolders"
             class="dropdown-menu"
           >
             <!-- subfolder sub -->
 
             <li
-              v-for="item in this.folderTree.subFolders"
+              v-for="item in this.treeSelected.subFolders"
               :key="item.id"
             >
               <a
@@ -167,8 +167,8 @@
 export default {
   name: "Search",
   props: { 
-    treeSelected: { type: String, default: "" },//父層
-    nowRootFolder: { type: Object, default() { }},//root
+    treeSelected: { type: Object, default(){} },//父層
+    nowRootFolder: { type: Object, default(){}},//root
 
   },
   data() {
@@ -198,7 +198,7 @@ export default {
     },
     
   
-    //返回上一層
+    //返回上一層 目前返回到該 rootfolder 裏面
     back(){
       this.$emit('back', this.rootFolderTree.folderId);
       console.log(this.rootFolderTree);
@@ -206,13 +206,14 @@ export default {
     },
     //點擊到該路徑
     getSelected(id){
-      console.log(id,'tree li');
+      console.log(id,'id傳回 home.vue');
       this.$emit('back', id);
 
     },
     getFolderTree(id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
       .then((data) => { 
+        console.log(this.FolderTree,'hi');
         this.FolderTree = data.data
         console.log(this.FolderTree,'子資料夾每次更改folderTree');
        
