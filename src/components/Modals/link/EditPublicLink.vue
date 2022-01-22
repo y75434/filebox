@@ -77,19 +77,20 @@
           class="d-flex flex-column justify-content-between p-3"
         >
           <div class="form-check">
-            <input
+            <!-- 不需要 -->
+            <!-- <input
               class="form-check-input"
               type="checkbox"
               value=""
               id="Usermustchangepasswordatnexttime"
               v-model="personData.isPublic"
-            >
-            <label
+            > -->
+            <!-- <label
               class="form-check-label"
               for="Usermustchangepasswordatnexttime"
             >
               {{ $t("MODAL.OPENLINKEDFILE") }}
-            </label>
+            </label> -->
           </div>
           <div class="form-check">
             <input

@@ -22,6 +22,7 @@
           id="Name"
           class="form-control inline-block width-320"
           v-model="group.groupName"
+          disabled
         >
       </div>
       <div

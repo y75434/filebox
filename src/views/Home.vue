@@ -18,7 +18,9 @@
               <img
                 src="@/assets/images/cmd/copy@2x.png"
                 alt="copy"
-                :style=" selectedLength>0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :disabled="this.selectedTrue.length = 0"
+                @click="copyCut"
+                :style=" this.selectedTrue.length > 0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.COPY") }}</span>
             </div>
@@ -28,7 +30,9 @@
               <img
                 src="@/assets/images/cmd/paste@2x.png"
                 alt="paste"
-                :style=" copy ? {opacity:'1'} : {opacity:'0.3'}"
+                :disabled="this.selectedTrue.length"
+                @click="paste"
+                :style=" this.selectedTrue.length > 0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.PASTE") }}</span>
             </div>
@@ -38,7 +42,10 @@
               <img
                 src="@/assets/images/cmd/cut@2x.png"
                 alt=""
-                :style=" cut ? {opacity:'1'} : {opacity:'0.3'}"
+                :disabled="!this.$store.getters.nowFile"
+                @click="copyCut"
+                :style=" this.$store.getters.nowFile ?
+                  {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class=" nav-text text-center">{{ $t("HOME.CUT") }}</span>
             </div>    
@@ -53,7 +60,10 @@
               <img
                 src="@/assets/images/cmd/delete@2x-2.png"
                 alt=""
-                :style=" selectedLength>0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :disabled="!this.$store.getters.nowFile"
+                @click="paste"
+                :style="
+                  this.$store.getters.nowFile ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">
                 {{ $t("HOME.DELETE") }}
@@ -66,7 +76,7 @@
               <img
                 src="@/assets/images/cmd/rename@2x.png"
                 alt=""
-                :style=" selectedLength==1 ? {opacity:'1'} : {opacity:'0.3'}"
+                :style=" canUse ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.RENAME") }}</span>
             </li>
@@ -81,7 +91,9 @@
               <img
                 src="@/assets/images/file/new folder@2x.png"
                 alt=""
-                :style=" selectedLength==0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :disabled="!this.$store.getters.nowFile"
+                :style="
+                  this.$store.getters.nowFile ? {opacity:'1'} : {opacity:'0.3'}"
               >
 
               <span class="nav-text text-center">{{ $t("HOME.NEW") }}</span>
@@ -91,13 +103,14 @@
           <div class="divider" />
           <div class="fn-w-100 d-flex align-items-center">
             <div
-              @click="download(this.selectedTrue)"
+              @click="download()"
               class="d-flex flex-column w-50"
             >
               <img
                 src="@/assets/images/cmd/download@2x.png"
                 alt=""
-                :style=" selectedLength>0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :disabled="!this.$store.getters.nowFile"
+                :style=" this.$store.getters.nowFile ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.DOWNLOAD") }}</span>
             </div>
@@ -108,7 +121,8 @@
               <img
                 src="@/assets/images/cmd/upload@2x.png"
                 alt=""
-                :style=" selectedLength==0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :disabled="this.$store.getters.nowFile"
+                :style=" !this.$store.getters.nowFile ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.UPLOAD") }}</span>
             </li>
@@ -145,7 +159,7 @@
               <img
                 src="@/assets/images/file/publiclink@2x.png"
                 class="nav-icon pe-1 mx-auto"
-                :style=" selectedLength==0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :style=" !this.$store.getters.nowFile ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="d-sm-none d-md-block d-lg-block text-truncate">{{ $t("HOME.CREATEPUBLICLINK") }}
 
@@ -161,7 +175,7 @@
               <img
                 src="@/assets/images/icon/managepubliclink@2x.png"
                 class="nav-icon pe-1 mx-auto"
-                :style=" selectedLength>0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :style=" this.$store.getters.nowFile ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="d-sm-none d-md-block d-lg-block ">{{ $t("HOME.MANAGEPUBLICLINKS") }}</span>
             </b-button>
@@ -493,10 +507,7 @@
                 >.{{ item.extension }}</span>
               </h6>     
             </label>
-            <ul class="text-dark">
-              {{ arr.map(x => [x.id, x.type]) }}
-              <!-- Object.entries. -->
-            </ul>
+          
 
             <div
               ref="div"
@@ -510,48 +521,51 @@
 
       <ContextMenu ref="menu">
         <ul class="text-dark">
-          <li @click="CreateFolder">
+          <li
+            v-if="!this.$store.getters.nowFile"
+            @click="CreateFolder"
+          >
             <img
-              src="@/assets/images/icon/user setting@2x.png"
+              src="@/assets/images/cmd/add@2x.png"
               class="icon24px"
             >{{ $t("GENERAL.ADDFOLDER") }}
           </li>
           <li
             v-if="canUse"
-            @click="copyFile(nowSelected)"
+            @click="copyCut()"
           >
             <img
-              src="@/assets/images/cmd/download@2x-1.png"
+              src="@/assets/images/cmd/copy@2x.png"
               class="icon24px"
             >{{ $t("HOME.COPY") }}
           </li>
           <li
             v-if="canUse"
-            @click="cutFile(nowSelected)"
+            @click="copyCut()"
           >
             <img
-              src="@/assets/images/cmd/download@2x-1.png"
+              src="@/assets/images/cmd/cut@2x.png"
               class="icon24px"
             >{{ $t("HOME.CUT") }}
           </li>
           <li
             v-if="this.$store.getters.nowFolderId && this.$store.getters.nowFile"
-            @click="paste(nowSelected)"
+            @click="paste()"
           >
             <img
-              src="@/assets/images/cmd/download@2x-1.png"
+              src="@/assets/images/cmd/paste@2x.png"
               class="icon24px"
             >{{ $t("HOME.PASTE") }}
           </li>
-          <li @click="download(nowSelected)">
+          <li @click="download()">
             <img
               src="@/assets/images/cmd/download@2x-1.png"
               class="icon24px"
             >{{ $t("HOME.DOWNLOAD") }}
           </li>
-          <li @click="RenameItem(nowSelected)">
+          <li @click="RenameItem">
             <img
-              src="@/assets/images/cmd/delete@2x-2.png"
+              src="@/assets/images/cmd/rename@2x.png"
               class="icon24px"
             >{{ $t("HOME.RENAME") }}
           </li>
@@ -573,7 +587,6 @@
       />
       <delete-folder
         ref="DeleteFolder"
-        :del-data="nowSelected"
       />
       <manage-public-link ref="ManagePublicLink" />
     
@@ -651,11 +664,11 @@ export default {
     searchQuery: "",
     folderTree: {},
     rootFolder:[],//sidebar
-    nowSelected: {},
+    nowSelected: {},//hover only one file
     nowRootFolder: {}, //還沒點進任何資料夾時為空
-    fileType: 0,
     x1 : 0, y1 : 0, x2 :0, y2 : 0,
     open: false ,  //tree 收縮
+    // now: this.$store.getters.nowFile //才不會跳錯
 
   }),
   
@@ -669,6 +682,8 @@ export default {
     })
      this.getFolderTable()
      this.$store.dispatch('setNowFolderId', null);
+     this.$store.dispatch('nowFile', null);
+
   },
   computed:{
     //數checkbox勾選幾個
@@ -687,9 +702,10 @@ export default {
       return Object.hasOwn(this.nowSelected, 'id')
 
       //  this.nowSelected.some(id);  
-    }
-
+    },
+  
   },
+
   methods: { 
     selectAllCheckbox(){
       if(this.renderCheckboxs) {
@@ -716,23 +732,16 @@ export default {
     rowSelected(items) {
       this.nowSelected = items
     },
-    // passRoute(e,item){
-    //   console.log(e,item);     
-
-    //   const buttonValue = e.target.value;   
-    //   this.treeSelected = buttonValue;
-    //   //點擊某資料夾在傳資料到search
-    //   console.log(item);     
-    //   this.getFolderTree(item.folderId)
-    //   this.getSelected(item.folderId)
-      
-    // },
    
     // modal
     UploadFiles(){ this.$bvModal.show('UploadFiles'); },
     CreateFolder(){ this.$bvModal.show('CreateFolder'); },
     RenameItem(){ this.$bvModal.show('RenameItem'); },
-    DeleteFolder(){ this.$bvModal.show('DeleteFolder'); },
+    DeleteFolder(){ 
+      this.checkSelected();
+      this.$store.dispatch('nowFile', this.selectedTrue);
+      this.$bvModal.show('DeleteFolder'); 
+    },
     ManagePublicLink(){this.$bvModal.show('ManagePublicLink');},
     AddPublicLink(){ this.$bvModal.show('AddEditPublicLink'); },
     // checkbox func
@@ -784,38 +793,40 @@ export default {
         }).catch(error => {
           console.log(error.response.data);        
         })
+
+
+
     },//success
-    download(item) {   
+
+    checkSelected(){
+      console.log(this.arr);
+
+        this.selectedTrue = Object.entries(this.arr)
+        .map(([id, type]) => {
+          return {type: type.type, id: type.id, s:id}
+        })
+        console.log(this.selectedTrue);
+    },
+   
+    download() {   
         this.$refs.menu.close();
  
-         if(item.extension){
-          this.fileType = 1
-        }else{
-          this.fileType = 0
 
-        }
+      this.checkSelected()
 
        
-      const data =  
-  
+      const data =   
+      //new
         {
-          "items":[
-            {
-              "id": "e0b9ed19-8ad1-493e-8acb-98116326632e",
-              "type": 1
-            }
-          ],
+          "items": this.selectedTrue,//array
           "user":  this.$store.getters.userId
         }
+  
+
        
       console.log('data',data);
 
-
-       //new
-        // {
-        //   "items": this.selectedTrue,//array
-        //   "user":  this.$store.getters.userId
-        // }
+      
 
       const config = {
         header:{
@@ -836,7 +847,7 @@ export default {
         const blob = new Blob([buf], { type: 'arraybuffer' });
 
         const temp = document.createElement('a');
-        console.log('830');
+        // console.log('830');
         
         temp.download = this.beforeDownload(dataFromHeader)
         temp.href = URL.createObjectURL(blob)
@@ -845,12 +856,6 @@ export default {
         document.body.removeChild(temp)
 
         console.log(data);
-
-        // const buf = Buffer.from(data.data, 'binary');
-        // const blob = new Blob([buf], { type: 'application/zip' });
-        // var url = window.URL.createObjectURL(blob);         
-        // window.location.assign(url);
-
 
       }).catch(error => {
         console.log(error.response.data);        
@@ -892,46 +897,19 @@ export default {
         console.log(error.response.data);        
       }) 
     },
-    cutFile(item){
+    copyCut(){
         this.$refs.menu.close();
-
-        this.$store.dispatch('nowFile', item.id);
-        this.$store.dispatch('cut', item.id);
-        this.$store.dispatch('copy', "");
-    },
-    copyFile(item){
-        this.$refs.menu.close();
-
-        this.$store.dispatch('nowFile', item.id);
-        this.$store.dispatch('copy', item.id);
-        this.$store.dispatch('cut', "");
+        this.checkSelected()
+        this.$store.dispatch('nowFile', this.selectedTrue);      
     },
     //paste
     paste() {
 
-          this.$refs.menu.close();
-
-
-          this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileInfo/${this.$store.getters.nowFile}`)
-          .then(() => {  
-              this.fileType = 1
-              console.log('success');        
-
-            
-          }).catch(() => {
-              this.fileType = 0
-
-            // console.log(error.response.data);        
-          })
+      this.$refs.menu.close();
 
       const data =  JSON.stringify(
               {
-                "items":[
-                  {
-                    "id": this.$store.getters.nowFile,
-                    "type": this.fileType
-                  }
-                ],
+                "items": this.$store.getters.nowFile,
                 "editor":  this.$store.getters.userId,
                 "editorName": this.$store.getters.currentUser,
                 "destination": this.$store.getters.nowFolderId
@@ -948,7 +926,6 @@ export default {
             data,{  headers: window.headers })
             .then((data) => {  
               console.log(data);
-              this.fileType = 0
 
 
             }).catch(error => {
@@ -961,7 +938,6 @@ export default {
             data,{  headers: window.headers })
             .then((data) => {  
               console.log(data);
-              this.fileType = 0
 
 
             }).catch(error => {
@@ -1043,7 +1019,7 @@ export default {
         }
         else if('id' in item ) {
           this.getSelected(item.id)
-          console.log('975',item);
+          // console.log('975',item);
 
           //讓search顯示你目前在哪個資料夾裡
           this.treeSelected = item;
@@ -1094,12 +1070,6 @@ export default {
                 
                 this.selectedTrue = []
                 this.resultQuery.filter(x=>x.id===img.id)[0].ischecked = true;             
-                // this.arr.push({ "id": img.id, "type": this.fileType });
-                
-                // console.log(this.arr,'被選擇的檔案');
-
-                
-               
 
               }
              

@@ -23,18 +23,12 @@
 
             
       <h5 class="text-center my-2 font-weight-bold">
-        <strong class="text-danger"> {{ delData.name }}</strong>
+        <strong class="text-danger"> {{ this.$store.getters.nowFile }}</strong>
       </h5>
 
       <p class="text-dark">
-        {{ folderData }}
+        {{ this.$store.getters.nowFile }}
       </p>
-
-      <input
-        type="text"
-        class="form-control"
-        v-model="userInput"
-      >
     </div>
 
     
@@ -50,8 +44,6 @@
         </button>
 
         <button
-          :disabled="delFormValidity"
-
           @click="deleteDoc"
           type="button"
           class="sm-btn btn btn-danger text-white justify-content-center d-flex"
@@ -76,53 +68,20 @@ export default {
     return {
       userInput: '',
       folderData: {},
-      id: "", //區分是資料夾還是一般文件
-      type: 0
+     
     };
   },
-   watch:{ 
-    delData(){ 
-      this.folderData = this.delData 
-    } 
-  },
-  computed: {
-		delFormValidity() {
-			return this.delData.name !== this.userInput;
-		},
-	},
+  
   methods: {
     deleteDoc(){
-      
-      if(this.folderData.extension == null && this.delData.name === this.userInput) {
-              this.id = this.delData.id
 
-        }
-        else if('id' in this.folderData  && this.delData.name === this.userInput) {
-              this.id = this.delData.id
-              this.type = 1
-        }
-
-        else {
-          console.log('err');
-          this.$swal.fire({ title: '{{ $t("MODAL.FAILURE") }}', icon: 'error' })
-
-        }
-    
-
-
-      const pl =  JSON.stringify({ 
-        "items": [{ "id": this.id, "type": this.type }], 
-        "editor":this.$store.getters.userId,
-        "editorName":this.$store.getters.currentUser
-      })
-
-     console.log(pl);
+      console.log('nowFile',this.$store.getters.nowFile)
 
 
       //刪一般file , folder ok 
 
       this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,{ data: { 
-        "items": [{ "id": this.id, "type": this.type }], 
+        "items": this.$store.getters.nowFile, 
         "editor":this.$store.getters.userId,
         "editorName":this.$store.getters.currentUser
       }, headers: window.headers })
@@ -135,7 +94,6 @@ export default {
 
         this.$nextTick(() => { 
           this.userInput = '';
-          this.type = 0;
           this.$bvModal.hide('DeleteFolder'); 
 
         });
