@@ -232,7 +232,8 @@ export default {
       searchText:"",
       count:0,
       group:{ 
-        
+        creator: this.$store.getters.userId,
+        createdBy:this.$store.getters.currentUser
       },
       editGroup:{
         id: "",
@@ -262,11 +263,7 @@ export default {
         })
       },//ok
       addUsersToGroup(id) {  
-        const headers = { 
-        'Content-Type': 'application/json', 
-        'Accept': 'application/json',
-        "Access-Control-Allow-Origin": '*' 
-        };
+       
 
        
       const data = JSON.stringify({
@@ -279,7 +276,7 @@ export default {
 
 
       this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/AddUsersInGroup`,
-      data,{ headers: headers } )
+      data,{ headers: window.headers } )
         .then((data) => {
           console.log(data);
       }).catch(error => {

@@ -279,7 +279,11 @@ props: { title: { type: String, default: 'Import User' },
      // 目前不能用
      importUser () {  
       
-      const data = JSON.stringify({"userIDs": this.addUser})
+      const data = JSON.stringify({
+        "userIDs": this.addUser,
+        "userId": this.$store.getters.userId,
+        "username":this.$store.getters.currentUser
+      })
 
       console.log(data);
 

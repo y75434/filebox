@@ -77,7 +77,8 @@ export default {
 	data() {
 		return {
       userInput: '',
-      personData: {}
+      personData: {},
+      mulUser:[]
 
 		};
   },
@@ -134,7 +135,7 @@ export default {
       deleteUser(id) {  
 
       this.axios.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Users`
-      ,{data:{ "id": id }})
+      ,{data:{ "id": id,"editor": this.$store.getters.userId,"editedBy":this.$store.getters.currentUser}})
         .then(() => {
           this.$nextTick(() => { this.userInput = '';
           this.$bvModal.hide('modal-delete-user'); });
@@ -144,14 +145,15 @@ export default {
           console.log(error);          
         })
       },
+      
       deleteLink(id) {  
         //它不會刪除記錄，而只是將刪除標誌設置為打開或關閉
         console.log('97',id);
         
-      this.axios.delete(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link`,{data:{ "id": id }})
+      this.axios.delete(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link`,
+      {data:{ "id": id ,"editor": this.$store.getters.userId, "editorName":this.$store.getters.currentUser}})
         .then((data) => {
           console.log(data);
-        // this.$store.dispatch('users/deleteUser', { userId: this.dataSource.id });
         this.$nextTick(() => { this.userInput = '';
         this.$bvModal.hide('modal-delete-user'); });
 

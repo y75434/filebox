@@ -70,7 +70,10 @@ export default {
         
         const data = JSON.stringify({
           "id": this.tabData.userId,
-          "name": this.personData.name
+          "name": this.personData.name,
+          "editor": this.$store.getters.userId,
+          "editedBy":this.$store.getters.currentUser
+
         })
         console.log(data);
 
@@ -89,6 +92,8 @@ export default {
           const data = JSON.stringify({
             "id": this.personData.id,
             "name": this.personData.name,
+            "editor":  this.$store.getters.userId,
+            "editorName":  this.$store.getters.currentUser
           })
 
           this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroupName`,

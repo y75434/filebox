@@ -201,7 +201,7 @@ export default {
           ConflictType: 0,
       }));
 
-      console.log(formData);
+      // console.log(formData);
 
 
 
@@ -221,7 +221,7 @@ export default {
       })
 
       this.clear()
-      this.$bvModal.hide('UploadFiles');
+      // this.$bvModal.hide('UploadFiles');
 
     },
     onFileChange(e) {

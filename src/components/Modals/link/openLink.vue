@@ -1,6 +1,6 @@
 <template>
   <b-modal
-    id="ResetNewPassword"
+    id="openLink"
     class="modal-content"
     body-text-variant="warning"
     centered
@@ -33,34 +33,14 @@
         <label
           for="oldpassword"
           class="form-label"
-        >old password</label>
+        >password</label>
         <input
           type="password"
           class="form-control"
-          v-model="oldPassword"
+          v-model="password"
         >
       </div>
 
-
-      <div class="mb-3">
-        <validation-provider
-          v-slot="{ errors,classes}"
-          :rules="{ required: true, regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).*$/, min:8,}"
-          vid="password"
-        >
-          <label
-            for="Newpassword"
-            class="form-label"
-          >{{ $t("GENERAL.NEWPASSWORD") }}</label>
-          <input
-            type="password"
-            class="form-control"
-            v-model="newPassword"
-            :class="classes"
-          >
-          <span class="text-danger">{{ errors[0] }}</span>
-        </validation-provider>
-      </div>
 
       <p
         v-if="this.status != ''"
@@ -69,14 +49,7 @@
         {{ status }}
       </p>
 
-      <!-- <div class="w-100 d-flex justify-content-center mt-5">
-        <button
-          type="button"
-          class="modal-btn px-5 btn  justify-content-center d-flex btn-lg"
-        >
-          {{ $t("GENERAL.UPDATEPASSWORD") }}
-        </button>
-      </div> -->
+     
     </validation-observer>
 
     <template
@@ -115,53 +88,50 @@
 
 <script>
 export default {
-  name: "CreateFolder",
-  props: { title: { type: String, default: "Create Folder" } },
+  name: "openLink",
+  props: { 
+    title: { type: String, default: "openLink" },
+    linkUrl: { type: String , default: ""}
+
+  
+  },
 
   data() {
     return {
-      oldPassword: "",
-      newPassword: "",
+      password: "",
       status: ""
     };
   },
   
 
   methods: {
-   changePassword(){
-        
-      const data = JSON.stringify(
-        {
-          username: this.$store.getters.currentUser,
-          oldPassword: this.oldPassword,
-          newPassword: this.newPassword,
-          editedBy:  this.$store.getters.userId,
-          editor:  this.$store.getters.currentUser
-        })
-       
-      this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/AD/ADUpdateUserPassword`,
-      data,{ headers: window.headers })
+    withURL() { 
+        const data = JSON.stringify({
+          "linkId": this.linkUrl,
+          "userId": this.$store.getters.userId,
+          "username": this.$store.getters.currentUser,
+          "password": this.password
+          })   
+
+
+      this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithPassword`,
+      data,{ headers: window.headers }) 
         .then((data) => {
-         
-         this.status = data.data.message
 
-         if(data.data.success){
-            this.cancel();
 
-         }
 
-        console.log(data);
+          this.personData.url = data.data.url
+
+          console.log(data.data.url);
       }).catch(error => {
-          console.log(error);          
+          console.log(error.response.data);          
         })
-
-
-    },
+    }, 
     cancel() { 
         this.oldPassword = ""
         this.newPassword = ""
         this.status = ""
-        this.$bvModal.hide('ResetNewPassword'); 
+        this.$bvModal.hide('openLink'); 
       },
   },
 };

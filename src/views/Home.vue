@@ -456,11 +456,6 @@
                   </li>
                 </div>
               </ul>
-              <ul
-                class="text-dark"
-              >
-                <!--  -->
-              </ul>
             </div>
           </Pane>
           <Pane         
@@ -498,6 +493,11 @@
                 >.{{ item.extension }}</span>
               </h6>     
             </label>
+            <ul class="text-dark">
+              {{ arr.map(x => [x.id, x.type]) }}
+              <!-- Object.entries. -->
+            </ul>
+
             <div
               ref="div"
               style="border: 1px solid #33CCFF;background:#33CCFF;opacity:0.5;position:absolute;z-index:999"
@@ -655,8 +655,7 @@ export default {
     nowRootFolder: {}, //還沒點進任何資料夾時為空
     fileType: 0,
     x1 : 0, y1 : 0, x2 :0, y2 : 0,
-    open: false   //tree 收縮
-    
+    open: false ,  //tree 收縮
 
   }),
   
@@ -677,7 +676,9 @@ export default {
       return Object.keys(this.resultQuery).filter(key =>
           this.resultQuery[key].ischecked === true).length
     },
-    
+    arr(){      
+      return this.resultQuery.filter(key => key.ischecked === true)
+    },
     resultQuery(){
         return this.allFiles.filter(item =>
           item.name.toLowerCase().includes(this.searchQuery))
@@ -793,24 +794,28 @@ export default {
           this.fileType = 0
 
         }
+
        
-      const data =  JSON.stringify(
-        //old
-        // {
-        //   "items":[
-        //     {
-        //       "id": "e0b9ed19-8ad1-493e-8acb-98116326632e",
-        //       "type": 1
-        //     }
-        //   ],
-        //   "user":  this.$store.getters.userId
-        // }
-        //new
+      const data =  
+  
         {
-          "items": this.selectedTrue,//array
+          "items":[
+            {
+              "id": "e0b9ed19-8ad1-493e-8acb-98116326632e",
+              "type": 1
+            }
+          ],
           "user":  this.$store.getters.userId
         }
-      );
+       
+      console.log('data',data);
+
+
+       //new
+        // {
+        //   "items": this.selectedTrue,//array
+        //   "user":  this.$store.getters.userId
+        // }
 
       const config = {
         header:{
@@ -819,15 +824,21 @@ export default {
         responseType: 'arraybuffer'
       }
       
-      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`,
-      data,config,{ headers: window.headers })
-      .then((data) => { 
-        const dataFromHeader = data.headers['content-disposition'];
+      // this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`,
+      // data,config)
 
-        const buf = Buffer.from(data.data, 'binary');
+      this.axios.post('https://192.168.110.180:6102/DocManagement/Download', data,config)
+
+      .then((res) => { 
+        const dataFromHeader = res.headers['content-disposition'];
+
+        const buf = Buffer.from(res.data, 'binary');
         const blob = new Blob([buf], { type: 'arraybuffer' });
+
         const temp = document.createElement('a');
-        temp.download = this.getFileNameBeforeDownload(dataFromHeader)
+        console.log('830');
+        
+        temp.download = this.beforeDownload(dataFromHeader)
         temp.href = URL.createObjectURL(blob)
         document.body.appendChild(temp)
         temp.click();
@@ -844,6 +855,42 @@ export default {
       }).catch(error => {
         console.log(error.response.data);        
       })   
+    },
+    beforeDownload(dataFromHeader){
+      if(dataFromHeader){
+        const nameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+        const matches = nameRegex.exec(dataFromHeader);
+        if(matches != null && matches[1])return matches[1].replace(/['"]/g,'');
+      }
+      const now = new Date();
+      return `${
+        this.numberToString(now.getFullYear()) +
+        this.numberToString(now.getMonth() +1) +
+        this.numberToString(now.getDate()) +
+        this.numberToString(now.getHours()) +
+        this.numberToString(now.getMinutes()) +
+        this.numberToString(now.getSeconds()) 
+
+      }.zip`;
+    },
+    view(){
+      const data =  JSON.stringify({
+        "fileId": this.nowSelected.id,
+        "userId": this.$store.getters.userId,
+        "userName": this.$store.getters.currentUser
+      });
+
+      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/View`,
+      data,{ headers: window.headers })
+      .then((data) => { 
+      
+
+        console.log(data);
+
+
+      }).catch(error => {
+        console.log(error.response.data);        
+      }) 
     },
     cutFile(item){
         this.$refs.menu.close();
@@ -1047,25 +1094,12 @@ export default {
                 
                 this.selectedTrue = []
                 this.resultQuery.filter(x=>x.id===img.id)[0].ischecked = true;             
-                this.selectedTrue.push({ "id": img.id, "type": this.fileType });
+                // this.arr.push({ "id": img.id, "type": this.fileType });
                 
-                console.log(this.selectedTrue,'被選擇的檔案');
+                // console.log(this.arr,'被選擇的檔案');
 
                 
-                // const add = [];
-                // const del= [];
-
-                // console.log(this.selectedTrue,'被選擇的檔案');
-
-                //   if (this.resultQuery.includes(img.id)) {
-                //     del.push({ "id": img.id, "type": this.fileType });
-                //   } else{
-                //     add.push({ "id": img.id, "type": this.fileType });
-
-                //   }
-
-                // this.selectedTrue = this.selectedTrue.concat(add) .filter((item) =>!del.includes(item)); 
-
+               
 
               }
              
@@ -1076,7 +1110,7 @@ export default {
                 if(unselected.length==1) {
                   unselected[0].ischecked = false;
             }
-            img.setAttribute("style","background-color:white");
+            // img.setAttribute("style","background-color:white");
             img.setAttribute('data-selected','false')
             }
 

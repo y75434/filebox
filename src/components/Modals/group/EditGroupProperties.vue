@@ -274,11 +274,7 @@ export default {
       
       //編輯資料外也可以設定層級和新增使用者
       updateGroup() {  
-        const headers = { 
-        'Content-Type': 'application/json', 
-        'Accept': 'application/json',
-        "Access-Control-Allow-Origin": '*' 
-        };
+       
 
         const data = JSON.stringify({
 
@@ -288,6 +284,8 @@ export default {
             "groupScope": "string",
             "isSecurityGroup": true,
             "groupUserRelations": this.editGroup.groupUserRelations,
+            "editor":  this.$store.getters.userId,
+            "editorName":  this.$store.getters.currentUser
             //之後設定
             // "parentChildGroupRelations": [
             //   {
@@ -301,7 +299,7 @@ export default {
           
 
       this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroup`,
-      data,{ headers: headers })
+      data,{ headers: window.headers })
         .then((data) => {
 
         console.log(data);

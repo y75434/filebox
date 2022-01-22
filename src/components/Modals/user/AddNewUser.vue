@@ -276,17 +276,16 @@ export default {
   data() {
     return {
       showModal: false,
-      personData: {}
+      personData: {
+        creator: this.$store.getters.userId,
+        createdBy:this.$store.getters.currentUser
+      }
     };
   },
   methods: {
     addUser () {  
 
-      const headers = { 
-      'Content-Type': 'application/json', 
-      'Accept': 'application/json',
-      "Access-Control-Allow-Origin": '*' 
-      };
+      
 
       const data = JSON.stringify(this.personData)
 
@@ -294,7 +293,7 @@ export default {
 
 
       this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/Users/CreateUser`,
-      data,{ headers: headers })
+      data,{ headers: window.headers })
         .then((data) => {
 
         console.log(data);

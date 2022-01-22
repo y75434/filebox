@@ -290,7 +290,10 @@ export default {
   data() {
     return {
       showModal: false,
-      personData: {}
+      personData: {
+        editor: this.$store.getters.userId,
+        editedBy:this.$store.getters.currentUser
+      }
     };
   },
   watch:{ 
@@ -301,12 +304,6 @@ export default {
   methods: {
     editUser () {  
 
-      const headers = { 
-      'Content-Type': 'application/json', 
-      'Accept': 'application/json',
-      "Access-Control-Allow-Origin": '*' 
-      };
-
       this.personData.id = this.personData.userId
 
 
@@ -316,7 +313,7 @@ export default {
 
 
       this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Users/EditUser`,
-      data,{ headers: headers })
+      data,{ headers: window.headers })
         .then((data) => {
 
         console.log(data);

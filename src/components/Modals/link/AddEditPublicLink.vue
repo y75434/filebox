@@ -255,22 +255,27 @@
         </div>
       </div>
     </template>
+    <openLink :link-url="linkurl"/>
   </b-modal>
 </template>
 
 <script>
+import openLink from'@/components/Modals/link/openLink.vue';
+
 
 export default {
   name: "EditPublicLink",
   
   components:{ 
-   
+   openLink
+
   },
   data() {
     return {
       showModal: false,
       personData: {},
-      items: []
+      items: [],
+      linkurl: ""
     };
   },
   // 無法馬上更新值
@@ -290,18 +295,28 @@ export default {
         this.$bvModal.hide('AddEditPublicLink');
       },
     post() { 
-      const headers = { 
-        'Content-Type': 'application/json', 
-        'Accept': 'application/json',
-        "Access-Control-Allow-Origin": '*' 
-        };
 
-        const data = JSON.stringify(this.personData)
+      
+
+     
+
+        const data = JSON.stringify({
+          "name": this.personData.name,
+          "isPublic": this.personData.isPublic,
+          "expireDay": this.personData.expireDay,
+          "viewableTimes": this.personData.viewableTimes,
+          "password": this.personData.password,
+          "url": this.personData.url,
+          "fileId": this.nowSelected.id,
+          "creator": this.$store.getters.userId,
+          "creatorName": this.$store.getters.currentUser
+
+        })
         console.log(data);
 
 
       this.axios.post(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/Create`,
-      data,{ headers: headers }) .then((data) => {
+      data,{ headers: window.headers }) .then((data) => {
         console.log(data);
       }).catch(error => {
           console.log(error.response.data);          
@@ -312,15 +327,23 @@ export default {
      
       this.tabData =  this.personData
 
-      const headers = { 
-        'Content-Type': 'application/json', 
-        'Accept': 'application/json',
-        "Access-Control-Allow-Origin": '*' 
-        };
-        const data = JSON.stringify(this.tabData)   
+      
+        const data = JSON.stringify({
+          "linkId": this.nowSelected.id,
+          "name": this.personData.name,
+          "isPublic": this.personData.isPublic,
+          "expireDay": this.personData.expireDay,
+          "viewableTimes": this.personData.viewableTimes,
+          "password": this.personData.password,
+          "url": this.personData.url,
+          "fileId": this.nowSelected,
+          "editor": this.$store.getters.userId,
+          "editorName": this.$store.getters.currentUser
+
+        })   
 
       this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/${id}`,
-      data,{ headers: headers }) .then((data) => {
+      data,{ headers: window.headers }) .then((data) => {
         console.log(data);
       }).catch(error => {
           console.log(error.response.data);          
@@ -339,7 +362,31 @@ export default {
       }).catch(error => {
           console.log(error.response.data);          
         })
-    },    
+    }, 
+
+     withoutURL() { 
+        const data = JSON.stringify({        
+          "linkId": this.nowSelected.id,
+          "userId": this.$store.getters.userId,
+          "username": this.$store.getters.currentUser
+        })   
+
+
+      this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithoutPassword`,
+      data,{ headers: window.headers }) 
+        .then((data) => {
+          if(data.data.message.include('Please')){
+
+            this.$bvModal.show('openLink');
+
+          }
+
+          console.log(data.data.message);
+      }).catch(error => {
+          console.log(error.response.data);          
+        })
+    },   
+      
     clear(){
       this.personData = ""
     },
