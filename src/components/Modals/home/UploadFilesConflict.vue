@@ -17,7 +17,8 @@
       <div class="w-100 d-flex flex-column justify-content-start">
         <div
           @click="replace()"
-          class="d-flex flex-column"
+          class="d-flex flex-column"         
+          :style="styleObject"
         >
           <img
             src="@/assets/images/cmd/upload@2x.png"
@@ -69,7 +70,7 @@ export default {
   name: "UploadFilesConflict",
   props: { 
     title: { type: String, default: "UploadFilesConflict" },
-    file: { type: Object , default() { return {} }},
+    file: { type: File , default() { return {} }},
 
   },
 
@@ -81,9 +82,21 @@ export default {
         UploaderName:  this.$store.getters.currentUser,
         ConflictType: 0,
       },
-      good: ""
-      
+      good: "",
+      buttonColor: 'transparent',
+      buttonHover: '#d3eaff'
+
     }
+  },
+  //{borderColor:'#d3eaff'} : {borderColor:'transparent'}
+
+  computed:{
+    styleObject() {
+      return {
+        "--color": this.buttonColor,
+        "--color-hover": this.buttonHover,
+      };
+    },
   },
   watch:{ 
     file(){ 
@@ -139,3 +152,15 @@ export default {
   },
 };
 </script>
+
+<style>
+
+button {
+  color: var(--color);
+}
+
+button:hover {
+  color: var(--color-hover);
+}
+
+</style>

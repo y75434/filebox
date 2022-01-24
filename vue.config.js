@@ -2,7 +2,7 @@
 module.exports = {
     devServer: {
            compress: true,
-           disableHostCheck: true, 
+           //disableHostCheck: true, 
            // headers: { "Access-Control-Allow-Origin": "*" },
            // host: 'localhost',
        // port: 8081,

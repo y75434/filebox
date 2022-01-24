@@ -208,6 +208,8 @@ export default {
     getSelected(id){
       console.log(id,'id傳回 home.vue');
       this.$emit('back', id);
+      this.treeSelected.id  = id
+
 
     },
     getFolderTree(id){

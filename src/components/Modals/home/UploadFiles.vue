@@ -209,19 +209,24 @@ export default {
       formData)
       .then((data) => { 
         console.log(data);
-        this.$swal.fire({ title: data.data.msg, icon: 'success' })
 
         if(data.data.code == 1005){
+          this.$swal.fire({ title: data.data.msg, icon: 'info' })
           this.$bvModal.show('UploadFilesConflict');
+
+        }else{
+          this.$swal.fire({ title: data.data.msg, icon: 'success' })
+          this.$bvModal.hide('UploadFiles');
 
         }
 
+
       }).catch(error => {
-        console.log(error.response.data);        
+        console.log(error.response.data);     
+   
       })
 
       this.clear()
-      // this.$bvModal.hide('UploadFiles');
 
     },
     onFileChange(e) {
@@ -247,33 +252,6 @@ export default {
 
       })
 
-
-      // const formData = new FormData();
-      // formData.append('file',this.files[0]);
-
-      //  formData.append('uploadData',JSON.stringify({
-      //     DestinationFolderId: this.$store.getters.nowFolderId,
-      //     UploadedBy: this.$store.getters.userId,
-      //     UploaderName:  this.$store.getters.currentUser,
-      //     ConflictType: 0,
-      // }));
-
-      // this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
-      // formData)
-      // .then((data) => { 
-      //   console.log(data);
-      //   if(data.data.code == 1005){
-      //     this.$bvModal.show('UploadFilesConflict');
-
-      //   }
-
-      // }).catch(error => {
-      //   console.log(error.response.data);        
-      // })
-
-
-      // //直接axios 再把formData post過去
-      // console.log(this.files);
         
     },
     del(url){

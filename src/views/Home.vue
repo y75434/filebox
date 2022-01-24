@@ -18,9 +18,9 @@
               <img
                 src="@/assets/images/cmd/copy@2x.png"
                 alt="copy"
-                :disabled="this.selectedTrue.length = 0"
+                :disabled="this.selectedLength = 0"
                 @click="copyCut"
-                :style=" this.selectedTrue.length > 0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :style=" this.selectedLength > 0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.COPY") }}</span>
             </div>
@@ -42,9 +42,9 @@
               <img
                 src="@/assets/images/cmd/cut@2x.png"
                 alt=""
-                :disabled="!this.$store.getters.nowFile"
+                :disabled="this.selectedLength = 0"
                 @click="copyCut"
-                :style=" this.$store.getters.nowFile ?
+                :style=" this.selectedLength > 0 ?
                   {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class=" nav-text text-center">{{ $t("HOME.CUT") }}</span>
@@ -60,10 +60,10 @@
               <img
                 src="@/assets/images/cmd/delete@2x-2.png"
                 alt=""
-                :disabled="!this.$store.getters.nowFile"
+                :disabled="this.selectedLength = 0"
                 @click="paste"
                 :style="
-                  this.$store.getters.nowFile ? {opacity:'1'} : {opacity:'0.3'}"
+                  this.selectedLength > 0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">
                 {{ $t("HOME.DELETE") }}
@@ -71,6 +71,8 @@
             </li>
             <li 
               @click="RenameItem"
+              :disabled="this.nowSelected"
+
               class="d-flex flex-column w-50"
             >
               <img
@@ -91,9 +93,9 @@
               <img
                 src="@/assets/images/file/new folder@2x.png"
                 alt=""
-                :disabled="!this.$store.getters.nowFile"
+                :disabled="this.selectedLength > 0"
                 :style="
-                  this.$store.getters.nowFile ? {opacity:'1'} : {opacity:'0.3'}"
+                  this.selectedLength = 0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
 
               <span class="nav-text text-center">{{ $t("HOME.NEW") }}</span>
@@ -109,8 +111,8 @@
               <img
                 src="@/assets/images/cmd/download@2x.png"
                 alt=""
-                :disabled="!this.$store.getters.nowFile"
-                :style=" this.$store.getters.nowFile ? {opacity:'1'} : {opacity:'0.3'}"
+                :disabled="this.selectedLength > 0 || !canUse"
+                :style=" this.selectedLength > 0 || canUse ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.DOWNLOAD") }}</span>
             </div>
@@ -121,8 +123,8 @@
               <img
                 src="@/assets/images/cmd/upload@2x.png"
                 alt=""
-                :disabled="this.$store.getters.nowFile"
-                :style=" !this.$store.getters.nowFile ? {opacity:'1'} : {opacity:'0.3'}"
+                :disabled="this.selectedLength > 0"
+                :style=" this.selectedLength = 0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.UPLOAD") }}</span>
             </li>
@@ -153,13 +155,15 @@
             <b-button
               v-b-tooltip.hover
               @click="AddPublicLink"
+              :disabled="this.selectedLength = 0"
               title="Create public link..."
               class="bg-light text-dark border-0 p-0 d-flex"
             >
               <img
                 src="@/assets/images/file/publiclink@2x.png"
                 class="nav-icon pe-1 mx-auto"
-                :style=" !this.$store.getters.nowFile ? {opacity:'1'} : {opacity:'0.3'}"
+
+                :style=" this.selectedLength > 0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="d-sm-none d-md-block d-lg-block text-truncate">{{ $t("HOME.CREATEPUBLICLINK") }}
 
@@ -168,6 +172,7 @@
 
             <b-button
               @click="ManagePublicLink"
+              :disabled="this.selectedLength > 0"
               v-b-tooltip.hover
               title="Manage public links..."
               class="bg-light text-dark border-0 p-0 d-flex"
@@ -175,7 +180,7 @@
               <img
                 src="@/assets/images/icon/managepubliclink@2x.png"
                 class="nav-icon pe-1 mx-auto"
-                :style=" this.$store.getters.nowFile ? {opacity:'1'} : {opacity:'0.3'}"
+                :style=" this.selectedLength = 0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="d-sm-none d-md-block d-lg-block ">{{ $t("HOME.MANAGEPUBLICLINKS") }}</span>
             </b-button>
@@ -520,9 +525,9 @@
       <div class="dqbz-footer" />
 
       <ContextMenu ref="menu">
-        <ul class="text-dark">
+        <ul class="text-dark" >
           <li
-            v-if="!this.$store.getters.nowFile"
+            v-if="this.selectedLength = 0"
             @click="CreateFolder"
           >
             <img
@@ -531,7 +536,7 @@
             >{{ $t("GENERAL.ADDFOLDER") }}
           </li>
           <li
-            v-if="canUse"
+            v-if="canUse || this.selectedLength > 0"
             @click="copyCut()"
           >
             <img
@@ -540,7 +545,7 @@
             >{{ $t("HOME.COPY") }}
           </li>
           <li
-            v-if="canUse"
+            v-if="canUse || this.selectedLength > 0"
             @click="copyCut()"
           >
             <img
@@ -549,7 +554,7 @@
             >{{ $t("HOME.CUT") }}
           </li>
           <li
-            v-if="this.$store.getters.nowFolderId && this.$store.getters.nowFile"
+            v-if="this.$store.getters.nowFolderId && this.selectedLength > 0"
             @click="paste()"
           >
             <img
@@ -557,19 +562,28 @@
               class="icon24px"
             >{{ $t("HOME.PASTE") }}
           </li>
-          <li @click="download()">
+          <li
+            @click="download()"
+            v-if="canUse || this.selectedLength > 0"
+          >
             <img
               src="@/assets/images/cmd/download@2x-1.png"
               class="icon24px"
             >{{ $t("HOME.DOWNLOAD") }}
           </li>
-          <li @click="RenameItem">
+          <li
+            @click="RenameItem"
+            v-if="canUse || this.selectedLength == 1"
+          >
             <img
               src="@/assets/images/cmd/rename@2x.png"
               class="icon24px"
             >{{ $t("HOME.RENAME") }}
           </li>
-          <li @click="DeleteFolder">
+          <li
+            @click="DeleteFolder"
+            v-if="canUse || this.selectedLength > 0"
+          >
             <img
               src="@/assets/images/cmd/delete@2x-2.png"
               class="icon24px"
@@ -586,6 +600,7 @@
         :tab-data="nowSelected"
       />
       <delete-folder
+        @delupdate="delUpdate"
         ref="DeleteFolder"
       />
       <manage-public-link ref="ManagePublicLink" />
@@ -687,9 +702,12 @@ export default {
   },
   computed:{
     //數checkbox勾選幾個
-    selectedLength(){      
-      return Object.keys(this.resultQuery).filter(key =>
-          this.resultQuery[key].ischecked === true).length
+    selectedLength:{  
+      set(){ },//不能刪
+      get(){
+       return Object.keys(this.resultQuery).filter(key =>
+           this.resultQuery[key].ischecked === true).length            
+        }  
     },
     arr(){      
       return this.resultQuery.filter(key => key.ischecked === true)
@@ -728,11 +746,22 @@ export default {
       this.searchQuery = val;
       console.log('子層輸入傳父層',this.searchQuery);
     },
+     delUpdate(val) {
+      this.selectedTrue = val;
+      console.log('selectedTrue',this.selectedTrue);
+
+    },
      //hover一個資料 並將資料傳遞子層 
     rowSelected(items) {
       this.nowSelected = items
-    },
-   
+      console.log('over',this.nowSelected);
+
+    },//@mouseover="selectOut()"
+    selectOut(){
+      this.nowSelected = {}
+      console.log('out',this.nowSelected);
+      
+    },  
     // modal
     UploadFiles(){ this.$bvModal.show('UploadFiles'); },
     CreateFolder(){ this.$bvModal.show('CreateFolder'); },
@@ -799,19 +828,15 @@ export default {
     },//success
 
     checkSelected(){
-      console.log(this.arr);
-
+       console.log(this.arr);
         this.selectedTrue = Object.entries(this.arr)
         .map(([id, type]) => {
           return {type: type.type, id: type.id, s:id}
         })
-        console.log(this.selectedTrue);
+       console.log(this.selectedTrue);
     },
-   
     download() {   
-        this.$refs.menu.close();
- 
-
+      this.$refs.menu.close();
       this.checkSelected()
 
        
@@ -819,7 +844,9 @@ export default {
       //new
         {
           "items": this.selectedTrue,//array
-          "user":  this.$store.getters.userId
+          "user":  this.$store.getters.userId,
+          "editorName": this.$store.getters.currentUser,
+
         }
   
 
@@ -860,6 +887,10 @@ export default {
       }).catch(error => {
         console.log(error.response.data);        
       })   
+
+      this.$store.dispatch('nowFile', null);
+      this.selectedTrue = []
+
     },
     beforeDownload(dataFromHeader){
       if(dataFromHeader){
@@ -926,10 +957,13 @@ export default {
             data,{  headers: window.headers })
             .then((data) => {  
               console.log(data);
-
+              this.$swal.fire({ title: data.status, icon: 'success' })
+              
 
             }).catch(error => {
-              console.log(error.response.data);        
+              console.log(error.response.data); 
+              this.$swal.fire({ title: error, icon: 'error' })
+       
             })
 
       }else{    
@@ -938,12 +972,18 @@ export default {
             data,{  headers: window.headers })
             .then((data) => {  
               console.log(data);
+              this.$swal.fire({ title: data.status, icon: 'success' })
 
 
             }).catch(error => {
-              console.log(error.response.data);        
+              console.log(error);
+              this.$swal.fire({ title: error, icon: 'error' })
+       
             })
         }
+
+        this.$store.dispatch('nowFile', null);
+        this.selectedTrue = []
 
     },
     //點擊某資料夾在傳資料到search

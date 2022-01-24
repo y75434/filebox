@@ -75,7 +75,7 @@ export default {
   methods: {
     deleteDoc(){
 
-      console.log('nowFile',this.$store.getters.nowFile)
+      // console.log('nowFile',this.$store.getters.nowFile)
 
 
       //刪一般file , folder ok 
@@ -88,18 +88,22 @@ export default {
         .then(() => {     
           this.$swal.fire({ title: '$t("GENERAL.DELSUCCESS")', icon: 'success' })
         }).catch(() => {
-          this.$swal.fire({ title: '{{ $t("MODAL.FAILURE") }}', icon: 'error' })
+          this.$swal.fire({ title:  '$t("MODAL.FAILURE")', icon: 'error' })
       
         })
 
         this.$nextTick(() => { 
-          this.userInput = '';
+          // this.userInput = '';
           this.$bvModal.hide('DeleteFolder'); 
 
         });
+
+        this.$store.dispatch('nowFile', null);
+        this.$emit('delupdate', null);
+
       },
       cancel() { 
-        this.userInput = '';
+        // this.userInput = '';
         this.$bvModal.hide('DeleteFolder'); 
       },
 
