@@ -155,7 +155,7 @@
             <b-button
               v-b-tooltip.hover
               @click="AddPublicLink"
-              :disabled="this.selectedLength = 0"
+              :disabled="this.selectedLength == 0"
               title="Create public link..."
               class="bg-light text-dark border-0 p-0 d-flex"
             >
@@ -269,6 +269,7 @@
               <b-button
                 v-b-tooltip.hover
                 title="Details"
+                @click="renderDetail = !renderDetail"
                 class="window-btn bg-light text-dark border-0 p-0 flex-column d-flex align-items-center"
               >
                 <img
@@ -350,7 +351,7 @@
               class="accordion accordion-flush d-flex flex-column w-100"
               id="accordionFlushExample"
             >
-              <div class="accordion-item">
+              <!-- <div class="accordion-item">
                 <h2
                   class="accordion-header"
                   id="flush-headingOne"
@@ -434,53 +435,73 @@
                     </h6>
                   </div>
                 </div>
-              </div>
+              </div> -->
               
-
-            
-              <ul
-                class="text-dark"
-                v-for="item in rootFolder"
-                :key="item.folderId"
-                :id="item.folderId"
-                :value="item.name"
+              <div
+                class="text-dark mt-3 ms-2 cursor"
               >
-                <div>
-                  <img
-                    src="@/assets/images/file/single folder@2x.png"
-                    class="icon24px"
-                    @click.stop="FolderOpen(item)"
-                    @dblclick="detectClick(item)"
-                  >
-                  {{ item.name }}
-                </div> 
+                <img
+                  src="@/assets/images/file/single folder@2x.png"
+                  class="icon24px"
+                  value="root"
+                  :key="value"
+                  @click.stop="FolderOpen(value)"
+                  @dblclick="getFolderTable"
+                >           
+                Root Folder
                 <div
-                  class="d-flex flex-column p-2"
-                  v-if="item.isOpen = !item.isOpen"
-                >
-                  <li
-                    class="list-unstyled "
-                    v-for="sub in item.subFolders"
-                    :key="sub.id"
+                  class=""
+                >    
+                  <!-- v-if="root.isOpen = !root.isOpen" -->
+            
+                  <ul
+                    class="text-dark cursor"
+                    v-for="item in rootFolder"
+                    :key="item.folderId"
+                    :id="item.folderId"
+                    :value="item.name"
                   >
                     <div>
                       <img
                         src="@/assets/images/file/single folder@2x.png"
                         class="icon24px"
-                        @click.stop="FolderOpen(sub)"
-                        @dblclick="detectClick(sub)"
+                        @click.stop="FolderOpen(item)"
+                        @dblclick="detectClick(item)"
                       >
-                      {{ sub.name }}
+                      {{ item.name }}
+                    </div> 
+                
+
+                    <div
+                      class="d-flex flex-column p-2"
+                      v-if="item.isOpen = !item.isOpen"
+                    >
+                      <li
+                        class="list-unstyled "
+                        v-for="sub in item.subFolders"
+                        :key="sub.id"
+                      >
+                        <div>
+                          <img
+                            src="@/assets/images/file/single folder@2x.png"
+                            class="icon24px"
+                            @click.stop="FolderOpen(sub)"
+                            @dblclick="detectClick(sub)"
+                          >
+                          {{ sub.name }}
+                        </div>
+                      </li>
                     </div>
-                  </li>
+                  </ul>
                 </div>
-              </ul>
+              </div>
             </div>
           </Pane>
           <Pane         
             :size="100 - paneSize"
             class="d-flex align-items-start justify-content-start sel"
           >
+            <!-- <Detail /> -->
             <label
               class="d-flex flex-column  mx-2 my-2 position-relative"
               :key="item.id"
@@ -488,7 +509,8 @@
               @dblclick="detectClick(item)"
               @change="ischecked = !ischecked"
               :style=" { backgroundColor: (item.ischecked ? '#d3eaff' : 'transparent' ), 
-                         opacity: item.changed ? {opacity:'1'} : {opacity:'0.3'}}"
+                         opacity: item.changed ? {opacity:'1'} : {opacity:'0.3'},          
+              }"
               @mouseover="rowSelected(item)"
             >
               <input
@@ -511,9 +533,7 @@
                   v-if="extension"
                 >.{{ item.extension }}</span>
               </h6>     
-            </label>
-          
-
+            </label> 
             <div
               ref="div"
               style="border: 1px solid #33CCFF;background:#33CCFF;opacity:0.5;position:absolute;z-index:999"
@@ -525,7 +545,7 @@
       <div class="dqbz-footer" />
 
       <ContextMenu ref="menu">
-        <ul class="text-dark" >
+        <ul class="text-dark">
           <li
             v-if="this.selectedLength = 0"
             @click="CreateFolder"
@@ -607,6 +627,7 @@
     
       <AddEditPublicLink
         ref="AddEditPublicLink"
+        :tab-data="nowSelected"
       />
     </div>
     <div class="dqbz-footer">
@@ -630,6 +651,7 @@ import ManagePublicLink from '../components/Modals/home/ManagePublicLink.vue';
 import AddEditPublicLink from'@/components/Modals/link/AddEditPublicLink.vue';
 import ContextMenu from '@/components/ContextMenu.vue';
 // import TreeItem from '@/components/Modals/home/TreeItem.vue';
+// import Detail from '../components/Display/Detail.vue';
 
 
 export default {
@@ -646,6 +668,7 @@ export default {
     DeleteFolder,
     ManagePublicLink,
     AddEditPublicLink,
+    // Detail
     // TreeItem
   },
   data: () => ({
@@ -683,8 +706,9 @@ export default {
     nowRootFolder: {}, //還沒點進任何資料夾時為空
     x1 : 0, y1 : 0, x2 :0, y2 : 0,
     open: false ,  //tree 收縮
+    sideRoot: false,//sidebar rootfolder
     // now: this.$store.getters.nowFile //才不會跳錯
-
+    renderDetail: false
   }),
   
   created(){
@@ -721,7 +745,12 @@ export default {
 
       //  this.nowSelected.some(id);  
     },
-  
+    Detail() {
+      return {
+        'width': '20px',
+        'height': '20px'
+      }
+    }
   },
 
   methods: { 
@@ -795,13 +824,15 @@ export default {
      
     FolderOpen(folder){
       console.log(folder);
-      folder.isOpen =true;
+      folder.isOpen = true;
     },
     //預設畫面在這
     getFolderTable(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
         .then((data) => { 
           this.allFiles = data.data
+          // this.sideRoot.isOpen = false;
+
           this.rootFolder = this.allFiles
           this.rootFolder.map(x=>{
             x.subFolders =[];

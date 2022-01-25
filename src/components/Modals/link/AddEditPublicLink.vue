@@ -37,35 +37,40 @@
             </div>
             <span class="text-danger">{{ errors[0] }}</span>
           </validation-provider>
-          <validation-provider
+          <!-- <validation-provider
             v-slot="{ errors, classes }"
             rules="required"
-          >
-            <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-              <label
-                for="creator"
-                class=""
-              >{{ $t("MODAL.CREATOR") }}</label>
-              <input
-                type="string"
-                class="form-control inline-block width-320"
-                id="creator"
-                v-model="personData.creator"
-                :class="classes"
-              >
-              <span class="text-danger">{{ errors[0] }}</span>
-            </div>
-          </validation-provider>
+          > -->
+          <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+            <label
+              for="creator"
+              class=""
+            >{{ $t("MODAL.CREATOR") }}</label>
+            <input
+              type="string"
+              class="form-control inline-block width-320"
+              id="creator"
+              v-model="this.$store.getters.currentUser"
+              disabled
+            >
+            <!--   :class="classes"-->
+
+            <!-- <span class="text-danger">{{ errors[0] }}</span> -->
+          </div>
+          <!-- </validation-provider> -->
         </form>
 
         
         <!-- </div> -->
             
-      
+        <p class="text-dark">
+          外部{{ tabData }}
+        </p>
+
         <hr class="">
 
         <p class="text-dark">
-          {{ personData }}
+          表單{{ personData }}
         </p>
 
         <div
@@ -255,7 +260,7 @@
         </div>
       </div>
     </template>
-    <openLink :link-url="linkurl"/>
+    <openLink :link-url="linkurl" />
   </b-modal>
 </template>
 
@@ -265,7 +270,10 @@ import openLink from'@/components/Modals/link/openLink.vue';
 
 export default {
   name: "EditPublicLink",
-  
+  props: { 
+    // title: { type: String, default: "Rename Item" },
+    tabData: { type: Object , default() { return {} }}
+  },
   components:{ 
    openLink
 
@@ -296,9 +304,6 @@ export default {
       },
     post() { 
 
-      
-
-     
 
         const data = JSON.stringify({
           "name": this.personData.name,
@@ -307,7 +312,7 @@ export default {
           "viewableTimes": this.personData.viewableTimes,
           "password": this.personData.password,
           "url": this.personData.url,
-          "fileId": this.nowSelected.id,
+          "fileId": this.tabData.id,//外部資料id
           "creator": this.$store.getters.userId,
           "creatorName": this.$store.getters.currentUser
 
@@ -336,7 +341,7 @@ export default {
           "viewableTimes": this.personData.viewableTimes,
           "password": this.personData.password,
           "url": this.personData.url,
-          "fileId": this.nowSelected,
+          "fileId": this.nowSelected.id,
           "editor": this.$store.getters.userId,
           "editorName": this.$store.getters.currentUser
 

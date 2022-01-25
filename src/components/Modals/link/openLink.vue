@@ -48,8 +48,6 @@
       >
         {{ status }}
       </p>
-
-     
     </validation-observer>
 
     <template
@@ -88,7 +86,7 @@
 
 <script>
 export default {
-  name: "openLink",
+  name: "OpenLink",
   props: { 
     title: { type: String, default: "openLink" },
     linkUrl: { type: String , default: ""}
@@ -117,8 +115,6 @@ export default {
       this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithPassword`,
       data,{ headers: window.headers }) 
         .then((data) => {
-
-
 
           this.personData.url = data.data.url
 

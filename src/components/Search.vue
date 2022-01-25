@@ -61,7 +61,7 @@
       <option selected />
     </select> -->
     <div class="input-group float-left bg-white">
-      <div class="btn-group dropend ">
+      <div class="btn-group dropend h-30">
         <button
           type="button"
           class="btn bg-white "
@@ -100,7 +100,7 @@
 
       <!-- 子層  this.folderTree.subFolders != null   v-if="treeSelected.folderId != nowRootFolder.folderId"-->
       <div v-if="this.treeSelected && this.treeSelected.name != this.nowRootFolder.name">
-        <div class="btn-group dropend ">
+        <div class="btn-group dropend h-30">
           <button
             type="button"
             class="btn bg-white "
