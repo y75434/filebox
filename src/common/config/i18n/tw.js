@@ -55,7 +55,8 @@ export const locale = {
     UNSELECTALL:'取消全選',
     SELECTALL: '全選',
     PREVIEW: '預覽',
-    CLOSE: '關閉'
+    CLOSE: '關閉',
+    REQUIRE: '必填'
   },
   HOME:{
     COPY: '複製',

@@ -55,7 +55,9 @@ export const locale = {
     UNSELECTALL:'Unselect All',
     SELECTALL: 'Select All',
     PREVIEW: 'Preview',
-    CLOSE: 'Close'
+    CLOSE: 'Close',
+    REQUIRE: 'Required'
+
   },
   HOME:{
     COPY: 'Copy',

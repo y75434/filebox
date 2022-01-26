@@ -60,8 +60,8 @@
                 <label
                   for="Email"
                   class="col-form-label"
-                >{{ $t("MODAL.EMAIL") }}</label>
-                  
+                >{{ $t("MODAL.EMAIL") }} </label>
+                <span class="text-danger">{{ $t("GENERAL.REQUIRE") }}</span>
                 <input
                   type="Email"
                   id="Email"
@@ -80,7 +80,7 @@
                 <label
                   for="tel"
                   class="col-form-label"
-                >telephone </label>
+                >telephone  <span class="text-danger">{{ $t("GENERAL.REQUIRE") }}</span></label>
                   
                 <input
                   type="number"
@@ -304,10 +304,27 @@ export default {
   methods: {
     editUser () {  
 
-      this.personData.id = this.personData.userId
 
 
-      const data = JSON.stringify(this.personData)
+      const data = JSON.stringify({
+        
+        "id": this.personData.userId,
+        "userName": this.personData.userName,
+        "firstName": this.personData.firstName,
+        "middleName": this.personData.middleName,
+        "lastName": this.personData.lastName,
+        "email": this.personData.email,
+        "description": this.personData.description,
+        "telephone": this.personData.telephone,
+        "password": this.personData.password,
+        "confirmPassword": this.personData.confirmPassword,
+        "mustChangePasswordOnNextLogin":this.personData.mustChangePasswordOnNextLogin,
+        "cannotChangePassword": this.personData.cannotChangePassword,
+        "passwordNeverExpires": this.personData.passwordNeverExpires,
+        "isEnabled": this.personData.isEnabled,
+        "unlockAccount": this.personData.unlockAccount
+
+      })
 
       console.log(data);
 

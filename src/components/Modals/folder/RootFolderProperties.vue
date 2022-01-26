@@ -46,13 +46,13 @@
           </div>
         </div>
             
-        <!-- <h5 class="text-dark">
+        <h5 class="text-dark">
           FolderSettings{{ FolderSettings }}
         </h5>
 
         <h5 class="text-dark">
           editGroup{{ editGroup }}
-        </h5> -->
+        </h5>
 
 
 
@@ -431,6 +431,7 @@ export default {
       },
       nowUser:{
         memberId: "",
+        memberName: "",
         isGroup: true,
         allow: [],
         deny: []
@@ -441,7 +442,10 @@ export default {
   },
   watch:{ 
     folderData(){ 
-      this.FolderSettings = this.folderData 
+      this.FolderSettings = this.folderData
+      // this.editGroup = {}
+
+ 
       this.deleteNull()
     },
   },
@@ -516,7 +520,7 @@ export default {
       if(item.active){
         this.FolderSettings.settings.push(item.fileTypeId)
       } else {
-        this.FolderSettings.settings.restrictedFileTypes=this.FolderSettings.settings.restrictedFileTypes.filter(x=>x
+        this.FolderSettings.settings.restrictedFileTypes = this.FolderSettings.settings.restrictedFileTypes.filter(x=>x
           !==item.fileTypeId);
       }
     },
@@ -537,8 +541,11 @@ export default {
     },
     //目前資料不完整無法更新資料
     putFolder(){
-    
-      this.FolderSettings.editor = this.$store.getters.currentUser;
+      this.deleteNull()
+
+      this.FolderSettings.editorName = this.$store.getters.currentUser;
+      this.FolderSettings.editor = this.$store.getters.userId;
+
       this.FolderSettings.settings.storage = {};
       this.FolderSettings.settings.storage.unitId = this.unitId;
       this.FolderSettings.settings.restrictedFileTypes = [];
@@ -551,16 +558,19 @@ export default {
       this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
       data,{  headers: window.headers }).then((data) => { 
         console.log(data);
+        this.$swal.fire({ title: 'success', icon: 'success' })
 
       }).catch(error => {
-        console.log(error.response.data);        
+        console.log(error.response.data);    
+        this.$swal.fire({ title: error.response.data, icon: 'error' })
+    
       })
     },
     getUserTable () {  
       this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
         .then((data) => {          
           this.useritems = data.data
-          console.log(this.useritems);
+          // console.log(this.useritems);
 
           this.count = this.useritems.length       
         }).catch(error => {
@@ -579,18 +589,23 @@ export default {
       });
 
       this.nowUser.memberId = item.memberId 
+      this.nowUser.memberName = item.userName
+
     },
     userSelected(item){
-          
+      item.selected != item.selected
+
       this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId !== item.userId);
       const data = {  "memberId": item.userId,"userName": item.userName }
 
-      this.editGroup.groupUserRelations.push(data)
+     if (this.editGroup.groupUserRelations.filter(x=>x.userId !== item.userId)) {
+        this.editGroup.groupUserRelations.push(data)
+      }
+
       console.log('目前選擇名單',this.editGroup.groupUserRelations);       
     },//ok
     del(user){
       console.log('user',user);
-
       this.editGroup.groupUserRelations =this.editGroup.groupUserRelations.filter(x=>x.memberId !== user.memberId);
     },
     addToSettings(){

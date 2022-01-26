@@ -16,7 +16,7 @@
       <div
         class="p-3 w-100 d-flex align-items-center justify-content-between mb-2"
       >
-        <label for="Name">{{ $t("MODAL.USERNAME") }}required</label>
+        <label for="Name">{{ $t("MODAL.USERNAME") }} <span class="text-danger">{{ $t("GENERAL.REQUIRE") }}</span></label>
         <input
           type="Name"
           id="Name"
@@ -28,7 +28,7 @@
       <div
         class="p-3 w-100 d-flex align-items-center justify-content-between mb-2"
       >
-        <label for="Username">{{ $t("MODAL.DESCRIPTION") }}required</label>
+        <label for="Username">{{ $t("MODAL.DESCRIPTION") }}<span class="text-danger">{{ $t("GENERAL.REQUIRE") }}</span></label>
         <input
           type="Username"
           id="Username"
