@@ -440,11 +440,11 @@
               <div
                 class="text-dark mt-3 ms-2 cursor"
               >
+                <!-- value="root" -->
+
                 <img
                   src="@/assets/images/file/single folder@2x.png"
                   class="icon24px"
-                  value="root"
-                  :key="value"
                   @click.stop="FolderOpen(value)"
                   @dblclick="getFolderTable"
                 >           
@@ -823,7 +823,7 @@ export default {
     },
      
     FolderOpen(folder){
-      console.log(folder);
+      console.log(folder,'FolderOpen');
       folder.isOpen = true;
     },
     //預設畫面在這

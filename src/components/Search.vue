@@ -61,52 +61,18 @@
       <option selected />
     </select> -->
     <div class="input-group float-left bg-white">
-      <div class="btn-group dropend h-30">
-        <button
-          type="button"
-          class="btn bg-white "
-          @click="getSelected(nowRootFolder.folderId)"
+      <div>
+        <div
+          class="btn-group dropend h-30"
         >
-          {{ nowRootFolder.name }}
-        </button>
-        <button
-          type="button"
-          class="btn btn-white dropdown-toggle dropdown-toggle-split"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          <span class="visually-hidden">Toggle Dropright</span>
-        </button>
-        
-
-        <ul v-if="this.rootFolderTree.subFolders"  class="dropdown-menu">
-          <!-- rootfolder sub -->
-
-          <!-- 傳入的參數是 id -->
-
-          <li
-            @click="getSelected(item.folderId)"
-            v-for="item in this.rootFolderTree.subFolders"
-            :key="item.id"
-          >
-            <a
-              class="dropdown-item"
-              href="#"
-            >{{ item.name }}</a>
-          </li>
-        </ul>
-      </div>
-
-
-      <!-- 子層  this.folderTree.subFolders != null   v-if="treeSelected.folderId != nowRootFolder.folderId"-->
-      <div v-if="this.treeSelected && this.treeSelected.name != this.nowRootFolder.name">
-        <div class="btn-group dropend h-30">
           <button
             type="button"
             class="btn bg-white "
-            @click="getSelected(treeSelected.id)"
+            @click="getSelected(item.folderId)"
+            v-for="item in arr"
+            :key="item.folderId"
           >
-            {{ treeSelected.name }}
+            {{ item.name }}
           </button>
           <button
             type="button"
@@ -120,18 +86,16 @@
           <ul
             class="dropdown-menu"
           >
-            <!-- subfolder sub -->
-
             <li
-              v-for="item in this.treeSelected.subFolders"
-              :key="item.id"
+              v-for="item in arr.subFolders"
+              :key="item.folderId"
             >
               <a
                 class="dropdown-item"
                 href="#"
               >{{ item.name }}</a>
             </li>
-          </ul>
+          </ul> 
         </div>
       </div>
     </div>
@@ -174,22 +138,23 @@ export default {
   data() {
     return {
       searchQuery: null,
-      personData: {},
-      folderTree:{},
-      rootFolderTree:{},
-      nowfolder: ""
+      folderTree:null,
+      arr: []
     }
   },
-  watch:{   
-    // folderTree(){ 
-    //   this.tree = this.folderTree
-    //   console.log('外部傳進來的子層',this.tree);   
-    // },
+  watch:{    
     nowRootFolder(){ 
-      this.rootFolderTree = this.nowRootFolder
-      console.log('rootFolderTree',this.rootFolderTree);  
-      // this.getFolderTree(this.nowRootFolder.folderId) 
+      this.FolderTree = null
+       this.arr = []
+      // this.$set(this.arr, [])
+
+      console.log('rootFolder changed'); 
+      this.getFolderTree(this.nowRootFolder.folderId) 
+    },
+    treeSelected(){
+      this.getFolderTree(this.treeSelected.id)
     } 
+
   },
   methods: {
 
@@ -215,14 +180,27 @@ export default {
     getFolderTree(id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
       .then((data) => { 
-        console.log(this.FolderTree,'hi');
+
         this.FolderTree = data.data
-        console.log(this.FolderTree,'子資料夾每次更改folderTree');
+        console.log(this.FolderTree, 'this.FolderTree');
+        
+        // let check = this.arr.filter(x=>x.folderId != id)
+
+        // if(check){
+           this.arr.push(this.FolderTree)
+         //}
+
+        console.log(this.FolderTree,'目前 folderTree 242');
+        console.log(this.arr,'arr 243');
+
        
       }).catch((error) => {
          console.log(error.response.data);        
       })
     },
+    
   }
 }
+
+
 </script>

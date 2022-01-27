@@ -280,13 +280,13 @@ export default {
         const data = JSON.stringify({
 
             "id": this.editGroup.id,
-            "groupName": this.group.groupName,
+            // "groupName": this.group.groupName,
             "groupDescription": this.group.groupDescription,
             "groupScope": "string",
             "isSecurityGroup": true,
             "groupUserRelations": this.editGroup.groupUserRelations,
-            "editor":  this.$store.getters.userId,
-            "editorName":  this.$store.getters.currentUser
+            "editedBy":  this.$store.getters.userId,
+            "editor":  this.$store.getters.currentUser
             //之後設定
             // "parentChildGroupRelations": [
             //   {

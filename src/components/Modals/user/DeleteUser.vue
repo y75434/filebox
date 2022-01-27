@@ -124,7 +124,8 @@ export default {
 
       },
      deleteGroup(id) {  
-      this.axios.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/`,{data:{ "id": id }})
+      this.axios.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/`,
+      {data:{ "id": id,"editedBy": this.$store.getters.userId, "editor":this.$store.getters.currentUser}})
         .then((data) => {
         
         console.log(data);
