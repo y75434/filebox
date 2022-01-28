@@ -327,6 +327,7 @@
         :folder-tree="this.folderTree"
         :now-root-folder="nowRootFolder"
         @back="getSelected"
+        @getRoot="getFolderTable"
       />
       <!--  -->
 
@@ -351,92 +352,6 @@
               class="accordion accordion-flush d-flex flex-column w-100"
               id="accordionFlushExample"
             >
-              <!-- <div class="accordion-item">
-                <h2
-                  class="accordion-header"
-                  id="flush-headingOne"
-                >
-                  <button
-                    class="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#flush-collapseOne"
-                    aria-expanded="false"
-                    aria-controls="flush-collapseOne"
-                  >
-                    <img
-                      :src="`${this.treeItems[0].pic}`"
-                      class="icon24px"
-                    >
-                    Root Folder
-                  </button>
-                </h2>
-                <div
-                  id="flush-collapseOne"
-                  class="accordion-collapse collapse"
-                  aria-labelledby="flush-headingOne"
-                  data-bs-parent="#accordionFlushExample"
-                >
-                  <div class="accordion-body">
-                    <h6 class="text-dark">
-                      <img
-                        :src="`${this.treeItems[0].pic}`"
-                        class="icon24px"
-                      >
-                      Folder One
-                    </h6>
-                    <h6 class="text-dark">
-                      <img
-                        :src="`${this.treeItems[0].pic}`"
-                        class="icon24px"
-                      >
-
-                      Folder Two
-                    </h6>
-                    <h6 class="text-dark">
-                      <img
-                        :src="`${this.treeItems[1].pic}`"
-                        class="icon24px"
-                      >
-
-                      7Z Archive
-                    </h6>
-                    <h6 class="text-dark">
-                      <img
-                        :src="`${this.treeItems[4].pic}`"
-                        class="icon24px"
-                      >
-
-                      ZIP Archive
-                    </h6>
-                    <h6 class="text-dark">
-                      <img
-                        :src="`${this.treeItems[2].pic}`"
-                        class="icon24px"
-                      >
-
-                      RAR Archive
-                    </h6>
-                    <h6 class="text-dark">
-                      <img
-                        :src="`${this.treeItems[3].pic}`"
-                        class="icon24px"
-                      >
-
-                      TAR Archive
-                    </h6>
-                    <h6 class="text-dark">
-                      <img
-                        :src="`${this.treeItems[2].pic}`"
-                        class="icon24px"
-                      >
-
-                      RAR Archive
-                    </h6>
-                  </div>
-                </div>
-              </div> -->
-              
               <div
                 class="text-dark mt-3 ms-2 cursor"
               >
@@ -451,9 +366,7 @@
                 Root Folder
                 <div
                   class=""
-                >    
-                  <!-- v-if="root.isOpen = !root.isOpen" -->
-            
+                >                
                   <ul
                     class="text-dark cursor"
                     v-for="item in rootFolder"
@@ -462,36 +375,53 @@
                     :value="item.name"
                   >
                     <div>
+                      <b-iconstack
+                        font-scale="1"
+                        rotate="90" 
+                        v-if="item.subFolders != null"
+                      >
+                        <b-icon
+                          stacked
+                          icon="chevron-right"
+                          shift-h="0"
+                          variant="success"
+                          @click="getFolderTree(item.folderId)"
+                        />
+                      </b-iconstack>
+
                       <img
                         src="@/assets/images/file/single folder@2x.png"
                         class="icon24px"
-                        @click.stop="FolderOpen(item)"
                         @dblclick="detectClick(item)"
                       >
                       {{ item.name }}
-                    </div> 
-                
-
-                    <div
-                      class="d-flex flex-column p-2"
-                      v-if="item.isOpen = !item.isOpen"
-                    >
-                      <li
-                        class="list-unstyled "
-                        v-for="sub in item.subFolders"
-                        :key="sub.id"
-                      >
-                        <div>
-                          <img
-                            src="@/assets/images/file/single folder@2x.png"
-                            class="icon24px"
-                            @click.stop="FolderOpen(sub)"
-                            @dblclick="detectClick(sub)"
-                          >
-                          {{ sub.name }}
-                        </div>
-                      </li>
                     </div>
+
+
+                    <div v-for="item in arr" :key="item.folderId"
+>
+                      <b-iconstack
+                        font-scale="1"
+                        rotate="90" 
+                        v-if="item.subFolders != null"
+                      >
+                        <b-icon
+                          stacked
+                          icon="chevron-right"
+                          shift-h="0"
+                          variant="success"
+                          @click="getFolderTree(item.folderId)"
+                        />
+                      </b-iconstack>
+
+                      <img
+                        src="@/assets/images/file/single folder@2x.png"
+                        class="icon24px"
+                        @dblclick="detectClick(item)"
+                      >
+                      {{ item.name }}
+                    </div>
+
                   </ul>
                 </div>
               </div>
@@ -708,20 +638,21 @@ export default {
     open: false ,  //tree 收縮
     sideRoot: false,//sidebar rootfolder
     // now: this.$store.getters.nowFile //才不會跳錯
-    renderDetail: false
+    renderDetail: false,
+    arr: [] //sidebar子選單
   }),
   
   created(){
-      this.resultQuery.map((x,index)=>{
+    this.resultQuery.map((x,index)=>{
 
-      this.$set(this.resultQuery, x.ischecked, false)
-      this.$set(this.resultQuery, x.showCheckbox, false)
-      this.$set(this.resultQuery, x.id, index)
-      return x;
-    })
-     this.getFolderTable()
-     this.$store.dispatch('setNowFolderId', null);
-     this.$store.dispatch('nowFile', null);
+    this.$set(this.resultQuery, x.ischecked, false)
+    this.$set(this.resultQuery, x.showCheckbox, false)
+    this.$set(this.resultQuery, x.id, index)
+    return x;
+  })
+    this.getFolderTable()
+    this.$store.dispatch('setNowFolderId', null);
+    this.$store.dispatch('nowFile', null);
 
   },
   computed:{
@@ -853,11 +784,7 @@ export default {
         }).catch(error => {
           console.log(error.response.data);        
         })
-
-
-
     },//success
-
     checkSelected(){
        console.log(this.arr);
         this.selectedTrue = Object.entries(this.arr)
@@ -868,9 +795,7 @@ export default {
     },
     download() {   
       this.$refs.menu.close();
-      this.checkSelected()
-
-       
+      this.checkSelected()   
       const data =   
       //new
         {
@@ -880,11 +805,7 @@ export default {
 
         }
   
-
-       
       console.log('data',data);
-
-      
 
       const config = {
         header:{
@@ -970,15 +891,15 @@ export default {
       this.$refs.menu.close();
 
       const data =  JSON.stringify(
-              {
-                "items": this.$store.getters.nowFile,
-                "editor":  this.$store.getters.userId,
-                "editorName": this.$store.getters.currentUser,
-                "destination": this.$store.getters.nowFolderId
-              }
-            );
-            
-            console.log(data);
+        {
+          "items": this.$store.getters.nowFile,
+          "editor":  this.$store.getters.userId,
+          "editorName": this.$store.getters.currentUser,
+          "destination": this.$store.getters.nowFolderId
+        }
+      );
+      
+      console.log(data);
 
 
       if(this.$store.getters.copyFile){
@@ -1023,8 +944,11 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
       .then((data) => { 
         this.folderTree = data.data
-        rootFolder.subFolders = data.data.subFolders;
         // console.log(rootFolder);
+        rootFolder.subFolders = data.data.subFolders;
+
+        // this.arr.push(this.FolderTree)
+        // console.log(this.arr,'arr');
 
         // console.log(this.folderTree,'folderTree');
         // if(this.folderTree.subFolders){
@@ -1034,13 +958,20 @@ export default {
         //  console.log(error.response.data);        
       })
     },
+      new(id){
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
+      .then((data) => { 
+        this.folderTree = data.data
+        // console.log(rootFolder);
+        
+      }).catch(() => {
+        //  console.log(error.response.data);        
+      })
+    },
     //點擊跳轉該路徑
-    //到kaoh資料夾
     getSelected(id){
-      console.log('換路徑囉',id);
-      
+      console.log('換路徑囉',id);      
       this.$store.dispatch('setNowFolderId', id);
-
 
       //驗證 root
       const result = this.rootFolder.filter(item => id == item.folderId);      
@@ -1066,32 +997,24 @@ export default {
         //點擊後上層開始顯示路徑
         this.allFiles.map(item=>{ 
           const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
-        
           item.pic = datapic.pic;          
           return item 
         });
 
         }).catch(error => {
           console.log(error);  
-          //  if(!id){
-          //     id = this.id
-          //     console.log('預設路徑', );
-              
-          //   }      
+            
         })
     },
-
     detectClick(item) {
       console.log('double click ',item);
        if('folderId' in item ) {
           this.getSelected(item.folderId)
           this.treeSelected = item;
-
         }
         else if('id' in item ) {
           this.getSelected(item.id)
           // console.log('975',item);
-
           //讓search顯示你目前在哪個資料夾裡
           this.treeSelected = item;
         }

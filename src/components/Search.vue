@@ -64,13 +64,13 @@
       <div>
         <div
           class="btn-group dropend h-30"
+          v-for="item in arr"
+          :key="item.folderId"
         >
           <button
             type="button"
             class="btn bg-white "
             @click="getSelected(item.folderId)"
-            v-for="item in arr"
-            :key="item.folderId"
           >
             {{ item.name }}
           </button>
@@ -85,15 +85,17 @@
 
           <ul
             class="dropdown-menu"
+            v-if="item.subFolders"
           >
             <li
-              v-for="item in arr.subFolders"
-              :key="item.folderId"
+              v-for="sub in item.subFolders"
+              :key="sub.folderId"
+              @click="getSelected(sub.folderId)"
             >
               <a
                 class="dropdown-item"
                 href="#"
-              >{{ item.name }}</a>
+              >{{ sub.name }}</a>
             </li>
           </ul> 
         </div>
@@ -146,27 +148,30 @@ export default {
     nowRootFolder(){ 
       this.FolderTree = null
        this.arr = []
-      // this.$set(this.arr, [])
 
       console.log('rootFolder changed'); 
       this.getFolderTree(this.nowRootFolder.folderId) 
     },
     treeSelected(){
       this.getFolderTree(this.treeSelected.id)
+      // this.arr.push(this.FolderTree)
     } 
 
   },
   methods: {
-
    update() {
     this.$emit('update', this.searchQuery);   
-    },
-    
-  
+    }, 
     //返回上一層 目前返回到該 rootfolder 裏面
     back(){
-      this.$emit('back', this.rootFolderTree.folderId);
-      console.log(this.rootFolderTree);
+      this.arr.pop()
+      console.log(this.arr,'回上層');
+
+      if(this.arr.length > 0){
+        this.$emit('back', this.arr[this.arr.length -1].folderId);
+      }else{
+        this.$emit('getRoot');
+      }
 
     },
     //點擊到該路徑
@@ -174,8 +179,6 @@ export default {
       console.log(id,'id傳回 home.vue');
       this.$emit('back', id);
       this.treeSelected.id  = id
-
-
     },
     getFolderTree(id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
@@ -183,12 +186,8 @@ export default {
 
         this.FolderTree = data.data
         console.log(this.FolderTree, 'this.FolderTree');
+        this.arr.push(this.FolderTree)
         
-        // let check = this.arr.filter(x=>x.folderId != id)
-
-        // if(check){
-           this.arr.push(this.FolderTree)
-         //}
 
         console.log(this.FolderTree,'目前 folderTree 242');
         console.log(this.arr,'arr 243');

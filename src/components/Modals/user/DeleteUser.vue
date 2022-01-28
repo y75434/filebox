@@ -166,7 +166,8 @@ export default {
       this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
       {data:{  
         "items": [ { "id": id, "type": 0 }],
-        "editor": this.$store.getters.currentUser }})
+        "editor": this.$store.getters.userId,
+        "editorName":this.$store.getters.currentUser }})
         .then((data) => {
           console.log(data);
 
