@@ -394,7 +394,7 @@
                         class="icon24px"
                         @dblclick="detectClick(item)"
                       >
-                      {{ item.name }}
+                      {{ item.name }}33
                     </div>
 
 
@@ -771,10 +771,10 @@ export default {
             return x;
           });
           //顯示左側sidebar
-          this.rootFolder.forEach(x=>{
-            // console.log(x);
-             this.getFolderTree(x,x.folderId);
-          })
+          // this.rootFolder.forEach(x=>{
+          //   // console.log(x);
+          //    this.getFolderTree(x,x.folderId);
+          // })
          
           this.allFiles.map(item=>{
             const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];

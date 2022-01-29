@@ -1,0 +1,25 @@
+{
+    "folderTree":[
+        {
+            "folderId":"123",
+            "name":"abc",
+            "children":[
+                {
+                    "name":"efg",
+                    "children":[]
+                },
+                {
+                    
+                    "name":"efg",
+                    "children":[
+                        {
+                            "naaa":"",
+                            "children":[]
+                            
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
