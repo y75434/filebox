@@ -47,6 +47,12 @@ const router = new VueRouter({
       component: () => import('../views/Test.vue')
   
     },
+    {
+      path: '/tree',
+      name: 'tree',
+      component: () => import('@/components/Modals/home/TreeItem.vue')
+  
+    },
     // {
     //   path: '*',
     //   redirect: '/',

@@ -21,3 +21,7 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+src/views/Home_BACKUP_1191.vue
+src/views/Home_BASE_1191.vue
+src/views/Home_LOCAL_1191.vue
+src/views/Home_REMOTE_1191.vue

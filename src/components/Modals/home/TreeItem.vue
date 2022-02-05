@@ -1,58 +1,37 @@
 <template>
-  <div class="list-unstyled">
-    <li
-      class="text-dark"
-      v-for="item in tree"
-      :key="item.folderId"
-
-                  :id="item.folderId"
-      @click.stop="toggle(item)"
-        @click="passRoute($event,item)"                   
-                    :value="item.name"
-    >
-      {{ item.name }}
-    </li>
-    <ul>
-      <li
-        class="text-dark"
-        v-show="open"
-        v-if="tree.node && tree.node.length > 0"
-      >
-      <item v-for="(node, index) in tree.node"  :key="index" >
-        </item>
-        {{ node.name }}
-        333
-      </li>
-    </ul>
-  </div>
+ <ul id="root">
+   <div v-for="(tree,index) in trees" :key="index">
+    <item :tree="tree"></item>
+   </div>
+  </ul>
 </template>
 
 <script>
+import item from './Item.vue'
 export default {
+  components:{item},
   name: "TreeItem",
-  props: {
-    tree: { type: Array , default() { return [] }},
-
-  },
   data() {
     return{
-       open: false   
+      trees:[]
     }
   },
-  // computed: {
-  //   hasName(item) {
-  //       return this.containsKey(item, 'node');
-  //   }
-  // },
-   methods: {
-    toggle(item){
-      if('node' in item){
-        this.open = !this.open
-      }
-    },
-    // containsKey( obj, key) {
-    //   return Object.keys(obj).includes(key);
-    // }
+  created(){
+    this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
+        .then((data) => { 
+          this.trees = data.data;
+          this.trees.map(x=>{
+            x.hasChildren = false;
+            x.subFolders = null;
+            return x;
+          });
+          console.log(this.trees);
+        }).catch(error => {
+          console.log(error.response.data);        
+        })
+  },
+  methods: {
+   
  }
 }
 </script>

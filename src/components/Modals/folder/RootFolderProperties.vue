@@ -465,7 +465,6 @@ export default {
       this.getPermissionTypes()
       this.getFileTypes()
       this.getStorageUnit()
-      this.getUserTable()
     },
     getFolderTree(id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
@@ -479,8 +478,9 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => {  
         this.FolderSettings = data.data
-        // console.log(this.FolderSettings.settings.restrictedFileTypes);
-         
+        console.log(this.FolderSettings.settings.accessPermissions, 'folder user');
+        this.getUserTable()
+
       }).catch(() => {
         // console.log(error.response.data);        
       })
@@ -570,7 +570,17 @@ export default {
       this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
         .then((data) => {          
           this.useritems = data.data
-          // console.log(this.useritems);
+          this.useritems.map(x=>{
+            let accessPermissions = this.FolderSettings.settings.accessPermissions;
+            if(accessPermissions.filter(ap=>ap.memberId==x.userId).length>0) {
+              x.selected = true
+              this.editGroup.groupUserRelations.push(x);
+            } else {
+              x.selected = false;
+            }
+            return x;
+          })
+           console.log(this.useritems, 'search users');
 
           this.count = this.useritems.length       
         }).catch(error => {
@@ -584,6 +594,8 @@ export default {
       console.log('usercan',item);
       this.haveUser = true
       //點擊新用戶全部取消勾選
+      
+
       this.PermissionTypes.map(x=>{
         this.$set(this.PermissionTypes, x.active, false)
       });
@@ -594,19 +606,26 @@ export default {
     },
     userSelected(item){
       item.selected != item.selected
+      console.log(item);
+      if(item.selected) {
+      this.editGroup.groupUserRelations.push(item);
+      }else{
+      this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId!==item.userId);
 
-      this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId !== item.userId);
-      const data = {  "memberId": item.userId,"userName": item.userName }
-
-     if (this.editGroup.groupUserRelations.filter(x=>x.userId !== item.userId)) {
-        this.editGroup.groupUserRelations.push(data)
       }
+    //   this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId !== item.userId);
+    //   const data = {  "memberId": item.userId,"userName": item.userName }
 
-      console.log('目前選擇名單',this.editGroup.groupUserRelations);       
+    //  if (this.editGroup.groupUserRelations.filter(x=>x.userId !== item.userId)) {
+    //     this.editGroup.groupUserRelations.push(data)
+    //   }
+
+    //   console.log('目前選擇名單',this.editGroup.groupUserRelations);       
     },//ok
     del(user){
       console.log('user',user);
-      this.editGroup.groupUserRelations =this.editGroup.groupUserRelations.filter(x=>x.memberId !== user.memberId);
+      user.selected = false;
+      this.editGroup.groupUserRelations =this.editGroup.groupUserRelations.filter(x=>x.userId !== user.userId);
     },
     addToSettings(){
       console.log(this.nowUser,'this.nowUser');
