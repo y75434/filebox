@@ -478,7 +478,7 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => {  
         this.FolderSettings = data.data
-        console.log(this.FolderSettings.settings.accessPermissions, 'folder user');
+        console.log(this.FolderSettings.settings.accessPermissions, ' 481 folder user');
         this.getUserTable()
 
       }).catch(() => {
@@ -593,12 +593,16 @@ export default {
       
       console.log('usercan',item);
       this.haveUser = true
-      //點擊新用戶全部取消勾選
+      // 撈api allow 還沒好
       
+      if(this.FolderSettings.settings.accessPermissions.filter(memberId=>memberId == item.userId)){
+          console.log(this.FolderSettings.settings, 'user allow');
 
-      this.PermissionTypes.map(x=>{
-        this.$set(this.PermissionTypes, x.active, false)
-      });
+          this.FolderSettings.settings.accessPermissions.map(memberId=>memberId == item.userId);
+
+      }
+
+
 
       this.nowUser.memberId = item.memberId 
       this.nowUser.memberName = item.userName
@@ -625,7 +629,7 @@ export default {
     del(user){
       console.log('user',user);
       user.selected = false;
-      this.editGroup.groupUserRelations =this.editGroup.groupUserRelations.filter(x=>x.userId !== user.userId);
+      this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId !== user.userId);
     },
     addToSettings(){
       console.log(this.nowUser,'this.nowUser');

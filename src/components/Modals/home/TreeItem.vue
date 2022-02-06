@@ -1,7 +1,16 @@
 <template>
- <ul id="root">
+ <ul id="root" class="text-dark list-unstyled  mt-3 ms-2">
+   <!-- <div class="text-dark mt-3 ms-2 cursor">
+      <img
+        src="@/assets/images/file/single folder@2x.png"
+        class="icon24px"
+        @dblclick="getRoot"
+      >           
+      Root Folder                
+    </div> -->
    <div v-for="(tree,index) in trees" :key="index">
-    <item :tree="tree"></item>
+    
+    <item :tree="tree"  @treeClick="treeClick"></item>
    </div>
   </ul>
 </template>
@@ -17,7 +26,11 @@ export default {
     }
   },
   created(){
-    this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
+   this.getRootFolder()
+  },
+  methods: {
+   getRootFolder(){
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
         .then((data) => { 
           this.trees = data.data;
           this.trees.map(x=>{
@@ -29,9 +42,16 @@ export default {
         }).catch(error => {
           console.log(error.response.data);        
         })
-  },
-  methods: {
+   },
    
+  getRoot(){
+    this.$emit('getRoot');  
+
+  },
+  treeClick(tree) {
+    this.$emit('treeClick', tree);  
+    console.log(tree, 'father tree');        
+  },
  }
 }
 </script>

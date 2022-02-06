@@ -1,9 +1,13 @@
 <template>
-  <div>    
+  <div 
+   @contextmenu="handler($event)"
+   ref="sel"
+   style="position: relative;"> 
+
    <Navbar />
     
-
-    <div style="height:25vh">
+    <div  class="dqbz-body"
+      @contextmenu="showMenu($event)">
       <div class="dqbz-fnlist">
         <div class="fn-box bg-light">
           <div class="d-flex fn-w-150 align-items-center">
@@ -316,9 +320,7 @@
           <div class="divider" />
         </div>
       </div>
-    </div>
-
-    <Search
+       <Search
         :tree-selected="treeSelected"
         @update="selfUpdate"
         :folder-tree="this.folderTree"
@@ -326,9 +328,11 @@
         @back="getSelected"
         @getRoot="getFolderTable"
       />
-    <div style="height:75vh;display:flex;position: relative;"
-    >
-              <TreeItem />
+    <div class="dqbz-main"
+      @mousedown="mouseDown($event)"
+      @mousemove="mouseMove($event)"
+      @mouseup="mouseUp($event)"
+      style="background:white;">
 
       <Splitpanes class="h-100 sel">
 
@@ -339,89 +343,17 @@
             class="d-flex align-items-start"
             style="width:20%"
           >
-            <div
-              class="accordion accordion-flush d-flex flex-column w-100"
-              id="accordionFlushExample"
-            >
-              <div
-                class="text-dark mt-3 ms-2 cursor"
-              >
-                <!-- value="root" -->
-
-                <img
-                  src="@/assets/images/file/single folder@2x.png"
-                  class="icon24px"
-                  @click.stop="FolderOpen(value)"
-                  @dblclick="getFolderTable"
-                >           
-                Root Folder
-                <div
-                  class=""
-                >                
-                  <ul
-                    class="text-dark cursor"
-                    v-for="item in rootFolder"
-                    :key="item.folderId"
-                    :id="item.folderId"
-                    :value="item.name"
-                  >
-                    <div>
-                      <b-iconstack
-                        font-scale="1"
-                        rotate="90" 
-                        v-if="item.subFolders != null"
-                      >
-                        <b-icon
-                          stacked
-                          icon="chevron-right"
-                          shift-h="0"
-                          variant="success"
-                          @click="getFolderTree(item.folderId)"
-                        />
-                      </b-iconstack>
-
-                      <img
-                        src="@/assets/images/file/single folder@2x.png"
-                        class="icon24px"
-                        @dblclick="detectClick(item)"
-                      >
-                      {{ item.name }}
-                    </div>
+          <TreeItem 
+           @getRoot="getFolderTable"
+           @treeClick="detectClick"/>
 
 
-                    <div v-for="item in arr" :key="item.folderId">
-                      <b-iconstack
-                        font-scale="1"
-                        rotate="90" 
-                        v-if="item.subFolders != null"
-                      >
-                        <b-icon
-                          stacked
-                          icon="chevron-right"
-                          shift-h="0"
-                          variant="success"
-                          @click="getFolderTree(item.folderId)"
-                        />
-                      </b-iconstack>
-
-                      <img
-                        src="@/assets/images/file/single folder@2x.png"
-                        class="icon24px"
-                        @dblclick="detectClick(item)"
-                      >
-                      {{ item.name }}
-                    </div>
-
-                  </ul>
-                </div>
-              </div>
-            </div>
+           
         </Pane>
       
         <Pane         
             :size="100 - paneSize"
             class="sel d-flex align-items-start justify-content-start"
-              style="width:80%;background-color:#d1d1d1;"
               
           >
             <!-- <div
@@ -473,19 +405,12 @@
           
         </Splitpanes>
     </div>
-
-        <div
-          ref="div"
-          style="border: 1px solid #33CCFF;background:#33CCFF;opacity:0.5;position:absolute;z-index:999"
-          hidden=0
-        />
-      
-    <div class="dqbz-footer">
-      <p class="mx-3">
-        {{ allFiles.length }} items
-      </p>
-      <p>{{ selectedLength || 0 }} item selected</p>
     </div>
+
+   
+
+        
+    
     
     <ContextMenu ref="menu">
       <ul class="text-dark">
@@ -570,6 +495,13 @@
       ref="AddEditPublicLink"
       :tab-data="nowSelected"
     />
+      
+    <div class="dqbz-footer">
+      <p class="mx-3">
+        {{ allFiles.length }} items
+      </p>
+      <p>{{ selectedLength || 0 }} item selected</p>
+    </div>
   </div>
 </template>
 
