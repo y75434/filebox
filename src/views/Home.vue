@@ -1,13 +1,14 @@
 <template>
   <div 
-   @contextmenu="handler($event)"
-   ref="sel"
-   style="position: relative;"> 
-
-   <Navbar />
-    
-    <div  class="dqbz-body"
-      @contextmenu="showMenu($event)">
+    @contextmenu="handler($event)"
+    ref="sel"
+    style="position: relative;"
+  >
+    <Navbar />   
+    <div
+      class="dqbz-body"
+      @contextmenu="showMenu($event)"
+    >
       <div class="dqbz-fnlist">
         <div class="fn-box bg-light">
           <div class="d-flex fn-w-150 align-items-center">
@@ -320,7 +321,7 @@
           <div class="divider" />
         </div>
       </div>
-       <Search
+      <Search
         :tree-selected="treeSelected"
         @update="selfUpdate"
         :folder-tree="this.folderTree"
@@ -328,83 +329,77 @@
         @back="getSelected"
         @getRoot="getFolderTable"
       />
-    <div class="dqbz-main"
-      @mousedown="mouseDown($event)"
-      @mousemove="mouseMove($event)"
-      @mouseup="mouseUp($event)"
-      style="background:white;">
-
-      <Splitpanes class="h-100 sel">
-
-        <Pane
+      <div
+        class="dqbz-main"
+        @mousedown="mouseDown($event)"
+        @mousemove="mouseMove($event)"
+        @mouseup="mouseUp($event)"
+        style="background:white;"
+      >
+        <Splitpanes class="h-100 sel">
+          <Pane
             :size="paneSize"
             min-size="10"
             max-size="25"
             class="d-flex align-items-start"
             style="width:20%"
           >
-          <TreeItem 
-           @getRoot="getFolderTable"
-           @treeClick="detectClick"/>
-
-
-           
-        </Pane>
+            <TreeItem 
+              @treeClick="detectClick"
+            />
+          </Pane>
       
-        <Pane         
+          <Pane         
             :size="100 - paneSize"
             class="sel d-flex align-items-start justify-content-start"
-              
           >
             <!-- <div
             class=""
               
             > -->
            
-              <!-- <Detail /> -->
-              <label
-                class="d-flex flex-column  mx-2 my-2 position-relative"
-                :key="item.id"
-                v-for="item in resultQuery"
-                @dblclick="detectClick(item)"
-                @change="ischecked = !ischecked"
-                :style=" { backgroundColor: (item.ischecked ? '#d3eaff' : 'transparent' ), 
-                          opacity: item.changed ? {opacity:'1'} : {opacity:'0.3'},          
-                }"
-                @mouseover="rowSelected(item)"
+            <!-- <Detail /> -->
+            <label
+              class="d-flex flex-column  mx-2 my-2 position-relative"
+              :key="item.id"
+              v-for="item in resultQuery"
+              @dblclick="detectClick(item)"
+              @change="ischecked = !ischecked"
+              :style=" { backgroundColor: (item.ischecked ? '#d3eaff' : 'transparent' ), 
+                         opacity: item.changed ? {opacity:'1'} : {opacity:'0.3'},          
+              }"
+              @mouseover="rowSelected(item)"
+            >
+              <input
+                class="form-check-input itemCheckbox"
+                type="checkbox"
+                v-model="item.ischecked"
+                v-if="renderCheckboxs"
               >
-                <input
-                  class="form-check-input itemCheckbox"
-                  type="checkbox"
-                  v-model="item.ischecked"
-                  v-if="renderCheckboxs"
-                >
-                <img
-                  :src="item.pic"
-                  :id="item.id"
-                  class="folder-icon"
-                >
-                <h6
-                  class="text-dark text-center text-truncate d-inline-block"
-                  style="max-width: 100px;"
-                >
-                  {{ item.name }}<span
-                    class="text-dark"
-                    v-if="extension"
-                  >.{{ item.extension }}</span>
-                </h6>     
-              </label> 
-              <div
-                ref="div"
-                style="border: 1px solid #33CCFF;background:#33CCFF;opacity:0.5;position:absolute;z-index:999"
-                hidden="0"
-              />
+              <img
+                :src="item.pic"
+                :id="item.id"
+                class="folder-icon"
+              >
+              <h6
+                class="text-dark text-center text-truncate d-inline-block"
+                style="max-width: 100px;"
+              >
+                {{ item.name }}<span
+                  class="text-dark"
+                  v-if="extension"
+                >.{{ item.extension }}</span>
+              </h6>     
+            </label> 
+            <div
+              ref="div"
+              style="border: 1px solid #33CCFF;background:#33CCFF;opacity:0.5;position:absolute;z-index:999"
+              hidden="0"
+            />
             <!-- </div> -->
-
-        </Pane> 
-          
+          </Pane>
         </Splitpanes>
-    </div>
+      </div>
     </div>
 
    
@@ -946,11 +941,12 @@ export default {
       console.log('double click ',item);
        if('folderId' in item ) {
           this.getSelected(item.folderId)
+          console.log('944 folderId');
           this.treeSelected = item;
         }
         else if('id' in item ) {
           this.getSelected(item.id)
-          // console.log('975',item);
+          console.log('948 id');
           //讓search顯示你目前在哪個資料夾裡
           this.treeSelected = item;
         }
@@ -959,12 +955,12 @@ export default {
         }
     },
     mouseDown(e){
-      console.log(e);
+      // console.log(e);
       let div = this.$refs.div;
       div.hidden = 0;
       this.x1 = e.offsetX; 
       this.y1 = e.offsetY;
-      console.log('按下去',this.x1,this.y1)
+      // console.log('按下去',this.x1,this.y1)
       this.reCalc();
     },
     mouseUp(){ 
@@ -993,29 +989,29 @@ export default {
         div.style.width = x4 - x3 + 'px'; 
         div.style.height =y4 - y3 + 'px'; 
 
-        // let imgs = document.querySelectorAll('img');
+        let imgs = document.querySelectorAll('img');
 
-        // imgs.forEach(img=>{
-        //    if(img.id!=='') {
-        //       if(this.collide(div.getBoundingClientRect(),img.getBoundingClientRect())) {
+        imgs.forEach(img=>{
+           if(img.id!=='') {
+              if(this.collide(div.getBoundingClientRect(),img.getBoundingClientRect())) {
                 
-        //         this.selectedTrue = []
-        //         this.resultQuery.filter(x=>x.id===img.id)[0].ischecked = true;             
+                this.selectedTrue = []
+                this.resultQuery.filter(x=>x.id===img.id)[0].ischecked = true;             
 
-        //       }
+              }
              
-        //       img.setAttribute("style","background-color:#d3eaff");
-        //       img.setAttribute('data-selected','true')
-        //     } else {
-        //         let unselected =  this.resultQuery.filter(x=>x.id===img.id);
-        //         if(unselected.length==1) {
-        //           unselected[0].ischecked = false;
-        //     }
-        //     // img.setAttribute("style","background-color:white");
-        //     img.setAttribute('data-selected','false')
-        //     }
+              img.setAttribute("style","background-color:#d3eaff");
+              img.setAttribute('data-selected','true')
+            } else {
+                let unselected =  this.resultQuery.filter(x=>x.id===img.id);
+                if(unselected.length==1) {
+                  unselected[0].ischecked = false;
+            }
+            // img.setAttribute("style","background-color:white");
+            img.setAttribute('data-selected','false')
+            }
 
-        //   })  
+          })  
  
         }        
       }, 

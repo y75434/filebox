@@ -1,22 +1,23 @@
 <template>
- <ul id="root" class="text-dark list-unstyled  mt-3 ms-2">
-   <!-- <div class="text-dark mt-3 ms-2 cursor">
-      <img
-        src="@/assets/images/file/single folder@2x.png"
-        class="icon24px"
-        @dblclick="getRoot"
-      >           
-      Root Folder                
-    </div> -->
-   <div v-for="(tree,index) in trees" :key="index">
-    
-    <item :tree="tree"  @treeClick="treeClick"></item>
-   </div>
+  <ul
+    id="root"
+    class="text-dark list-unstyled mt-3 ms-2"
+  >
+    <div
+      v-for="(tree,index) in trees"
+      :key="index"
+    >
+      <item
+        :tree="tree"
+        @subClick="treeClick"
+      />
+    </div>
   </ul>
 </template>
 
 <script>
 import item from './Item.vue'
+
 export default {
   components:{item},
   name: "TreeItem",
@@ -38,16 +39,12 @@ export default {
             x.subFolders = null;
             return x;
           });
-          console.log(this.trees);
+          console.log(this.trees);//rootfolder
         }).catch(error => {
           console.log(error.response.data);        
         })
-   },
-   
-  getRoot(){
-    this.$emit('getRoot');  
-
-  },
+  },   
+ 
   treeClick(tree) {
     this.$emit('treeClick', tree);  
     console.log(tree, 'father tree');        
@@ -55,7 +52,3 @@ export default {
  }
 }
 </script>
-
-<style>
-
-</style>
