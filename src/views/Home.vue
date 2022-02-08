@@ -3,6 +3,7 @@
     @contextmenu="handler($event)"
     ref="sel"
     style="position: relative;"
+    class="sel"
   >
     <Navbar />   
     <div
@@ -95,7 +96,7 @@
                 alt=""
                 :disabled="this.selectedLength > 0"
                 :style="
-                  this.selectedLength = 0 ? {opacity:'1'} : {opacity:'0.3'}"
+                  this.selectedLength == 0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
 
               <span class="nav-text text-center">{{ $t("HOME.NEW") }}</span>
@@ -124,7 +125,7 @@
                 src="@/assets/images/cmd/upload@2x.png"
                 alt=""
                 :disabled="this.selectedLength > 0"
-                :style=" this.selectedLength = 0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :style=" this.selectedLength == 0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.UPLOAD") }}</span>
             </li>
@@ -351,13 +352,8 @@
       
           <Pane         
             :size="100 - paneSize"
-            class="sel d-flex align-items-start justify-content-start"
-          >
-            <!-- <div
-            class=""
-              
-            > -->
-           
+            class=" d-flex align-items-start justify-content-start"
+          >   
             <!-- <Detail /> -->
             <label
               class="d-flex flex-column  mx-2 my-2 position-relative"
@@ -391,6 +387,12 @@
                 >.{{ item.extension }}</span>
               </h6>     
             </label> 
+            <h6
+              class="text-dark text-center text-truncate d-inline-block"
+              style="max-width: 100px"
+            >
+              {{ arr }}</h6>
+
             <div
               ref="div"
               style="border: 1px solid #33CCFF;background:#33CCFF;opacity:0.5;position:absolute;z-index:999"
@@ -567,10 +569,8 @@ export default {
     nowRootFolder: {}, //還沒點進任何資料夾時為空
     x1 : 0, y1 : 0, x2 :0, y2 : 0,
     open: false ,  //tree 收縮
-    sideRoot: false,//sidebar rootfolder
     // now: this.$store.getters.nowFile //才不會跳錯
     renderDetail: false,
-    arr: [] //sidebar子選單
   }),
   
   created(){
@@ -693,7 +693,6 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
         .then((data) => { 
           this.allFiles = data.data
-          // this.sideRoot.isOpen = false;
 
           this.rootFolder = this.allFiles
           this.rootFolder.map(x=>{
@@ -717,12 +716,12 @@ export default {
         })
     },//success
     checkSelected(){
-       console.log(this.arr);
+       console.log(this.arr,'arr');
         this.selectedTrue = Object.entries(this.arr)
         .map(([id, type]) => {
           return {type: type.type, id: type.id, s:id}
         })
-       console.log(this.selectedTrue);
+       console.log(this.selectedTrue,'selectedTrue');
     },
     download() {   
       this.$refs.menu.close();
@@ -732,11 +731,10 @@ export default {
         {
           "items": this.selectedTrue,//array
           "user":  this.$store.getters.userId,
-          "editorName": this.$store.getters.currentUser,
-
+          "userName": this.$store.getters.currentUser,
         }
   
-      console.log('data',data);
+      console.log('download data',data);
 
       const config = {
         header:{
@@ -830,7 +828,7 @@ export default {
         }
       );
       
-      console.log(data);
+      console.log(data,'paste');
 
 
       if(this.$store.getters.copyFile){
@@ -875,16 +873,8 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
       .then((data) => { 
         this.folderTree = data.data
-        // console.log(rootFolder);
         rootFolder.subFolders = data.data.subFolders;
 
-        // this.arr.push(this.FolderTree)
-        // console.log(this.arr,'arr');
-
-        // console.log(this.folderTree,'folderTree');
-        // if(this.folderTree.subFolders){
-        // this.open = !this.open
-     // }
       }).catch(() => {
         //  console.log(error.response.data);        
       })

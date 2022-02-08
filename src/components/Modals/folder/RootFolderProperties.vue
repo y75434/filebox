@@ -139,7 +139,6 @@
                     class="list-group-item border-0 p-0 text-left"
                   >
                     <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
-                      <!-- 還沒想到統整checkbox和render用法 -->
                       <input
                         class="form-check-input m-0"
                         type="checkbox"
@@ -478,7 +477,7 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => {  
         this.FolderSettings = data.data
-        console.log(this.FolderSettings.settings.accessPermissions, ' 481 folder user');
+        console.log(this.FolderSettings.settings.accessPermissions, ' foldersetting user');
         this.getUserTable()
 
       }).catch(() => {
@@ -536,7 +535,7 @@ export default {
       console.log(event.target.value)
       console.log(this.FolderSettings)
       
-        this.unitId = event.target.value
+      this.unitId = event.target.value
       
     },
     //目前資料不完整無法更新資料
@@ -554,9 +553,12 @@ export default {
 
       console.log(data);
 
+      //editGroup要與api的用戶一樣 不會有重複資料
+      this.editGroup.groupUserRelations = [...new Map(this.editGroup.groupUserRelations.map(item => [item.userId, item])).values()];
+
 
       this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
-      data,{  headers: window.headers }).then((data) => { 
+      data,{ headers: window.headers }).then((data) => { 
         console.log(data);
         this.$swal.fire({ title: 'success', icon: 'success' })
 
@@ -588,53 +590,58 @@ export default {
         })
     },
     //點擊針對個人允許行為
-    userCan(item){
-      
-      
+    userCan(item){      
       console.log('usercan',item);
       this.haveUser = true
       // 撈api allow 還沒好
       
       if(this.FolderSettings.settings.accessPermissions.filter(memberId=>memberId == item.userId)){
           console.log(this.FolderSettings.settings, 'user allow');
-
           this.FolderSettings.settings.accessPermissions.map(memberId=>memberId == item.userId);
-
       }
-
-
-
       this.nowUser.memberId = item.memberId 
       this.nowUser.memberName = item.userName
 
     },
+    //左邊checkbox切換
     userSelected(item){
       item.selected != item.selected
       console.log(item);
-      if(item.selected) {
-      this.editGroup.groupUserRelations.push(item);
+      if(item.selected && this.editGroup.groupUserRelations.filter(x=>x.userId!==item.userId)) {
+       this.editGroup.groupUserRelations.push(item);
+       console.log('目前選擇名單',this.editGroup.groupUserRelations);
+
       }else{
-      this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId!==item.userId);
+        //取消選取
+       this.editGroup.groupUserRelations.push(item);
+       console.log('取消選取',this.editGroup.groupUserRelations);
 
       }
-    //   this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId !== item.userId);
-    //   const data = {  "memberId": item.userId,"userName": item.userName }
+   
 
-    //  if (this.editGroup.groupUserRelations.filter(x=>x.userId !== item.userId)) {
-    //     this.editGroup.groupUserRelations.push(data)
-    //   }
-
-    //   console.log('目前選擇名單',this.editGroup.groupUserRelations);       
     },//ok
     del(user){
       console.log('user',user);
       user.selected = false;
+      // api 的該用戶資料一並刪除
+      this.FolderSettings.settings.accessPermissions.splice(x=>x.memberId == user.userId)
+
+
       this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId !== user.userId);
     },
     addToSettings(){
       console.log(this.nowUser,'this.nowUser');
+      //folder setting有
+      if(this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId ==this.nowUser.userId)) {
 
-      this.FolderSettings.settings.accessPermissions.push(this.nowUser)
+       this.FolderSettings.settings.accessPermissions = this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId != this.nowUser.userId)
+       this.FolderSettings.settings.accessPermissions.push(this.nowUser)
+
+
+      }else{
+        this.FolderSettings.settings.accessPermissions.push(this.nowUser)
+
+      }
       console.log(this.FolderSettings,'新增至設定');
       
     }
