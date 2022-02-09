@@ -60,30 +60,9 @@
         <div class="row p-5 modal-sidebar">
           <div class="col-4 h-100 ">
             <div class="bg-white h-100 border">
-              <ul class="list-group border-0">
-                <li class="list-group-item d-flex align-items-center border-0">
-                  <img
-                    src="@/assets/images/file/single folder@2x.png"
-                    class="icon32px"
-                  >
-                  <p class="text-dark m-0">
-                    {{ this.folderTree.name }}
-                  </p>
-                </li>
-
-                <li 
-                  v-for="item in this.folderTree.subFolders"
-                  :key="item.id"
-                  class="ms-4 list-group-item d-flex align-items-center border-0"
-                >
-                  <img
-                    src="@/assets/images/file/folder@2x.png"
-                    class="icon32px px-1"
-                  >
-                  <p class="text-dark m-0">
-                    {{ item.name }}
-                  </p>
-                </li>
+              <ul class="list-group border-0 text-dark">
+                <!-- tree -->
+               <rootTreeItem :id="FolderSettings.folderId" />            
               </ul>
             </div>
           </div>
@@ -102,7 +81,7 @@
                     class="icon32px"
                   >
                   <p class="fw-bold m-0">
-                    {{ this.folderTree.name }}
+                    {{ FolderSettings.name }}
                   </p>
                 </div>
               
@@ -408,13 +387,20 @@
 </template>
 
 <script>
+import rootTreeItem from './rootTreeItem.vue';
+
 export default {
   name: "RootFolderProperties",
+  components: {
+    rootTreeItem
+  },
   props: { 
     title: { 
       type: String, default: "Root Folder Properties" },
       folderData: { type: Object , default() { return {} }},
   },
+  provide() { return { $fatherSetting: () =>  this.FolderSettings.settings }},
+
   data() {
     return {
       folderTree: {},
@@ -436,42 +422,30 @@ export default {
         deny: []
       },
       haveUser: false,
-      unitId: "04510aa7-e1f6-409c-8982-f2ac9de45bd9"
+      unitId: "04510aa7-e1f6-409c-8982-f2ac9de45bd9",
+
     };
   },
   watch:{ 
     folderData(){ 
       this.FolderSettings = this.folderData
-      // this.editGroup = {}
-
- 
-      this.deleteNull()
+      // this.deleteNull()
     },
   },
   methods: { 
-    deleteNull(){
-      Object.keys(this.FolderSettings).forEach(key => {
-            if (this.FolderSettings[key] === null) {
-              this.FolderSettings[key] = '';
-            }
-          });
-        return this.FolderSettings;
-    },
-
+    // deleteNull(){
+    //   Object.keys(this.FolderSettings).forEach(key => {
+    //     if (this.FolderSettings[key] === null) {
+    //       this.FolderSettings[key] = '';
+    //     }
+    //   });
+    //   return this.FolderSettings;
+    // },
     start() {
-      this.getFolderTree(this.FolderSettings.folderId)
       this.getFolderSettings(this.FolderSettings.folderId)
       this.getPermissionTypes()
       this.getFileTypes()
       this.getStorageUnit()
-    },
-    getFolderTree(id){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
-      .then((data) => { 
-        this.folderTree = data.data
-      }).catch(() => {
-        //  console.log(error.response.data);        
-      })
     },
     getFolderSettings(id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
@@ -540,13 +514,12 @@ export default {
     },
     //目前資料不完整無法更新資料
     putFolder(){
-      this.deleteNull()
+      // this.deleteNull()
 
       this.FolderSettings.editorName = this.$store.getters.currentUser;
       this.FolderSettings.editor = this.$store.getters.userId;
 
-      this.FolderSettings.settings.storage = {};
-      this.FolderSettings.settings.storage.unitId = this.unitId;
+      this.FolderSettings.settings.storage = { "space": 0, "unitId": "04510aa7-e1f6-409c-8982-f2ac9de45bd9" };
       this.FolderSettings.settings.restrictedFileTypes = [];
 
       const data = JSON.stringify(this.FolderSettings)
@@ -567,6 +540,8 @@ export default {
         this.$swal.fire({ title: error.response.data, icon: 'error' })
     
       })
+
+      this.FolderSettings = {}
     },
     getUserTable () {  
       this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
