@@ -50,12 +50,6 @@
           FolderSettings{{ FolderSettings }}
         </h5>
 
-        <h5 class="text-dark">
-          editGroup{{ editGroup }}
-        </h5>
-
-
-
 
         <div class="row p-5 modal-sidebar">
           <div class="col-4 h-100 ">
@@ -118,17 +112,10 @@
                     class="list-group-item border-0 p-0 text-left"
                   >
                     <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
-                      <input
-                        class="form-check-input m-0"
-                        type="checkbox"
-                        :value="item.userId"
-                        v-model="item.selected"
-                        @change="userSelected(item)"
-                        :id="item.userName"
-                      >
                       <img
                         src="@/assets/images/icon/Union.png"
                         class="icon24px"
+                        @click="userSelected(item)"
                       >
                       <label
                         class="form-check-label"
@@ -160,12 +147,12 @@
                   </p>
                 </li>
                 <div
-                  v-if="editGroup.groupUserRelations.length>0"
+                  v-if="FolderSettings.settings.accessPermissions.length>0"
                   class=""
                 >
                   <li
-                    v-for="item in editGroup.groupUserRelations"
-                    :key="item.userId"
+                    v-for="item in FolderSettings.settings.accessPermissions"
+                    :key="item.memberId"
                     class="list-group-item border-0 p-0 mb-2"
                   >
                     <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
@@ -178,7 +165,7 @@
                         class="form-check-label"
                         for="flexCheckDefault"
                       >
-                        {{ item.userName }}
+                        {{ item.memberName }}
                         <img
                           @click="del(item)"
                           src="@/assets/images/cmd/del.png"
@@ -191,7 +178,7 @@
                 
                 <li class="list-group-item d-flex justify-content-end border p-2">
                   <p class="ms-3 justify-content-end d-flex align-items-center">
-                    <span class="dark-blue fw-bold">{{ editGroup.groupUserRelations.length }}
+                    <span class="dark-blue fw-bold">{{ FolderSettings.settings.accessPermissions.length }}
                     </span>
                     <span>{{ $t("MODAL.SELECTED") }}</span>
                   </p>
@@ -411,9 +398,6 @@ export default {
       useritems: [],
       searchText:"",
       count:0,
-      editGroup:{
-        groupUserRelations: []
-      },
       nowUser:{
         memberId: "",
         memberName: "",
@@ -451,7 +435,6 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => {  
         this.FolderSettings = data.data
-        console.log(this.FolderSettings.settings.accessPermissions, ' foldersetting user');
         this.getUserTable()
 
       }).catch(() => {
@@ -519,16 +502,12 @@ export default {
       this.FolderSettings.editorName = this.$store.getters.currentUser;
       this.FolderSettings.editor = this.$store.getters.userId;
 
-      this.FolderSettings.settings.storage = { "space": 0, "unitId": "04510aa7-e1f6-409c-8982-f2ac9de45bd9" };
-      this.FolderSettings.settings.restrictedFileTypes = [];
+      this.FolderSettings.settings.storage = { "space": 50, "unitId": "04510aa7-e1f6-409c-8982-f2ac9de45bd9" };
+      this.FolderSettings.settings.restrictedFileTypes = [ "7f74d92d-4c7f-426a-9568-5a51aec82234" ];
 
       const data = JSON.stringify(this.FolderSettings)
 
       console.log(data);
-
-      //editGroup要與api的用戶一樣 不會有重複資料
-      this.editGroup.groupUserRelations = [...new Map(this.editGroup.groupUserRelations.map(item => [item.userId, item])).values()];
-
 
       this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
       data,{ headers: window.headers }).then((data) => { 
@@ -547,17 +526,6 @@ export default {
       this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
         .then((data) => {          
           this.useritems = data.data
-          this.useritems.map(x=>{
-            let accessPermissions = this.FolderSettings.settings.accessPermissions;
-            if(accessPermissions.filter(ap=>ap.memberId==x.userId).length>0) {
-              x.selected = true
-              this.editGroup.groupUserRelations.push(x);
-            } else {
-              x.selected = false;
-            }
-            return x;
-          })
-           console.log(this.useritems, 'search users');
 
           this.count = this.useritems.length       
         }).catch(error => {
@@ -568,28 +536,40 @@ export default {
     userCan(item){      
       console.log('usercan',item);
       this.haveUser = true
-      // 撈api allow 還沒好
-      
-      if(this.FolderSettings.settings.accessPermissions.filter(memberId=>memberId == item.userId)){
-          console.log(this.FolderSettings.settings, 'user allow');
-          this.FolderSettings.settings.accessPermissions.map(memberId=>memberId == item.userId);
-      }
-      this.nowUser.memberId = item.memberId 
+      //  還沒好
+        
+      console.log(item.allow, 'api 該 user 可做的事情 ');
+      console.log(this.PermissionTypes.filter(x=>x.permissionTypeId == item.allow).permissionTypeId)
+
+      this.PermissionTypes.filter(x=>x.permissionTypeId == item.allow).permissionTypeId.active = true
+
+         
+      // this.PermissionTypes.map(a=>a.active = true);
+
+      this.nowUser.memberId = item.userId 
       this.nowUser.memberName = item.userName
 
     },
-    //左邊checkbox切換
+    //左邊切換
     userSelected(item){
-      item.selected != item.selected
-      console.log(item);
-      if(item.selected && this.editGroup.groupUserRelations.filter(x=>x.userId!==item.userId)) {
-       this.editGroup.groupUserRelations.push(item);
-       console.log('目前選擇名單',this.editGroup.groupUserRelations);
+      console.log(item ,'item');
+      if(this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId != item.userId)) {
+       this.FolderSettings.settings.accessPermissions.push(
+         { 
+           "memberId": item.userId, 
+           "memberName": item.userName, 
+           "isGroup": true, 
+           "allow": [ "cacd02a3-22d0-4df4-b526-d9c4c6f2d50e" ], //之後綁定
+           "deny": []
+
+          } 
+       );
+       console.log('目前選擇名單', this.FolderSettings.settings.accessPermissions);
 
       }else{
-        //取消選取
-       this.editGroup.groupUserRelations.push(item);
-       console.log('取消選取',this.editGroup.groupUserRelations);
+        //取消選取 
+       this.FolderSettings.settings.accessPermissions = this.FolderSettings.settings.accessPermissions.splice(x=>x.userId == item.userId);
+       console.log('取消選取', this.FolderSettings.settings.accessPermissions);
 
       }
    
@@ -597,19 +577,17 @@ export default {
     },//ok
     del(user){
       console.log('user',user);
-      user.selected = false;
-      // api 的該用戶資料一並刪除
-      this.FolderSettings.settings.accessPermissions.splice(x=>x.memberId == user.userId)
+      // api 的該用戶資料一並刪除 還沒好
+      this.FolderSettings.settings.accessPermissions = this.FolderSettings.settings.accessPermissions.splice(x=>x.memberId == user.memberId)
 
-
-      this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId !== user.userId);
     },
     addToSettings(){
       console.log(this.nowUser,'this.nowUser');
       //folder setting有
       if(this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId ==this.nowUser.userId)) {
-
+       //刪掉舊資料
        this.FolderSettings.settings.accessPermissions = this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId != this.nowUser.userId)
+       //換上新資料
        this.FolderSettings.settings.accessPermissions.push(this.nowUser)
 
 

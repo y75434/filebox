@@ -1,6 +1,5 @@
 <template>
-  <li class="list-unstyled"
-      
+  <li class="list-unstyled"      
   >
     <!--  -->
 
@@ -20,17 +19,19 @@
       src="@/assets/images/file/single folder@2x.png"
       class="icon24px "
       @dblclick="selectSub(subitem)"
-      :style=" { backgroundColor: (subitem.clicked ? '#d3eaff' : 'transparent' )}"
     >
     {{ subitem.name }}
     <ul
       v-show="open"
+      :style=" { backgroundColor: (subitem.clicked ? '#d3eaff' : 'transparent' )}"
+
     >
       <!-- 簡化就跑不出來 -->
       <rootItem
         v-for="(node, index) in subitem.subFolders"
         :tree="node"
         :key="index"
+
       ></rootItem>
     </ul>
   </li>
@@ -61,6 +62,7 @@ export default {
   methods: {
     toggle() {
       // console.log("toggle");
+      console.log(this.node, "node");
       this.open = !this.open;
       if (this.open) {
         this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${this.subitem.folderId}`)
@@ -74,12 +76,12 @@ export default {
     },
     selectSub(subitem) {
       console.log(subitem, "被選取的子資料夾 ");
-      subitem.clicked = true
+      subitem.clicked = true//沒辦法變色
+      console.log( "subitem" ,subitem);
 
       this.putFolder(subitem)
-      const a = Object.assign({}, this.fatherSetting);
 
-      console.log(a, "hi" ,this.fatherSetting);
+      console.log( "hi" ,this.fatherSetting);
 
     },
     //讓子層繼承父層設定
