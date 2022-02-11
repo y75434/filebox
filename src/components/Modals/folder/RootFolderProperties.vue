@@ -147,7 +147,6 @@
                   </p>
                 </li>
                 <div
-                  v-if="FolderSettings.settings.accessPermissions.length>0"
                   class=""
                 >
                   <li
@@ -278,6 +277,7 @@
                         value=""
                         id="flexCheckDefault"
                         class="form-check-input"
+
                       >
                       <label
                         for="flexCheckDefault"
@@ -290,6 +290,7 @@
                           id="promoCode"
                           class="form-control m-0 w-50"
                           value=""
+                          v-model="space"
                         >
                         <select
                           class="form-select w-50"
@@ -391,7 +392,11 @@ export default {
   data() {
     return {
       folderTree: {},
-      FolderSettings:{},
+      FolderSettings:{
+        settings:{
+          accessPermissions: []
+        }
+      },
       PermissionTypes:[],
       FileTypes:[],
       StorageUnit:{},
@@ -407,24 +412,15 @@ export default {
       },
       haveUser: false,
       unitId: "04510aa7-e1f6-409c-8982-f2ac9de45bd9",
-
+      space: 0
     };
   },
   watch:{ 
     folderData(){ 
       this.FolderSettings = this.folderData
-      // this.deleteNull()
     },
   },
   methods: { 
-    // deleteNull(){
-    //   Object.keys(this.FolderSettings).forEach(key => {
-    //     if (this.FolderSettings[key] === null) {
-    //       this.FolderSettings[key] = '';
-    //     }
-    //   });
-    //   return this.FolderSettings;
-    // },
     start() {
       this.getFolderSettings(this.FolderSettings.folderId)
       this.getPermissionTypes()
@@ -472,9 +468,10 @@ export default {
         // console.log(error.response.data);        
       })
     },
+    //檔案類型勾選即加入api
     typeSelected(item){
       if(item.active){
-        this.FolderSettings.settings.push(item.fileTypeId)
+        this.FolderSettings.settings.restrictedFileTypes.push(item.fileTypeId)
       } else {
         this.FolderSettings.settings.restrictedFileTypes = this.FolderSettings.settings.restrictedFileTypes.filter(x=>x
           !==item.fileTypeId);
@@ -489,20 +486,19 @@ export default {
       })
     },
     storageSelected(event){
-      console.log(event.target.value)
+      console.log(event.target.value)   
+      this.unitId = event.target.value
       console.log(this.FolderSettings)
       
-      this.unitId = event.target.value
-      
     },
-    //目前資料不完整無法更新資料
+    //目前資料不完整無法更新資料{ "space": 50, "unitId": "04510aa7-e1f6-409c-8982-f2ac9de45bd9" }
     putFolder(){
       // this.deleteNull()
 
       this.FolderSettings.editorName = this.$store.getters.currentUser;
       this.FolderSettings.editor = this.$store.getters.userId;
 
-      this.FolderSettings.settings.storage = { "space": 50, "unitId": "04510aa7-e1f6-409c-8982-f2ac9de45bd9" };
+      this.FolderSettings.settings.storage = { "space": this.space, "unitId": this.unitId };
       this.FolderSettings.settings.restrictedFileTypes = [ "7f74d92d-4c7f-426a-9568-5a51aec82234" ];
 
       const data = JSON.stringify(this.FolderSettings)
@@ -539,7 +535,7 @@ export default {
       //  還沒好
         
       console.log(item.allow, 'api 該 user 可做的事情 ');
-      console.log(this.PermissionTypes.filter(x=>x.permissionTypeId == item.allow).permissionTypeId)
+      console.log(this.PermissionTypes.filter(x=>x.permissionTypeId == item.allow).permissionTypeId,'permissionType打勾')
 
       this.PermissionTypes.filter(x=>x.permissionTypeId == item.allow).permissionTypeId.active = true
 
@@ -578,7 +574,9 @@ export default {
     del(user){
       console.log('user',user);
       // api 的該用戶資料一並刪除 還沒好
+
       this.FolderSettings.settings.accessPermissions = this.FolderSettings.settings.accessPermissions.splice(x=>x.memberId == user.memberId)
+      console.log('584',this.FolderSettings.settings.accessPermissions);
 
     },
     addToSettings(){

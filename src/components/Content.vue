@@ -757,18 +757,18 @@ data() {
     selectMode: 'single',
     filter: null,
     sortDirection: 'All',
-    events: [],
+    events: [],//events api
     //["string","Browse","Login","Preview","Download","Public links","Create","Rename","Move","Extract","Logout","Delete","Copy","Compress","Upload"]
-    allSelected: true,
+    allSelected: false,
     // eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
-    eventsSelected:[],
+    eventsSelected:[],//被勾選的
     searchText:"",
     status:"",
     picture:{},
     startdate: "",
     enddate: "",
     value:"",
-    eventTypeId:"",
+    eventTypeId:[],
     //nav page
     perPage: 10,
     currentPage: 1,
@@ -780,23 +780,20 @@ created(){
   this.getEventType();
   this.picture = picture;
 },
-// computed:{
-//    userRows() {
-//     return this.useritems.length 
-//   }
-// },
-watch: { //todo undo
-  eventsSelected(newValue) {
-    //console.log(this.eventsSelected)
 
+watch: { 
+  eventsSelected(newValue) {
+    console.log(this.eventsSelected,'watch')
     if (newValue.length === 0) {
       this.allSelected = false
+      console.log('取消全選')
     } else if (newValue.length === this.events.length) {
       this.allSelected = true
+      console.log('全選')
     } else {
       this.allSelected = false
+      console.log('選一個')
     }
-
   }
 },
 methods: { 
@@ -946,9 +943,10 @@ methods: {
       }).catch(error => {
         console.log(error.response.data);        
       })
-  },
-  getEventTable(){
-    this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`)
+  },//預設傳空物件
+    getEventTable(){
+    this.axios.post(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`,
+    {},{ headers: window.headers })
       .then(data => {  
         this.eventsitems = data.data 
         this.count = this.eventsitems.length  
@@ -1016,51 +1014,39 @@ methods: {
             console.log(error.response.data);        
           })
         break;
-      case 3:
-        
-        
-            // this.folderitems = 
-            // this.count = this.folderitems.length  
-
-          // return this.useritems;
-
-        
+      case 3:    
         break;
 
       case 4: {
-        const eventURL = new URL(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`);
-        let searchParams = {
-          From: this.startdate,
-          To: this.enddate,
-          SearchString: this.searchText,
-          
+ 
+        console.log(this.events);
+
+        let obj ={
+          "from": this.startdate,
+          "to": this.enddate,
+          "searchString": this.searchText,
+          "actionEventType": this.eventsSelected //[15,16] 
         }
 
+        Object.keys(obj).forEach(key => obj[key] === "" ? delete obj[key]: {})
+      
+       const data = JSON.stringify(obj)
+        console.log(data);
 
-        Object.keys(searchParams).forEach(key => searchParams[key] === undefined ? delete searchParams[key] : {});
 
-
-        console.log('976',searchParams)
-        
-        let a = new URLSearchParams(searchParams);
-
-        console.log('984',a.toString());
-
-          
-          eventURL.search = a;
-
-        // `${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll?From=${this.value}&To=${this.enddate}&SearchString=${this.searchText}&ActionEventType=${this.eventTypeId}&ActionEventType=${this.eventTypeId}`
-
-        this.axios.get(eventURL.href)
+        this.axios.post(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`,
+        data,{ headers: window.headers })
           .then(data => {  
-            console.log(eventURL.href);
-            this.eventsitems = data.data 
+            console.log(data);
+            
+            this.eventsitems= data.data
             this.count = this.eventsitems.length  
-          return this.useritems;
+          return this.eventsitems;
 
           }).catch(error => {
             console.log(error.response.data);        
           })
+     
       break;
       }
       case 5: 
