@@ -516,7 +516,7 @@ export default {
     
       })
 
-      this.FolderSettings = {}
+      // this.FolderSettings = {}
     },
     getUserTable () {  
       this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
@@ -530,26 +530,26 @@ export default {
     },
     //點擊針對個人允許行為
     userCan(item){      
-      console.log('usercan',item);
+      console.log('usercan', this.PermissionTypes);
+      console.log('userCan', item);
       this.haveUser = true
-      //  還沒好
-        
-      console.log(item.allow, 'api 該 user 可做的事情 ');
-      console.log(this.PermissionTypes.filter(x=>x.permissionTypeId == item.allow).permissionTypeId,'permissionType打勾')
-
-      this.PermissionTypes.filter(x=>x.permissionTypeId == item.allow).permissionTypeId.active = true
-
-         
-      // this.PermissionTypes.map(a=>a.active = true);
-
-      this.nowUser.memberId = item.userId 
-      this.nowUser.memberName = item.userName
-
+ 
+   //   this.PermissionTypes.filter(x=>x.permissionTypeId == item.allow).permissionTypeId.active = true
+      this.nowUser = item
+      item.allow.forEach(x=>{
+          this.PermissionTypes.forEach(permission=>{
+            if(permission.permissionTypeId == x) {
+              permission.active = true;
+            }
+          })
+      });
+      
+      console.log('nowUser',this.nowUser);
     },
     //左邊切換
     userSelected(item){
       console.log(item ,'item');
-      if(this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId != item.userId)) {
+      if(this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId == item.userId).length==0) {
        this.FolderSettings.settings.accessPermissions.push(
          { 
            "memberId": item.userId, 
@@ -564,27 +564,34 @@ export default {
 
       }else{
         //取消選取 
-       this.FolderSettings.settings.accessPermissions = this.FolderSettings.settings.accessPermissions.splice(x=>x.userId == item.userId);
-       console.log('取消選取', this.FolderSettings.settings.accessPermissions);
+      //  this.FolderSettings.settings.accessPermissions = this.FolderSettings.settings.accessPermissions.splice(x=>x.userId == item.userId);
+      //  console.log('取消選取', this.FolderSettings.settings.accessPermissions);
 
       }
    
 
     },//ok
     del(user){
-      console.log('user',user);
+      console.log('user',this.FolderSettings.settings.accessPermissions);
       // api 的該用戶資料一並刪除 還沒好
 
-      this.FolderSettings.settings.accessPermissions = this.FolderSettings.settings.accessPermissions.splice(x=>x.memberId == user.memberId)
-      console.log('584',this.FolderSettings.settings.accessPermissions);
+    this.FolderSettings.settings.accessPermissions=  this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId !==user.memberId)    
 
     },
     addToSettings(){
       console.log(this.nowUser,'this.nowUser');
-      //folder setting有
-      if(this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId ==this.nowUser.userId)) {
+      console.log(this.PermissionTypes,'584');
+      const permissions = [];
+      this.PermissionTypes.forEach(x=>{
+        if(x.active) {
+          permissions.push(x.permissionTypeId);
+        }
+      })
+      this.nowUser.allow = permissions;
+      // //folder setting有
+      if(this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId ==this.nowUser.memberId)) {
        //刪掉舊資料
-       this.FolderSettings.settings.accessPermissions = this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId != this.nowUser.userId)
+       this.FolderSettings.settings.accessPermissions = this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId != this.nowUser.memberId)
        //換上新資料
        this.FolderSettings.settings.accessPermissions.push(this.nowUser)
 

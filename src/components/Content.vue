@@ -781,24 +781,36 @@ created(){
   this.picture = picture;
 },
 
-watch: { 
-  eventsSelected(newValue) {
-    console.log(this.eventsSelected,'watch')
-    if (newValue.length === 0) {
-      this.allSelected = false
-      console.log('取消全選')
-    } else if (newValue.length === this.events.length) {
-      this.allSelected = true
-      console.log('全選')
-    } else {
-      this.allSelected = false
-      console.log('選一個')
-    }
-  }
-},
+// watch: { 
+//   eventsSelected(newValue) {
+//     console.log(this.eventsSelected,'watch')
+//     if (newValue.length === 0) {
+//       this.allSelected = false
+//       console.log('取消全選')
+//     } else if (newValue.length === this.events.length) {
+//       this.allSelected = true
+//       console.log('全選')
+//     } else {
+//       this.allSelected = false
+//       console.log('選一個')
+//     }
+//   }
+// },
 methods: { 
   toggleAll(checked) { 
-    this.eventsSelected = checked ? this.events.slice() : [] 
+    console.log(checked);
+  if(checked) {
+    this.allSelected = true;
+    this.events.forEach(x=>{
+      this.eventsSelected.push(x.actionTypeId)
+    })
+  } else {
+    this.eventsSelected = [];
+    this.allSelected = false;
+  }
+   console.log(this.eventsSelected);
+   console.log(this.events);
+   // this.eventsSelected = checked ? this.events.slice() : [] 
   },
   handler(event) { event.preventDefault(); }, 
   reloadPage() {window.location.reload(); },

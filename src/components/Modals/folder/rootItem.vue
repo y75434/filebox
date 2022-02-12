@@ -19,14 +19,14 @@
       src="@/assets/images/file/single folder@2x.png"
       class="icon24px "
       @dblclick="selectSub(subitem)"
+      @click="test(subitem)"
     >
     {{ subitem.name }}
     <ul
       v-show="open"
-      :style=" { backgroundColor: (subitem.clicked ? '#d3eaff' : 'transparent' )}"
-
+:style=" { backgroundColor: ( subitem.folderId == this.liselected ? '#d3eaff' : 'transparent' )}"
     >
-      <!-- 簡化就跑不出來 -->
+      <!-- 簡化就跑不出來  -->
       <rootItem
         v-for="(node, index) in subitem.subFolders"
         :tree="node"
@@ -49,6 +49,7 @@ export default {
     return {
       subitem: this.tree,
       open: false,
+      liselected: ""
     };
   },
   created() {
@@ -60,6 +61,10 @@ export default {
     }
   },
   methods: {
+    test(subitem){
+      console.log(subitem, "subitem");
+      this.liselected = subitem.folderId
+    },
     toggle() {
       // console.log("toggle");
       console.log(this.node, "node");

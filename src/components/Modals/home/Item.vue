@@ -60,7 +60,8 @@ export default {
         }
     },   
     subClick(tree) {
-      this.$emit('subClick', tree);  
+       this.$bus.$emit("notify:message", tree);
+      //this.$emit('subClick', tree);  
       console.log(tree,'subitem tree');        
     }, 
   }

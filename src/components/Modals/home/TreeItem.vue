@@ -27,7 +27,13 @@ export default {
     }
   },
   created(){
-   this.getRootFolder()
+   this.getRootFolder(),
+  this.$bus.$on("notify:message", tree => {
+    // 並將接收到的 message 傳給自己的 methods showAlert 去觸發 alert 事件。
+    console.log(tree);
+    this.$emit('treeClick', tree);  
+  });
+
   },
   methods: {
    getRootFolder(){
@@ -46,7 +52,7 @@ export default {
   },   
  
   treeClick(tree) {
-    this.$emit('treeClick', tree);  
+    console.log('AAA')
     console.log(tree, 'father tree');        
   },
  }
