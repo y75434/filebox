@@ -252,12 +252,12 @@
                           >
                         </div>
                       </li>
-                      <b-button
+                      <!-- <b-button
                         class="bg-green border-0"
                         @click="addToSettings()"
                       >
                         add to settings
-                      </b-button>
+                      </b-button> -->
                     </ul>
                   </div>
                   <div
@@ -316,8 +316,6 @@
                       >
                         <input
                           type="checkbox"
-                          value=""
-                          id="flexCheckDefault"
                           class="form-check-input"
                         >
                         <label
@@ -431,6 +429,12 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => {  
         this.FolderSettings = data.data
+        // this.space = this.FolderSettings.settings.storage.space
+        // this.unitId = this.FolderSettings.settings.storage.unitId
+        
+        //null問題
+        this.FolderSettings.settings.restrictedFileTypes = []
+
         this.getUserTable()
 
       }).catch(() => {
@@ -452,17 +456,25 @@ export default {
       if(item.active){
         this.nowUser.allow.push(item.permissionTypeId) 
       } else {
-        this.nowUser = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
+        //不能用
+        this.nowUser.allow = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
 
       }
-      console.log('this.nowUser',this.nowUser);
+      console.log('456',this.nowUser);
 
     },
     getFileTypes(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileTypes`)
       .then((data) => {  
         this.FileTypes = data.data
-        this.FileTypes.map(x=>x.active = false);
+        
+        this.FolderSettings.settings.restrictedFileTypes.forEach(x=>{
+          this.FileTypes.forEach(Types=>{
+            if(Types.fileTypeId == x) {
+              Types.active = true;
+            }
+          })
+        });
           
       }).catch(() => {
         // console.log(error.response.data);        
@@ -488,18 +500,15 @@ export default {
     storageSelected(event){
       console.log(event.target.value)   
       this.unitId = event.target.value
-      console.log(this.FolderSettings)
+      // console.log(this.FolderSettings)
       
     },
-    //目前資料不完整無法更新資料{ "space": 50, "unitId": "04510aa7-e1f6-409c-8982-f2ac9de45bd9" }
     putFolder(){
-      // this.deleteNull()
 
       this.FolderSettings.editorName = this.$store.getters.currentUser;
       this.FolderSettings.editor = this.$store.getters.userId;
 
       this.FolderSettings.settings.storage = { "space": this.space, "unitId": this.unitId };
-      this.FolderSettings.settings.restrictedFileTypes = [ "7f74d92d-4c7f-426a-9568-5a51aec82234" ];
 
       const data = JSON.stringify(this.FolderSettings)
 
@@ -516,9 +525,8 @@ export default {
     
       })
 
-      // this.FolderSettings = {}
     },
-    getUserTable () {  
+    getUserTable(){  
       this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
         .then((data) => {          
           this.useritems = data.data
@@ -530,11 +538,10 @@ export default {
     },
     //點擊針對個人允許行為
     userCan(item){      
-      console.log('usercan', this.PermissionTypes);
-      console.log('userCan', item);
+      console.log('該用戶可用的行為', this.PermissionTypes);
+      console.log('now user', item);
       this.haveUser = true
  
-   //   this.PermissionTypes.filter(x=>x.permissionTypeId == item.allow).permissionTypeId.active = true
       this.nowUser = item
       item.allow.forEach(x=>{
           this.PermissionTypes.forEach(permission=>{
@@ -544,7 +551,7 @@ export default {
           })
       });
       
-      console.log('nowUser',this.nowUser);
+      // console.log('nowUser',this.nowUser);
     },
     //左邊切換
     userSelected(item){
@@ -555,17 +562,13 @@ export default {
            "memberId": item.userId, 
            "memberName": item.userName, 
            "isGroup": true, 
-           "allow": [ "cacd02a3-22d0-4df4-b526-d9c4c6f2d50e" ], //之後綁定
+           "allow": [], 
            "deny": []
+         } 
 
-          } 
        );
+       console.log('這裡要改');
        console.log('目前選擇名單', this.FolderSettings.settings.accessPermissions);
-
-      }else{
-        //取消選取 
-      //  this.FolderSettings.settings.accessPermissions = this.FolderSettings.settings.accessPermissions.splice(x=>x.userId == item.userId);
-      //  console.log('取消選取', this.FolderSettings.settings.accessPermissions);
 
       }
    
@@ -578,31 +581,7 @@ export default {
     this.FolderSettings.settings.accessPermissions=  this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId !==user.memberId)    
 
     },
-    addToSettings(){
-      console.log(this.nowUser,'this.nowUser');
-      console.log(this.PermissionTypes,'584');
-      const permissions = [];
-      this.PermissionTypes.forEach(x=>{
-        if(x.active) {
-          permissions.push(x.permissionTypeId);
-        }
-      })
-      this.nowUser.allow = permissions;
-      // //folder setting有
-      if(this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId ==this.nowUser.memberId)) {
-       //刪掉舊資料
-       this.FolderSettings.settings.accessPermissions = this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId != this.nowUser.memberId)
-       //換上新資料
-       this.FolderSettings.settings.accessPermissions.push(this.nowUser)
-
-
-      }else{
-        this.FolderSettings.settings.accessPermissions.push(this.nowUser)
-
-      }
-      console.log(this.FolderSettings,'新增至設定');
-      
-    }
+    
   },
 };
 </script>

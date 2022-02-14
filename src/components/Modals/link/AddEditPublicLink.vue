@@ -396,7 +396,7 @@ export default {
       this.personData = ""
     },
     copyText() {
-      this.items.push(this.tabData.url);
+      this.items.push(this.personData.url);
       console.log('copy url',this.items[0])      
     },
     cancel() { 

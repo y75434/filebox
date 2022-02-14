@@ -695,17 +695,12 @@ export default {
           this.allFiles = data.data
 
           this.rootFolder = this.allFiles
-          this.rootFolder.map(x=>{
-            x.subFolders =[];
-            x.isOpen = false;
-            return x;
-          });
-          //顯示左側sidebar
-          // this.rootFolder.forEach(x=>{
-          //   // console.log(x);
-          //    this.getFolderTree(x,x.folderId);
-          // })
-         
+          // this.rootFolder.map(x=>{
+          //   x.subFolders =[];
+          //   x.isOpen = false;
+          //   return x;
+          // });
+      
           this.allFiles.map(item=>{
             const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
             item.pic = datapic.pic;
