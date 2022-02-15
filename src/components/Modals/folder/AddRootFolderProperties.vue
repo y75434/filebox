@@ -146,17 +146,10 @@
                     class="list-group-item border-0 p-0"
                   >
                     <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
-                      <input
-                        class="form-check-input m-0"
-                        type="checkbox"
-                        :value="item.userId"
-                        v-model="item.selected"
-                        @change="userSelected(item)"
-                        :id="item.userName"
-                      >
                       <img
                         src="@/assets/images/icon/Union.png"
                         class="icon24px"
+                        @click="userSelected(item)"
                       >
                       <label
                         class="form-check-label"
@@ -191,7 +184,7 @@
                   </li>
 
                   <li 
-                    v-for="item in editGroup.groupUserRelations"
+                    v-for="item in editGroup.settings.accessPermissions"
                     :key="item.userId"
                     class="list-group-item border-0 p-0"
                   >
@@ -206,7 +199,7 @@
                         for="flexCheckDefault"
                       >
                         <!-- <p class="text-dark m-0"> -->
-                        {{ item.userName }}
+                        {{ item.memberName }}
                         <img
                           @click="del(item)"
                           src="@/assets/images/cmd/del.png"
@@ -219,8 +212,8 @@
                 </div>
                 
                 <li class="list-group-item d-flex justify-content-end border p-2">
-                  <p class="ms-3 justify-content-end d-flex align-items-center">
-                    <span class="dark-blue fw-bold">{{ editGroup.groupUserRelations.length }}
+                  <p class="ms-3 justify-content-end d-flex align-items-center" v-if="editGroup.settings.accessPermissions">
+                    <span class="dark-blue fw-bold">{{ editGroup.settings.accessPermissions.length || 0 }}
                     </span>
                     <span>{{ $t("MODAL.SELECTED") }}</span>
                   </p>
@@ -293,12 +286,6 @@
                           >
                         </div>
                       </li>
-                      <b-button
-                        class="bg-green border-0"
-                        @click="addToSettings()"
-                      >
-                        add to settings
-                      </b-button>
                     </ul>
                   </div>
                   <div
@@ -415,9 +402,9 @@
 
 <script>
 export default {
-  name: "RootFolderProperties",
+  name: "AddRootFolderProperties",
   props: { 
-    title: { type: String, default: "Root Folder Properties" },
+    title: { type: String, default: "Add Root Folder Properties" },
   },
   data() {
     return {
@@ -434,7 +421,6 @@ export default {
           accessPermissions:[],
           restrictedFileTypes: [],
         },
-        groupUserRelations: []
       },
       nowUser:{
         memberId: "",
@@ -454,6 +440,9 @@ export default {
     },
     //ok
     postFolder(){
+      this.editGroup.uploaderName = this.$store.getters.currentUser;
+      this.editGroup.uploadedBy = this.$store.getters.userId;
+
       
       const data = JSON.stringify(this.editGroup)
       console.log(data);
@@ -483,7 +472,7 @@ export default {
       if(item.active){
         this.nowUser.allow.push(item.permissionTypeId) 
       } else {
-        this.nowUser = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
+        this.nowUser.allow = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
 
       }
       console.log('this.nowUser',this.nowUser);
@@ -535,36 +524,49 @@ export default {
       userCan(item){
         
         
-        console.log('usercan',item);
+        console.log('該用戶可用的行為',this.PermissionTypes);
         this.haveUser = true
+        this.nowUser = item
+
         //點擊新用戶全部取消勾選
-        this.PermissionTypes.map(x=>{
-          this.$set(this.PermissionTypes, x.active, false)
-        });
+        // this.PermissionTypes.map(x=>{
+        //   this.$set(this.PermissionTypes, x.active, false)
+        // });
+        item.allow.forEach(x=>{
+          this.PermissionTypes.forEach(permission=>{
+            if(permission.permissionTypeId == x) {
+              permission.active = true;
+            }
+          })
+      });
 
-        this.nowUser.memberId = item.memberId 
       },
-      
-      //目前沒有欄位
+      //左邊切換
       userSelected(item){
-        this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId !== item.userId);
-        const data = {  "memberId": item.userId,"userName": item.userName }
+        
+          console.log(item ,'item');
+          if(this.editGroup.settings.accessPermissions.filter(x=>x.memberId == item.userId).length==0) {
+          this.editGroup.settings.accessPermissions.push(
+            { 
+              "memberId": item.userId, 
+              "memberName": item.userName, 
+              "isGroup": true, 
+              "allow": [], 
+              "deny": []
+            } 
 
-        this.editGroup.groupUserRelations.push(data)
-        console.log('目前選擇名單',this.editGroup.groupUserRelations);   
+          );
+          console.log('目前選擇名單', this.editGroup.settings.accessPermissions);
+
+          }
+      
+      
       },
       del(user){
         console.log('user',user);
-        this.editGroup.groupUserRelations =this.editGroup.groupUserRelations.filter(x=>x.memberId !== user.memberId);
+        this.editGroup.settings.accessPermissions =this.editGroup.settings.accessPermissions.filter(x=>x.memberId !== user.memberId);
       },
-      addToSettings(){
-        console.log(this.nowUser,'this.nowUser');
-
-        this.editGroup.settings.accessPermissions.push(this.nowUser)
-        console.log(this.editGroup,'新增至設定');
-        
-      }
-      
+     
   },
 };
 </script>

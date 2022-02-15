@@ -638,7 +638,8 @@
       <AddNewUser ref="AddNewUser" />
       <RootFolderProperties
         ref="RootFolderProperties"
-        :folder-data="selected"
+        :tab-data="selected"
+        v-if="selected"
       />
       <AddRootFolderProperties
         ref="AddRootFolderProperties"
@@ -674,7 +675,6 @@ import AddRootFolderProperties from'@/components/Modals/folder/AddRootFolderProp
 import EditPublicLink from'@/components/Modals/link/EditPublicLink.vue';
 import EventProperties from '@/components/Modals/events/EventProperties.vue';
 import RenameItem from '../components/Modals/home/RenameItem.vue';
-import picture from '@/common/images.js';
 
 export default {
 name: "Content",
@@ -764,7 +764,6 @@ data() {
     eventsSelected:[],//被勾選的
     searchText:"",
     status:"",
-    picture:{},
     startdate: "",
     enddate: "",
     value:"",
@@ -772,30 +771,15 @@ data() {
     //nav page
     perPage: 10,
     currentPage: 1,
+    accessPermissions:[]
   };
 },
 created(){
   this.getData();
   this.getTable();
   this.getEventType();
-  this.picture = picture;
 },
 
-// watch: { 
-//   eventsSelected(newValue) {
-//     console.log(this.eventsSelected,'watch')
-//     if (newValue.length === 0) {
-//       this.allSelected = false
-//       console.log('取消全選')
-//     } else if (newValue.length === this.events.length) {
-//       this.allSelected = true
-//       console.log('全選')
-//     } else {
-//       this.allSelected = false
-//       console.log('選一個')
-//     }
-//   }
-// },
 methods: { 
   toggleAll(checked) { 
     console.log(checked);
@@ -841,12 +825,7 @@ methods: {
        return [];     
        case 4: 
          this.getEventTable();
-         this.eventsitems.map(item=>{ 
-          const eventpic = this.eventpics.filter(y=>y.actionType == item.actionType)[0];
         
-          item.pic = eventpic.pic;          
-          return item 
-        });
          this.count = this.eventsitems.length
         return [];    
       case 5: 
@@ -961,9 +940,15 @@ methods: {
     {},{ headers: window.headers })
       .then(data => {  
         this.eventsitems = data.data 
+        this.eventsitems.map(item=>{ 
+          const eventpic = this.eventpics.filter(y=>y.actionType == item.actionType)[0];
+        
+          item.pic = eventpic.pic;          
+          // return item
+        });
+
         this.count = this.eventsitems.length  
         // console.log(this.eventsitems.data);
-      return this.eventsitems;
 
       }).catch(error => {
         console.log(error.response.data);        

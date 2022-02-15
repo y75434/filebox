@@ -1,6 +1,5 @@
 <template>
-  <li class="list-unstyled"      
-  >
+  <li class="list-unstyled">
     <!--  -->
 
     <b-iconstack
@@ -24,7 +23,7 @@
     {{ subitem.name }}
     <ul
       v-show="open"
-:style=" { backgroundColor: ( subitem.folderId == this.liselected ? '#d3eaff' : 'transparent' )}"
+      :style=" { backgroundColor: ( subitem.folderId == this.liselected ? '#d3eaff' : 'transparent' )}"
     >
       <!-- 簡化就跑不出來  -->
       <rootItem

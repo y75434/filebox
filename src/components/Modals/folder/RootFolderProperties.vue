@@ -148,6 +148,7 @@
                 </li>
                 <div
                   class=""
+                  v-if="FolderSettings.settings.accessPermissions"
                 >
                   <li
                     v-for="item in FolderSettings.settings.accessPermissions"
@@ -383,13 +384,12 @@ export default {
   props: { 
     title: { 
       type: String, default: "Root Folder Properties" },
-      folderData: { type: Object , default() { return {} }},
+      tabData: { type: Object , default() { return {} }},
   },
   provide() { return { $fatherSetting: () =>  this.FolderSettings.settings }},
 
   data() {
     return {
-      folderTree: {},
       FolderSettings:{
         settings:{
           accessPermissions: []
@@ -414,8 +414,8 @@ export default {
     };
   },
   watch:{ 
-    folderData(){ 
-      this.FolderSettings = this.folderData
+    tabData(){ 
+      this.FolderSettings = this.tabData
     },
   },
   methods: { 
@@ -431,9 +431,6 @@ export default {
         this.FolderSettings = data.data
         // this.space = this.FolderSettings.settings.storage.space
         // this.unitId = this.FolderSettings.settings.storage.unitId
-        
-        //null問題
-        this.FolderSettings.settings.restrictedFileTypes = []
 
         this.getUserTable()
 
@@ -575,10 +572,9 @@ export default {
 
     },//ok
     del(user){
-      console.log('user',this.FolderSettings.settings.accessPermissions);
-      // api 的該用戶資料一並刪除 還沒好
+     console.log('user',this.FolderSettings.settings.accessPermissions);
 
-    this.FolderSettings.settings.accessPermissions=  this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId !==user.memberId)    
+     this.FolderSettings.settings.accessPermissions=  this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId !==user.memberId)    
 
     },
     
