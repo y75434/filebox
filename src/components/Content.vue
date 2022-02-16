@@ -639,7 +639,6 @@
       <RootFolderProperties
         ref="RootFolderProperties"
         :tab-data="selected"
-        v-if="selected"
       />
       <AddRootFolderProperties
         ref="AddRootFolderProperties"
@@ -778,6 +777,7 @@ created(){
   this.getData();
   this.getTable();
   this.getEventType();
+
 },
 
 methods: { 

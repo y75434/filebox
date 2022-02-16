@@ -37,11 +37,13 @@
         >
       </div>
 
+      group
       {{ group }}
 
-
-
       <hr class="">
+
+      api
+      {{ api }}
 
 
       <div class="p-2 d-flex align-items-center justify-content-between">
@@ -166,10 +168,10 @@
         <ul
           class="list-group col-4 p-0  bg-white border overflow-auto "
         >
-          <div v-if="editGroup.groupUserRelations.length>0">
+          <div v-if=" api">
             <!-- <li class="list-group-item  d-flex align-items-center border-0 overflow-scroll" /> -->
             <li
-              v-for="item in editGroup.groupUserRelations"
+              v-for="item in api.users"
               :key="item.userId"
 
               class="list-group-item bg-white  border-0"
@@ -207,7 +209,7 @@
           <span class=" fw-bold">{{ this.count }}</span>
         </p>
         <p class="ms-3">
-          <span class="dark-blue fw-bold">{{ editGroup.groupUserRelations.length }}
+          <span class="dark-blue fw-bold">{{ api.users.length || 0 }}
           </span>
           <span>{{ $t("MODAL.SELECTED") }}</span>
         </p>
@@ -238,121 +240,106 @@ export default {
 
   data() {
     return {
-      showModal: false,
       filter: null,
       useritems: [],
       searchText:"",
       count:0,
-      group:{ 
-        groupID: "", 
-        userID:"", 
-        roleId: 1 
-      },
-      editGroup:{
-        id: "",
-        groupUserRelations: []
-      },
-      groupUsers:{}//目前成員
-
+      group:{},
+      api: {}
     };
   },
   watch:{ 
     tabData(){ 
       this.group = this.tabData 
-      this.editGroup.id = this.group.id     
     } 
   },
   
   methods: {
     start() {
       this.getUserTable()
-      this.getGroupUsers()
+      this.getGroup()
+
     },
-      del(user){
-        this.editGroup.groupUserRelations =this.editGroup.groupUserRelations.filter(x=>x.userId !== user.userId);
-
-      },
       
-      //編輯資料外也可以設定層級和新增使用者
-      updateGroup() {  
-       
+    getGroup () {  
+      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/${this.group.id}`)
+        .then((data) => {          
+          this.group.groupDescription = data.data.groupDescription
+          this.api = data.data
+          // .groupDescription
+          console.log('this.group',this.group);
+          console.log('this.api',this.api);
 
-        const data = JSON.stringify({
-
-            "id": this.editGroup.id,
-            // "groupName": this.group.groupName,
-            "groupDescription": this.group.groupDescription,
-            "groupScope": "string",
-            "isSecurityGroup": true,
-            "groupUserRelations": this.editGroup.groupUserRelations,
-            "editedBy":  this.$store.getters.userId,
-            "editor":  this.$store.getters.currentUser
-            //之後設定
-            // "parentChildGroupRelations": [
-            //   {
-            //     "childGroupID": "",
-            //     "parentGroupID": ""
-            //   }
-            // ]
-
+        }).catch(error => {
+          console.log(error);        
         })
-        console.log(data);
+    },
+    //編輯資料外也可以設定層級和新增使用者
+    updateGroup() {  
+      
+
+      const data = JSON.stringify({
+
+          "id": this.group.id,
+          // "groupName": this.group.groupName,
+          "groupDescription": this.group.groupDescription,
+          "groupScope": this.group.groupName,
+          "isSecurityGroup": true,
+          "usersList": this.api.users,
+          "editedBy":  this.$store.getters.userId,
+          "editor":  this.$store.getters.currentUser
+          //之後設定
+          // "parentChildGroupRelations": [
+          //   {
+          //     "childGroupID": "",
+          //     "parentGroupID": ""
+          //   }
+          // ]
+
+      })
+      console.log(data);
+        
+
+    this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroup`,
+    data,{ headers: window.headers })
+      .then((data) => {
+
+      console.log(data);
+    }).catch(error => {
+        console.log(error);          
+      })
+    },
+    getUserTable () {  
+      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
+        .then((data) => {          
+          this.useritems = data.data
+          console.log('all user',this.useritems);
           
-
-      this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroup`,
-      data,{ headers: window.headers })
-        .then((data) => {
-
-        console.log(data);
-      }).catch(error => {
-          console.log(error);          
+          // this.count = this.useritems.length       
+        }).catch(error => {
+          console.log(error);        
         })
-      },
-      getUserTable () {  
-        this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
-          .then((data) => {          
-            this.useritems = data.data
-            console.log('304',this.useritems);
-            
-            this.count = this.useritems.length       
-          }).catch(error => {
-            console.log(error);        
-          })
-      },
-      userSelected(item){
-        // console.log('317', item);
-        this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId !== item.userId);
-        const data = { "groupID": this.group.id, "userId": item.userId, "roleId": item.selected ,"userName": item.userName}
-        this.editGroup.groupUserRelations.push(data)
+    },
 
-      },
-      getGroupUsers(){
-        this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroupUsers?groupID=${this.editGroup.id}`)
-          .then((data) => {  
-            this.groupUsers = data.data
-            // console.log(this.groupUsers);
-            
-            this.editGroup.groupUserRelations = this.groupUsers
-            this.editGroup.groupUserRelations.map(item => item.groupID = this.editGroup.id)
+    userSelected(item){
+      // console.log('317', item);
+      // this.api.users = this.api.users.filter(x=>x.userId !== item.userId);
+      // const data = {  "userID": item.userId, "roleId": item.selected }
+      // this.api.users.push(data)
 
-            this.editGroup.groupUserRelations.forEach(x=>{
-              this.useritems.map(item=>{
-                if(item.userId == x.userId) {
-                  item.selected = x.roleId
-                }
-                return item;
-              })
-            });
-
-
-
-            console.log('335',this.editGroup.groupUserRelations);
-            
-            this.count = this.useritems.length       
-          }).catch(error => {
-            console.log(error);        
-          })
+ㄥㄥ
+      if(this.api.users.filter(x=>x.userId == item.userId).length==0) {
+         this.api.users.push({ "userName": item.userName, "userID": item.userId, "roleId": item.selected });
+       
       }
+
+    },
+    del(user){
+      this.api.users =this.api.users.filter(x=>x.userId !== user.userId);
+      this.count = this.api.users.length
+
+    },
+    
   },
 };
 </script>

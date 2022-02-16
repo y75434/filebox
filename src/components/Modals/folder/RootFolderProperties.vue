@@ -135,7 +135,7 @@
                   </p>
                 </li>
               </ul>
-              <ul class="list-group d-flex flex-column justify-content-between bg-white col-3 p-0 h-100 border">
+              <ul  class="list-group d-flex flex-column justify-content-between bg-white col-3 p-0 h-100 border">
                 <li                
                   class="form-check list-group-item border-0 p-0"
                 >
@@ -148,8 +148,8 @@
                 </li>
                 <div
                   class=""
-                  v-if="FolderSettings.settings.accessPermissions"
                 >
+                <!--  -->
                   <li
                     v-for="item in FolderSettings.settings.accessPermissions"
                     :key="item.memberId"
@@ -253,12 +253,6 @@
                           >
                         </div>
                       </li>
-                      <!-- <b-button
-                        class="bg-green border-0"
-                        @click="addToSettings()"
-                      >
-                        add to settings
-                      </b-button> -->
                     </ul>
                   </div>
                   <div
@@ -382,9 +376,8 @@ export default {
     rootTreeItem
   },
   props: { 
-    title: { 
-      type: String, default: "Root Folder Properties" },
-      tabData: { type: Object , default() { return {} }},
+    title: { type: String, default: "Root Folder Properties" },
+    tabData: { type: Object , default() { return {} }},
   },
   provide() { return { $fatherSetting: () =>  this.FolderSettings.settings }},
 
@@ -417,7 +410,13 @@ export default {
     tabData(){ 
       this.FolderSettings = this.tabData
     },
+  
   },
+  // computed: {
+  //   accessPermissions() {
+  //    return this.FolderSettings?.settings?.accessPermissions
+  //   }
+  // },
   methods: { 
     start() {
       this.getFolderSettings(this.FolderSettings.folderId)
@@ -431,7 +430,8 @@ export default {
         this.FolderSettings = data.data
         // this.space = this.FolderSettings.settings.storage.space
         // this.unitId = this.FolderSettings.settings.storage.unitId
-
+        // let a = this.FolderSettings.settings.accessPermissions
+        // this.FolderSettings.settings.accessPermissions = a
         this.getUserTable()
 
       }).catch(() => {
