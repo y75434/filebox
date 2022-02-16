@@ -322,21 +322,22 @@ export default {
     },
 
     userSelected(item){
-      // console.log('317', item);
-      // this.api.users = this.api.users.filter(x=>x.userId !== item.userId);
-      // const data = {  "userID": item.userId, "roleId": item.selected }
-      // this.api.users.push(data)
-
-ㄥㄥ
+      
+      //api沒該用戶
       if(this.api.users.filter(x=>x.userId == item.userId).length==0) {
-         this.api.users.push({ "userName": item.userName, "userID": item.userId, "roleId": item.selected });
+         this.api.users.push({ "userName": item.userName, "userId": item.userId, "roleId": item.selected });
        
+      }else{
+        //先把api資料刪掉再加入更新資料
+        this.api.users = this.api.users.filter(x=>x.userId !== item.userId);
+        this.api.users.push({ "userName": item.userName, "userId": item.userId, "roleId": item.selected });
+
       }
 
     },
     del(user){
       this.api.users =this.api.users.filter(x=>x.userId !== user.userId);
-      this.count = this.api.users.length
+      // this.count = this.api.users.length
 
     },
     

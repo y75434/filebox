@@ -134,16 +134,8 @@
               class="m-2 text-dark"
             >{{ $t("GENERAL.SEARCH") }}</label>
             <input
-              v-if="this.currentSelected != 3"
               v-model="searchText"
               @keyup="search()"
-              type="text"
-              :placeholder="$t( 'GENERAL.SEARCH')"
-              class="form-control "
-            >
-            <input
-              v-if="this.currentSelected === 3"
-              v-model="filter"
               type="text"
               :placeholder="$t( 'GENERAL.SEARCH')"
               class="form-control "
@@ -394,7 +386,7 @@
             <b-table
               :fields="folderfields"
               responsive="true"
-              :items="folderitems"
+              :items="filFolder"
               class="col-12 b-col text-dark cursor"
               @contextmenu="operational($event)"
               @row-hovered="rowSelected"
@@ -770,7 +762,7 @@ data() {
     //nav page
     perPage: 10,
     currentPage: 1,
-    accessPermissions:[]
+    accessPermissions:[],
   };
 },
 created(){
@@ -779,7 +771,12 @@ created(){
   this.getEventType();
 
 },
+computed:{
 
+  filFolder(){
+    return this.folderitems.filter(x=>x.name.toLowerCase().includes(this.searchText))
+  },
+},
 methods: { 
   toggleAll(checked) { 
     console.log(checked);
@@ -956,7 +953,7 @@ methods: {
   },
   // change this.eventsSelected value 
   getEventType(){ 
-    this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/ActionType/GetAll`,)
+    this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/ActionType/GetAll`)
       .then((data) => {
         data.data.forEach(item =>{
           this.events.push(item)
@@ -1011,9 +1008,10 @@ methods: {
             console.log(error.response.data);        
           })
         break;
-      case 3:    
-        break;
+      case 3:  
+        this.count = this.filFolder.length
 
+        break;
       case 4: {
  
         console.log(this.events);
@@ -1047,6 +1045,7 @@ methods: {
       break;
       }
       case 5: 
+      //改這
       this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
           .then(data => {  
             this.linkitems = data.data 
