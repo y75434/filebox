@@ -34,6 +34,7 @@ const router = new VueRouter({
       path: '/admin',
       name: 'admin',
       component: () => import('../views/Admin.vue'),
+
     },
     {
       path: '/reset',
@@ -70,14 +71,23 @@ router.beforeEach(function (to, from, next) {
 
   const nextRoute = [ 'admin', 'home', 'test'];
     const auth = store.state.isLogin;
-    //跳转至上述3个页面
+    // const admin = store.state.isAdmin;
+
+    //跳轉至上述3個頁面
     if (nextRoute.indexOf(to.name) >= 0) {
-        //未登录
         if (!auth) {
             router.push({name: 'login'})
         }
+        
     }
-    //已登录的情况再去登录页，跳转至首页
+    //admin
+    // if (to.name === 'admin') {
+
+    //   if (!admin) {
+    //         router.push({name: 'home'})
+    //       }
+    // }
+    //已登錄的情況再去登錄頁，跳轉至首頁
     if (to.name === 'login') {
         if (store.state.isLogin) {
             router.push({name: 'home'});

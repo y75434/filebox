@@ -17,7 +17,7 @@
       <p
         class="m-0 ms-1"
       >
-        FileVista- Administration
+        CyberMetaQ - Administration
       </p>
     </li>
     <div class="d-flex">
@@ -53,7 +53,8 @@
                 href="#"
               >{{ $t("GENERAL.USERSETTING") }}</a>
             </li>
-            <li class="d-flex align-items-center">
+            <!-- v-if="this.$store.getters.isAdmin" -->
+            <li class="d-flex align-items-center" >
               <img
                 src="@/assets/images/icon/administrator@2x.png"
                 class="icon24px"

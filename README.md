@@ -1,4 +1,4 @@
-# filebox
+# CyberMetaQ
 
 ## Project setup
 ```

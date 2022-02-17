@@ -1046,12 +1046,12 @@ methods: {
       }
       case 5: 
       //改這
-      this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
+      this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll?searchString=${this.searchText}`)
           .then(data => {  
             this.linkitems = data.data 
             this.count = this.linkitems.length  
 
-          return this.useritems;
+          return this.linkitems;
 
           }).catch(error => {
             console.log(error.response.data);        

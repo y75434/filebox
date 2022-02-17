@@ -39,38 +39,18 @@
             </div>
             <span class="text-danger">{{ errors[0] }}</span>
           </validation-provider>
-
-          <validation-provider
-            v-slot="{ errors, classes }"
-            rules="required"
-          >
-            <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-              <label
-                for="creator"
-                class=""
-              >{{ $t("MODAL.CREATOR") }}</label>
-              <input
-                type="string"
-                class="form-control inline-block width-320"
-                id="creator"
-                v-model="personData.creator"
-                :class="classes"
-              >
-            </div>
-            <span class="text-danger">{{ errors[0] }}</span>
-          </validation-provider>
         </form>
 
         
         <!-- </div> -->
             
         <p class="text-dark">
-          {{ tabData }}
+          外部{{ tabData }}
         </p>
         <hr class="">
 
         <p class="text-dark">
-          {{ personData }}
+          編輯{{ personData }}
         </p>
 
         <div
@@ -294,55 +274,43 @@ export default {
         }
       },
     post() { 
-      const headers = { 
-        'Content-Type': 'application/json', 
-        'Accept': 'application/json',
-        "Access-Control-Allow-Origin": '*' 
-        };
-
         const data = JSON.stringify(this.personData)
 
-        
         console.log(data);
 
-
       this.axios.post(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/Create`,
-      data,{ headers: headers }) .then((data) => {
-
-
- 
-
+      data,{ headers: window.headers }) .then((data) => {
 
         console.log(data);
       }).catch(error => {
           console.log(error.response.data);          
         })
     },
-
-
-
     // rename + editname
     put() { 
      
-
-      const headers = { 
-        'Content-Type': 'application/json', 
-        'Accept': 'application/json',
-        "Access-Control-Allow-Origin": '*' 
-        };
-        const data = JSON.stringify(this.personData)   
+        const data = JSON.stringify({
+          "linkId": this.personData.linkId,
+          "expireDays": this.personData.expireDays,
+          "viewableTimes": this.personData.viewableTimes,
+          "password": this.personData.confirmPassword,
+          "editor": this.$store.getters.userId,
+          "editorName": this.$store.getters.currentUser
+        })   
         
         console.log(data);
 
       this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/`,
-      data,{ headers: headers }).then((data) => {
+      data,{ headers: window.headers }).then((data) => {
         console.log(data);
       }).catch(error => {
           console.log(error.response.data);          
         })
 
-        this.$nextTick(() => { this.personData = {};
-        this.$bvModal.hide('EditPublicLink'); });
+        this.$nextTick(() => { 
+          this.personData = {};
+          this.$bvModal.hide('EditPublicLink'); 
+        });
 
     },
     

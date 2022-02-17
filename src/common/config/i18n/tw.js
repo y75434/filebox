@@ -1,7 +1,7 @@
 export const locale = {
   GENERAL: {
     DELSUCCESS: '刪除成功',
-    WELCOME_WORD: '您好，歡迎來到 FileVista。請輸入您的資訊',
+    WELCOME_WORD: '您好，歡迎來到 CyberMetaQ。請輸入您的資訊',
     OK: '確定',
     CONTINUE: '繼續',
     CANCEL: '取消',
@@ -100,7 +100,7 @@ export const locale = {
     ACCOUNTISLOCKEDOUT:'帳戶被鎖定',
     PLEASEFILLOUTTHISFIELD: '請填寫此欄位',
     ENTERANAMEFORTHENEWFOLDER: '新增資料夾名稱',
-    ABOUTFILEVISTA:'關於 FileVista',
+    ABOUTFILEVISTA:'關於 CyberMetaQ',
     SENDYOUANEMAIL:'在下面輸入您的電子郵件地址，我們將向您發送一封電子郵件，允許您重置密碼。',
     REQUESTEMAILSENT: '發送電子郵件',
     CHECKYOUREMAILTORESET :'請檢查您的電子郵件以重置密碼。',

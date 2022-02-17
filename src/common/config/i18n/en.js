@@ -101,7 +101,7 @@ export const locale = {
     ACCOUNTISLOCKEDOUT:'Account is locked out',
     PLEASEFILLOUTTHISFIELD:'Please fill out this field',
     ENTERANAMEFORTHENEWFOLDER:'Enter a name for the new folder',
-    ABOUTFILEVISTA:'About FileVista',
+    ABOUTFILEVISTA:'About CyberMetaQ',
     SENDYOUANEMAIL:'Enter your email address below, and we’ll send you an email allowing you to reset password.',
     REQUESTEMAILSENT: 'Request Email Sent',
     CHECKYOUREMAILTORESET :'Please check your email to reset password.',

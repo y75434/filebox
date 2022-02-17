@@ -16,9 +16,10 @@
       class="modal-popout-bg bg-bgmodal p-3"
     >
       <div class="text-dark d-flex justify-content-between">
-        <h4 class="fw-bold">
+        <!-- 會跳紅先註解 -->
+        <!-- <h4 class="fw-bold" v-if="linkitems[0].name !== undefined">
           {{ linkitems[0].name }}
-        </h4>
+        </h4> -->
         <div class="d-flex align-items-center">
           <h5 class="fw-bold mx-2">
             {{ count }}
@@ -61,6 +62,7 @@
               v-for="item in linkitems"
               :key="item.id"
               @mouseover="rowSelected(item)"
+              @dblclick="EditPublicLink"
             >
               <th scope="row">
                 {{ item.name }}

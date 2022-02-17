@@ -164,10 +164,10 @@
         <ul
           class="list-group col-4 p-0  bg-white border overflow-auto overflow-scroll"
         >
-          <div v-if="editGroup.groupUserRelations.length>0">
+          <div v-if="groupUserRelations.length>0">
             <!-- <li class="list-group-item  d-flex align-items-center border-0 overflow-scroll" /> -->
             <li 
-              v-for="item in editGroup.groupUserRelations"
+              v-for="item in groupUserRelations"
               :key="item.userId"
               class="list-group-item bg-white  border-0"
             >
@@ -176,6 +176,12 @@
                 class="table-btn  d-flex align-items-center"
               >
                 <img
+                  v-if="item.roleId == 1"
+                  src="@/assets/images/icon/Union.png"
+                  class="icon-16px"
+                >
+                <img
+                  v-else
                   src="@/assets/images/icon/admin-solid.png"
                   class="icon-16px"
                 >
@@ -199,7 +205,7 @@
           <span class=" fw-bold">{{ this.count }}</span>
         </p>
         <p class="ms-3">
-          <span class="dark-blue fw-bold">{{ editGroup.groupUserRelations.length }}
+          <span class="dark-blue fw-bold">{{ groupUserRelations.length }}
           </span>
           <span>{{ $t("MODAL.SELECTED") }}</span>
         </p>
@@ -226,87 +232,81 @@ export default {
 
   data() {
     return {
-      showModal: false,
       filter: null,
       useritems: {},
       searchText:"",
       count:0,
-      group:{ 
-        creator: this.$store.getters.userId,
-        createdBy:this.$store.getters.currentUser
-      },
-      editGroup:{
-        id: "",
-        groupUserRelations: []
-      },
-      groupUsers:{}//目前成員
+      group:{},      
+      groupUserRelations: [],
 
     };
   },
   methods: {
     start() {
       this.getUserTable()
-      this.editGroup.groupUserRelations = []
+      this.groupUserRelations = []
     },
-     del(user){
-        this.editGroup.groupUserRelations =this.editGroup.groupUserRelations.filter(x=>x.userId !== user.userId);
-
-      },//ok
-      addNewGroup () {  
-      this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/CreateGroup`,this.group)
-        .then((data) => {
-        //接著把選擇名單放入群組
-        this.addUsersToGroup(data.data)
-
-      }).catch(error => {
-          console.log(error);          
-        })
-      },//ok
-      addUsersToGroup(id) {  
-       
-
-       
+    addNewGroup () { 
       const data = JSON.stringify({
-        "id": id, 
-        "groupUserRelations": this.editGroup.groupUserRelations
+
+        "groupName": this.group.groupName,
+        "groupDescription": this.group.groupDescription,
+        "groupScope": this.group.groupName,
+        "isSecurityGroup": true,
+        "usersList": this.groupUserRelations,
+        "createdBy": this.$store.getters.userId,
+        "creator": this.$store.getters.currentUser
 
       })
+       console.log(data);   
 
-      console.log(data);
 
 
-      this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/AddUsersInGroup`,
-      data,{ headers: window.headers } )
-        .then((data) => {
-          console.log(data);
-      }).catch(error => {
-          console.log(error);          
-        })
-      },
-      
+    this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/CreateGroup`,data,
+    { headers: window.headers })
+      .then((data) => {
+  
+       console.log(data);   
+
+    }).catch(error => {
+        console.log(error);          
+      })
+    },
     
-      getUserTable () {  
-        this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
-          .then((data) => {          
-            this.useritems = data.data
-            
-            this.count = this.useritems.length       
-          }).catch(error => {
-            console.log(error);        
-          })
-      },
-     userSelected(item){
-        // console.log('317', item);
-          // console.log(data);
-          this.editGroup.groupUserRelations = this.editGroup.groupUserRelations.filter(x=>x.userId !== item.userId);
-          const data = { "groupID": this.group.id, "userID": item.userId, "roleId": item.selected ,"userName": item.userName}
-
-          this.editGroup.groupUserRelations.push(data)
-          console.log('目前選擇名單',this.editGroup.groupUserRelations);
+  
+    getUserTable () {  
+      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
+        .then((data) => {          
+          this.useritems = data.data
           
-      
-      },
-      
+          this.count = this.useritems.length       
+        }).catch(error => {
+          console.log(error);        
+        })
+    },
+    userSelected(item){
+     console.log(item);
+
+        
+      //沒該用戶
+      if(this.groupUserRelations.filter(x=>x.userID == item.userId).length==0) {
+         this.groupUserRelations.push({ "userName": item.userName, "userID": item.userId, "roleId": item.selected });
+         console.log(this.groupUserRelations);
+
+      }else{
+        //先把資料刪掉再加入更新資料
+        this.groupUserRelations = this.groupUserRelations.filter(x=>x.userID !== item.userId);
+        this.groupUserRelations.push({ "userName": item.userName, "userID": item.userId, "roleId": item.selected });
+         console.log(this.groupUserRelations);
+
+      }
+
+
+    },
+    del(user){
+      this.groupUserRelations =this.groupUserRelations.filter(x=>x.userID !== user.userId);
+
+    },
 
   },
 };

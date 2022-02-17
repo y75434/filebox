@@ -8,7 +8,7 @@
       <p
         class="p-0 m-0"
       >
-        FileVista
+        CyberMetaQ
       </p>
     </li>
 
@@ -44,6 +44,7 @@
                 href="#"
               >{{ $t("GENERAL.USERSETTING") }}</a>
             </li>
+            <!-- v-if="this.$store.getters.isAdmin" -->
             <router-link
               :to="{ path: '/admin' }"
               class="text-decoration-none d-flex align-items-center"

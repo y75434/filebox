@@ -56,7 +56,7 @@
             <div class="bg-white h-100 border">
               <ul class="list-group border-0 text-dark">
                 <!-- tree -->
-               <rootTreeItem :id="FolderSettings.folderId" />            
+                <rootTreeItem :id="FolderSettings.folderId" />            
               </ul>
             </div>
           </div>
@@ -135,7 +135,7 @@
                   </p>
                 </li>
               </ul>
-              <ul  class="list-group d-flex flex-column justify-content-between bg-white col-3 p-0 h-100 border">
+              <ul class="list-group d-flex flex-column justify-content-between bg-white col-3 p-0 h-100 border">
                 <li                
                   class="form-check list-group-item border-0 p-0"
                 >
@@ -149,7 +149,7 @@
                 <div
                   class=""
                 >
-                <!--  -->
+                  <!--  -->
                   <li
                     v-for="item in FolderSettings.settings.accessPermissions"
                     :key="item.memberId"
@@ -272,7 +272,6 @@
                         value=""
                         id="flexCheckDefault"
                         class="form-check-input"
-
                       >
                       <label
                         for="flexCheckDefault"
@@ -428,10 +427,7 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => {  
         this.FolderSettings = data.data
-        // this.space = this.FolderSettings.settings.storage.space
-        // this.unitId = this.FolderSettings.settings.storage.unitId
-        // let a = this.FolderSettings.settings.accessPermissions
-        // this.FolderSettings.settings.accessPermissions = a
+        
         this.getUserTable()
 
       }).catch(() => {

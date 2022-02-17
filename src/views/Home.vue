@@ -124,8 +124,8 @@
               <img
                 src="@/assets/images/cmd/upload@2x.png"
                 alt=""
-                :disabled="this.selectedLength > 0"
-                :style=" this.selectedLength == 0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :disabled="this.selectedTrue.length > 0 && firstPage == false"
+                :style=" this.selectedTrue.length == 0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.UPLOAD") }}</span>
             </li>
@@ -409,7 +409,7 @@
         
     
     
-    <ContextMenu ref="menu">
+    <ContextMenu ref="menu" v-if="this.selectedLength > 0">
       <ul class="text-dark">
         <li
           v-if="this.selectedLength = 0"
@@ -439,7 +439,7 @@
           >{{ $t("HOME.CUT") }}
         </li>
         <li
-          v-if="this.$store.getters.nowFolderId && this.selectedLength > 0"
+          v-if="this.selectedTrue.length > 0"
           @click="paste()"
         >
           <img
@@ -571,6 +571,7 @@ export default {
     open: false ,  //tree 收縮
     // now: this.$store.getters.nowFile //才不會跳錯
     renderDetail: false,
+    firstPage: false
   }),
   
   created(){
@@ -618,7 +619,7 @@ export default {
   methods: { 
     selectAllCheckbox(){
       if(this.renderCheckboxs) {
-        console.log('cancel')
+        console.log('620')
         let imgs = document.querySelectorAll('img');
         imgs.forEach(img=>{
             if(img.id!=='') {
@@ -683,17 +684,12 @@ export default {
         return item;
       })
     },
-     
-    FolderOpen(folder){
-      console.log(folder,'FolderOpen');
-      folder.isOpen = true;
-    },
     //預設畫面在這
     getFolderTable(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
         .then((data) => { 
           this.allFiles = data.data
-
+          this.firstPage = true
           this.rootFolder = this.allFiles
           // this.rootFolder.map(x=>{
           //   x.subFolders =[];
@@ -719,7 +715,7 @@ export default {
        console.log(this.selectedTrue,'selectedTrue');
     },
     download() {   
-      this.$refs.menu.close();
+      // this.$refs.menu.close();
       this.checkSelected()   
       const data =   
       //new
@@ -805,9 +801,9 @@ export default {
       }) 
     },
     copyCut(){
-        this.$refs.menu.close();
-        this.checkSelected()
-        this.$store.dispatch('nowFile', this.selectedTrue);      
+      this.$refs.menu.close();
+      this.checkSelected()
+      this.$store.dispatch('nowFile', this.selectedTrue);      
     },
     //paste
     paste() {
@@ -862,18 +858,18 @@ export default {
         this.selectedTrue = []
 
     },
-    //點擊某資料夾在傳資料到search
+    //好像用不到
     //回上頁 如果是root folder 就無法按上一層
-     getFolderTree(rootFolder,id){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
-      .then((data) => { 
-        this.folderTree = data.data
-        rootFolder.subFolders = data.data.subFolders;
+    //  getFolderTree(rootFolder,id){
+    //   this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
+    //   .then((data) => { 
+    //     this.folderTree = data.data
+    //     // rootFolder.subFolders = data.data.subFolders;
 
-      }).catch(() => {
-        //  console.log(error.response.data);        
-      })
-    },
+    //   }).catch(() => {
+    //     //  console.log(error.response.data);        
+    //   })
+    // },
       new(id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
       .then((data) => { 
@@ -907,6 +903,8 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/GetItems/${id}/${this.$store.getters.userId}`)
         .then((data) => { 
           this.allFiles = data.data
+          this.firstPage = false
+
           //顯示路徑
          // this.getFolderTree(id)
 
@@ -926,12 +924,12 @@ export default {
       console.log('double click ',item);
        if('folderId' in item ) {
           this.getSelected(item.folderId)
-          console.log('944 folderId');
+          console.log('第一層資料夾 folderid');
           this.treeSelected = item;
         }
         else if('id' in item ) {
           this.getSelected(item.id)
-          console.log('948 id');
+          console.log('子層資料夾 id');
           //讓search顯示你目前在哪個資料夾裡
           this.treeSelected = item;
         }
@@ -979,8 +977,8 @@ export default {
         imgs.forEach(img=>{
            if(img.id!=='') {
               if(this.collide(div.getBoundingClientRect(),img.getBoundingClientRect())) {
-                
-                this.selectedTrue = []
+
+                // this.selectedTrue = []
                 this.resultQuery.filter(x=>x.id===img.id)[0].ischecked = true;             
 
               }

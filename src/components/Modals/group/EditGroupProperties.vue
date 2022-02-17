@@ -208,7 +208,7 @@
           </span>
           <span class=" fw-bold">{{ this.count }}</span>
         </p>
-        <p class="ms-3">
+        <p class="ms-3" v-if="api.users !== undefined && api.users.length > 0">
           <span class="dark-blue fw-bold">{{ api.users.length || 0 }}
           </span>
           <span>{{ $t("MODAL.SELECTED") }}</span>
@@ -253,6 +253,7 @@ export default {
       this.group = this.tabData 
     } 
   },
+ 
   
   methods: {
     start() {

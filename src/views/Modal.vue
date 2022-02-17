@@ -2130,7 +2130,8 @@
         data-bs-toggle="modal"
         data-bs-target="#c"
       >
-        About FileVista
+        About CyberMetaQ
+
       </button>
 
       <!-- Modal -->
@@ -2148,7 +2149,7 @@
                 class="modal-title"
                 id="exampleModalLabel"
               >
-                About FileVista
+                About CyberMetaQ
               </h5>
               <button
                 type="button"
@@ -2164,7 +2165,7 @@
                 <div class="col-6" />
                 <div class="col-6">
                   <h4 class="text-dark fw-bold m-0">
-                    FileVista
+                    CyberMetaQ
                   </h4>
                   <p class="text-gray m-0">
                     https:// www.doqubiz.com
