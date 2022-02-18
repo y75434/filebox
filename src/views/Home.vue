@@ -118,14 +118,14 @@
               <span class="nav-text text-center">{{ $t("HOME.DOWNLOAD") }}</span>
             </div>
             <li
-              @click="UploadFiles"
               class="d-flex flex-column w-50"
             >
               <img
                 src="@/assets/images/cmd/upload@2x.png"
                 alt=""
-                :disabled="this.selectedTrue.length > 0 && firstPage == false"
-                :style=" this.selectedTrue.length == 0 ? {opacity:'1'} : {opacity:'0.3'}"
+                @click="UploadFiles"
+                :disabled="this.selectedTrue.length > 0 || this.firstPage == true"
+                :style=" this.selectedTrue.length == 0 || this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.UPLOAD") }}</span>
             </li>
@@ -288,7 +288,6 @@
               <input
                 class="form-check-input"
                 type="checkbox"
-                value="1"
                 id="Item check boxes"
                 @click="selectAllCheckbox()"
                 v-model="renderCheckboxs"
@@ -617,6 +616,7 @@ export default {
   },
 
   methods: { 
+    //取消顯示checkbox 全選切換會失靈
     selectAllCheckbox(){
       if(this.renderCheckboxs) {
         console.log('620')
@@ -983,7 +983,7 @@ export default {
 
               }
              
-              img.setAttribute("style","background-color:#d3eaff");
+              // img.setAttribute("style","background-color:#d3eaff");會影響
               img.setAttribute('data-selected','true')
             } else {
                 let unselected =  this.resultQuery.filter(x=>x.id===img.id);

@@ -1,7 +1,10 @@
 <template>
   <li class=" list-unstyled">
-    <b-iconstack font-scale="1" rotate="90" @click.stop="toggle">
+    <!-- {{ subitem }} -->
+    <b-iconstack font-scale="1" rotate="90" @click.stop="toggle"
+    >
       <b-icon
+        v-if="subitem.hasChildren "
         stacked
         icon="chevron-right"
         shift-h="0"
@@ -43,9 +46,25 @@ export default {
     }
   },
   created(){
-    console.log(this.subitem, 'sub')  
+    console.log(this.subitem, 'sub')
+    this.start()  
   },
-  methods:{    
+  methods:{ 
+
+    start(){
+         this.open = !this.open
+        if(this.open) {
+            this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${this.subitem.folderId}`)
+          .then((data) => { 
+            this.subitem = data.data;
+            console.log(this.subitem);
+             this.open = !this.open
+
+          }).catch(() => {
+            //  console.log(error.response.data);        
+          })
+        }
+    },     
     toggle(){
       console.log('toggle');
         this.open = !this.open
@@ -53,6 +72,8 @@ export default {
             this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${this.subitem.folderId}`)
           .then((data) => { 
             this.subitem = data.data;
+            console.log(this.subitem);
+            // this.open = !this.open
 
           }).catch(() => {
             //  console.log(error.response.data);        

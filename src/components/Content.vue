@@ -1045,7 +1045,7 @@ methods: {
       break;
       }
       case 5: 
-      //改這
+      // 測試過後端無法過濾
       this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll?searchString=${this.searchText}`)
           .then(data => {  
             this.linkitems = data.data 
