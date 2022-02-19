@@ -1,29 +1,38 @@
 <template>
+<div>
+  <div   v-for="(data, index) in datas"
+        :key="index" >
+        <div>
+             {{data.name}}
+        </div>
+  </div>  
   <li class="list-unstyled">
     <!--  -->
-
-    <b-iconstack
-      font-scale="1"
-      rotate="90"
-      @click.stop="toggle"
-    >
-      <b-icon
-        stacked
-        icon="chevron-right"
-        shift-h="0"
-        variant="success"
-      />
-    </b-iconstack>
-    <img
-      src="@/assets/images/file/single folder@2x.png"
-      class="icon24px "
-      @dblclick="selectSub(subitem)"
-      @click="test(subitem)"
-    >
-    {{ subitem.name }}
+    <div 
+    @click="test(subitem)"
+    :style=" { backgroundColor: ( subitem.folderId == this.liselected ? '#d3eaff' : 'transparent' )}">
+      <b-iconstack
+        font-scale="1"
+        rotate="90"
+        @click.stop="toggle"
+      >
+        <b-icon
+          stacked
+          icon="chevron-right"
+          shift-h="0"
+          variant="success"
+        />
+      </b-iconstack>
+      <img
+        src="@/assets/images/file/single folder@2x.png"
+        class="icon24px "
+        @dblclick="selectSub(subitem)"
+      >
+      {{ subitem.name }}
+    </div>
+   
     <ul
       v-show="open"
-      :style=" { backgroundColor: ( subitem.folderId == this.liselected ? '#d3eaff' : 'transparent' )}"
     >
       <!-- 簡化就跑不出來  -->
       <rootItem
@@ -34,6 +43,9 @@
       ></rootItem>
     </ul>
   </li>
+</div>
+ 
+  
 </template>
 
 <script>
@@ -48,7 +60,22 @@ export default {
     return {
       subitem: this.tree,
       open: false,
-      liselected: ""
+      liselected: "",
+      selectedId:0,
+      datas:[
+        {
+          id:1,
+          name:'apple'
+        },
+        {
+          id:2,
+          name:'banana'
+        },
+        {
+          id:3,
+          name:'cat'
+        }
+      ]
     };
   },
   created() {
