@@ -360,6 +360,7 @@
                 class="mx-2 my-2 folderItem"
                 style="position:relative"
                 :key="item.id"
+                :id="item.id"
                 v-for="item in resultQuery"
                 @dblclick="detectClick(item)"
                 @change="ischecked = !ischecked"
@@ -390,11 +391,11 @@
                 </div>     
               </div> 
             </div>
-            <!-- <h6
+            <h6
               class="text-dark text-center text-truncate d-inline-block"
               style="max-width: 100px"
             > {{ arr }}</h6>
-            -->
+           
 
             <div
               ref="div"
@@ -958,7 +959,6 @@ export default {
     mouseMove(e){ 
       this.x2 = e.offsetX >=0? e.offsetX:0; 
       this.y2 = e.offsetY >=0? e.offsetY:0; 
-      console.log(this.x2,this.y2)
       let div = this.$refs.div;
       if(div.hidden==0) {
        this.reCalc();
@@ -984,6 +984,10 @@ export default {
           if(this.collide(div.getBoundingClientRect(),img.getBoundingClientRect())) {
             img.setAttribute("style","background-color:#d3eaff");
             img.setAttribute('data-selected','true')
+            this.resultQuery.map(x=>x.ischecked= false);
+            console.log(this.resultQuery.filter(x=>x.name===img.outerText));
+            let folders =  this.resultQuery.filter(x=>x.name===img.outerText);
+            folders.forEach(x=>x.ischecked=  true)
           } else {
             img.setAttribute("style","background-color:none");
             img.setAttribute('data-selected','false')
