@@ -45,7 +45,7 @@ export default {
             x.subFolders = null;
             return x;
           });
-          console.log(this.trees);//rootfolder
+          // console.log(this.trees);//rootfolder
         }).catch(error => {
           console.log(error.response.data);        
         })

@@ -350,58 +350,60 @@
             class=" d-flex align-items-start justify-content-start"
           >  
             <div
-            @mousedown="mouseDown($event)"
-            @mousemove="mouseMove($event)"
-            @mouseup="mouseUp($event)"
-            style="background:white;width:100%;height:100%;position:relative"
-          >
-            <div class="d-flex">
-              <div
-                class="mx-2 my-2 folderItem"
-                style="position:relative"
-                :key="item.id"
-                :id="item.id"
-                v-for="item in resultQuery"
-                @dblclick="detectClick(item)"
-                @change="ischecked = !ischecked"
-                :style=" { backgroundColor: (item.ischecked ? '#d3eaff' : 'transparent' ), 
-                          opacity: item.changed ? {opacity:'1'} : {opacity:'0.3'},          
-                }"
-                @mouseover="rowSelected(item)"
-              >
-                <input
-                  class="form-check-input itemCheckbox"
-                  type="checkbox"
-                  v-model="item.ischecked"
-                  v-if="renderCheckboxs"
-                >
-                <img
-                  :src="item.pic"
-                  :id="item.id"
-                  class="folder-icon"
-                >
+              @mousedown="mouseDown($event)"
+              @mousemove="mouseMove($event)"
+              @mouseup="mouseUp($event)"
+              style="background:white;width:100%;height:100%;position:relative"
+            >
+              <div class="d-flex">
                 <div
-                  class="text-dark text-center text-truncate"
-                  style="max-width: 100px;"
+                  class="mx-2 my-2 folderItem"
+                  style="position:relative"
+                  :key="item.id"
+                  :id="item.id"
+                  v-for="item in resultQuery"
+                  @dblclick="detectClick(item)"
+                  @change="ischecked = !ischecked"
+                  :style=" { backgroundColor: (item.ischecked ? '#d3eaff' : 'transparent' ), 
+                             opacity: item.changed ? {opacity:'1'} : {opacity:'0.3'},          
+                  }"
+                  @mouseover="rowSelected(item)"
                 >
-                  {{ item.name }}<span
-                    class="text-dark"
-                    v-if="extension"
-                  >.{{ item.extension }}</span>
-                </div>     
-              </div> 
-            </div>
-            <h6
-              class="text-dark text-center text-truncate d-inline-block"
-              style="max-width: 100px"
-            > {{ arr }}</h6>
+                  <input
+                    class="form-check-input itemCheckbox"
+                    type="checkbox"
+                    v-model="item.ischecked"
+                    v-if="renderCheckboxs"
+                  >
+                  <img
+                    :src="item.pic"
+                    :id="item.id"
+                    class="folder-icon"
+                  >
+                  <div
+                    class="text-dark text-center text-truncate"
+                    style="max-width: 100px;"
+                  >
+                    {{ item.name }}<span
+                      class="text-dark"
+                      v-if="extension"
+                    >.{{ item.extension }}</span>
+                  </div>     
+                </div> 
+              </div>
+              <h6
+                class="text-dark text-center text-truncate d-inline-block"
+                style="max-width: 100px"
+              >
+                {{ arr }}
+              </h6>
            
 
-            <div
-              ref="div"
-              style="border: 1px solid #33CCFF;background:#33CCFF;opacity:0.5;position:absolute;z-index:999"
-              hidden="0"
-            /> 
+              <div
+                ref="div"
+                style="border: 1px solid #33CCFF;background:#33CCFF;opacity:0.5;position:absolute;z-index:999"
+                hidden="0"
+              /> 
             </div>
           </Pane>
         </Splitpanes>
@@ -412,11 +414,11 @@
 
         
     
-    
-    <ContextMenu ref="menu" v-if="this.selectedLength > 0">
+    <!-- v-if="this.selectedLength > 0" -->
+    <ContextMenu ref="menu">
       <ul class="text-dark">
+        <!-- v-if="this.selectedLength = 0" -->
         <li
-          v-if="this.selectedLength = 0"
           @click="CreateFolder"
         >
           <img
@@ -424,8 +426,8 @@
             class="icon24px"
           >{{ $t("GENERAL.ADDFOLDER") }}
         </li>
+        <!-- v-if="canUse || this.selectedLength > 0" -->
         <li
-          v-if="canUse || this.selectedLength > 0"
           @click="copyCut()"
         >
           <img
@@ -433,8 +435,8 @@
             class="icon24px"
           >{{ $t("HOME.COPY") }}
         </li>
+        <!-- v-if="canUse || this.selectedLength > 0" -->
         <li
-          v-if="canUse || this.selectedLength > 0"
           @click="copyCut()"
         >
           <img
@@ -600,8 +602,11 @@ export default {
            this.resultQuery[key].ischecked === true).length            
         }  
     },
-    arr(){      
-      return this.resultQuery.filter(key => key.ischecked === true)
+    arr:{
+      set(){ }, 
+      get(){   
+        return this.resultQuery.filter(key => key.ischecked === true)
+      }
     },
     resultQuery(){
         return this.allFiles.filter(item =>
@@ -695,12 +700,7 @@ export default {
           this.allFiles = data.data
           this.firstPage = true
           this.rootFolder = this.allFiles
-          // this.rootFolder.map(x=>{
-          //   x.subFolders =[];
-          //   x.isOpen = false;
-          //   return x;
-          // });
-      
+        
           this.allFiles.map(item=>{
             const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
             item.pic = datapic.pic;
@@ -828,38 +828,38 @@ export default {
 
       if(this.$store.getters.copyFile){
         
-          // copy post ok
-              this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CopyAndPaste`,
-            data,{  headers: window.headers })
-            .then((data) => {  
-              console.log(data);
-              this.$swal.fire({ title: data.status, icon: 'success' })
-              
+        // copy post ok
+            this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CopyAndPaste`,
+          data,{  headers: window.headers })
+          .then((data) => {  
+            console.log(data);
+            this.$swal.fire({ title: data.status, icon: 'success' })
+            
 
-            }).catch(error => {
-              console.log(error.response.data); 
-              this.$swal.fire({ title: error, icon: 'error' })
-       
-            })
+          }).catch(error => {
+            console.log(error.response.data); 
+            this.$swal.fire({ title: error, icon: 'error' })
+      
+          })
 
       }else{    
       // cut paste
-            this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CutAndPaste`,
-            data,{  headers: window.headers })
-            .then((data) => {  
-              console.log(data);
-              this.$swal.fire({ title: data.status, icon: 'success' })
+        this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CutAndPaste`,
+        data,{  headers: window.headers })
+        .then((data) => {  
+          console.log(data);
+          this.$swal.fire({ title: data.status, icon: 'success' })
 
 
-            }).catch(error => {
-              console.log(error);
-              this.$swal.fire({ title: error, icon: 'error' })
-       
-            })
-        }
+        }).catch(error => {
+          console.log(error);
+          this.$swal.fire({ title: error, icon: 'error' })
+    
+        })
+    }
 
-        this.$store.dispatch('nowFile', null);
-        this.selectedTrue = []
+    this.$store.dispatch('nowFile', null);
+    this.selectedTrue = []
 
     },
     //好像用不到
@@ -984,39 +984,18 @@ export default {
           if(this.collide(div.getBoundingClientRect(),img.getBoundingClientRect())) {
             img.setAttribute("style","background-color:#d3eaff");
             img.setAttribute('data-selected','true')
-            this.resultQuery.map(x=>x.ischecked= false);
-            console.log(this.resultQuery.filter(x=>x.name===img.outerText));
+            this.resultQuery.map(x=>x.ischecked = false);
+            console.log(this.resultQuery.filter(x=>x.name===img.outerText),'被選取的');
             let folders =  this.resultQuery.filter(x=>x.name===img.outerText);
-            folders.forEach(x=>x.ischecked=  true)
+            folders.forEach(x=>x.ischecked = true)
+
           } else {
             img.setAttribute("style","background-color:none");
             img.setAttribute('data-selected','false')
+
           }
 
-          //  if(img.id!=='') {
-          //     if(this.collide(div.getBoundingClientRect(),img.getBoundingClientRect())) {
-
-          //       // this.selectedTrue = []
-          //       this.resultQuery.filter(x=>x.id===img.id)[0].ischecked = true;             
-
-          //     }
-             
-          //     // img.setAttribute("style","background-color:#d3eaff");會影響
-          //     img.setAttribute('data-selected','true')
-          //   } else {
-          //       let unselected =  this.resultQuery.filter(x=>x.id===img.id);
-          //       if(unselected.length==1) {
-          //         unselected[0].ischecked = false;
-          //   }
-          //   // img.setAttribute("style","background-color:white");
-          //   img.setAttribute('data-selected','false')
-          //   }
-
-
-
-
-          })  
- 
+          }) 
         }        
       }, 
       collide(rect1, rect2) {

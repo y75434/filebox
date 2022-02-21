@@ -178,8 +178,8 @@
                 
                 <li class="list-group-item d-flex justify-content-end border p-2">
                   <p class="ms-3 justify-content-end d-flex align-items-center">
-                    <span class="dark-blue fw-bold">{{ FolderSettings.settings.accessPermissions.length }}
-                    </span>
+                    <!-- <span class="dark-blue fw-bold">{{ FolderSettings.settings.accessPermissions.length }}
+                    </span> -->
                     <span>{{ $t("MODAL.SELECTED") }}</span>
                   </p>
                 </li>
@@ -280,7 +280,7 @@
                       <div class="d-flex">
                         <input
                           placeholder="enter code"
-                          type="text"
+                          type="number"
                           id="promoCode"
                           class="form-control m-0 w-50"
                           value=""
@@ -384,7 +384,7 @@ export default {
     return {
       FolderSettings:{
         settings:{
-          accessPermissions: []
+           accessPermissions: []
         }
       },
       PermissionTypes:[],
@@ -413,7 +413,7 @@ export default {
   },
   // computed: {
   //   accessPermissions() {
-  //    return this.FolderSettings?.settings?.accessPermissions
+  //    return this.accessPermissions
   //   }
   // },
   methods: { 
@@ -493,7 +493,7 @@ export default {
     storageSelected(event){
       console.log(event.target.value)   
       this.unitId = event.target.value
-      // console.log(this.FolderSettings)
+      console.log(this.unitId)
       
     },
     putFolder(){

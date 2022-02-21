@@ -1,11 +1,5 @@
 <template>
-<div>
-  <div   v-for="(data, index) in datas"
-        :key="index" >
-        <div>
-             {{data.name}}
-        </div>
-  </div>  
+<div
   <li class="list-unstyled">
     <!--  -->
     <div 
@@ -62,21 +56,21 @@ export default {
       open: false,
       liselected: "",
       selectedId:0,
-      datas:[
-        {
-          id:1,
-          name:'apple'
-        },
-        {
-          id:2,
-          name:'banana'
-        },
-        {
-          id:3,
-          name:'cat'
-        }
-      ]
-    };
+      // datas:[
+      //   {
+      //     id:1,
+      //     name:'apple'
+      //   },
+      //   {
+      //     id:2,
+      //     name:'banana'
+      //   },
+      //   {
+      //     id:3,
+      //     name:'cat'
+      //   }
+      // ]
+    }
   },
   created() {
     // console.log(this.subitem, "sub");
@@ -88,8 +82,10 @@ export default {
   },
   methods: {
     test(subitem){
-      console.log(subitem, "subitem");
+      console.log(subitem, "被點擊");
+      subitem.isDark = true
       this.liselected = subitem.folderId
+      console.log(this.liselected, "this.liselected");
     },
     toggle() {
       // console.log("toggle");

@@ -46,7 +46,7 @@ export default {
     }
   },
   created(){
-    console.log(this.subitem, 'sub')
+    // console.log(this.subitem, 'sub')
     this.start()  
   },
   methods:{ 
@@ -57,7 +57,7 @@ export default {
             this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${this.subitem.folderId}`)
           .then((data) => { 
             this.subitem = data.data;
-            console.log(this.subitem);
+            // console.log(this.subitem);
              this.open = !this.open
 
           }).catch(() => {
