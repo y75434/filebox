@@ -741,6 +741,8 @@ data() {
       { id: 11, pic:require('@/assets/images/cmd/copy@2x.png'), eventName:this.$t('HOME.COPY'),"actionType": "Copy"},
       { id: 12, pic:require('@/assets/images/file/addtozip@2x.png'),eventName:this.$t('GENERAL.COMPRESS'),"actionType": "Compress"},
       { id: 13, pic:require('@/assets/images/cmd/upload@2x.png'),eventName:this.$t('HOME.UPLOAD'),"actionType": "Upload"},
+      { id: 14, pic:require('@/assets/images/cmd/upload@2x.png'),eventName:this.$t('HOME.UPLOAD'),"actionType": "Edit"},
+
     ],
     linkitems: [],
     // selectedRow : null,
@@ -933,23 +935,24 @@ methods: {
       })
   },//預設傳空物件
     getEventTable(){
-    this.axios.post(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`,
-    {},{ headers: window.headers })
-      .then(data => {  
-        this.eventsitems = data.data 
-        this.eventsitems.map(item=>{ 
-          const eventpic = this.eventpics.filter(y=>y.actionType == item.actionType)[0];
-        
-          item.pic = eventpic.pic;          
-          // return item
-        });
+      this.axios.post(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`,
+      {},{ headers: window.headers })
+        .then(data => {  
+          this.eventsitems = data.data 
+          this.eventsitems.map(item =>{
+            let actionType = this.eventpics.filter(x=>x.actionType === item.actionType);
+            if(actionType.length>0) {
+              item.pic = actionType[0].pic;
+            } else {
+              item.pic = 'ERROR'
+            }
+            return item;
+          })        
+          this.count = this.eventsitems.length  
 
-        this.count = this.eventsitems.length  
-        // console.log(this.eventsitems.data);
-
-      }).catch(error => {
-        console.log(error.response.data);        
-      })
+        }).catch(error => {
+          console.log(error);        
+        })
   },
   // change this.eventsSelected value 
   getEventType(){ 

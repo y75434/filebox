@@ -1,6 +1,5 @@
 <template>
-<div
-  <li class="list-unstyled">
+<div class="list-unstyled">
     <!--  -->
     <div 
     @click="test(subitem)"
@@ -36,7 +35,7 @@
 
       ></rootItem>
     </ul>
-  </li>
+  
 </div>
  
   

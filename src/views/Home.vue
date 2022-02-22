@@ -374,6 +374,7 @@
                     type="checkbox"
                     v-model="item.ischecked"
                     v-if="renderCheckboxs"
+                    @change="setSelectNumber()"
                   >
                   <img
                     :src="item.pic"
@@ -503,7 +504,7 @@
       <p class="mx-3">
         {{ allFiles.length }} items
       </p>
-      <p>{{ selectedLength || 0 }} item selected</p>
+      <p>{{ selectedNumber }} item selected</p>
     </div>
   </div>
 </template>
@@ -577,7 +578,8 @@ export default {
     open: false ,  //tree 收縮
     // now: this.$store.getters.nowFile //才不會跳錯
     renderDetail: false,
-    firstPage: false
+    firstPage: false,
+    selectedNumber:0
   }),
   
   created(){
@@ -978,25 +980,29 @@ export default {
         div.style.height =y4 - y3 + 'px'; 
 
         let imgs = document.querySelectorAll('.folderItem');
+        this.resultQuery.map(x=>x.ischecked = false);
 
         imgs.forEach(img=>{
 
           if(this.collide(div.getBoundingClientRect(),img.getBoundingClientRect())) {
             img.setAttribute("style","background-color:#d3eaff");
             img.setAttribute('data-selected','true')
-            this.resultQuery.map(x=>x.ischecked = false);
-            console.log(this.resultQuery.filter(x=>x.name===img.outerText),'被選取的');
-            let folders =  this.resultQuery.filter(x=>x.name===img.outerText);
-            folders.forEach(x=>x.ischecked = true)
+            this.resultQuery.map(x=>{
+              if(x.name===img.outerText) {
+                x.ischecked = true;
+              }
+              return x;
+            })
 
           } else {
             img.setAttribute("style","background-color:none");
             img.setAttribute('data-selected','false')
 
           }
-
+            this.setSelectNumber();
           }) 
-        }        
+         } 
+        console.log(this.resultQuery);
       }, 
       collide(rect1, rect2) {
 
@@ -1010,7 +1016,10 @@ export default {
         } else {
           return false;
         }
-      } 
+      } ,
+      setSelectNumber(){
+        this.selectedNumber = this.resultQuery.filter(key => key.ischecked === true).length;
+      }
   }   
 };
 </script>

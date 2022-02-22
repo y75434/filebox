@@ -387,6 +387,7 @@ export default {
            accessPermissions: []
         }
       },
+      test: this.tabData,
       PermissionTypes:[],
       FileTypes:[],
       StorageUnit:{},
@@ -407,7 +408,12 @@ export default {
   },
   watch:{ 
     tabData(){ 
-      this.FolderSettings = this.tabData
+    
+      // this.tabData['settings']['accessPermissions'] = []
+      // console.log(this.tabData)
+
+      //用props? 
+      this.FolderSettings = this.test
     },
   
   },
