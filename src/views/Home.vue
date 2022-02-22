@@ -153,10 +153,10 @@
           </div> -->
           <div class="divider" />
           <div class="fn-w-160 d-flex align-items-center flex-column py-3">
+            <!-- :disabled="this.selectedLength == 0" -->
             <b-button
               v-b-tooltip.hover
               @click="AddPublicLink"
-              :disabled="this.selectedLength == 0"
               title="Create public link..."
               class="bg-light text-dark border-0 p-0 d-flex"
             >

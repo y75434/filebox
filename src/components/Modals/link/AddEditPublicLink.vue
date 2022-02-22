@@ -182,7 +182,7 @@
                   class="form-label"
                 >{{ $t("GENERAL.CONFIRMPASSWORD") }}
                 </label><input
-                  type="Confirmpassword"
+                  type="password"
                   id="Confirmpassword"
                   placeholder="******"
                   class="form-control width-220"
@@ -226,6 +226,9 @@
                 @click="GenerateURL()"
               >
                 GenerateURL
+              </b-button>
+              <b-button class="bg-green border-0" @click="withoutURL()">
+                withoutURL
               </b-button>
             </div>
             <span class="text-danger">{{ errors[0] }}</span>
@@ -327,37 +330,7 @@ export default {
           console.log(error.response.data);          
         })
     },
-    // rename + editname
-    put(id) { 
-     
-      this.tabData =  this.personData
-
-      
-        const data = JSON.stringify({
-          "linkId": this.nowSelected.id,
-          "name": this.personData.name,
-          "isPublic": this.personData.isPublic,
-          "expireDay": this.personData.expireDay,
-          "viewableTimes": this.personData.viewableTimes,
-          "password": this.personData.password,
-          "url": this.personData.url,
-          "fileId": this.nowSelected.id,
-          "editor": this.$store.getters.userId,
-          "editorName": this.$store.getters.currentUser
-
-        })   
-
-      this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/${id}`,
-      data,{ headers: window.headers }) .then((data) => {
-        console.log(data);
-      }).catch(error => {
-          console.log(error.response.data);          
-        })
-
-        this.$nextTick(() => { this.personData = {};
-        this.$bvModal.hide('AddEditPublicLink'); });
-
-    },
+    
     GenerateURL() { 
       this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GenerateURL`) 
         .then((data) => {
@@ -371,7 +344,8 @@ export default {
 
      withoutURL() { 
         const data = JSON.stringify({        
-          "linkId": this.nowSelected.id,
+          // "linkId": this.nowSelected.id,
+          "linkId": "2051bb6d-3e98-469e-a40d-f4b9d1920c86",
           "userId": this.$store.getters.userId,
           "username": this.$store.getters.currentUser
         })   
@@ -380,15 +354,17 @@ export default {
       this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithoutPassword`,
       data,{ headers: window.headers }) 
         .then((data) => {
-          if(data.data.message.include('Please')){
+          // let test = data.data.message
+
+          // if(test.include('Please')){
 
             this.$bvModal.show('openLink');
 
-          }
+          // }
 
           console.log(data.data.message);
       }).catch(error => {
-          console.log(error.response.data);          
+          console.log(error);          
         })
     },   
       

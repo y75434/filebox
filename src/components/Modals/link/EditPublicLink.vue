@@ -164,7 +164,7 @@
                   class="form-label"
                 >{{ $t("GENERAL.CONFIRMPASSWORD") }}
                 </label><input
-                  type="Confirmpassword"
+                  type="password"
                   id="Confirmpassword"
                   placeholder="******"
                   class="form-control width-220"

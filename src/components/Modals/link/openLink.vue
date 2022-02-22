@@ -4,7 +4,7 @@
     class="modal-content"
     body-text-variant="warning"
     centered
-    :title="$t('TITLE.RESETNEWPASSWORD')"
+    :title="$t('TITLE.WELCOME_WORD')"
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"
@@ -13,7 +13,7 @@
   >
     <validation-observer class="modal-popout-bg p-3">
       <h3 class="text-center dark-blue">
-        {{ $t("GENERAL.RESETNEWPASSWORD") }}
+        {{ $t("GENERAL.WELCOME_WORD") }}
       </h3>
 
       <div class="mb-3">
@@ -73,11 +73,11 @@
         </button>
 
         <button
-          @click="changePassword"
+          @click="openLink"
           type="button"
           class="sm-btn btn btn-danger text-white justify-content-center d-flex"
         >
-          {{ $t("GENERAL.UPDATEPASSWORD") }}
+          {{ $t("GENERAL.OK") }}
         </button>
       </div>
     </template>
@@ -89,7 +89,7 @@ export default {
   name: "OpenLink",
   props: { 
     title: { type: String, default: "openLink" },
-    linkUrl: { type: String , default: ""}
+    linkId: { type: String , default: ""}
 
   
   },
@@ -103,9 +103,9 @@ export default {
   
 
   methods: {
-    withURL() { 
+    openLink() { 
         const data = JSON.stringify({
-          "linkId": this.linkUrl,
+          "linkId": this.linkId,
           "userId": this.$store.getters.userId,
           "username": this.$store.getters.currentUser,
           "password": this.password
@@ -123,6 +123,7 @@ export default {
           console.log(error.response.data);          
         })
     }, 
+    
     cancel() { 
         this.oldPassword = ""
         this.newPassword = ""
