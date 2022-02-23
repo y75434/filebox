@@ -19,9 +19,9 @@
               <img
                 src="@/assets/images/cmd/copy@2x.png"
                 alt="copy"
-                :disabled="this.selectedLength = 0"
+                :disabled="this.selectedNumber = 0"
                 @click="copyCut"
-                :style=" this.selectedLength > 0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :style=" this.selectedNumber > 0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.COPY") }}</span>
             </div>
@@ -43,9 +43,9 @@
               <img
                 src="@/assets/images/cmd/cut@2x.png"
                 alt=""
-                :disabled="this.selectedLength = 0"
+                :disabled="this.selectedNumber = 0"
                 @click="copyCut"
-                :style=" this.selectedLength > 0 ?
+                :style=" this.selectedNumber > 0 ?
                   {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class=" nav-text text-center">{{ $t("HOME.CUT") }}</span>
@@ -61,10 +61,10 @@
               <img
                 src="@/assets/images/cmd/delete@2x-2.png"
                 alt=""
-                :disabled="this.selectedLength = 0"
+                :disabled="this.selectedNumber = 0"
                 @click="paste"
                 :style="
-                  this.selectedLength > 0 ? {opacity:'1'} : {opacity:'0.3'}"
+                  this.selectedNumber > 0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">
                 {{ $t("HOME.DELETE") }}
@@ -392,12 +392,12 @@
                   </div>     
                 </div> 
               </div>
-              <h6
-                class="text-dark text-center text-truncate d-inline-block"
+              <div
+                class="text-dark text-center d-inline-block"
                 style="max-width: 100px"
               >
-                {{ arr }}
-              </h6>
+                arr{{ arr }} resultQuery{{ resultQuery }}
+              </div>
            
 
               <div
@@ -474,7 +474,7 @@
         </li>
         <li
           @click="DeleteFolder"
-          v-if="canUse || this.selectedLength > 0"
+          v-if="canUse || this.selectedNumber > 0"
         >
           <img
             src="@/assets/images/cmd/delete@2x-2.png"
@@ -652,7 +652,7 @@ export default {
     },
      delUpdate(val) {
       this.selectedTrue = val;
-      console.log('selectedTrue',this.selectedTrue);
+      console.log('刪完變空的',this.selectedTrue);
 
     },
      //hover一個資料 並將資料傳遞子層 
@@ -690,10 +690,10 @@ export default {
       })
     },
     invert(){
-        this.resultQuery.map(item =>{
-        item.ischecked = !item.ischecked; 
-        return item;
-      })
+      this.resultQuery.map(item =>{
+      item.ischecked = !item.ischecked; 
+      return item;
+     })
     },
     //預設畫面在這
     getFolderTable(){
@@ -713,8 +713,8 @@ export default {
         })
     },//success
     checkSelected(){
-       console.log(this.arr,'arr');
-        this.selectedTrue = Object.entries(this.arr)
+      //  console.log(this.resultQuery,'resultQuery');
+        this.selectedTrue = Object.entries(this.resultQuery)
         .map(([id, type]) => {
           return {type: type.type, id: type.id, s:id}
         })
@@ -944,14 +944,18 @@ export default {
         }
     },
     mouseDown(e){
-      // console.log(e);
-      let div = this.$refs.div;
-      div.hidden = 0;
-      this.x1 = e.offsetX >=0? e.offsetX:0; 
-      this.y1 = e.offsetY >=0? e.offsetY:0; 
-      console.log(e);
-      // console.log('按下去',this.x1,this.y1)
-      this.reCalc();
+       console.log(e.which,'1左 3右');
+      //左鍵使用
+      if(e.which == 1){
+        let div = this.$refs.div;
+        div.hidden = 0;
+        this.x1 = e.offsetX >=0? e.offsetX:0; 
+        this.y1 = e.offsetY >=0? e.offsetY:0;
+        this.reCalc(); 
+      }else{
+        this.selectedTrue = []
+      }
+
     },
     mouseUp(){ 
       let div = this.$refs.div;
@@ -1000,9 +1004,9 @@ export default {
 
           }
             this.setSelectNumber();
+            // this.test()
           }) 
          } 
-        console.log(this.resultQuery);
       }, 
       collide(rect1, rect2) {
 
@@ -1019,7 +1023,10 @@ export default {
       } ,
       setSelectNumber(){
         this.selectedNumber = this.resultQuery.filter(key => key.ischecked === true).length;
-      }
+      },
+      // test(){
+      //   this.arr = this.resultQuery.filter(key => key.ischecked === true);
+      // }
   }   
 };
 </script>
