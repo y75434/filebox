@@ -116,7 +116,7 @@ export default {
         this.$nextTick(() => { 
           this.userInput = '';
           this.$bvModal.hide('modal-delete-user'); 
-          this.$parent.getTable()//不能
+          //this.$parent.getTable()//不能
 
         });
 

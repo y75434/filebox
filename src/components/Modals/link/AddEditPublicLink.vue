@@ -206,7 +206,7 @@
               >{{ $t("GENERAL.PUBLICLINK") }} </label>
               <div class="d-flex justify-content-between">
                 <input
-                  type="string"
+                  type="text"
                   class="form-control w-75 obj"
                   id="Public link"
                   v-model="personData.url"
@@ -226,9 +226,6 @@
                 @click="GenerateURL()"
               >
                 GenerateURL
-              </b-button>
-              <b-button class="bg-green border-0" @click="withoutURL()">
-                withoutURL
               </b-button>
             </div>
             <span class="text-danger">{{ errors[0] }}</span>
@@ -263,12 +260,10 @@
         </div>
       </div>
     </template>
-    <openLink :link-url="linkurl" />
   </b-modal>
 </template>
 
 <script>
-import openLink from'@/components/Modals/link/openLink.vue';
 
 
 export default {
@@ -277,10 +272,7 @@ export default {
     // title: { type: String, default: "Rename Item" },
     tabData: { type: Object , default() { return {} }}
   },
-  components:{ 
-   openLink
-
-  },
+ 
   data() {
     return {
       showModal: false,
@@ -297,12 +289,8 @@ export default {
   // },
   methods: {
     handleOk(bvModalEvt) {
-        bvModalEvt.preventDefault()
-        if(this.title == 'Edit Public Link'){
-          this.put(this.tabData.linkId)
-        }else{
-          this.post();
-        }
+        bvModalEvt.preventDefault()       
+        this.post();
         this.$bvModal.hide('AddEditPublicLink');
       },
     post() { 
@@ -342,31 +330,7 @@ export default {
         })
     }, 
 
-     withoutURL() { 
-        const data = JSON.stringify({        
-          // "linkId": this.nowSelected.id,
-          "linkId": "2051bb6d-3e98-469e-a40d-f4b9d1920c86",
-          "userId": this.$store.getters.userId,
-          "username": this.$store.getters.currentUser
-        })   
-
-
-      this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithoutPassword`,
-      data,{ headers: window.headers }) 
-        .then((data) => {
-          // let test = data.data.message
-
-          // if(test.include('Please')){
-
-            this.$bvModal.show('openLink');
-
-          // }
-
-          console.log(data.data.message);
-      }).catch(error => {
-          console.log(error);          
-        })
-    },   
+     
       
     clear(){
       this.personData = ""

@@ -4,7 +4,7 @@
     class="modal-content"
     body-text-variant="warning"
     centered
-    :title="$t('TITLE.WELCOME_WORD')"
+    :title="$t('GENERAL.WELCOME_WORD')"
     header-bg-variant="bgheader"
     cancel-variant="outline-secondary"
     ok-variant="primary"
@@ -31,7 +31,7 @@
 
       <div class="mb-3">
         <label
-          for="oldpassword"
+          for="password"
           class="form-label"
         >password</label>
         <input
@@ -40,14 +40,6 @@
           v-model="password"
         >
       </div>
-
-
-      <p
-        v-if="this.status != ''"
-        class="text-danger"
-      >
-        {{ status }}
-      </p>
     </validation-observer>
 
     <template
@@ -97,7 +89,6 @@ export default {
   data() {
     return {
       password: "",
-      status: ""
     };
   },
   
@@ -111,23 +102,25 @@ export default {
           "password": this.password
           })   
 
+          console.log(data);
+          
+
 
       this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithPassword`,
       data,{ headers: window.headers }) 
         .then((data) => {
 
-          this.personData.url = data.data.url
 
-          console.log(data.data.url);
+          console.log(data.data.message);
       }).catch(error => {
           console.log(error.response.data);          
         })
+
+        this.password = ""
+
     }, 
-    
     cancel() { 
-        this.oldPassword = ""
-        this.newPassword = ""
-        this.status = ""
+        this.password = ""
         this.$bvModal.hide('openLink'); 
       },
   },

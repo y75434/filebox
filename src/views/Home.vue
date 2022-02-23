@@ -19,9 +19,9 @@
               <img
                 src="@/assets/images/cmd/copy@2x.png"
                 alt="copy"
-                :disabled="this.selectedNumber = 0"
-                @click="copyCut"
-                :style=" this.selectedNumber > 0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :disabled="this.selectedTrue.length === 0 || this.firstPage"
+                @click="copy"
+                :style=" this.selectedNumber>0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.COPY") }}</span>
             </div>
@@ -31,7 +31,7 @@
               <img
                 src="@/assets/images/cmd/paste@2x.png"
                 alt="paste"
-                :disabled="this.selectedTrue.length"
+                :disabled="this.selectedTrue.length === 0 || this.firstPage"
                 @click="paste"
                 :style=" this.selectedTrue.length > 0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
@@ -43,8 +43,8 @@
               <img
                 src="@/assets/images/cmd/cut@2x.png"
                 alt=""
-                :disabled="this.selectedNumber = 0"
-                @click="copyCut"
+                :disabled="this.selectedTrue.length === 0 || this.firstPage"
+                @click="cut"
                 :style=" this.selectedNumber > 0 ?
                   {opacity:'1'} : {opacity:'0.3'}"
               >
@@ -61,10 +61,9 @@
               <img
                 src="@/assets/images/cmd/delete@2x-2.png"
                 alt=""
-                :disabled="this.selectedNumber = 0"
+                :disabled="this.selectedTrue.length === 0 || this.firstPage"
                 @click="paste"
-                :style="
-                  this.selectedNumber > 0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :style="this.selectedNumber > 0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">
                 {{ $t("HOME.DELETE") }}
@@ -72,7 +71,7 @@
             </li>
             <li 
               @click="RenameItem"
-              :disabled="this.nowSelected"
+              :disabled="!this.nowSelected"
 
               class="d-flex flex-column w-50"
             >
@@ -88,15 +87,15 @@
           <div class="divider" />
           <div class="fn-w-60 align-items-center d-flex">
             <li
-              @click="CreateFolder"
               class="d-flex flex-column "
             >
               <img
                 src="@/assets/images/file/new folder@2x.png"
                 alt=""
-                :disabled="this.selectedLength > 0"
+                @click="CreateFolder"
+                :disabled="this.selectedNumber > 0 || !this.firstPage"
                 :style="
-                  this.selectedLength == 0 ? {opacity:'1'} : {opacity:'0.3'}"
+                  this.selectedNumber === 0 || !this.firstPage ? {opacity:'1'} : {opacity:'0.3'}"
               >
 
               <span class="nav-text text-center">{{ $t("HOME.NEW") }}</span>
@@ -416,10 +415,11 @@
         
     
     <!-- v-if="this.selectedLength > 0" -->
-    <ContextMenu ref="menu">
+    <ContextMenu ref="menu" v-if="this.firstPage != true">
       <ul class="text-dark">
         <!-- v-if="this.selectedLength = 0" -->
         <li
+          v-if="canUse || !this.firstPage"
           @click="CreateFolder"
         >
           <img
@@ -427,18 +427,20 @@
             class="icon24px"
           >{{ $t("GENERAL.ADDFOLDER") }}
         </li>
-        <!-- v-if="canUse || this.selectedLength > 0" -->
+        <!--  -->
         <li
-          @click="copyCut()"
+          v-if="canUse || this.selectedLength > 0"
+          @click="copy()"
         >
           <img
             src="@/assets/images/cmd/copy@2x.png"
             class="icon24px"
           >{{ $t("HOME.COPY") }}
         </li>
-        <!-- v-if="canUse || this.selectedLength > 0" -->
+        <!--  -->
         <li
-          @click="copyCut()"
+          v-if="canUse || this.selectedLength > 0"
+          @click="cut()"
         >
           <img
             src="@/assets/images/cmd/cut@2x.png"
@@ -446,7 +448,7 @@
           >{{ $t("HOME.CUT") }}
         </li>
         <li
-          v-if="this.selectedTrue.length > 0"
+          v-if="this.selectedTrue.length > 0 "
           @click="paste()"
         >
           <img
@@ -456,7 +458,7 @@
         </li>
         <li
           @click="download()"
-          v-if="canUse || this.selectedLength > 0"
+          v-if="canUse || this.selectedNumber > 0"
         >
           <img
             src="@/assets/images/cmd/download@2x-1.png"
@@ -465,7 +467,7 @@
         </li>
         <li
           @click="RenameItem"
-          v-if="canUse || this.selectedLength == 1"
+          v-if="canUse || this.selectedNumber == 1"
         >
           <img
             src="@/assets/images/cmd/rename@2x.png"
@@ -567,8 +569,8 @@ export default {
     selectedTrue: [],// 勾選的放這
     allFiles:[],//所有檔案過濾後把id放入這個陣列
     extension: false,
-    copy: false,//有無複製檔案
-    cut: false,
+    copyFile: false,//有無複製檔案
+    cutFile: false,
     searchQuery: "",
     folderTree: {},
     rootFolder:[],//sidebar
@@ -579,7 +581,8 @@ export default {
     // now: this.$store.getters.nowFile //才不會跳錯
     renderDetail: false,
     firstPage: false,
-    selectedNumber:0
+    selectedNumber:0,
+    arr: []
   }),
   
   created(){
@@ -603,12 +606,6 @@ export default {
        return Object.keys(this.resultQuery).filter(key =>
            this.resultQuery[key].ischecked === true).length            
         }  
-    },
-    arr:{
-      set(){ }, 
-      get(){   
-        return this.resultQuery.filter(key => key.ischecked === true)
-      }
     },
     resultQuery(){
         return this.allFiles.filter(item =>
@@ -672,7 +669,9 @@ export default {
     DeleteFolder(){ 
       this.checkSelected();
       this.$store.dispatch('nowFile', this.selectedTrue);
-      this.$bvModal.show('DeleteFolder'); 
+      if(this.selectedTrue.length > 0){
+        this.$bvModal.show('DeleteFolder');
+      }
     },
     ManagePublicLink(){this.$bvModal.show('ManagePublicLink');},
     AddPublicLink(){ this.$bvModal.show('AddEditPublicLink'); },
@@ -713,11 +712,15 @@ export default {
         })
     },//success
     checkSelected(){
-      //  console.log(this.resultQuery,'resultQuery');
-        this.selectedTrue = Object.entries(this.resultQuery)
-        .map(([id, type]) => {
-          return {type: type.type, id: type.id, s:id}
-        })
+        if(this.selectedNumber === 0){
+          this.selectedTrue = []
+        }else{
+          this.selectedTrue = Object.entries(this.arr)
+            .map(([id, type]) => {
+              return {type: type.type, id: type.id, s:id}
+            })
+        }
+        
        console.log(this.selectedTrue,'selectedTrue');
     },
     download() {   
@@ -806,19 +809,27 @@ export default {
         console.log(error.response.data);        
       }) 
     },
-    copyCut(){
-      this.$refs.menu.close();
+    copy(){
+      this.copyFile = true
+      // this.$refs.menu.close();
+      this.checkSelected()
+      this.$store.dispatch('nowFile', this.selectedTrue);      
+    },
+    cut(){
+      this.cutFile = true
+      // this.$refs.menu.close();
       this.checkSelected()
       this.$store.dispatch('nowFile', this.selectedTrue);      
     },
     //paste
     paste() {
+      this.checkSelected()
 
-      this.$refs.menu.close();
+      // this.$refs.menu.close();
 
       const data =  JSON.stringify(
         {
-          "items": this.$store.getters.nowFile,
+          "items": this.selectedTrue,
           "editor":  this.$store.getters.userId,
           "editorName": this.$store.getters.currentUser,
           "destination": this.$store.getters.nowFolderId
@@ -828,7 +839,7 @@ export default {
       console.log(data,'paste');
 
 
-      if(this.$store.getters.copyFile){
+      if(this.copyFile){
         
         // copy post ok
             this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CopyAndPaste`,
@@ -843,8 +854,10 @@ export default {
             this.$swal.fire({ title: error, icon: 'error' })
       
           })
+        
+        this.copyFile = false
 
-      }else{    
+      }else if(this.cutFile){    
       // cut paste
         this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CutAndPaste`,
         data,{  headers: window.headers })
@@ -858,6 +871,8 @@ export default {
           this.$swal.fire({ title: error, icon: 'error' })
     
         })
+      this.cutFile = false
+
     }
 
     this.$store.dispatch('nowFile', null);
@@ -944,7 +959,7 @@ export default {
         }
     },
     mouseDown(e){
-       console.log(e.which,'1左 3右');
+      //  console.log(e.which,'1左 3右');
       //左鍵使用
       if(e.which == 1){
         let div = this.$refs.div;
@@ -952,10 +967,7 @@ export default {
         this.x1 = e.offsetX >=0? e.offsetX:0; 
         this.y1 = e.offsetY >=0? e.offsetY:0;
         this.reCalc(); 
-      }else{
-        this.selectedTrue = []
       }
-
     },
     mouseUp(){ 
       let div = this.$refs.div;
@@ -1004,7 +1016,7 @@ export default {
 
           }
             this.setSelectNumber();
-            // this.test()
+            this.arrLength()
           }) 
          } 
       }, 
@@ -1023,10 +1035,11 @@ export default {
       } ,
       setSelectNumber(){
         this.selectedNumber = this.resultQuery.filter(key => key.ischecked === true).length;
+        
       },
-      // test(){
-      //   this.arr = this.resultQuery.filter(key => key.ischecked === true);
-      // }
+      arrLength(){
+        this.arr = this.resultQuery.filter(key => key.ischecked === true);
+      }
   }   
 };
 </script>

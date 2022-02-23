@@ -36,7 +36,8 @@ export default new Vuex.Store({
   
     NOWFILE(state, nowFile){
       state.nowFile = nowFile
-    }
+    },
+   
   },
   actions: {
     setAuth({ commit },isLogin){
@@ -57,7 +58,8 @@ export default new Vuex.Store({
   
     nowFile ({ commit }, nowFile) {
       commit('NOWFILE', nowFile)
-    }  
+    } ,
+      
   },
   getters: {
     currentUser: state => state.currentUser,
@@ -65,7 +67,7 @@ export default new Vuex.Store({
     isLogin: state => state.isLogin,
     userId: state => state.userId,
     nowFolderId: state => state.nowFolderId,
-    nowFile: state => state.nowFile
+    nowFile: state => state.nowFile,
 
   },
   

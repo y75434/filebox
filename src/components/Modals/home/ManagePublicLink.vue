@@ -62,7 +62,7 @@
               v-for="item in linkitems"
               :key="item.id"
               @mouseover="rowSelected(item)"
-              @dblclick="EditPublicLink"
+              @dblclick="checkOpen(item)"
             >
               <th scope="row">
                 {{ item.name }}
@@ -101,12 +101,13 @@
     />
     <delete-user
       ref="DeleteUser"
-      :tab-data="selected"
+      :del-data="selected"
     />
 
     <template #modal-ok>
       {{ $t("GENERAL.CLOSE") }}
     </template>
+    <openLink :link-id="selected.linkId" />
   </b-modal>
 </template>
 
@@ -114,6 +115,7 @@
 import ContextMenu from '@/components/ContextMenu.vue';
 import EditPublicLink from'@/components/Modals/link/EditPublicLink.vue';
 import DeleteUser from '@/components/Modals/user/DeleteUser.vue';
+import openLink from'@/components/Modals/link/openLink.vue';
 
 export default {
   name: 'ImportUser',
@@ -122,7 +124,8 @@ export default {
   components:{ 
     DeleteUser,
     ContextMenu,
-    EditPublicLink
+    EditPublicLink,
+    openLink
   },
   data() {
      return {
@@ -158,7 +161,34 @@ export default {
         }).catch(error => {
           console.log(error.response.data);        
         })
-    }
+    },
+    checkOpen(item) { 
+
+      if(item.isPublic){
+
+        const data = JSON.stringify({        
+          "linkId": item.linkId,
+          "userId": this.$store.getters.userId,
+          "username": this.$store.getters.currentUser
+        })   
+
+
+      this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithoutPassword`,
+      data,{ headers: window.headers }) 
+        .then((data) => {
+          let a = data.data.message
+          console.log(data.data.message);
+          if(a.indexOf('Please')> -1){
+            this.$bvModal.show('openLink');
+          }
+      }).catch(error => {
+          console.log(error);          
+        })
+
+        
+      }
+
+    },   
    }
 }
 </script>
