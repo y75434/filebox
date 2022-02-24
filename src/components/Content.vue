@@ -471,7 +471,7 @@
               class="col-12 b-col text-dark cursor"
               @contextmenu="operational($event)"
               @row-hovered="rowSelected"
-              @row-dblclicked="EditPublicLink"
+              @row-dblclicked="checkOpen()"
               ref="selectableTable"
               :select-mode="selectMode"
               hover
@@ -648,6 +648,7 @@
         ref="RenameItem" 
         :tab-data="selected"
       />
+      <openLink :link-id="selected.id" />
     </div>
   </div>
 </template>
@@ -666,6 +667,7 @@ import AddRootFolderProperties from'@/components/Modals/folder/AddRootFolderProp
 import EditPublicLink from'@/components/Modals/link/EditPublicLink.vue';
 import EventProperties from '@/components/Modals/events/EventProperties.vue';
 import RenameItem from '../components/Modals/home/RenameItem.vue';
+import openLink from'@/components/Modals/link/openLink.vue';
 
 export default {
 name: "Content",
@@ -681,7 +683,8 @@ components:{
   EventProperties,
   RenameItem,
   AddRootFolderProperties,
-  EditGroupProperties
+  EditGroupProperties,
+  openLink
 },
 data() {
   return {
@@ -728,7 +731,7 @@ data() {
     eventsitems: [],
     eventpics: [ 
       { id: 0,pic: require('@/assets/images/icon/browse@2x.png'), eventName: this.$t('GENERAL.BROWSE'),"actionType": "Browse",},
-      { id: 1, pic: require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.LOGIN'),"actionType": "Login",},
+      { id: 1, pic: require('@/assets/images/cmd/logout@2x.png'), eventName: this.$t('GENERAL.LOGIN'),"actionType": "Login",},
       { id: 2, pic: require('@/assets/images/cmd/preview@2x.png') , eventName: this.$t('GENERAL.PREVIEW'),"actionType": "Preview"},
       { id: 3, pic: require('@/assets/images/cmd/download@2x.png'), eventName: this.$t('HOME.DOWNLOAD'),"actionType": "Download"},
       { id: 4, pic:require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.PUBLICLINK'),"actionType": "Public links"},
@@ -741,7 +744,7 @@ data() {
       { id: 11, pic:require('@/assets/images/cmd/copy@2x.png'), eventName:this.$t('HOME.COPY'),"actionType": "Copy"},
       { id: 12, pic:require('@/assets/images/file/addtozip@2x.png'),eventName:this.$t('GENERAL.COMPRESS'),"actionType": "Compress"},
       { id: 13, pic:require('@/assets/images/cmd/upload@2x.png'),eventName:this.$t('HOME.UPLOAD'),"actionType": "Upload"},
-      { id: 14, pic:require('@/assets/images/cmd/upload@2x.png'),eventName:this.$t('HOME.UPLOAD'),"actionType": "Edit"},
+      { id: 14, pic:require('@/assets/images/cmd/edit@2x.png'),eventName:this.$t('HOME.UPLOAD'),"actionType": "Edit"},
 
     ],
     linkitems: [],
@@ -1065,6 +1068,32 @@ methods: {
     } 
 
       
+    },
+    checkOpen() {
+      if(this.selected.isPublic){
+
+        const data = JSON.stringify({        
+          "linkId": this.selected.linkId,
+          "userId": this.$store.getters.userId,
+          "username": this.$store.getters.currentUser
+        })   
+
+
+      this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithoutPassword`,
+      data,{ headers: window.headers }) 
+        .then((data) => {
+          let a = data.data.message
+          console.log(data.data.message);
+          if(a.indexOf('Please')> -1){
+            this.$bvModal.show('openLink');
+          }
+      }).catch(error => {
+          console.log(error);          
+        })
+
+        
+      }
+
     },
   }
 }

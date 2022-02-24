@@ -98,8 +98,9 @@ export default {
 
         });
 
-        // this.$store.dispatch('nowFile', null);
+        this.$store.dispatch('nowFile', null);
         this.$emit('delupdate', null);
+        this.$emit('getSelected', this.$store.getters.nowFolderId);
 
       },
       cancel() { 

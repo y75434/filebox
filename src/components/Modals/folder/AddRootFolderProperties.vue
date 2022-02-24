@@ -162,6 +162,27 @@
                       </label>
                     </div>
                   </li>
+
+
+                  <li
+                    v-for="item in groupitems"
+                    :key="item.id"
+                    class="list-group-item border-0 p-0 text-left"
+                  >
+                    <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
+                      <img
+                        src="@/assets/images/icon/group@2x.png"
+                        class="icon24px"
+                        @click="groupSelected(item)"
+                      >
+                      <label
+                        class="form-check-label"
+                        :for="item.groupName"
+                      >
+                        {{ item.groupName }}
+                      </label>
+                    </div>
+                  </li>
                 </div>
               
                 <li class="list-group-item d-flex justify-content-end border p-2">
@@ -185,13 +206,20 @@
 
                   <li 
                     v-for="item in editGroup.settings.accessPermissions"
-                    :key="item.userId"
+                    :key="item.memberId"
                     class="list-group-item border-0 p-0"
                   >
                     <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
                       <img
+                        v-if="!item.isGroup"
                         @dblclick="userCan(item)"
                         src="@/assets/images/icon/Union.png"
+                        class="icon24px"
+                      >
+                      <img
+                        v-else
+                        @dblclick="userCan(item)"
+                        src="@/assets/images/icon/group@2x.png"
                         class="icon24px"
                       >
                       <label
@@ -212,7 +240,10 @@
                 </div>
                 
                 <li class="list-group-item d-flex justify-content-end border p-2">
-                  <p class="ms-3 justify-content-end d-flex align-items-center" v-if="editGroup.settings.accessPermissions">
+                  <p
+                    class="ms-3 justify-content-end d-flex align-items-center"
+                    v-if="editGroup.settings.accessPermissions"
+                  >
                     <span class="dark-blue fw-bold">{{ editGroup.settings.accessPermissions.length || 0 }}
                     </span>
                     <span>{{ $t("MODAL.SELECTED") }}</span>
@@ -412,6 +443,7 @@ export default {
       FileTypes:[],
       StorageUnit:{},
       useritems: [],
+      groupitems: [],
       searchText:"",
       count:0,
       editGroup:{
@@ -437,6 +469,7 @@ export default {
       this.getFileTypes()
       this.getStorageUnit()
       this.getUserTable()
+      this.getGroupTable()
     },
     //ok
     postFolder(){
@@ -512,12 +545,20 @@ export default {
       
     },
     getUserTable () {  
-        this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
-          .then((data) => {          
-            this.useritems = data.data            
-            this.count = this.useritems.length       
+      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
+        .then((data) => {          
+          this.useritems = data.data            
+          this.count = this.useritems.length + this.groupitems.length      
+        }).catch(error => {
+          console.log(error);        
+        })
+      },
+      getGroupTable() {  
+        this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroups`)
+          .then(data => {  
+            this.groupitems = data.data 
           }).catch(error => {
-            console.log(error);        
+            console.log(error.response.data);        
           })
       },
       //點擊針對個人允許行為
@@ -542,26 +583,34 @@ export default {
 
       },
       //左邊切換
-      userSelected(item){
-        
+      userSelected(item){   
           console.log(item ,'item');
           if(this.editGroup.settings.accessPermissions.filter(x=>x.memberId == item.userId).length==0) {
+            this.editGroup.settings.accessPermissions.push(
+              { 
+                "memberId": item.userId, 
+                "memberName": item.userName, 
+                "isGroup": false, 
+                "allow": [], 
+                "deny": []
+              } 
+            );
+          }
+      },
+      groupSelected(item){
+        console.log(item ,'now select group');
+        if(this.editGroup.settings.accessPermissions.filter(x=>x.memberId == item.id).length==0) {
           this.editGroup.settings.accessPermissions.push(
             { 
-              "memberId": item.userId, 
-              "memberName": item.userName, 
+              "memberId": item.id, 
+              "memberName": item.groupName, 
               "isGroup": true, 
               "allow": [], 
               "deny": []
             } 
-
           );
-          console.log('目前選擇名單', this.editGroup.settings.accessPermissions);
-
-          }
-      
-      
-      },
+        }
+      }, 
       del(user){
         console.log('user',user);
         this.editGroup.settings.accessPermissions =this.editGroup.settings.accessPermissions.filter(x=>x.memberId !== user.memberId);

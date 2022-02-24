@@ -134,9 +134,20 @@ export default {
         })
       },
       deleteUser(id) {  
+      console.log('137',id);
+      console.log('138',this.delData);
+
+      // const data = JSON.stringify(
+      //   // {        
+      //   //   "linkId": item.linkId,
+      //   //   "userId": this.$store.getters.userId,
+      //   //   "username": this.$store.getters.currentUser
+      //   // }
+      //   { "id": id,"editor": this.$store.getters.userId,"editedBy":this.$store.getters.currentUser}
+      //   )   
 
       this.axios.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Users`
-      ,{data:{ "id": id,"editor": this.$store.getters.userId,"editedBy":this.$store.getters.currentUser}})
+      ,{data:{ "id": id,"editor":this.$store.getters.userId,"editedBy":this.$store.getters.currentUser}})
         .then(() => {
           this.$nextTick(() => { this.userInput = '';
           this.$bvModal.hide('modal-delete-user'); });

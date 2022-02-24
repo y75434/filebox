@@ -131,6 +131,14 @@ export default {
 
         this.$store.dispatch('setAuth', data.data.success);
         this.$store.dispatch('setUser', this.loginForm.username);
+
+        if(data.data.isAdmin == true){
+          this.$store.dispatch('setAdmin', true);
+        }else{
+          this.$store.dispatch('setAdmin', false);
+
+        }
+
         this.getUserTable(this.loginForm.username)
 
         // this.$store.dispatch('setToken', res.token);

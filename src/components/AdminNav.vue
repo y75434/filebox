@@ -53,8 +53,8 @@
                 href="#"
               >{{ $t("GENERAL.USERSETTING") }}</a>
             </li>
-            <!-- v-if="this.$store.getters.isAdmin" -->
-            <li class="d-flex align-items-center" >
+            <!-- -->
+            <li class="d-flex align-items-center" v-if="this.$store.getters.isAdmin">
               <img
                 src="@/assets/images/icon/administrator@2x.png"
                 class="icon24px"
@@ -97,12 +97,11 @@ export default {
   methods: {
     usersetting(){ this.$bvModal.show('UserSetting'); },
     logout(){
-    // this.$router.push('/login');
     // this.$store.dispatch('setToken', "");
 
     this.$router.push('/login').catch(err => {err})
+    this.$store.dispatch('setAuth', false);
 
-    // this.$store.dispatch('setAuth', false);
 
   }
   },

@@ -71,7 +71,7 @@ router.beforeEach(function (to, from, next) {
 
   const nextRoute = [ 'admin', 'home', 'test'];
     const auth = store.state.isLogin;
-    // const admin = store.state.isAdmin;
+    const admin = store.state.isAdmin;
 
     //跳轉至上述3個頁面
     if (nextRoute.indexOf(to.name) >= 0) {
@@ -81,12 +81,12 @@ router.beforeEach(function (to, from, next) {
         
     }
     //admin
-    // if (to.name === 'admin') {
+    if (to.name === 'admin') {
 
-    //   if (!admin) {
-    //         router.push({name: 'home'})
-    //       }
-    // }
+      if (!admin) {
+            router.push({name: 'home'})
+          }
+    }
     //已登錄的情況再去登錄頁，跳轉至首頁
     if (to.name === 'login') {
         if (store.state.isLogin) {

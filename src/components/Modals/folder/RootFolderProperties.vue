@@ -125,6 +125,26 @@
                       </label>
                     </div>
                   </li>
+
+                  <li
+                    v-for="item in groupitems"
+                    :key="item.id"
+                    class="list-group-item border-0 p-0 text-left"
+                  >
+                    <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
+                      <img
+                        src="@/assets/images/icon/group@2x.png"
+                        class="icon24px"
+                        @click="groupSelected(item)"
+                      >
+                      <label
+                        class="form-check-label"
+                        :for="item.groupName"
+                      >
+                        {{ item.groupName }}
+                      </label>
+                    </div>
+                  </li>
                 </div>
               
                 <li class="list-group-item d-flex justify-content-end border p-2">
@@ -157,8 +177,15 @@
                   >
                     <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
                       <img
+                        v-if="!item.isGroup"
                         @dblclick="userCan(item)"
                         src="@/assets/images/icon/Union.png"
+                        class="icon24px"
+                      >
+                      <img
+                        v-else
+                        @dblclick="userCan(item)"
+                        src="@/assets/images/icon/group@2x.png"
                         class="icon24px"
                       >
                       <label
@@ -178,8 +205,8 @@
                 
                 <li class="list-group-item d-flex justify-content-end border p-2">
                   <p class="ms-3 justify-content-end d-flex align-items-center">
-                    <!-- <span class="dark-blue fw-bold">{{ FolderSettings.settings.accessPermissions.length }}
-                    </span> -->
+                    <span class="dark-blue fw-bold">{{ FolderSettings.settings.accessPermissions.length }}
+                    </span>
                     <span>{{ $t("MODAL.SELECTED") }}</span>
                   </p>
                 </li>
@@ -391,6 +418,7 @@ export default {
       FileTypes:[],
       StorageUnit:{},
       useritems: [],
+      groupitems: [],
       searchText:"",
       count:0,
       nowUser:{
@@ -429,6 +457,8 @@ export default {
         this.FolderSettings = data.data
         
         this.getUserTable()
+        this.getGroupTable()
+
 
       }).catch(() => {
         // console.log(error.response.data);        
@@ -453,7 +483,7 @@ export default {
         this.nowUser.allow = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
 
       }
-      console.log('456',this.nowUser);
+      console.log('486',this.nowUser);
 
     },
     getFileTypes(){
@@ -524,10 +554,18 @@ export default {
         .then((data) => {          
           this.useritems = data.data
 
-          this.count = this.useritems.length       
+          this.count = this.useritems.length + this.groupitems.length     
         }).catch(error => {
           console.log(error);        
         })
+    },
+    getGroupTable() {  
+    this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroups`)
+      .then(data => {  
+        this.groupitems = data.data 
+      }).catch(error => {
+        console.log(error.response.data);        
+      })
     },
     //點擊針對個人允許行為
     userCan(item){      
@@ -554,19 +592,31 @@ export default {
          { 
            "memberId": item.userId, 
            "memberName": item.userName, 
+           "isGroup": false, 
+           "allow": [], 
+           "deny": []
+         } 
+       );
+       console.log('這裡要改');
+       console.log('目前選擇名單', this.FolderSettings.settings.accessPermissions);
+      }   
+    },
+    groupSelected(item){
+      console.log(item ,'now select group');
+      if(this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId == item.id).length==0) {
+       this.FolderSettings.settings.accessPermissions.push(
+         { 
+           "memberId": item.id, 
+           "memberName": item.groupName, 
            "isGroup": true, 
            "allow": [], 
            "deny": []
          } 
-
        );
-       console.log('這裡要改');
        console.log('目前選擇名單', this.FolderSettings.settings.accessPermissions);
-
       }
-   
-
-    },//ok
+    },   
+    //ok
     del(user){
      console.log('user',this.FolderSettings.settings.accessPermissions);
 

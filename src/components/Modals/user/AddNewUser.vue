@@ -278,7 +278,11 @@ export default {
       showModal: false,
       personData: {
         creator: this.$store.getters.userId,
-        createdBy:this.$store.getters.currentUser
+        createdBy:this.$store.getters.currentUser,
+        isEnabled: false,
+        mustChangePasswordOnNextLogin: false,
+        cannotChangePassword: false,
+        passwordNeverExpires: false,
       }
     };
   },

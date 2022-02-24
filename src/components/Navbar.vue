@@ -44,10 +44,11 @@
                 href="#"
               >{{ $t("GENERAL.USERSETTING") }}</a>
             </li>
-            <!-- v-if="this.$store.getters.isAdmin" -->
+            <!--  -->
             <router-link
               :to="{ path: '/admin' }"
               class="text-decoration-none d-flex align-items-center"
+              v-if="this.$store.getters.isAdmin"
             >
               <img
                 src="@/assets/images/icon/administrator@2x.png"
@@ -107,14 +108,12 @@ name: "Navbar",
 
     logout(){
 
-    // this.$router.push('/login');
-
     // this.$store.dispatch('setToken', "");
 
-    this.$router.push('/login').catch(err => {err})
+       this.$router.push('/login').catch(err => {err})
 
-    this.$store.dispatch('setAuth', false);
- 
+       this.$store.dispatch('setAuth', false);
+
       // this.$router.push('/login', () => {}, (e) => {
       //     console.log('输出报错',e) 
       // })

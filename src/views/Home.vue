@@ -494,6 +494,7 @@
     />
     <delete-folder
       @delupdate="delUpdate"
+      @getSelected="getSelected"
       ref="DeleteFolder"
     />
     <manage-public-link ref="ManagePublicLink" />
@@ -577,7 +578,7 @@ export default {
     nowSelected: {},//hover only one file
     nowRootFolder: {}, //還沒點進任何資料夾時為空
     x1 : 0, y1 : 0, x2 :0, y2 : 0,
-    open: false ,  //tree 收縮
+    contextmenu: true ,  
     // now: this.$store.getters.nowFile //才不會跳錯
     renderDetail: false,
     firstPage: false,
@@ -724,7 +725,7 @@ export default {
        console.log(this.selectedTrue,'selectedTrue');
     },
     download() {   
-      // this.$refs.menu.close();
+      if(this.$refs.menu.open){ this.$refs.menu.close(); }
       this.checkSelected()   
       const data =   
       //new
@@ -811,25 +812,25 @@ export default {
     },
     copy(){
       this.copyFile = true
-      // this.$refs.menu.close();
+      if(this.$refs.menu.open){ this.$refs.menu.close(); }
       this.checkSelected()
       this.$store.dispatch('nowFile', this.selectedTrue);      
     },
     cut(){
       this.cutFile = true
-      // this.$refs.menu.close();
+      if(this.$refs.menu.open){ this.$refs.menu.close();}
       this.checkSelected()
       this.$store.dispatch('nowFile', this.selectedTrue);      
     },
     //paste
     paste() {
       this.checkSelected()
-
-      // this.$refs.menu.close();
+      
+      if(this.$refs.menu.open){ this.$refs.menu.close(); }
 
       const data =  JSON.stringify(
         {
-          "items": this.selectedTrue,
+          "items": this.$store.getters.nowFile,//this.selectedTrue,
           "editor":  this.$store.getters.userId,
           "editorName": this.$store.getters.currentUser,
           "destination": this.$store.getters.nowFolderId
@@ -891,16 +892,7 @@ export default {
     //     //  console.log(error.response.data);        
     //   })
     // },
-      new(id){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
-      .then((data) => { 
-        this.folderTree = data.data
-        // console.log(rootFolder);
-        
-      }).catch(() => {
-        //  console.log(error.response.data);        
-      })
-    },
+   
     //點擊跳轉該路徑
     getSelected(id){
       console.log('換路徑囉',id);      
