@@ -980,7 +980,7 @@ methods: {
       })
   },
   getFolderTable(){
-    this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
+    this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
       .then((data) => { 
         this.folderitems = data.data 
         this.count = this.folderitems.length

@@ -205,7 +205,7 @@
                   </li>
 
                   <li 
-                    v-for="item in editGroup.settings.accessPermissions"
+                    v-for="item in editGroup.settings.accessPermissions.self"
                     :key="item.memberId"
                     class="list-group-item border-0 p-0"
                   >
@@ -242,9 +242,9 @@
                 <li class="list-group-item d-flex justify-content-end border p-2">
                   <p
                     class="ms-3 justify-content-end d-flex align-items-center"
-                    v-if="editGroup.settings.accessPermissions"
+                    v-if="editGroup.settings.accessPermissions.self"
                   >
-                    <span class="dark-blue fw-bold">{{ editGroup.settings.accessPermissions.length || 0 }}
+                    <span class="dark-blue fw-bold">{{ editGroup.settings.accessPermissions.self.length || 0 }}
                     </span>
                     <span>{{ $t("MODAL.SELECTED") }}</span>
                   </p>
@@ -345,10 +345,10 @@
                       <div class="d-flex">
                         <input
                           placeholder="enter code"
-                          type="text"
-                          id="promoCode"
+                          type="number"
                           class="form-control m-0 w-50"
                           value=""
+                          v-model="editGroup.settings.storage.space"
                         >
                         <select
                           class="form-select w-50"
@@ -447,10 +447,11 @@ export default {
       searchText:"",
       count:0,
       editGroup:{
-        editor: this.$store.getters.currentUser,
         settings:{
-          storage: { space: 0, unitId: "3fa85f64-5717-4562-b3fc-2c963f66afa6" },
-          accessPermissions:[],
+          storage: { space: 0, unitId: "" },
+          accessPermissions:{
+            self: []
+          },
           restrictedFileTypes: [],
         },
       },
@@ -475,9 +476,9 @@ export default {
     postFolder(){
       this.editGroup.uploaderName = this.$store.getters.currentUser;
       this.editGroup.uploadedBy = this.$store.getters.userId;
+      this.editGroup.settings.accessPermissions.parent = []
 
-      
-      const data = JSON.stringify(this.editGroup)
+      const data = JSON.stringify(this.editGroup,'post folder')
       console.log(data);
 
       this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CreateRootFolder`,
@@ -585,8 +586,8 @@ export default {
       //左邊切換
       userSelected(item){   
           console.log(item ,'item');
-          if(this.editGroup.settings.accessPermissions.filter(x=>x.memberId == item.userId).length==0) {
-            this.editGroup.settings.accessPermissions.push(
+          if(this.editGroup.settings.accessPermissions.self.filter(x=>x.memberId == item.userId).length==0) {
+            this.editGroup.settings.accessPermissions.self.push(
               { 
                 "memberId": item.userId, 
                 "memberName": item.userName, 
@@ -599,8 +600,8 @@ export default {
       },
       groupSelected(item){
         console.log(item ,'now select group');
-        if(this.editGroup.settings.accessPermissions.filter(x=>x.memberId == item.id).length==0) {
-          this.editGroup.settings.accessPermissions.push(
+        if(this.editGroup.settings.accessPermissions.self.filter(x=>x.memberId == item.id).length==0) {
+          this.editGroup.settings.accessPermissions.self.push(
             { 
               "memberId": item.id, 
               "memberName": item.groupName, 
@@ -613,7 +614,7 @@ export default {
       }, 
       del(user){
         console.log('user',user);
-        this.editGroup.settings.accessPermissions =this.editGroup.settings.accessPermissions.filter(x=>x.memberId !== user.memberId);
+        this.editGroup.settings.accessPermissions.self =this.editGroup.settings.accessPermissions.self.filter(x=>x.memberId !== user.memberId);
       },
      
   },

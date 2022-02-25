@@ -71,8 +71,8 @@ export default {
         const data = JSON.stringify({
           "id": this.tabData.userId,
           "name": this.personData.name,
-          "editor": this.$store.getters.userId,
-          "editedBy":this.$store.getters.currentUser
+          "editor": this.$store.getters.currentUser,
+          "editedBy":this.$store.getters.userId
 
         })
         console.log(data);

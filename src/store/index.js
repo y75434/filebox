@@ -14,6 +14,7 @@ export default new Vuex.Store({
     userId: null,
     nowFolderId: null, 
     nowFile: null,
+    group: null
 
   },
   mutations: {
@@ -37,6 +38,9 @@ export default new Vuex.Store({
     NOWFILE(state, nowFile){
       state.nowFile = nowFile
     },
+    SET_GROUP(state, group){
+      state.group = group
+    }
    
   },
   actions: {
@@ -59,6 +63,9 @@ export default new Vuex.Store({
     nowFile ({ commit }, nowFile) {
       commit('NOWFILE', nowFile)
     } ,
+    setGroup ({ commit }, group) {
+      commit('SET_GROUP', group)
+    },
       
   },
   getters: {
@@ -68,6 +75,7 @@ export default new Vuex.Store({
     userId: state => state.userId,
     nowFolderId: state => state.nowFolderId,
     nowFile: state => state.nowFile,
+    group: state => state.group,
 
   },
   

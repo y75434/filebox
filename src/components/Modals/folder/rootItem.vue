@@ -7,7 +7,7 @@
       <b-iconstack
         font-scale="1"
         rotate="90"
-        @click.stop="toggle"
+        @click.stop="toggle(subitem)"
       >
         <b-icon
           stacked
@@ -55,20 +55,7 @@ export default {
       open: false,
       liselected: "",
       selectedId:0,
-      // datas:[
-      //   {
-      //     id:1,
-      //     name:'apple'
-      //   },
-      //   {
-      //     id:2,
-      //     name:'banana'
-      //   },
-      //   {
-      //     id:3,
-      //     name:'cat'
-      //   }
-      // ]
+
     }
   },
   created() {
@@ -86,14 +73,23 @@ export default {
       this.liselected = subitem.folderId
       console.log(this.liselected, "this.liselected");
     },
-    toggle() {
+    toggle(subitem) {
       // console.log("toggle");
       console.log(this.node, "node");
       this.open = !this.open;
+        const data = JSON.stringify({        
+          "folderId": subitem.folderId,
+          "uerId": this.$store.getters.userId,
+          "groups": this.$store.getters.group
+         }) 
+
       if (this.open) {
-        this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${this.subitem.folderId}`)
+        this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
+        data,{ headers: window.headers })
           .then((data) => {
             this.subitem = data.data;
+            console.log(this.subitem);
+
           })
           .catch(() => {
             //  console.log(error.response.data);

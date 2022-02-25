@@ -147,7 +147,7 @@ export default {
       //   )   
 
       this.axios.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Users`
-      ,{data:{ "id": id,"editor":this.$store.getters.userId,"editedBy":this.$store.getters.currentUser}})
+      ,{data:{ "id": id,"editor":this.$store.getters.userId}})
         .then(() => {
           this.$nextTick(() => { this.userInput = '';
           this.$bvModal.hide('modal-delete-user'); });

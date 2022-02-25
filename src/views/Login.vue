@@ -130,6 +130,8 @@ export default {
           
 
         this.$store.dispatch('setAuth', data.data.success);
+        this.$store.dispatch('setGroup', data.data.groups);
+
         this.$store.dispatch('setUser', this.loginForm.username);
 
         if(data.data.isAdmin == true){

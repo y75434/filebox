@@ -37,7 +37,7 @@ export default {
     
     getRootFolder() {
       this.axios
-        .get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
+        .get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
         .then((data) => {
           this.trees = data.data;
           this.trees.map((x) => {

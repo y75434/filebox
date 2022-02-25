@@ -181,21 +181,50 @@ export default {
       this.treeSelected.id  = id
     },
     getFolderTree(id){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
-      .then((data) => { 
+        const data = JSON.stringify({        
+          "folderId": id,
+          "uerId": this.$store.getters.userId,
+          "groups": this.$store.getters.group
+        })   
+        console.log(data, '189');
 
-        this.FolderTree = data.data
-        console.log(this.FolderTree, 'this.FolderTree');
-        this.arr.push(this.FolderTree)
+      if(this.$store.getters.isAdmin){
+        this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
+        data,{ headers: window.headers }).then((data) => { 
+
+          console.log(data, 'admin');
+
+          // this.FolderTree = data.data
+          // console.log(this.FolderTree, 'this.FolderTree');
+          // this.arr.push(this.FolderTree)
+          
+
+          // console.log(this.FolderTree,'目前 folderTree 242');
+          // console.log(this.arr,'arr 243');
+
         
+        }).catch((error) => {
+          console.log(error.response.data);        
+        })
+      }else{
+          this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`,
+        data,{ headers: window.headers }).then((data) => { 
 
-        console.log(this.FolderTree,'目前 folderTree 242');
-        console.log(this.arr,'arr 243');
+          console.log(data, 'normal');
 
-       
-      }).catch((error) => {
-         console.log(error.response.data);        
-      })
+          // this.FolderTree = data.data
+          // console.log(this.FolderTree, 'this.FolderTree');
+          // this.arr.push(this.FolderTree)
+          
+
+          // console.log(this.FolderTree,'目前 folderTree 242');
+          // console.log(this.arr,'arr 243');
+
+        
+        }).catch((error) => {
+          console.log(error.response.data);        
+        })
+      }
     },
     
   }

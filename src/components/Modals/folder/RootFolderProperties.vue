@@ -171,17 +171,18 @@
                 >
                   <!--  -->
                   <li
-                    v-for="item in FolderSettings.settings.accessPermissions"
-                    :key="item.memberId"
+                    v-for="item in FolderSettings.settings.accessPermissions.self" :key="item.id"
                     class="list-group-item border-0 p-0 mb-2"
                   >
                     <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
+                      <!--  -->
                       <img
                         v-if="!item.isGroup"
                         @dblclick="userCan(item)"
                         src="@/assets/images/icon/Union.png"
                         class="icon24px"
                       >
+                      <!--  -->
                       <img
                         v-else
                         @dblclick="userCan(item)"
@@ -205,7 +206,7 @@
                 
                 <li class="list-group-item d-flex justify-content-end border p-2">
                   <p class="ms-3 justify-content-end d-flex align-items-center">
-                    <span class="dark-blue fw-bold">{{ FolderSettings.settings.accessPermissions.length }}
+                    <span class="dark-blue fw-bold">{{ FolderSettings.settings.accessPermissions.self.length }}
                     </span>
                     <span>{{ $t("MODAL.SELECTED") }}</span>
                   </p>
@@ -308,7 +309,6 @@
                         <input
                           placeholder="enter code"
                           type="number"
-                          id="promoCode"
                           class="form-control m-0 w-50"
                           value=""
                           v-model="space"
@@ -409,11 +409,7 @@ export default {
 
   data() {
     return {
-      FolderSettings:{
-        // settings:{
-        //    accessPermissions: []
-        // }
-      },
+      FolderSettings:[],
       PermissionTypes:[],
       FileTypes:[],
       StorageUnit:{},
@@ -429,15 +425,16 @@ export default {
         deny: []
       },
       haveUser: false,
-      unitId: "04510aa7-e1f6-409c-8982-f2ac9de45bd9",
-      space: 0
+      unitId: "",
+      space: 0,
+      test:[]
     };
   },
   watch:{ 
-    tabData(){ 
-      this.FolderSettings = this.tabData
-    },
-  
+    // tabData(){ 
+    //   this.FolderSettings = this.tabData
+    // },
+   
   },
   // computed: {
   //   accessPermissions() {
@@ -446,10 +443,11 @@ export default {
   // },
   methods: { 
     start() {
-      this.getFolderSettings(this.FolderSettings.folderId)
+      this.getFolderSettings(this.tabData.folderId)
       this.getPermissionTypes()
       this.getFileTypes()
       this.getStorageUnit()
+      
     },
     getFolderSettings(id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
@@ -490,7 +488,6 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileTypes`)
       .then((data) => {  
         this.FileTypes = data.data
-        
         this.FolderSettings.settings.restrictedFileTypes.forEach(x=>{
           this.FileTypes.forEach(Types=>{
             if(Types.fileTypeId == x) {
@@ -505,12 +502,14 @@ export default {
     },
     //檔案類型勾選即加入api
     typeSelected(item){
+      this.FolderSettings.settings.restrictedFileTypes = []
       if(item.active){
         this.FolderSettings.settings.restrictedFileTypes.push(item.fileTypeId)
       } else {
         this.FolderSettings.settings.restrictedFileTypes = this.FolderSettings.settings.restrictedFileTypes.filter(x=>x
           !==item.fileTypeId);
       }
+
     },
     getStorageUnit(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/Storage/Unit`)
@@ -521,19 +520,21 @@ export default {
       })
     },
     storageSelected(event){
-      console.log(event.target.value)   
+      // console.log(event.target.value)   
       this.unitId = event.target.value
-      console.log(this.unitId)
+      // console.log(this.unitId)
       
     },
     putFolder(){
 
       this.FolderSettings.editorName = this.$store.getters.currentUser;
       this.FolderSettings.editor = this.$store.getters.userId;
+      //if no parent
+      this.FolderSettings.settings.accessPermissions.parent = []
 
       this.FolderSettings.settings.storage = { "space": this.space, "unitId": this.unitId };
-
-      const data = JSON.stringify(this.FolderSettings)
+      this.test.push(this.FolderSettings)
+      const data = JSON.stringify(this.test)
 
       console.log(data);
 
@@ -587,8 +588,8 @@ export default {
     //左邊切換
     userSelected(item){
       console.log(item ,'item');
-      if(this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId == item.userId).length==0) {
-       this.FolderSettings.settings.accessPermissions.push(
+      if(this.FolderSettings.settings.accessPermissions.self.filter(x=>x.memberId == item.userId).length==0) {
+       this.FolderSettings.settings.accessPermissions.self.push(
          { 
            "memberId": item.userId, 
            "memberName": item.userName, 
@@ -598,13 +599,13 @@ export default {
          } 
        );
        console.log('這裡要改');
-       console.log('目前選擇名單', this.FolderSettings.settings.accessPermissions);
+       console.log('目前選擇名單', this.FolderSettings.settings.accessPermissions.self);
       }   
     },
     groupSelected(item){
       console.log(item ,'now select group');
-      if(this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId == item.id).length==0) {
-       this.FolderSettings.settings.accessPermissions.push(
+      if(this.FolderSettings.settings.accessPermissions.self.filter(x=>x.memberId == item.id).length==0) {
+       this.FolderSettings.settings.accessPermissions.self.push(
          { 
            "memberId": item.id, 
            "memberName": item.groupName, 
@@ -613,14 +614,14 @@ export default {
            "deny": []
          } 
        );
-       console.log('目前選擇名單', this.FolderSettings.settings.accessPermissions);
+       console.log('目前選擇名單', this.FolderSettings.settings.accessPermissions.self);
       }
     },   
     //ok
     del(user){
-     console.log('user',this.FolderSettings.settings.accessPermissions);
+     console.log('user',this.FolderSettings.settings.accessPermissions.self);
 
-     this.FolderSettings.settings.accessPermissions=  this.FolderSettings.settings.accessPermissions.filter(x=>x.memberId !==user.memberId)    
+     this.FolderSettings.settings.accessPermissions.self=  this.FolderSettings.settings.accessPermissions.self.filter(x=>x.memberId !==user.memberId)    
 
     },
     

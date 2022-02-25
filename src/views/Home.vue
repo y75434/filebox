@@ -414,8 +414,8 @@
 
         
     
-    <!-- v-if="this.selectedLength > 0" -->
-    <ContextMenu ref="menu" v-if="this.firstPage != true">
+    <!-- v-if="this.selectedLength > 0" v-if="this.firstPage != true" -->
+    <ContextMenu ref="menu" >
       <ul class="text-dark">
         <!-- v-if="this.selectedLength = 0" -->
         <li
@@ -456,18 +456,18 @@
             class="icon24px"
           >{{ $t("HOME.PASTE") }}
         </li>
+        <!-- v-if="canUse || this.selectedNumber > 0" -->
         <li
           @click="download()"
-          v-if="canUse || this.selectedNumber > 0"
         >
           <img
             src="@/assets/images/cmd/download@2x-1.png"
             class="icon24px"
           >{{ $t("HOME.DOWNLOAD") }}
         </li>
+        <!-- v-if="canUse || this.selectedNumber == 1" -->
         <li
           @click="RenameItem"
-          v-if="canUse || this.selectedNumber == 1"
         >
           <img
             src="@/assets/images/cmd/rename@2x.png"
@@ -697,20 +697,47 @@ export default {
     },
     //預設畫面在這
     getFolderTable(){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`)
-        .then((data) => { 
-          this.allFiles = data.data
-          this.firstPage = true
-          this.rootFolder = this.allFiles
-        
-          this.allFiles.map(item=>{
-            const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
-            item.pic = datapic.pic;
-            return item
-            });        
-        }).catch(error => {
-          console.log(error.response.data);        
-        })
+
+      if(this.$store.getters.isAdmin){
+
+        this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
+          .then((data) => { 
+            this.allFiles = data.data
+            this.firstPage = true
+            this.rootFolder = this.allFiles
+          
+            this.allFiles.map(item=>{
+              const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
+              item.pic = datapic.pic;
+              return item
+              });        
+          }).catch(error => {
+            console.log(error.response.data);        
+          })
+      }else{
+
+        const data = JSON.stringify({        
+          "uerId": this.$store.getters.userId,
+          "groups": this.$store.getters.group
+        })  
+
+        console.log(data, 'normal get root');
+        this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`,
+        data,{ headers: window.headers })
+          .then((data) => { 
+            this.allFiles = data.data
+            this.firstPage = false
+            this.rootFolder = this.allFiles
+          
+            this.allFiles.map(item=>{
+              const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
+              item.pic = datapic.pic;
+              return item
+              });        
+          }).catch(error => {
+            console.log(error.response.data);        
+          })
+      }
     },//success
     checkSelected(){
         if(this.selectedNumber === 0){
@@ -880,18 +907,6 @@ export default {
     this.selectedTrue = []
 
     },
-    //好像用不到
-    //回上頁 如果是root folder 就無法按上一層
-    //  getFolderTree(rootFolder,id){
-    //   this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${id}`)
-    //   .then((data) => { 
-    //     this.folderTree = data.data
-    //     // rootFolder.subFolders = data.data.subFolders;
-
-    //   }).catch(() => {
-    //     //  console.log(error.response.data);        
-    //   })
-    // },
    
     //點擊跳轉該路徑
     getSelected(id){
@@ -910,13 +925,26 @@ export default {
         id = this.id
         //把預設路經歸0 避免跳錯
         this.id = ''
-        console.log('預設路徑', );
-        
+        console.log('預設路徑', );     
       }
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/GetItems/${id}/${this.$store.getters.userId}`)
+
+       const data = JSON.stringify({        
+          "folderId": id,
+          "uerId": this.$store.getters.userId,
+          "groups": this.$store.getters.group
+         })  
+
+         console.log('data',data);
+         
+      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/GetItems/`,
+      data,{ headers: window.headers })
         .then((data) => { 
+          console.log(data);  
+
+          
           this.allFiles = data.data
-          this.firstPage = false
+          // this.firstPage = false
+          // this.$store.getters.userId
 
           //顯示路徑
          // this.getFolderTree(id)

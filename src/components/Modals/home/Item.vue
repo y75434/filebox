@@ -54,7 +54,7 @@ export default {
     start(){
          this.open = !this.open
         if(this.open) {
-            this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${this.subitem.folderId}`)
+            this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`)
           .then((data) => { 
             this.subitem = data.data;
             // console.log(this.subitem);
@@ -69,7 +69,7 @@ export default {
       console.log('toggle');
         this.open = !this.open
         if(this.open) {
-            this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree/${this.subitem.folderId}`)
+            this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`)
           .then((data) => { 
             this.subitem = data.data;
             console.log(this.subitem);
