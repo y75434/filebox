@@ -393,11 +393,12 @@
               </div>
               <div
                 class="text-dark text-center d-inline-block"
-                style="max-width: 100px"
+                style="max-width: 700px"
               >
-                arr{{ arr }} resultQuery{{ resultQuery }}
+                arr{{ arr }} 
               </div>
-           
+           <!-- resultQuery{{ resultQuery }} -->
+
 
               <div
                 ref="div"
@@ -934,12 +935,12 @@ export default {
           "groups": this.$store.getters.group
          })  
 
-         console.log('data',data);
+         console.log('換路徑請求',data);
          
       this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/GetItems/`,
       data,{ headers: window.headers })
         .then((data) => { 
-          console.log(data);  
+          // console.log(data);  
 
           
           this.allFiles = data.data

@@ -48,8 +48,9 @@
             
         <h5 class="text-dark">
           FolderSettings{{ FolderSettings }}
+          <hr>
+          editSetting{{ editSetting }}
         </h5>
-
 
         <div class="row p-5 modal-sidebar">
           <div class="col-4 h-100 ">
@@ -83,7 +84,8 @@
                   <input
                     type="checkbox"
                     class="form-check-input"
-                    id="exampleCheck1"
+                    v-model="inhert"
+                    @change="checkInhert($event)"
                   >
                   <label
                     class="form-check-label"
@@ -405,7 +407,6 @@ export default {
     title: { type: String, default: "Root Folder Properties" },
     tabData: { type: Object , default() { return {} }},
   },
-  provide() { return { $fatherSetting: () =>  this.FolderSettings.settings }},
 
   data() {
     return {
@@ -427,27 +428,41 @@ export default {
       haveUser: false,
       unitId: "",
       space: 0,
-      test:[]
+      editSetting: {},
+      inhert: false
     };
   },
   watch:{ 
     // tabData(){ 
     //   this.FolderSettings = this.tabData
     // },
-   
   },
-  // computed: {
-  //   accessPermissions() {
-  //    return this.accessPermissions
-  //   }
-  // },
   methods: { 
+    checkInhert(e){
+      if(e.target.checked){
+        this.editSetting = this.$store.getters.liselected
+        console.log(this.editSetting, e.target.checked);
+        this.getSelfSettings()
+      }
+    },
     start() {
       this.getFolderSettings(this.tabData.folderId)
       this.getPermissionTypes()
       this.getFileTypes()
       this.getStorageUnit()
       
+    },
+    getSelfSettings(){
+      let id = this.$store.getters.liselected.folderId
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
+      .then((data) => {  
+        console.log('son setting',data.data);
+        this.selfSetting = data.data
+
+
+      }).catch(() => {
+        // console.log(error.response.data);        
+      })
     },
     getFolderSettings(id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
@@ -527,27 +542,46 @@ export default {
     },
     putFolder(){
 
-      this.FolderSettings.editorName = this.$store.getters.currentUser;
-      this.FolderSettings.editor = this.$store.getters.userId;
+      if(this.inhert){
+
+        const data = JSON.stringify([
+          {
+            "folderId":this.editSetting.folderId,
+            "name":this.editSetting.name,
+            "description":"string",
+            "inherit":true,
+            "settings":{
+              "storage":{ "space": this.space, "unitId": this.unitId },
+              "restrictedFileTypes":this.FolderSettings.settings.restrictedFileTypes,
+              "accessPermissions":{
+                "self":this.FolderSettings.settings.accessPermissions.self,
+                "parent":this.FolderSettings.settings.accessPermissions.self}
+            },
+            "editor": this.$store.getters.userId, 
+            "editorName":this.$store.getters.currentUser,
+          }
+        ])
+
+        this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
+          data,{ headers: window.headers }).then((data) => { 
+
+            console.log(data);
+            this.$swal.fire({ title: 'success', icon: 'success' })
+
+          }).catch(error => {
+            console.log(error.response.data);    
+            this.$swal.fire({ title: error.response.data, icon: 'error' })
+        
+          })
+
+      }
+
       //if no parent
-      this.FolderSettings.settings.accessPermissions.parent = []
+      // this.FolderSettings.settings.accessPermissions.parent = []
 
-      this.FolderSettings.settings.storage = { "space": this.space, "unitId": this.unitId };
-      this.test.push(this.FolderSettings)
-      const data = JSON.stringify(this.test)
-
-      console.log(data);
-
-      this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
-      data,{ headers: window.headers }).then((data) => { 
-        console.log(data);
-        this.$swal.fire({ title: 'success', icon: 'success' })
-
-      }).catch(error => {
-        console.log(error.response.data);    
-        this.$swal.fire({ title: error.response.data, icon: 'error' })
-    
-      })
+         this.editSetting = {}
+         this.inhert = false
+      
 
     },
     getUserTable(){  

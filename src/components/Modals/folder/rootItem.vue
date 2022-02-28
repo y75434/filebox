@@ -19,7 +19,6 @@
       <img
         src="@/assets/images/file/single folder@2x.png"
         class="icon24px "
-        @dblclick="selectSub(subitem)"
       >
       {{ subitem.name }}
     </div>
@@ -48,34 +47,31 @@ export default {
   name: "rootItem",
   components: { rootItem },
   props: ["tree"],
-  inject: ['$fatherSetting'],
   data() {
     return {
       subitem: this.tree,
       open: false,
       liselected: "",
       selectedId:0,
-
+      selfSetting: []
     }
   },
   created() {
     // console.log(this.subitem, "sub");
   },
-  computed: {
-    fatherSetting() {
-      return this.$fatherSetting()
-    }
-  },
+ 
   methods: {
     test(subitem){
       console.log(subitem, "被點擊");
       subitem.isDark = true
       this.liselected = subitem.folderId
-      console.log(this.liselected, "this.liselected");
+      this.getSelfSettings(subitem.folderId)
+
+      //  console.log(this.liselected, "this.liselected");
     },
     toggle(subitem) {
       // console.log("toggle");
-      console.log(this.node, "node");
+      // console.log(this.node, "node");
       this.open = !this.open;
         const data = JSON.stringify({        
           "folderId": subitem.folderId,
@@ -88,7 +84,7 @@ export default {
         data,{ headers: window.headers })
           .then((data) => {
             this.subitem = data.data;
-            console.log(this.subitem);
+            console.log(this.subitem, '沒東西');
 
           })
           .catch(() => {
@@ -96,42 +92,60 @@ export default {
           });
       }
     },
-    selectSub(subitem) {
-      console.log(subitem, "被選取的子資料夾 ");
-      subitem.clicked = true//沒辦法變色
-      console.log( "subitem" ,subitem);
+     getSelfSettings(id){
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
+      .then((data) => {  
+        console.log('tree更改store',data.data);
+        this.selfSetting = data.data
+        this.$store.dispatch('setLiselected', this.selfSetting);
 
-      this.putFolder(subitem)
+        // this.putFolder()
 
-      console.log( "hi" ,this.fatherSetting);
-
+      }).catch(() => {
+        // console.log(error.response.data);        
+      })
     },
     //讓子層繼承父層設定
-    putFolder(subitem){
+    // putFolder(){
 
-      const data = JSON.stringify({
-          "folderId": subitem.folderId,
-          "name": subitem.name,
-          // "description": "string",
-          "editor": this.$store.getters.userId,
-          "editorName": this.$store.getters.currentUser,        
-          "settings":this.fatherSetting
-      })
+    //   console.log('self',this.selfSetting);
+    //   console.log('全部parent',this.selfSetting.settings.accessPermissions.parent);
 
-      console.log(data);
 
-      this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
-          data,{ headers: window.headers }).then((data) => { 
+    //   const data = JSON.stringify([
+    //     {
+    //       "folderId":this.selfSetting.folderId,
+    //       "name":this.selfSetting.name,
+    //       "description":"string",//this.selfSetting.description,
+    //       "inherit":true,
+    //       "settings":{
+    //         "storage":this.selfSetting.settings.storage,
+    //         "restrictedFileTypes":this.selfSetting.settings.restrictedFileTypes,
+    //         "accessPermissions":{
+    //           "self":this.selfSetting.settings.accessPermissions.self,
+    //           "parent":this.selfSetting.settings.accessPermissions.parent}
+    //       },
+    //       "editor": this.$store.getters.userId, 
+    //       "editorName":this.$store.getters.currentUser,
+    //     }
+    //   ])
 
-            console.log(data);
-            this.$swal.fire({ title: 'success', icon: 'success' })
+    //   // const data = JSON.stringify([this.selfSetting])
 
-          }).catch(error => {
-            console.log(error.response.data);    
-            this.$swal.fire({ title: error.response.data, icon: 'error' })
+    //   console.log(data, '子層設定');
+
+    //   this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
+    //       this.selfSetting,{ headers: window.headers }).then((data) => { 
+
+    //         console.log(data);
+    //         this.$swal.fire({ title: 'success', icon: 'success' })
+
+    //       }).catch(error => {
+    //         console.log(error.response.data);    
+    //         this.$swal.fire({ title: error.response.data, icon: 'error' })
         
-          })
-      },
+    //       })
+    //   },
   },
 };
 </script>

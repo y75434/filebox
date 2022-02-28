@@ -186,7 +186,7 @@ export default {
           "uerId": this.$store.getters.userId,
           "groups": this.$store.getters.group
         })   
-        console.log(data, '189');
+        console.log(data, 'foldertree request');
 
       if(this.$store.getters.isAdmin){
         this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,

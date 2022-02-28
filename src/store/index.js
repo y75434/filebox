@@ -14,7 +14,8 @@ export default new Vuex.Store({
     userId: null,
     nowFolderId: null, 
     nowFile: null,
-    group: null
+    group: null,
+    liselected: null
 
   },
   mutations: {
@@ -40,6 +41,9 @@ export default new Vuex.Store({
     },
     SET_GROUP(state, group){
       state.group = group
+    },
+    SET_SETLISELECTED(state, liselected){
+      state.liselected = liselected
     }
    
   },
@@ -66,6 +70,9 @@ export default new Vuex.Store({
     setGroup ({ commit }, group) {
       commit('SET_GROUP', group)
     },
+    setLiselected ({ commit }, liselected) {
+      commit('SET_SETLISELECTED', liselected)
+    },
       
   },
   getters: {
@@ -76,7 +83,7 @@ export default new Vuex.Store({
     nowFolderId: state => state.nowFolderId,
     nowFile: state => state.nowFile,
     group: state => state.group,
-
+    liselected: state => state.liselected
   },
   
   plugins: [createPersistedState({

@@ -48,7 +48,7 @@ export default {
           //取得該folder tree
           this.trees = this.trees.filter(i => i.folderId === this.id)
 
-          console.log(this.trees); 
+          console.log(this.trees[0],'root'); 
         })
         .catch((error) => {
           console.log(error.response.data);
