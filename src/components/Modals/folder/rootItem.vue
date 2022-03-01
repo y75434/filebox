@@ -2,7 +2,7 @@
 <div class="list-unstyled">
     <!--  -->
     <div 
-    @click="test(subitem)"
+    @click="selectSelf(subitem)"
     :style=" { backgroundColor: ( subitem.folderId == this.liselected ? '#d3eaff' : 'transparent' )}">
       <b-iconstack
         font-scale="1"
@@ -61,17 +61,19 @@ export default {
   },
  
   methods: {
-    test(subitem){
+    selectSelf(subitem){
       console.log(subitem, "被點擊");
       subitem.isDark = true
       this.liselected = subitem.folderId
+      this.liselected = this.liselected.filter(x=>x.folderId == subitem.folderId)
+      
       this.getSelfSettings(subitem.folderId)
+
 
       //  console.log(this.liselected, "this.liselected");
     },
     toggle(subitem) {
-      // console.log("toggle");
-      // console.log(this.node, "node");
+      
       this.open = !this.open;
         const data = JSON.stringify({        
           "folderId": subitem.folderId,
@@ -105,47 +107,7 @@ export default {
         // console.log(error.response.data);        
       })
     },
-    //讓子層繼承父層設定
-    // putFolder(){
-
-    //   console.log('self',this.selfSetting);
-    //   console.log('全部parent',this.selfSetting.settings.accessPermissions.parent);
-
-
-    //   const data = JSON.stringify([
-    //     {
-    //       "folderId":this.selfSetting.folderId,
-    //       "name":this.selfSetting.name,
-    //       "description":"string",//this.selfSetting.description,
-    //       "inherit":true,
-    //       "settings":{
-    //         "storage":this.selfSetting.settings.storage,
-    //         "restrictedFileTypes":this.selfSetting.settings.restrictedFileTypes,
-    //         "accessPermissions":{
-    //           "self":this.selfSetting.settings.accessPermissions.self,
-    //           "parent":this.selfSetting.settings.accessPermissions.parent}
-    //       },
-    //       "editor": this.$store.getters.userId, 
-    //       "editorName":this.$store.getters.currentUser,
-    //     }
-    //   ])
-
-    //   // const data = JSON.stringify([this.selfSetting])
-
-    //   console.log(data, '子層設定');
-
-    //   this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
-    //       this.selfSetting,{ headers: window.headers }).then((data) => { 
-
-    //         console.log(data);
-    //         this.$swal.fire({ title: 'success', icon: 'success' })
-
-    //       }).catch(error => {
-    //         console.log(error.response.data);    
-    //         this.$swal.fire({ title: error.response.data, icon: 'error' })
-        
-    //       })
-    //   },
+    
   },
 };
 </script>

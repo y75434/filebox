@@ -84,8 +84,10 @@
                   <input
                     type="checkbox"
                     class="form-check-input"
+                    :disabled="this.$store.getters.liselected.folderId === this.FolderSettings.folderId"
                     v-model="inhert"
                     @change="checkInhert($event)"
+                    id="exampleCheck1"
                   >
                   <label
                     class="form-check-label"
@@ -173,7 +175,8 @@
                 >
                   <!--  -->
                   <li
-                    v-for="item in FolderSettings.settings.accessPermissions.self" :key="item.id"
+                    v-for="item in FolderSettings.settings.accessPermissions.self"
+                    :key="item.id"
                     class="list-group-item border-0 p-0 mb-2"
                   >
                     <div class="form-check justify-content-center align-items-center p-0 w-100 d-flex">
@@ -208,8 +211,8 @@
                 
                 <li class="list-group-item d-flex justify-content-end border p-2">
                   <p class="ms-3 justify-content-end d-flex align-items-center">
-                    <span class="dark-blue fw-bold">{{ FolderSettings.settings.accessPermissions.self.length }}
-                    </span>
+                    <!-- <span class="dark-blue fw-bold">{{ FolderSettings.settings.accessPermissions.self.length || 0 }}
+                    </span> -->
                     <span>{{ $t("MODAL.SELECTED") }}</span>
                   </p>
                 </li>
@@ -260,24 +263,44 @@
                     <ul
                       class="justify-content-center flex-column d-flex align-items-center"
                     >
+                      <li class="list-group-item w-100 border-0 p-0 justify-content-end d-flex">
+                        <label
+                          class="form-check-label w-100"
+                        />
+
+                        <div class=" w-100">
+                          <span class="mx-2">allow</span>
+                          <span>deny</span>
+                        </div>
+                      </li>
+
                       <li
                         v-for="item in PermissionTypes"
                         :key="item.id"
-                        class="list-group-item w-50 border-0 p-0 justify-content-between d-flex"
+                        class="list-group-item w-100 border-0 p-0 justify-content-between d-flex"
                       >
-                        <div class="justify-content-start align-items-center p-0  d-flex">
-                          <label
-                            class="form-check-label w-50"
-                            :for="item.id"
-                          >
-                            {{ item.name }}
-                          </label>
-                        </div>
-                        <div class="">
+                        <label
+                          class="form-check-label w-100"
+                          :for="item.id"
+                        >
+                          {{ item.name }}
+                        </label>
+                        <div class=" w-100">
                           <input
-                            v-model="item.active"
-                            class="form-check-input m-0"
-                            type="checkbox"
+                            v-model="item.selected"
+                            class="form-check-input mx-3"
+                            type="radio"
+                            value="allow"
+                            @change="permissionSelected(item)"
+                            @dblclick="cleanchecked(item)"
+                            :id="item.id"
+                          >
+                          <input
+                            v-model="item.selected"
+                            class="form-check-input mx-3"
+                            type="radio"
+                            value="deny"
+                            @dblclick="cleanchecked(item)"
                             @change="permissionSelected(item)"
                             :id="item.id"
                           >
@@ -450,7 +473,8 @@ export default {
       this.getPermissionTypes()
       this.getFileTypes()
       this.getStorageUnit()
-      
+      // this.$refs.rootTreeItem.start()
+
     },
     getSelfSettings(){
       let id = this.$store.getters.liselected.folderId
@@ -485,18 +509,25 @@ export default {
         //  console.log(this.PermissionTypes);
          
       }).catch(() => {
-        // console.log(error.response.data);        
       })
     },
     permissionSelected(item){
-      if(item.active){
+      if(item.selected == "allow"){
         this.nowUser.allow.push(item.permissionTypeId) 
+        this.nowUser.deny = this.nowUser.deny.filter(x=>x !== item.permissionTypeId);
       } else {
-        //不能用
+        this.nowUser.deny.push(item.permissionTypeId)
         this.nowUser.allow = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
-
       }
-      console.log('486',this.nowUser);
+    },
+    cleanchecked(item) { 
+      if(this.nowUser.allow.indexOf(item.permissionTypeId) != -1){
+        this.nowUser.allow = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
+        item.selected = false
+      }else{
+        this.nowUser.deny = this.nowUser.deny.filter(x=>x !== item.permissionTypeId);
+        item.selected = false
+      }
 
     },
     getFileTypes(){
@@ -526,6 +557,8 @@ export default {
       }
 
     },
+    
+
     getStorageUnit(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/Storage/Unit`)
       .then((data) => {  
@@ -622,6 +655,11 @@ export default {
     //左邊切換
     userSelected(item){
       console.log(item ,'item');
+
+      if(!this.FolderSettings.settings.accessPermissions.self){
+        this.FolderSettings.settings.accessPermissions.self = []
+      }
+
       if(this.FolderSettings.settings.accessPermissions.self.filter(x=>x.memberId == item.userId).length==0) {
        this.FolderSettings.settings.accessPermissions.self.push(
          { 

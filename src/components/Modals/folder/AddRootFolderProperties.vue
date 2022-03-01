@@ -294,24 +294,40 @@
                     aria-labelledby="nav-home-tab"
                   >
                     <ul class="justify-content-center flex-column d-flex align-items-center">
+                      <li class="list-group-item w-100 border-0 p-0 justify-content-end d-flex">
+                        <label class="form-check-label w-100" />
+                        <div class=" w-100">
+                          <span class="mx-2">allow</span>
+                          <span>deny</span>
+                        </div>
+                      </li>                   
                       <li
                         v-for="item in PermissionTypes"
                         :key="item.id"
-                        class="list-group-item w-50 border-0 p-0 justify-content-between d-flex"
+                        class="list-group-item w-100 border-0 p-0 justify-content-between d-flex"
                       >
-                        <div class="justify-content-start align-items-center p-0  d-flex">
-                          <label
-                            class="form-check-label w-50"
-                            :for="item.id"
-                          >
-                            {{ item.name }}
-                          </label>
-                        </div>
-                        <div class="">
+                        <label
+                          class="form-check-label w-100"
+                          :for="item.id"
+                        >
+                          {{ item.name }}
+                        </label>
+                        <div class="w-100">
                           <input
-                            class="form-check-input m-0"
-                            type="checkbox"
-                            v-model="item.active"
+                            v-model="item.selected"
+                            class="form-check-input mx-3"
+                            type="radio"
+                            value="allow"
+                            @change="permissionSelected(item)"
+                            @dblclick="cleanchecked(item)"
+                            :id="item.id"
+                          >
+                          <input
+                            v-model="item.selected"
+                            class="form-check-input mx-3"
+                            type="radio"
+                            value="deny"
+                            @dblclick="cleanchecked(item)"
                             @change="permissionSelected(item)"
                             :id="item.id"
                           >
@@ -374,8 +390,6 @@
                       >
                         <input
                           type="checkbox"
-                          value=""
-                          id="flexCheckDefault"
                           class="form-check-input"
                         >
                         <label
@@ -503,13 +517,22 @@ export default {
       })
     },
      permissionSelected(item){
-      if(item.active){
+      if(item.selected == "allow"){
         this.nowUser.allow.push(item.permissionTypeId) 
+        this.nowUser.deny = this.nowUser.deny.filter(x=>x !== item.permissionTypeId);
       } else {
+        this.nowUser.deny.push(item.permissionTypeId)
         this.nowUser.allow = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
-
       }
-      console.log('this.nowUser',this.nowUser);
+    },
+    cleanchecked(item) { 
+      if(this.nowUser.allow.indexOf(item.permissionTypeId) != -1){
+        this.nowUser.allow = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
+        item.selected = false
+      }else{
+        this.nowUser.deny = this.nowUser.deny.filter(x=>x !== item.permissionTypeId);
+        item.selected = false
+      }
     },
     getFileTypes(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileTypes`)

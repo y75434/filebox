@@ -1,10 +1,10 @@
 <template>
   <li class=" list-unstyled">
     <!-- {{ subitem }} -->
-    <b-iconstack font-scale="1" rotate="90" @click.stop="toggle"
+    <b-iconstack font-scale="1" rotate="90" @click.stop="toggle(subitem)"
     >
+    <!-- v-if="subitem.hasChildren " -->
       <b-icon
-        v-if="subitem.hasChildren "
         stacked
         icon="chevron-right"
         shift-h="0"
@@ -65,15 +65,32 @@ export default {
           })
         }
     },     
-    toggle(){
-      console.log('toggle');
+    toggle(subitem){
         this.open = !this.open
-        if(this.open) {
-            this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`)
+         const data = JSON.stringify({        
+          "folderId": subitem.folderId,
+          "uerId": this.$store.getters.userId,
+          "groups": this.$store.getters.group
+         }) 
+
+         console.log(data);
+
+        if(this.open && this.$store.getters.isAdmin) {
+            this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
+            data,{ headers: window.headers })
+            .then((data) => { 
+              this.subitem = data.data;
+              // console.log(this.subitem);
+
+          }).catch(() => {
+            //  console.log(error.response.data);        
+          })
+        }else{
+           this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`,
+           data,{ headers: window.headers })
           .then((data) => { 
             this.subitem = data.data;
-            console.log(this.subitem);
-            // this.open = !this.open
+            // console.log(this.subitem);
 
           }).catch(() => {
             //  console.log(error.response.data);        

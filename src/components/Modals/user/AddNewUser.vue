@@ -12,7 +12,6 @@
     body-bg-variant="bgmodal"
     @ok="addUser"
   >
-    
     <validation-observer
       class="col-md-8"
     >
@@ -50,54 +49,52 @@
             </div>
             <span class="text-danger">{{ errors[0] }}</span>
           </validation-provider> -->
-          <validation-provider
+          <!-- <validation-provider
             v-slot="{ errors,classes}"
             rules="email"
-          >
-            <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-              <label
-                for="Email"
-                class="col-form-label"
-              >{{ $t("MODAL.EMAIL") }}</label>
+          > -->
+          <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+            <label
+              for="Email"
+              class="col-form-label"
+            >{{ $t("MODAL.EMAIL") }}</label>
                   
-              <input
-                type="Email"
-                id="Email"
-                class="form-control width-320"
-                v-model="personData.email"
-                :class="classes"
-              >
-            </div>
-            <span class="text-danger">{{ errors[0] }}</span>
-          </validation-provider>
+            <input
+              type="Email"
+              id="Email"
+              class="form-control width-320"
+              v-model="personData.email"
+            >
+          </div>
+          <!-- <span class="text-danger">{{ errors[0] }}</span>
+          </validation-provider> -->
 
 
-          <validation-provider
+          <!-- <validation-provider
             v-slot="{ errors, classes }"
             rules="min:8|numeric"
-          >
-            <div class="w-100 d-flex align-items-center justify-content-between mb-2">
-              <label
-                for="tel"
-                class="col-form-label"
-              >telephone </label>
+          > -->
+          <div class="w-100 d-flex align-items-center justify-content-between mb-2">
+            <label
+              for="tel"
+              class="col-form-label"
+            >telephone </label>
                   
-              <input
-                type="number"
-                id="telephone"
-                class="form-control width-320"
-                v-model="personData.telephone"
-                :class="classes"
-              >
-            </div>
-            <span class="text-danger">{{ errors[0] }}</span>
-          </validation-provider>
+            <input
+              type="number"
+              id="telephone"
+              class="form-control width-320"
+              v-model="personData.telephone"
+            >
+          </div>
+          <!-- <span class="text-danger">{{ errors[0] }}</span>
+          </validation-provider> -->
 
           <div class="w-100 d-flex align-items-center justify-content-between mb-2">
             <label
               for="Description"
               class="col-form-label"
-            >{{ $t("MODAL.DESCRIPTION") }}required</label>
+            >{{ $t("MODAL.DESCRIPTION") }}</label>
                   
             <input
               type="Description"
@@ -277,8 +274,8 @@ export default {
     return {
       showModal: false,
       personData: {
-        creator: this.$store.getters.userId,
-        createdBy:this.$store.getters.currentUser,
+        creator: this.$store.getters.currentUser,
+        createdBy:this.$store.getters.userId,
         isEnabled: false,
         mustChangePasswordOnNextLogin: false,
         cannotChangePassword: false,

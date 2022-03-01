@@ -27,14 +27,14 @@ export default {
   data() {
     return {
       trees: [],
-      go: false
+      // go: false
     };
   },
   created() {
     this.getRootFolder();
   },
   methods: {
-    
+    // start() { this.getRootFolder(); },
     getRootFolder() {
       this.axios
         .get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
@@ -48,7 +48,7 @@ export default {
           //取得該folder tree
           this.trees = this.trees.filter(i => i.folderId === this.id)
 
-          console.log(this.trees[0],'root'); 
+          console.log(this.trees[0],'重新讀取root'); 
         })
         .catch((error) => {
           console.log(error.response.data);

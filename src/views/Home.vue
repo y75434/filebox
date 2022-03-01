@@ -397,7 +397,6 @@
               >
                 arr{{ arr }} 
               </div>
-           <!-- resultQuery{{ resultQuery }} -->
 
 
               <div
@@ -416,8 +415,15 @@
         
     
     <!-- v-if="this.selectedLength > 0" v-if="this.firstPage != true" -->
-    <ContextMenu ref="menu" >
+    <ContextMenu ref="menu">
       <ul class="text-dark">
+        <li @click="getSelected(this.nowSelected.folderId)">
+          <img
+            src="@/assets/images/cmd/add@2x.png"
+            class="icon24px"
+          >open
+        </li>
+
         <!-- v-if="this.selectedLength = 0" -->
         <li
           v-if="canUse || !this.firstPage"
@@ -630,7 +636,7 @@ export default {
     //取消顯示checkbox 全選切換會失靈
     selectAllCheckbox(){
       if(this.renderCheckboxs) {
-        console.log('620')
+        console.log('selectAllCheckbox')
         let imgs = document.querySelectorAll('img');
         imgs.forEach(img=>{
             if(img.id!=='') {

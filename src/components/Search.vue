@@ -193,38 +193,28 @@ export default {
         data,{ headers: window.headers }).then((data) => { 
 
           console.log(data, 'admin');
-
-          // this.FolderTree = data.data
-          // console.log(this.FolderTree, 'this.FolderTree');
-          // this.arr.push(this.FolderTree)
-          
-
-          // console.log(this.FolderTree,'目前 folderTree 242');
-          // console.log(this.arr,'arr 243');
-
+          this.FolderTree = data.data
+          this.arr.push(this.FolderTree)        
         
         }).catch((error) => {
           console.log(error.response.data);        
         })
       }else{
-          this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`,
+        this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`,
         data,{ headers: window.headers }).then((data) => { 
 
           console.log(data, 'normal');
-
-          // this.FolderTree = data.data
-          // console.log(this.FolderTree, 'this.FolderTree');
-          // this.arr.push(this.FolderTree)
-          
-
-          // console.log(this.FolderTree,'目前 folderTree 242');
-          // console.log(this.arr,'arr 243');
-
+          this.FolderTree = data.data
+          this.arr.push(this.FolderTree)
         
         }).catch((error) => {
           console.log(error.response.data);        
         })
       }
+
+      console.log(this.FolderTree,'目前位置');
+      console.log(this.arr,'包含目前位置的tree');
+
     },
     
   }
