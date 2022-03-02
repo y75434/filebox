@@ -65,7 +65,7 @@ export default {
       console.log(subitem, "被點擊");
       subitem.isDark = true
       this.liselected = subitem.folderId
-      this.liselected = this.liselected.filter(x=>x.folderId == subitem.folderId)
+      // this.liselected = this.liselected.filter(x=>x.folderId == subitem.folderId)
       
       this.getSelfSettings(subitem.folderId)
 

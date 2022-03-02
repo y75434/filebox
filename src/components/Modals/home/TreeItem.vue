@@ -9,8 +9,8 @@
     >
       <item
         :tree="tree"
-        @subClick="treeClick"
       />
+      <!-- @subClick="treeClick" -->
     </div>
   </ul>
 </template>
@@ -30,7 +30,7 @@ export default {
    this.getRootFolder(),
   this.$bus.$on("notify:message", tree => {
     // 並將接收到的 message 傳給自己的 methods showAlert 去觸發 alert 事件。
-    console.log(tree,'33');
+    console.log(tree,'點到不同root');
     this.$emit('treeClick', tree);  
   });
 
@@ -45,16 +45,16 @@ export default {
             x.subFolders = null;
             return x;
           });
-          console.log(this.trees);//rootfolder
+          console.log(this.trees,'全部rootfolder');//rootfolder
         }).catch(error => {
           console.log(error.response.data);        
         })
   },   
  
-  treeClick(tree) {
-    console.log('AAA')
-    console.log(tree, 'father tree');        
-  },
+  // treeClick(tree) {
+  //   console.log('AAA')
+  //   console.log(tree, 'father tree');        
+  // },
  }
 }
 </script>

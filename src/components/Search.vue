@@ -147,7 +147,7 @@ export default {
   watch:{    
     nowRootFolder(){ 
       this.FolderTree = null
-       this.arr = []
+      this.arr = []
 
       console.log('rootFolder changed'); 
       this.getFolderTree(this.nowRootFolder.folderId) 
@@ -186,7 +186,7 @@ export default {
           "uerId": this.$store.getters.userId,
           "groups": this.$store.getters.group
         })   
-        console.log(data, 'foldertree request');
+        // console.log(data, 'foldertree request');
 
       if(this.$store.getters.isAdmin){
         this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
@@ -211,8 +211,8 @@ export default {
           console.log(error.response.data);        
         })
       }
-
-      console.log(this.FolderTree,'目前位置');
+// if(this.$store.getters.nowFolderId !== id){}
+      console.log(this.FolderTree,'目前位置的父層');
       console.log(this.arr,'包含目前位置的tree');
 
     },

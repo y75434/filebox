@@ -84,7 +84,7 @@
                   <input
                     type="checkbox"
                     class="form-check-input"
-                    :disabled="this.$store.getters.liselected.folderId === this.FolderSettings.folderId"
+                    :disabled="validate"
                     v-model="inhert"
                     @change="checkInhert($event)"
                     id="exampleCheck1"
@@ -172,6 +172,7 @@
                 </li>
                 <div
                   class=""
+                  v-if="FolderSettings.settings.accessPermissions"
                 >
                   <!--  -->
                   <li
@@ -273,7 +274,7 @@
                           <span>deny</span>
                         </div>
                       </li>
-
+<!-- disabled="this.editSetting.settings.accessPermissions.parent != []" -->
                       <li
                         v-for="item in PermissionTypes"
                         :key="item.id"
@@ -455,10 +456,14 @@ export default {
       inhert: false
     };
   },
-  watch:{ 
+  computed:{ 
     // tabData(){ 
     //   this.FolderSettings = this.tabData
     // },
+    validate(){
+     return this.$store.getters.liselected.folderId === this.FolderSettings.folderId
+    }
+    
   },
   methods: { 
     checkInhert(e){

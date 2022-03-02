@@ -12,6 +12,7 @@
     footer-bg-variant="white"
     cancel-variant="outline-secondary"
     ok-variant="danger"
+    :ok-disabled="delFormValidity"
   >
     <div
       class="radius"
@@ -78,7 +79,8 @@ export default {
 		return {
       userInput: '',
       personData: {},
-      mulUser:[]
+      mulUser:[],
+      info: ''
 
 		};
   },
@@ -88,11 +90,11 @@ export default {
     } 
   },
   //因key不同無法
-	// computed: {
-	// 	delFormValidity() {
-	// 		return this.delData.name || this.delData.userName || this.delData.Name || this.delData.groupName !== this.userInput;
-	// 	},
-	// },
+	computed: {
+		delFormValidity() {
+			return this.info !== this.userInput;
+		},
+	},
 	methods: {
     handleOk(bvModalEvt) {
         bvModalEvt.preventDefault()
@@ -100,16 +102,19 @@ export default {
         
   
         if(('userName' in this.personData) && (this.delData.userName === this.userInput)) {
+          this.info = this.personData.userName
           this.deleteUser(this.delData.userId)    
         }
         else if(('linkId' in this.personData ) && (this.delData.name === this.userInput)) {
+          this.info = this.personData.linkId
           this.deleteLink(this.delData.linkId)
         }
         else if(('groupName' in this.personData) && (this.delData.groupName === this.userInput)){
+          this.info = this.personData.groupName
           this.deleteGroup(this.delData.id) 
         }
-
         else if(('folderId' in this.personData) && (this.delData.name === this.userInput)){
+          this.info = this.personData.folderId
           this.deleteFolder(this.delData.folderId) 
         }
 
@@ -134,17 +139,8 @@ export default {
         })
       },
       deleteUser(id) {  
-      console.log('137',id);
-      console.log('138',this.delData);
-
-      // const data = JSON.stringify(
-      //   // {        
-      //   //   "linkId": item.linkId,
-      //   //   "userId": this.$store.getters.userId,
-      //   //   "username": this.$store.getters.currentUser
-      //   // }
-      //   { "id": id,"editor": this.$store.getters.userId,"editedBy":this.$store.getters.currentUser}
-      //   )   
+      // console.log('137',id);
+      // console.log('138',this.delData);  
 
       this.axios.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Users`
       ,{data:{ "id": id,"editor":this.$store.getters.userId}})
@@ -156,8 +152,8 @@ export default {
       }).catch(error => {
           console.log(error);          
         })
-      },
-      
+        setTimeout(() => {this.$emit('reload');},2000)
+      },     
       deleteLink(id) {  
         //它不會刪除記錄，而只是將刪除標誌設置為打開或關閉
         console.log('97',id);
@@ -172,6 +168,8 @@ export default {
       }).catch(error => {
           console.log(error);          
         })
+      setTimeout(() => {this.$emit('reload');},2000)
+
     },
     deleteFolder(id) {  
       this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
@@ -181,19 +179,10 @@ export default {
         "editorName":this.$store.getters.currentUser }})
         .then((data) => {
           console.log(data);
-
-          
-
-
-        // this.$store.dispatch('users/deleteUser', { userId: this.dataSource.id });
-        // this.$nextTick(() => { this.userInput = '';
-        // this.$bvModal.hide('modal-delete-user'); });
-
-
-
       }).catch(error => {
           console.log(error);          
         })
+        setTimeout(() => {this.$emit('reload');},2000)
     },
 		cancel() {
       this.userInput = '';

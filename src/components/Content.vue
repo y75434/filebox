@@ -277,17 +277,6 @@
     >
       <div class="">
         <b-col xs="12">
-          <!-- <b-table
-            responsive="true"
-            :items="getTable()"
-            class="col-12 b-col"
-            @contextmenu="operational($event)"
-            @row-hovered="rowSelected"
-            ref="selectableTable"
-            :select-mode="selectMode"      
-            hover
-            :filter="filter"
-          /> -->
           <div v-if="this.currentSelected === 1">
             <b-table
               :fields="usersfields"
@@ -298,9 +287,11 @@
               class="col-12 b-col text-dark cursor"            
               @contextmenu="operational($event)"
               @row-hovered="rowSelected"
+              @row-selected="selectMuti"
               @row-dblclicked="property"
               ref="selectableTable"
               :select-mode="selectMode"
+              selectable
               hover
             >
               <template #cell(firstName)="data">
@@ -350,6 +341,8 @@
               @contextmenu="operational($event)"
               @row-hovered="rowSelected"
               @row-dblclicked="EditGroupProperties"
+              @row-selected="selectMuti"
+              selectable
               ref="selectableTable"
               :select-mode="selectMode"
               hover
@@ -391,6 +384,8 @@
               @contextmenu="operational($event)"
               @row-hovered="rowSelected"
               @row-dblclicked="RootFolderProperties"
+              @row-selected="selectMuti"
+              selectable
               ref="selectableTable"
               :select-mode="selectMode"
               hover
@@ -431,6 +426,8 @@
               @contextmenu="operational($event)"
               @row-hovered="rowSelected"
               @row-dblclicked="EventProperties"
+              @row-selected="selectMuti"
+              selectable
               ref="selectableTable"
               :select-mode="selectMode"
               hover
@@ -472,6 +469,8 @@
               @contextmenu="operational($event)"
               @row-hovered="rowSelected"
               @row-dblclicked="checkOpen()"
+              @row-selected="selectMuti"
+              selectable
               ref="selectableTable"
               :select-mode="selectMode"
               hover
@@ -617,17 +616,19 @@
         ref="EditUserProperties"
         :tab-data="selected"
       />
-      <ImportUser ref="ImportUser" />
+      <ImportUser ref="ImportUser" @reload="reloadPage"/>
       <delete-user
         ref="DeleteUser"
         :del-data="selected"
+        @reload="reloadPage"
       />
-      <NewGroupProperties ref="NewGroupProperties" />
+      <NewGroupProperties ref="NewGroupProperties" @reload="reloadPage"/>
       <EditGroupProperties 
         :tab-data="selected"
         ref="EditGroupProperties"
+        @reload="reloadPage"
       />
-      <AddNewUser ref="AddNewUser" />
+      <AddNewUser ref="AddNewUser" @reload="reloadPage"/>
       <RootFolderProperties
         ref="RootFolderProperties"
         :tab-data="selected"
@@ -649,6 +650,11 @@
         :tab-data="selected"
       />
       <openLink :link-id="selected.id" />
+      <DeleteMul
+        ref="DeleteMul"
+        :mul-data="mutiSelected"
+        @reload="reloadPage"
+      />
     </div>
   </div>
 </template>
@@ -668,6 +674,8 @@ import EditPublicLink from'@/components/Modals/link/EditPublicLink.vue';
 import EventProperties from '@/components/Modals/events/EventProperties.vue';
 import RenameItem from '../components/Modals/home/RenameItem.vue';
 import openLink from'@/components/Modals/link/openLink.vue';
+import DeleteMul from '@/components/Modals/user/DeleteMul.vue';
+
 
 export default {
 name: "Content",
@@ -684,7 +692,9 @@ components:{
   RenameItem,
   AddRootFolderProperties,
   EditGroupProperties,
-  openLink
+  openLink,
+  DeleteMul
+
 },
 data() {
   return {
@@ -749,8 +759,9 @@ data() {
     ],
     linkitems: [],
     // selectedRow : null,
-    selected: {},
-    selectMode: 'single',
+    selected: {},//單選
+    mutiSelected:[],//多選
+    selectMode: 'multi',
     filter: null,
     sortDirection: 'All',
     events: [],//events api
@@ -871,6 +882,11 @@ methods: {
     this.selected = items
     //  console.log(this.selected);     
   },
+  selectMuti(items){
+    this.mutiSelected = items
+    console.log(this.mutiSelected,'多選');     
+
+  },
   Rename(){      
     this.$bvModal.show('RenameItem');
   },
@@ -881,7 +897,11 @@ methods: {
     this.$bvModal.show('ImportUser');
   },
   DeleteUser(){
-    this.$bvModal.show('modal-delete-user');
+    if(this.mutiSelected.length>1){
+      this.$bvModal.show('DeleteMul');
+    }else{
+      this.$bvModal.show('modal-delete-user');
+    }
   },
   EditPublicLink(){
     this.$bvModal.show('EditPublicLink');

@@ -73,7 +73,7 @@ export default {
           "groups": this.$store.getters.group
          }) 
 
-         console.log(data);
+        //  console.log(data);
 
         if(this.open && this.$store.getters.isAdmin) {
             this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
@@ -98,9 +98,11 @@ export default {
         }
     },   
     subClick(tree) {
+      //  要去監測該資料夾的上層並傳回search.vue
+      
        this.$bus.$emit("notify:message", tree);
       //this.$emit('subClick', tree);  
-      console.log(tree,'subitem tree');        
+      console.log(tree,'點擊sidebar 當前資料夾');        
     }, 
   }
 }

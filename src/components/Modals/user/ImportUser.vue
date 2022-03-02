@@ -293,6 +293,7 @@ props: { title: { type: String, default: 'Import User' },
       }).catch(error => {
           console.log(error);          
         })
+        setTimeout(() => {this.$emit('reload');},2000)
       },
       getUser(){
        
@@ -306,16 +307,11 @@ props: { title: { type: String, default: 'Import User' },
         })
       },
       connectAD() {
-        const headers = { 
-          'Content-Type': 'application/json', 
-          'Accept': 'application/json',
-          "Access-Control-Allow-Origin": '*' 
-        };
-
+       
         const data = JSON.stringify(this.ad)
 
         this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/connectDynamicAD`,
-        data,{ headers: headers })
+        data,{ headers: window.headers })
           .then((data) => {
 
 

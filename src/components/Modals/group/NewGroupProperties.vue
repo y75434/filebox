@@ -260,8 +260,6 @@ export default {
       })
        console.log(data);   
 
-
-
     this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/CreateGroup`,data,
     { headers: window.headers })
       .then((data) => {
@@ -271,9 +269,9 @@ export default {
     }).catch(error => {
         console.log(error);          
       })
+     setTimeout(() => {this.$emit('reload');},2000)
+
     },
-    
-  
     getUserTable () {  
       this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
         .then((data) => {          
@@ -285,26 +283,26 @@ export default {
         })
     },
     userSelected(item){
-     console.log(item);
+    //  console.log(item);
 
         
       //沒該用戶
-      if(this.groupUserRelations.filter(x=>x.userID == item.userId).length==0) {
-         this.groupUserRelations.push({ "userName": item.userName, "userID": item.userId, "roleId": item.selected });
-         console.log(this.groupUserRelations);
+      if(this.groupUserRelations.filter(x=>x.userId == item.userId).length==0) {
+         this.groupUserRelations.push({ "userName": item.userName, "userId": item.userId, "roleId": item.selected });
+        //  console.log(this.groupUserRelations);
 
       }else{
         //先把資料刪掉再加入更新資料
-        this.groupUserRelations = this.groupUserRelations.filter(x=>x.userID !== item.userId);
+        this.groupUserRelations = this.groupUserRelations.filter(x=>x.userId !== item.userId);
         this.groupUserRelations.push({ "userName": item.userName, "userID": item.userId, "roleId": item.selected });
-         console.log(this.groupUserRelations);
+        //  console.log(this.groupUserRelations);
 
       }
 
 
     },
     del(user){
-      this.groupUserRelations =this.groupUserRelations.filter(x=>x.userID !== user.userId);
+      this.groupUserRelations = this.groupUserRelations.filter(x=>x.userId !== user.userId);
 
     },
 

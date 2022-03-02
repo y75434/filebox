@@ -278,9 +278,7 @@ export default {
     //編輯資料外也可以設定層級和新增使用者
     updateGroup() {  
       
-
       const data = JSON.stringify({
-
           "id": this.group.id,
           // "groupName": this.group.groupName,
           "groupDescription": this.group.groupDescription,
@@ -296,19 +294,19 @@ export default {
           //     "parentGroupID": ""
           //   }
           // ]
-
       })
       console.log(data);
         
-
     this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroup`,
-    data,{ headers: window.headers })
-      .then((data) => {
+      data,{ headers: window.headers })
+        .then((data) => {
 
-      console.log(data);
-    }).catch(error => {
-        console.log(error);          
-      })
+        console.log(data);
+      }).catch(error => {
+          console.log(error);          
+        })
+      setTimeout(() => {this.$emit('reload');},2000)
+
     },
     getUserTable () {  
       this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)

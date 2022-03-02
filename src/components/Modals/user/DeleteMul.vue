@@ -1,6 +1,6 @@
 <template>
   <b-modal
-    id="deleteMul"
+    id="DeleteMul"
     centered
     :title="$t('TITLE.DELETE')"
     header-bg-variant="danger"
@@ -17,13 +17,13 @@
       class="radius"
     >
       <div class="p-3">
-        <h5 class="text-dark mb-3">
+        <!-- <h5 class="text-dark mb-3">
           {{ $t("HOME.DELETE") }}
 
-          <strong class="text-danger"> {{ mulData }}</strong>
-        </h5>
+          <strong class="text-danger"> {{ mulData }}3333</strong>
+        </h5> -->
         <h5 class="text-dark mb-3">
-          {{ $t("MODAL.PLEASETYPE") }}
+          確認刪除？
         </h5>
       </div>
     </div>
@@ -70,32 +70,61 @@ export default {
   },
  
 	methods: {
-    deleteMulUser() {  
-      this.axios.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Users/DeleteMultipleUser`
-      ,{data:{ "guids": this.mul,"editor": this.$store.getters.userId,"editedBy":this.$store.getters.currentUser}})
-        .then(() => {
-          this.$nextTick(() => { this.userInput = '';
-          this.$bvModal.hide('deleteMulUser'); });
+    deleteMul(bvModalEvt) {
+      bvModalEvt.preventDefault()
+      //只有user group有muti
+      if('userName' in this.mul[0]) {
+        this.deleteMulUser(this.mul)    
+      }
+      else if('groupName' in this.mul[0]){
+        this.deleteMulGroup(this.mul) 
+      }
 
-          // console.log(data);
-      }).catch(error => {
-          console.log(error);          
-        })
+        this.$bvModal.hide('DeleteMul'); 
+        //this.$parent.getTable()//不能
+
+      
     },
-    deleteMulGroup() {  
-      this.axios.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Users/DeleteMultipleGroups`
-      ,{data:{ "guids": this.mul,"editor": this.$store.getters.userId,"editedBy":this.$store.getters.currentUser}})
+    deleteMulUser() {  
+      this.mul = this.mul.map(x=>x.userId) 
+      console.log(this.mul);
+
+      this.axios.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Users/DeleteMultipleUser`
+      ,{data:{ "guids": this.mul,"editor": this.$store.getters.currentUser,"editedBy":this.$store.getters.userId}})
         .then(() => {
-          this.$nextTick(() => { this.userInput = '';
-          this.$bvModal.hide('deleteMulUser'); });
+          this.$nextTick(() => { this.$bvModal.hide('DeleteMul'); });
 
           // console.log(data);
       }).catch(error => {
           console.log(error);          
         })
+     
+     
+     setTimeout(() => {this.$emit('reload');},2000)
+       
+
+    },
+    deleteMulGroup() {
+
+      this.mul = this.mul.map(x=>x.groupId)
+      console.log(this.mul);
+      
+  
+      this.axios.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Users/DeleteMultipleGroups`
+      ,{data:{ "guids": this.mul,"editor": this.$store.getters.currentUser,"editedBy":this.$store.getters.userId}})
+        .then(() => {
+          this.$nextTick(() => { this.$bvModal.hide('DeleteMul'); });
+
+          // console.log(data);
+      }).catch(error => {
+          console.log(error);          
+        })
+
+      setTimeout(() => {this.$emit('reload');},2000)
+
     },
 		cancel() {
-      this.$bvModal.hide('deleteMulUser');
+      this.$bvModal.hide('DeleteMul');
 		},
 	},
 };
