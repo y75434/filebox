@@ -180,6 +180,7 @@ export default {
       this.$emit('back', id);
       this.treeSelected.id  = id
     },
+    //要跑這個func才會顯示路徑
     getFolderTree(id){
         const data = JSON.stringify({        
           "folderId": id,

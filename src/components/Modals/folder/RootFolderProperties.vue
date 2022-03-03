@@ -84,7 +84,7 @@
                   <input
                     type="checkbox"
                     class="form-check-input"
-                    :disabled="validate"
+                    :disabled="validateFather"
                     v-model="inhert"
                     @change="checkInhert($event)"
                     id="exampleCheck1"
@@ -287,11 +287,14 @@
                           {{ item.name }}
                         </label>
                         <div class=" w-100">
+                          <!-- :disabled="this.FolderSettings.settings.accessPermissions.parent" -->
                           <input
                             v-model="item.selected"
                             class="form-check-input mx-3"
                             type="radio"
                             value="allow"
+                            :disabled="item.inFather"
+                            :checked="item.inFather"
                             @change="permissionSelected(item)"
                             @dblclick="cleanchecked(item)"
                             :id="item.id"
@@ -301,6 +304,8 @@
                             class="form-check-input mx-3"
                             type="radio"
                             value="deny"
+                            :disabled="item.inFather"
+                            :checked="item.inFather"
                             @dblclick="cleanchecked(item)"
                             @change="permissionSelected(item)"
                             :id="item.id"
@@ -460,12 +465,23 @@ export default {
     // tabData(){ 
     //   this.FolderSettings = this.tabData
     // },
-    validate(){
+    validateFather(){
      return this.$store.getters.liselected.folderId === this.FolderSettings.folderId
-    }
+    },
     
   },
   methods: { 
+    checkPermission(item){
+      console.log(item);
+      
+      let cat = this.FolderSettings.settings.accessPermissions.self
+      let b = item.permissionTypeId
+
+
+        if (cat.indexOf(b)) {
+          item.inFather = true
+        }
+    },
     checkInhert(e){
       if(e.target.checked){
         this.editSetting = this.$store.getters.liselected
@@ -511,7 +527,19 @@ export default {
       .then((data) => {  
         this.PermissionTypes = data.data
         this.PermissionTypes.map(x=>x.active = false);
+        // let cat = this.FolderSettings.settings.accessPermissions.self
+        // this.PermissionTypes.map(x=>  if(cat.indexOf(x)){x.inFather = true} );
+        // this.PermissionTypes.map(x => x.hello).indexOf('stevie');
+
+
+        // var reduced = cat.reduce(function() {
+        //   if (cat.assigned) {
+        //     x.inFather = true          
+        //   }
+        //   return filtered;
+        // }, []);
         //  console.log(this.PermissionTypes);
+
          
       }).catch(() => {
       })
@@ -642,7 +670,7 @@ export default {
     },
     //點擊針對個人允許行為
     userCan(item){      
-      console.log('該用戶可用的行為', this.PermissionTypes);
+      // console.log('該用戶可用的行為', this.PermissionTypes);
       console.log('now user', item);
       this.haveUser = true
  

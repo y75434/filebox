@@ -55,10 +55,11 @@
         >
           {{ $t("GENERAL.CANCEL") }}
         </button>
-        <!-- :disabled="delFormValidity" -->
+        <!--  -->
 
         <button
           @click="handleOk"
+          :disabled="delFormValidity"
           type="button"
           class="sm-btn btn btn-danger text-white justify-content-center d-flex"
         >
@@ -92,16 +93,19 @@ export default {
   //因key不同無法
 	computed: {
 		delFormValidity() {
-			return this.info !== this.userInput;
+			return   this.info !== this.userInput;
+      // return this.validated ? true : false
+      // return this.delData.name || this.delData.userName || this.delData.Name || this.delData.groupName !== this.userInput;
+
 		},
 	},
 	methods: {
     handleOk(bvModalEvt) {
         bvModalEvt.preventDefault()
 
-        
-  
-        if(('userName' in this.personData) && (this.delData.userName === this.userInput)) {
+        if(('userName' in this.personData) 
+        // &&  (this.delData.userName === this.userInput)
+        ) {
           this.info = this.personData.userName
           this.deleteUser(this.delData.userId)    
         }
