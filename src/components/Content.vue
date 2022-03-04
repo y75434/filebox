@@ -884,7 +884,7 @@ methods: {
   },
   selectMuti(items){
     this.mutiSelected = items
-    console.log(this.mutiSelected,'多選');     
+    // console.log(this.mutiSelected,'多選');     
 
   },
   Rename(){      

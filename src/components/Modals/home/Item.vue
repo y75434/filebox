@@ -42,28 +42,31 @@ export default {
   data(){
     return {
       subitem:this.tree,
-      open: false   
+      open: false,
+      arr:[]  
     }
   },
   created(){
     // console.log(this.subitem, 'sub')
     this.start()  
+    this.$store.dispatch('setTreeArr', null);
+
   },
   methods:{ 
 
     start(){
-         this.open = !this.open
-        if(this.open) {
-            this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`)
-          .then((data) => { 
-            this.subitem = data.data;
-            // console.log(this.subitem);
-             this.open = !this.open
+        this.open = !this.open
+      if(this.open) {
+          this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`)
+        .then((data) => { 
+          this.subitem = data.data;
+          // console.log(this.subitem);
+            this.open = !this.open
 
-          }).catch(() => {
-            //  console.log(error.response.data);        
-          })
-        }
+        }).catch(() => {
+          //  console.log(error.response.data);        
+        })
+      }
     },     
     toggle(subitem){
         this.open = !this.open
@@ -80,7 +83,9 @@ export default {
             data,{ headers: window.headers })
             .then((data) => { 
               this.subitem = data.data;
-              // console.log(this.subitem);
+              // console.log(this.subitem,'展開的');
+              // this.arr.push(this.subitem) 
+
 
           }).catch(() => {
             //  console.log(error.response.data);        
@@ -100,8 +105,13 @@ export default {
     subClick(tree) {
       //  要去監測該資料夾的上層並傳回search.vue
       
-       this.$bus.$emit("notify:message", tree);
-      //this.$emit('subClick', tree);  
+      //  this.$bus.$emit("showAlert", tree);
+      //  this.$store.dispatch('setTreeArr', tree);
+      //不能刪
+      this.$bus.$emit("notify:message", tree);
+
+      this.$bus.$emit("showAlert", tree);
+      // this.$emit('subClick', tree);  這行沒用
       console.log(tree,'點擊sidebar 當前資料夾');        
     }, 
   }

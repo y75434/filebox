@@ -144,6 +144,11 @@ export default {
       arr: []
     }
   },
+  // computed:{
+  //   compare(){
+  //     this.$store.getters.treeArr
+  //   } 
+  // },
   watch:{    
     nowRootFolder(){ 
       this.FolderTree = null
@@ -159,6 +164,13 @@ export default {
 
   },
   methods: {
+    showAlert(){
+     this.$bus.$on("showAlert", tree => {
+      this.getFolderTree(tree.folderId);
+      console.log(tree);
+      
+    });    
+   },
    update() {
     this.$emit('update', this.searchQuery);   
     }, 
@@ -195,7 +207,23 @@ export default {
 
           console.log(data, 'admin');
           this.FolderTree = data.data
-          this.arr.push(this.FolderTree)        
+          this.arr.push(this.FolderTree) 
+
+
+          // console.log(this.$store.getters.treeArr, this.arr);
+
+          // if(compare){
+
+          // }
+
+
+          // if(this.$store.getters.treeArr != null){
+          //   this.arr = []
+          //   this.FolderTree = []
+          //   this.arr.push(this.$store.getters.treeArr)
+
+          // }
+       
         
         }).catch((error) => {
           console.log(error.response.data);        
@@ -207,6 +235,10 @@ export default {
           console.log(data, 'normal');
           this.FolderTree = data.data
           this.arr.push(this.FolderTree)
+          // if(this.$store.getters.treeArr){
+          //   this.arr.push(this.$store.getters.treeArr)
+          // }
+
         
         }).catch((error) => {
           console.log(error.response.data);        

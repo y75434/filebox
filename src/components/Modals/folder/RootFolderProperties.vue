@@ -495,6 +495,7 @@ export default {
       this.getFileTypes()
       this.getStorageUnit()
       // this.$refs.rootTreeItem.start()
+      this.$store.dispatch('setLiselected', this.tabData.folderId);
 
     },
     getSelfSettings(){
@@ -527,18 +528,13 @@ export default {
       .then((data) => {  
         this.PermissionTypes = data.data
         this.PermissionTypes.map(x=>x.active = false);
-        // let cat = this.FolderSettings.settings.accessPermissions.self
-        // this.PermissionTypes.map(x=>  if(cat.indexOf(x)){x.inFather = true} );
+        let cat = this.FolderSettings.settings.accessPermissions.self
+        this.PermissionTypes.map(x=> cat.indexOf(x.permissionTypeId) );
+        // this.PermissionTypes.map(x => x.permissionTypeId).indexOf(x.permissionTypeId);
+
+        console.log(this.PermissionTypes);
+        
         // this.PermissionTypes.map(x => x.hello).indexOf('stevie');
-
-
-        // var reduced = cat.reduce(function() {
-        //   if (cat.assigned) {
-        //     x.inFather = true          
-        //   }
-        //   return filtered;
-        // }, []);
-        //  console.log(this.PermissionTypes);
 
          
       }).catch(() => {
