@@ -93,9 +93,9 @@ export default {
   //因key不同無法
 	computed: {
 		delFormValidity() {
-			return   this.info !== this.userInput;
+			// return   this.info !== this.userInput;
       // return this.validated ? true : false
-      // return this.delData.name || this.delData.userName || this.delData.Name || this.delData.groupName !== this.userInput;
+      return this.delData.name !== this.userInput || this.delData.userName !== this.userInput || this.delData.Name !== this.userInput || this.delData.groupName !== this.userInput;
 
 		},
 	},

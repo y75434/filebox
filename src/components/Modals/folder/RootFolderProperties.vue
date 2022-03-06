@@ -294,7 +294,6 @@
                             type="radio"
                             value="allow"
                             :disabled="item.inFather"
-                            :checked="item.inFather"
                             @change="permissionSelected(item)"
                             @dblclick="cleanchecked(item)"
                             :id="item.id"
@@ -305,7 +304,6 @@
                             type="radio"
                             value="deny"
                             :disabled="item.inFather"
-                            :checked="item.inFather"
                             @dblclick="cleanchecked(item)"
                             @change="permissionSelected(item)"
                             :id="item.id"
@@ -474,19 +472,22 @@ export default {
     checkPermission(item){
       console.log(item);
       
-      let cat = this.FolderSettings.settings.accessPermissions.self
+      let father = this.FolderSettings.settings.accessPermissions.self
       let b = item.permissionTypeId
 
 
-        if (cat.indexOf(b)) {
+        if (father.indexOf(b)) {
           item.inFather = true
         }
     },
     checkInhert(e){
       if(e.target.checked){
         this.editSetting = this.$store.getters.liselected
-        console.log(this.editSetting, e.target.checked);
-        this.getSelfSettings()
+        this.editSetting.settings.accessPermissions.self[0].allow =  this.editSetting.settings.accessPermissions.parent[0].allow;
+        this.editSetting.settings.accessPermissions.self[0].deny =  this.editSetting.settings.accessPermissions.parent[0].deny;
+      
+
+        console.log(this.editSetting.settings.accessPermissions);
       }
     },
     start() {
@@ -498,23 +499,23 @@ export default {
       this.$store.dispatch('setLiselected', this.tabData.folderId);
 
     },
-    getSelfSettings(){
-      let id = this.$store.getters.liselected.folderId
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
-      .then((data) => {  
-        console.log('son setting',data.data);
-        this.selfSetting = data.data
+    // getSelfSettings(){
+    //   let id = this.$store.getters.liselected.folderId
+    //   this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
+    //   .then((data) => {  
+    //     console.log('son setting',data.data);
+    //     this.selfSetting = data.data
 
 
-      }).catch(() => {
-        // console.log(error.response.data);        
-      })
-    },
+    //   }).catch(() => {
+    //     // console.log(error.response.data);        
+    //   })
+    // },
     getFolderSettings(id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => {  
         this.FolderSettings = data.data
-        
+        console.log('AAAAAAAAAAAAAA');
         this.getUserTable()
         this.getGroupTable()
 
@@ -548,6 +549,12 @@ export default {
         this.nowUser.deny.push(item.permissionTypeId)
         this.nowUser.allow = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
       }
+
+      this.nowUser.allow.push('hello');
+      this.nowUser.allow.push('world');
+      console.log(this.nowUser);
+      console.log(this.editSetting);
+
     },
     cleanchecked(item) { 
       if(this.nowUser.allow.indexOf(item.permissionTypeId) != -1){
