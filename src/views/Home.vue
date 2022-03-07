@@ -767,6 +767,7 @@ export default {
           "items": this.selectedTrue,//array
           "user":  this.$store.getters.userId,
           "userName": this.$store.getters.currentUser,
+          "groups": this.$store.getters.group
         }
   
       console.log('download data',data);
@@ -781,7 +782,7 @@ export default {
       // this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`,
       // data,config)
 
-      this.axios.post('https://192.168.110.180:6102/DocManagement/Download', data,config)
+      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`, data,config)
 
       .then((res) => { 
         const dataFromHeader = res.headers['content-disposition'];
@@ -867,7 +868,9 @@ export default {
           "items": this.$store.getters.nowFile,//this.selectedTrue,
           "editor":  this.$store.getters.userId,
           "editorName": this.$store.getters.currentUser,
-          "destination": this.$store.getters.nowFolderId
+          "destination": this.$store.getters.nowFolderId,
+          "groups": this.$store.getters.group
+
         }
       );
       

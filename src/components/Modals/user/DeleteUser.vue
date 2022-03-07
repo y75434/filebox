@@ -180,7 +180,8 @@ export default {
       {data:{  
         "items": [ { "id": id, "type": 0 }],
         "editor": this.$store.getters.userId,
-        "editorName":this.$store.getters.currentUser }})
+        "editorName":this.$store.getters.currentUser,
+        "groups": this.$store.getters.group}})
         .then((data) => {
           console.log(data);
       }).catch(error => {

@@ -85,7 +85,7 @@
                     type="checkbox"
                     class="form-check-input"
                     :disabled="validateFather"
-                    v-model="inhert"
+                    v-model="editSetting.inhert"
                     @change="checkInhert($event)"
                     id="exampleCheck1"
                   >
@@ -172,11 +172,11 @@
                 </li>
                 <div
                   class=""
-                  v-if="FolderSettings.settings.accessPermissions"
+                  v-if="this.editSetting"
                 >
                   <!--  -->
                   <li
-                    v-for="item in FolderSettings.settings.accessPermissions.self"
+                    v-for="item in this.editSetting.settings.accessPermissions.self"
                     :key="item.id"
                     class="list-group-item border-0 p-0 mb-2"
                   >
@@ -426,6 +426,7 @@
 
 <script>
 import rootTreeItem from './rootTreeItem.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: "RootFolderProperties",
@@ -457,36 +458,49 @@ export default {
       haveUser: false,
       unitId: "",
       space: 0,
-      editSetting: {},
-      inhert: false
+      editSetting: {
+        settings:{
+          accessPermissions:{
+            self:[]
+          }
+        }
+      },
+      // storeChanged: this.$store.getters.liselected
     };
   },
   computed:{ 
-    // tabData(){ 
-    //   this.FolderSettings = this.tabData
+    // storeChanged(){ 
+    //   this.editSetting = this.$store.getters.liselected
     // },
     validateFather(){
      return this.$store.getters.liselected.folderId === this.FolderSettings.folderId
     },
-    
+    ...mapGetters(['liselected'])
   },
+  watch: {
+    liselected(){
+      // deep: true,
+      // handler() {
+        this.editSetting = this.$store.getters.liselected
+        this.PermissionTypes.map(x=>x.active = false);
+      }
+    // }
+   },
+   created(){
+     this.$store.dispatch('setLiselected', null)
+   },
   methods: { 
-    checkPermission(item){
-      console.log(item);
-      
-      let cat = this.FolderSettings.settings.accessPermissions.self
-      let b = item.permissionTypeId
-
-
-        if (cat.indexOf(b)) {
-          item.inFather = true
-        }
-    },
+    //inhert checkbox 
     checkInhert(e){
       if(e.target.checked){
-        this.editSetting = this.$store.getters.liselected
+        // this.editSetting.settings.accessPermissions.parent = this.$store.getters.liselected.settings.accessPermissions.parent
+        this.editSetting.settings.accessPermissions.parent = this.FolderSettings.settings.accessPermissions.self
+
         console.log(this.editSetting, e.target.checked);
-        this.getSelfSettings()
+        // this.getSelfSettings()
+      }else{
+        this.editSetting.settings.accessPermissions.parent = []
+        console.log(this.editSetting, e.target.checked);
       }
     },
     start() {
@@ -494,27 +508,16 @@ export default {
       this.getPermissionTypes()
       this.getFileTypes()
       this.getStorageUnit()
-      // this.$refs.rootTreeItem.start()
       this.$store.dispatch('setLiselected', this.tabData.folderId);
 
     },
-    getSelfSettings(){
-      let id = this.$store.getters.liselected.folderId
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
-      .then((data) => {  
-        console.log('son setting',data.data);
-        this.selfSetting = data.data
-
-
-      }).catch(() => {
-        // console.log(error.response.data);        
-      })
-    },
-    getFolderSettings(id){
+    getFolderSettings(id){  
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => {  
         this.FolderSettings = data.data
-        
+        this.editSetting = this.FolderSettings
+        console.log(this.FolderSettings, this.editSetting);
+
         this.getUserTable()
         this.getGroupTable()
 
@@ -528,16 +531,10 @@ export default {
       .then((data) => {  
         this.PermissionTypes = data.data
         this.PermissionTypes.map(x=>x.active = false);
-        let cat = this.FolderSettings.settings.accessPermissions.self
-        this.PermissionTypes.map(x=> cat.indexOf(x.permissionTypeId) );
-        // this.PermissionTypes.map(x => x.permissionTypeId).indexOf(x.permissionTypeId);
-
+    
         console.log(this.PermissionTypes);
-        
-        // this.PermissionTypes.map(x => x.hello).indexOf('stevie');
-
          
-      }).catch(() => {
+        }).catch(() => {
       })
     },
     permissionSelected(item){
@@ -563,7 +560,7 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileTypes`)
       .then((data) => {  
         this.FileTypes = data.data
-        this.FolderSettings.settings.restrictedFileTypes.forEach(x=>{
+        this.editSetting.settings.restrictedFileTypes.forEach(x=>{
           this.FileTypes.forEach(Types=>{
             if(Types.fileTypeId == x) {
               Types.active = true;
@@ -577,17 +574,16 @@ export default {
     },
     //檔案類型勾選即加入api
     typeSelected(item){
-      this.FolderSettings.settings.restrictedFileTypes = []
+      if(this.editSetting.settings.restrictedFileTypes == null){
+        this.editSetting.settings.restrictedFileTypes = []
+      }
       if(item.active){
-        this.FolderSettings.settings.restrictedFileTypes.push(item.fileTypeId)
+        this.editSetting.settings.restrictedFileTypes.push(item.fileTypeId)
       } else {
-        this.FolderSettings.settings.restrictedFileTypes = this.FolderSettings.settings.restrictedFileTypes.filter(x=>x
-          !==item.fileTypeId);
+        this.editSetting.settings.restrictedFileTypes = this.editSetting.settings.restrictedFileTypes.filter(x=>x !== item.fileTypeId);
       }
 
     },
-    
-
     getStorageUnit(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/Storage/Unit`)
       .then((data) => {  
@@ -604,25 +600,28 @@ export default {
     },
     putFolder(){
 
-      if(this.inhert){
 
         const data = JSON.stringify([
           {
             "folderId":this.editSetting.folderId,
             "name":this.editSetting.name,
             "description":"string",
-            "inherit":true,
+            "inherit": this.editSetting.inhert,
             "settings":{
               "storage":{ "space": this.space, "unitId": this.unitId },
-              "restrictedFileTypes":this.FolderSettings.settings.restrictedFileTypes,
+              "restrictedFileTypes":this.editSetting.settings.restrictedFileTypes,
               "accessPermissions":{
-                "self":this.FolderSettings.settings.accessPermissions.self,
-                "parent":this.FolderSettings.settings.accessPermissions.self}
+                "self":this.editSetting.settings.accessPermissions.self,
+                "parent":this.editSetting.settings.accessPermissions.parent
+              }
             },
             "editor": this.$store.getters.userId, 
             "editorName":this.$store.getters.currentUser,
           }
         ])
+
+        console.log(data);
+
 
         this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
           data,{ headers: window.headers }).then((data) => { 
@@ -636,13 +635,12 @@ export default {
         
           })
 
-      }
+      
 
       //if no parent
       // this.FolderSettings.settings.accessPermissions.parent = []
 
-         this.editSetting = {}
-         this.inhert = false
+      this.editSetting = {}
       
 
     },
@@ -671,26 +669,48 @@ export default {
       this.haveUser = true
  
       this.nowUser = item
+
       item.allow.forEach(x=>{
+        this.PermissionTypes.forEach(permission=>{
+          if(permission.permissionTypeId == x) {
+            permission.selected = 'allow';
+          }
+        })
+      });
+
+       item.deny.forEach(x=>{
+        this.PermissionTypes.forEach(permission=>{
+          if(permission.permissionTypeId == x) {
+            permission.selected = 'deny';
+          }
+        })
+      });
+
+      if(this.editSetting.inhert){
+        this.editSetting.settings.accessPermissions.parent.forEach(x=>{
           this.PermissionTypes.forEach(permission=>{
             if(permission.permissionTypeId == x) {
-              permission.active = true;
+              permission.inFather = true;
             }
           })
-      });
-      
-      // console.log('nowUser',this.nowUser);
+        });
+        console.log(this.editSetting.settings.accessPermissions.parent);
+
+      }
+
+      console.log(this.PermissionTypes);
+
     },
     //左邊切換
     userSelected(item){
       console.log(item ,'item');
 
-      if(!this.FolderSettings.settings.accessPermissions.self){
-        this.FolderSettings.settings.accessPermissions.self = []
+      if(!this.editSetting.settings.accessPermissions.self){
+        this.editSetting.settings.accessPermissions.self = []
       }
 
-      if(this.FolderSettings.settings.accessPermissions.self.filter(x=>x.memberId == item.userId).length==0) {
-       this.FolderSettings.settings.accessPermissions.self.push(
+      if(this.editSetting.settings.accessPermissions.self.filter(x=>x.memberId == item.userId).length==0) {
+       this.editSetting.settings.accessPermissions.self.push(
          { 
            "memberId": item.userId, 
            "memberName": item.userName, 
@@ -700,13 +720,13 @@ export default {
          } 
        );
        console.log('這裡要改');
-       console.log('目前選擇名單', this.FolderSettings.settings.accessPermissions.self);
+       console.log('目前選擇名單', this.editSetting.settings.accessPermissions.self);
       }   
     },
     groupSelected(item){
       console.log(item ,'now select group');
-      if(this.FolderSettings.settings.accessPermissions.self.filter(x=>x.memberId == item.id).length==0) {
-       this.FolderSettings.settings.accessPermissions.self.push(
+      if(this.editSetting.settings.accessPermissions.self.filter(x=>x.memberId == item.id).length==0) {
+       this.editSetting.settings.accessPermissions.self.push(
          { 
            "memberId": item.id, 
            "memberName": item.groupName, 
@@ -715,14 +735,14 @@ export default {
            "deny": []
          } 
        );
-       console.log('目前選擇名單', this.FolderSettings.settings.accessPermissions.self);
+       console.log('目前選擇名單', this.editSetting.settings.accessPermissions.self);
       }
     },   
     //ok
     del(user){
-     console.log('user',this.FolderSettings.settings.accessPermissions.self);
+     console.log('user',this.editSetting.settings.accessPermissions.self);
 
-     this.FolderSettings.settings.accessPermissions.self=  this.FolderSettings.settings.accessPermissions.self.filter(x=>x.memberId !==user.memberId)    
+     this.editSetting.settings.accessPermissions.self = this.editSetting.settings.accessPermissions.self.filter(x=>x.memberId !==user.memberId)    
 
     },
     

@@ -39,6 +39,8 @@ export default {
       this.axios
         .get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
         .then((data) => {
+          console.log(data.data);
+          
           this.trees = data.data;
           this.trees.map((x) => {
             x.hasChildren = false;
@@ -46,6 +48,12 @@ export default {
             return x;
           });
           //取得該folder tree
+          console.log(this.id);
+          
+          if(!this.id){
+           this.id = this.$store.getters.liselected.folderId
+          }
+
           this.trees = this.trees.filter(i => i.folderId === this.id)
 
           console.log(this.trees[0],'重新讀取root'); 

@@ -61,7 +61,9 @@ export default {
           "parentFolderId": this.$store.getters.nowFolderId, 
           "name": this.name,
           "uploadedBy": this.$store.getters.userId,
-          "uploaderName":  this.$store.getters.currentUser
+          "uploaderName":  this.$store.getters.currentUser,
+          "groups": this.$store.getters.group
+
         }
 
       )

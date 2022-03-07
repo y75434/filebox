@@ -199,6 +199,8 @@ export default {
           UploadedBy: this.$store.getters.userId,
           UploaderName:  this.$store.getters.currentUser,
           ConflictType: 0,
+          groups: this.$store.getters.group
+
       }));
 
       // console.log(formData);

@@ -71,8 +71,8 @@ export default {
         const data = JSON.stringify({
           "id": this.tabData.userId,
           "name": this.personData.name,
-          "editor": this.$store.getters.currentUser,
-          "editedBy":this.$store.getters.userId
+          "editorName": this.$store.getters.currentUser,
+          "editor":this.$store.getters.userId,
 
         })
         console.log(data);
@@ -113,7 +113,8 @@ export default {
               "type": this.personData.type,
               "name": this.personData.name,
               "editor":  this.$store.getters.userId,
-              "editorName":  this.$store.getters.currentUser
+              "editorName":  this.$store.getters.currentUser,
+              "groups": this.$store.getters.group
 
             })
             
