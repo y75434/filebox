@@ -162,7 +162,7 @@
               <img
                 src="@/assets/images/file/publiclink@2x.png"
                 class="nav-icon pe-1 mx-auto"
-
+                :disabled="this.selectedLength == 0"
                 :style=" this.selectedLength > 0 ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="d-sm-none d-md-block d-lg-block text-truncate">{{ $t("HOME.CREATEPUBLICLINK") }}
@@ -417,12 +417,12 @@
     <!-- v-if="this.selectedLength > 0" v-if="this.firstPage != true" -->
     <ContextMenu ref="menu">
       <ul class="text-dark">
-        <li @click="getSelected(this.nowSelected.folderId)">
+        <!-- <li @click="getSelected(this.nowSelected.folderId)">
           <img
             src="@/assets/images/cmd/add@2x.png"
             class="icon24px"
           >open
-        </li>
+        </li> -->
 
         <!-- v-if="this.selectedLength = 0" -->
         <li
@@ -493,8 +493,14 @@
       </ul>
     </ContextMenu>
 
-    <UploadFiles ref="UploadFiles" />
-    <create-folder ref="CreateFolder" />
+    <UploadFiles
+      ref="UploadFiles"
+      @reload="reloadPage"
+    />
+    <create-folder
+      ref="CreateFolder"
+      @reload="reloadPage"
+    />
     <rename-item
       ref="RenameItem"
       :tab-data="nowSelected"
@@ -502,12 +508,17 @@
     <delete-folder
       @delupdate="delUpdate"
       @getSelected="getSelected"
+      @reload="reloadPage"
       ref="DeleteFolder"
     />
-    <manage-public-link ref="ManagePublicLink" />
+    <manage-public-link
+      ref="ManagePublicLink" 
+      @reload="reloadPage"
+    />
     <AddEditPublicLink
       ref="AddEditPublicLink"
       :tab-data="nowSelected"
+      @reload="reloadPage"
     />
       
     <div class="dqbz-footer">
@@ -649,6 +660,7 @@ export default {
       }
     },
     handler(event) { event.preventDefault(); }, 
+    reloadPage() { window.location.reload(); },
     showMenu(event) { this.$refs.menu.open(event); },
     // 子層輸入傳父層
     selfUpdate(val) {
@@ -915,6 +927,7 @@ export default {
 
     this.$store.dispatch('nowFile', null);
     this.selectedTrue = []
+    this.reloadPage()
 
     },
    

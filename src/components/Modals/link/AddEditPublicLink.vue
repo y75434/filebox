@@ -314,11 +314,12 @@ export default {
       this.axios.post(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/Create`,
       data,{ headers: window.headers }) .then((data) => {
         console.log(data);
-      }).catch(error => {
-          console.log(error.response.data);          
+        }).catch(error => {
+            console.log(error.response.data);          
         })
-    },
-    
+
+        setTimeout(() => {this.$emit('reload');},2000)
+    }, 
     GenerateURL() { 
       this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GenerateURL`) 
         .then((data) => {
@@ -329,9 +330,6 @@ export default {
           console.log(error.response.data);          
         })
     }, 
-
-     
-      
     clear(){
       this.personData = ""
     },

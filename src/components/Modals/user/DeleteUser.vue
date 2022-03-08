@@ -88,48 +88,49 @@ export default {
   watch:{ 
     delData(){ 
       this.personData = this.delData
+      if(('userName' in this.personData)) {
+        this.info = this.personData.userName
+      }
+      else if(('linkId' in this.personData)) {
+        this.info = this.personData.name
+      }
+      else if(('groupName' in this.personData)){
+        this.info = this.personData.groupName
+      }
+      else if(('folderId' in this.personData)){
+        this.info = this.personData.name
+      }
     } 
   },
-  //因key不同無法
 	computed: {
 		delFormValidity() {
-			// return   this.info !== this.userInput;
-      // return this.validated ? true : false
-      return this.delData.name !== this.userInput || this.delData.userName !== this.userInput || this.delData.Name !== this.userInput || this.delData.groupName !== this.userInput;
-
+      return this.info !== this.userInput;
 		},
 	},
 	methods: {
     handleOk(bvModalEvt) {
         bvModalEvt.preventDefault()
 
-        if(('userName' in this.personData) 
-        // &&  (this.delData.userName === this.userInput)
-        ) {
-          this.info = this.personData.userName
+        if(('userName' in this.personData)){
           this.deleteUser(this.delData.userId)    
         }
-        else if(('linkId' in this.personData ) && (this.delData.name === this.userInput)) {
-          this.info = this.personData.linkId
+        else if(('linkId' in this.personData)){
           this.deleteLink(this.delData.linkId)
         }
-        else if(('groupName' in this.personData) && (this.delData.groupName === this.userInput)){
-          this.info = this.personData.groupName
+        else if(('groupName' in this.personData)){
           this.deleteGroup(this.delData.id) 
         }
-        else if(('folderId' in this.personData) && (this.delData.name === this.userInput)){
-          this.info = this.personData.folderId
+        else if(('folderId' in this.personData)){
           this.deleteFolder(this.delData.folderId) 
         }
 
         this.$nextTick(() => { 
           this.userInput = '';
           this.$bvModal.hide('modal-delete-user'); 
-          //this.$parent.getTable()//不能
+          setTimeout(() => {this.$emit('reload');},2000)
+
 
         });
-
-
 
       },
      deleteGroup(id) {  

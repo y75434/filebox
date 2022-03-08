@@ -87,7 +87,6 @@
                     :disabled="validateFather"
                     v-model="editSetting.inhert"
                     @change="checkInhert($event)"
-                    id="exampleCheck1"
                   >
                   <label
                     class="form-check-label"
@@ -187,6 +186,7 @@
                         @dblclick="userCan(item)"
                         src="@/assets/images/icon/Union.png"
                         class="icon24px"
+                        :style=" item.inFather ? {opacity:'0.3'} : {opacity:'1'}"
                       >
                       <!--  -->
                       <img
@@ -194,6 +194,7 @@
                         @dblclick="userCan(item)"
                         src="@/assets/images/icon/group@2x.png"
                         class="icon24px"
+                        :style=" item.inFather ? {opacity:'0.3'} : {opacity:'1'}"
                       >
                       <label
                         class="form-check-label"
@@ -204,6 +205,7 @@
                           @click="del(item)"
                           src="@/assets/images/cmd/del.png"
                           class="icon-20px"
+                          v-if="!item.inFather"
                         >
                       </label>
                     </div>
@@ -469,9 +471,7 @@ export default {
     };
   },
   computed:{ 
-    // storeChanged(){ 
-    //   this.editSetting = this.$store.getters.liselected
-    // },
+    
     validateFather(){
      return this.$store.getters.liselected.folderId === this.FolderSettings.folderId
     },
@@ -483,6 +483,21 @@ export default {
       // handler() {
         this.editSetting = this.$store.getters.liselected
         this.PermissionTypes.map(x=>x.active = false);
+
+        if(this.editSetting.inhert){
+          this.editSetting.settings.accessPermissions.parent.forEach(x=>{
+            this.editSetting.settings.accessPermissions.self.forEach(item=>{
+              if(item.memberId == x.memberId) {
+                item.inFather = true;
+              }else{
+                item.inFather = false;
+              }
+            })
+          });
+        }
+
+        console.log(this.editSetting.settings.accessPermissions.self);
+
       }
     // }
    },
@@ -513,11 +528,14 @@ export default {
     },
     getFolderSettings(id){  
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
-      .then((data) => {  
+      .then((data) => { 
+        //初始化資料顯示 
         this.FolderSettings = data.data
         this.editSetting = this.FolderSettings
         console.log(this.FolderSettings, this.editSetting);
-
+        
+        
+       
         this.getUserTable()
         this.getGroupTable()
 
@@ -685,20 +703,30 @@ export default {
           }
         })
       });
+      
 
-      if(this.editSetting.inhert){
-        this.editSetting.settings.accessPermissions.parent.forEach(x=>{
-          this.PermissionTypes.forEach(permission=>{
-            if(permission.permissionTypeId == x) {
-              permission.inFather = true;
-            }
-          })
-        });
-        console.log(this.editSetting.settings.accessPermissions.parent);
+       if(this.editSetting.settings.accessPermissions.parent[0].allow.length > 0){
+          this.editSetting.settings.accessPermissions.parent[0].allow.forEach(x=>{
+            this.PermissionTypes.forEach(permission=>{
+              if(permission.permissionTypeId == x) {
+                permission.inFather = true;
+              }
+            })
+          });
+        }
 
-      }
+        if(this.editSetting.settings.accessPermissions.parent[0].deny.length > 0){
+          this.editSetting.settings.accessPermissions.parent[0].deny.forEach(x=>{
+            this.PermissionTypes.forEach(permission=>{
+              if(permission.permissionTypeId == x) {
+                permission.inFather = true;
+              }
+            })
+          });
+        }
+        // console.log(this.editSetting.settings.accessPermissions.parent);
 
-      console.log(this.PermissionTypes);
+      // console.log(this.PermissionTypes);
 
     },
     //左邊切換

@@ -810,7 +810,7 @@ methods: {
    // this.eventsSelected = checked ? this.events.slice() : [] 
   },
   handler(event) { event.preventDefault(); }, 
-  reloadPage() {window.location.reload(); },
+  reloadPage() { window.location.reload(); },
   getData() {
     eventBus.$on('menuItems',(item)=>{
     this.currentSelected = item.id;

@@ -229,6 +229,7 @@ export default {
       })
 
       this.clear()
+      setTimeout(() => {this.$emit('reload');},2000)
 
     },
     onFileChange(e) {

@@ -3,12 +3,13 @@
     <!-- {{ subitem }} -->
     <b-iconstack font-scale="1" rotate="90" @click.stop="toggle(subitem)"
     >
-    <!-- v-if="subitem.hasChildren " -->
+    <!--  -->
       <b-icon
         stacked
         icon="chevron-right"
         shift-h="0"
-        variant="success"    
+        variant="success"
+        v-if="subitem.hasChildren "    
       />
     </b-iconstack>
     <img
@@ -60,7 +61,7 @@ export default {
           this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`)
         .then((data) => { 
           this.subitem = data.data;
-          // console.log(this.subitem);
+          console.log(this.subitem, this.open);
             this.open = !this.open
 
         }).catch(() => {
@@ -78,12 +79,12 @@ export default {
 
         //  console.log(data);
 
-        if(this.open && this.$store.getters.isAdmin) {
+        if(this.$store.getters.isAdmin) {
             this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
             data,{ headers: window.headers })
             .then((data) => { 
               this.subitem = data.data;
-              // console.log(this.subitem,'展開的');
+              console.log(this.subitem,'admin',this.open);
               // this.arr.push(this.subitem) 
 
 
@@ -95,7 +96,7 @@ export default {
            data,{ headers: window.headers })
           .then((data) => { 
             this.subitem = data.data;
-            // console.log(this.subitem);
+            console.log(this.subitem, 'normal',this.open);
 
           }).catch(() => {
             //  console.log(error.response.data);        
@@ -110,7 +111,7 @@ export default {
       //不能刪
       this.$bus.$emit("notify:message", tree);
 
-      this.$bus.$emit("showAlert", tree);
+      // this.$bus.$emit("showAlert", tree);
       // this.$emit('subClick', tree);  這行沒用
       console.log(tree,'點擊sidebar 當前資料夾');        
     }, 

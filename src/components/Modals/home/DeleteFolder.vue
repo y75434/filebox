@@ -74,12 +74,8 @@ export default {
   
   methods: {
     deleteDoc(){
-
       // console.log('nowFile',this.$store.getters.nowFile)
-
-
       //刪一般file , folder ok 
-
       this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,{ data: { 
         "items": this.$store.getters.nowFile, 
         "editor":this.$store.getters.userId,
@@ -90,12 +86,13 @@ export default {
           this.$swal.fire({ title: '$t("GENERAL.DELSUCCESS")', icon: 'success' })
         }).catch(() => {
           this.$swal.fire({ title:  '$t("MODAL.FAILURE")', icon: 'error' })
-      
         })
 
         this.$nextTick(() => { 
           // this.userInput = '';
           this.$bvModal.hide('DeleteFolder'); 
+          setTimeout(() => {this.$emit('reload');},2000)
+
 
         });
 

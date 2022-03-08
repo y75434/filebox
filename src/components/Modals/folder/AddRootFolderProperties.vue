@@ -117,7 +117,8 @@
                   <input
                     type="checkbox"
                     class="form-check-input"
-                    id="exampleCheck1"
+                    :disabled="inhert"
+                    v-model="inhert"
                   >
                   <label
                     class="form-check-label"
@@ -476,6 +477,7 @@ export default {
         deny: []
       },
       haveUser: false,
+      inhert: false
     };
   },
   methods: {  
@@ -504,6 +506,7 @@ export default {
       }).catch(error => {
         console.log(error.response.data);        
       })
+      setTimeout(() => {this.$emit('reload');},2000)
     },
    
     getPermissionTypes(){

@@ -83,6 +83,7 @@ export default {
       this.$nextTick(() => { 
         this.name = ""
         this.$bvModal.hide('CreateFolder'); 
+        setTimeout(() => {this.$emit('reload');},2000)
       });
     },
   },
