@@ -53,10 +53,11 @@ export default {
       open: false,
       liselected: "",
       selectedId:0,
-      selfSetting: []
+      selfSetting: [],
+      
     }
   },
-  created() {
+  mounted() {
     // console.log(this.subitem, "sub");
   },
  
@@ -65,48 +66,11 @@ export default {
       console.log(subitem, "被點擊");
       subitem.isDark = true
       this.liselected = subitem.folderId
-      // this.liselected = this.liselected.filter(x=>x.folderId == subitem.folderId)
-      
+      // this.liselected = this.liselected.filter(x=>x.folderId == subitem.folderId)     
       this.getSelfSettings(subitem.folderId)
-
-
       //  console.log(this.liselected, "this.liselected");
     },
-    //想要一次跑完根資料夾樹狀
-    test(){
-      const data = JSON.stringify({        
-          "folderId": "3d6555db-0d52-4226-a976-ed8e6124daf2",
-          "uerId": this.$store.getters.userId,
-          "groups": this.$store.getters.group
-         }) 
-
-
-        this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
-        data,{ headers: window.headers })
-          .then((data) => {
-            this.testTree = data.data;
-
-            if (this.testTree.subFolders ) {
-
-              const data = JSON.stringify({ "folderId":
-"3d6555db-0d52-4226-a976-ed8e6124daf2", "uerId": this.$store.getters.userId,
-"groups": this.$store.getters.group })
-
-
-              this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
-              data,{ headers: window.headers }) .then((data) => {
-
-            console.log(this.subitem, '沒東西');
-            }) .catch(() => { // console.log(error.response.data); });
-
-            
-
-          })
-          .catch(() => {
-            //  console.log(error.response.data);
-          });
-      }
-    },
+    
     toggle(subitem) {
       
       this.open = !this.open;

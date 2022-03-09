@@ -467,6 +467,8 @@ export default {
           }
         }
       },
+      testTree: {},
+      arr:[],
       // storeChanged: this.$store.getters.liselected
     };
   },
@@ -479,10 +481,22 @@ export default {
   },
   watch: {
     liselected(){
-      // deep: true,
-      // handler() {
         this.editSetting = this.$store.getters.liselected
+        // console.log(this.editSetting.folderId);
         this.PermissionTypes.map(x=>x.active = false);
+        //arr為該rootfolder整個tree
+        this.arr.forEach((item,index)=>{
+
+          if(this.editSetting.folderId == item.folderId && this.arr[index - 1] !== undefined){
+            console.log(this.arr[index - 1],'上一層');
+            let id = this.arr[index - 1].folderId
+            //更改foldersetting 物件資料
+            this.getFolderSettings(id)
+          }else{
+            //如果this.arr[index - 1] == undefined 直接讓 editsetting 值給 foldersetting
+            this.FolderSettings = this.editSetting
+          }
+        })
 
         if(this.editSetting.inhert){
           this.editSetting.settings.accessPermissions.parent.forEach(x=>{
@@ -499,7 +513,6 @@ export default {
         console.log(this.editSetting.settings.accessPermissions.self);
 
       }
-    // }
    },
    created(){
      this.$store.dispatch('setLiselected', null)
@@ -524,15 +537,48 @@ export default {
       this.getFileTypes()
       this.getStorageUnit()
       this.$store.dispatch('setLiselected', this.tabData.folderId);
+      this.arr = []
+      this.testTree = {}
+      this.test(this.tabData.folderId)
 
+
+    },
+    //想要一次跑完根資料夾樹狀
+    test(id){
+      // console.log('test', id);
+      
+      const data = JSON.stringify({        
+          "folderId": id,
+          "uerId": this.$store.getters.userId,
+          "groups": this.$store.getters.group
+         }) 
+
+        this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
+        data,{ headers: window.headers })
+          .then((data) => {
+            this.testTree = data.data;
+            // console.log(this.testTree);          
+            this.arr.push(this.testTree)
+              if (this.testTree.subFolders.length > 0 ) {
+                this.test(this.testTree.subFolders[0].folderId)
+              }
+            })
+            .catch(() => { // console.log(error.response.data); 
+            });
+            console.log(this.arr, 'arr');
     },
     getFolderSettings(id){  
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => { 
+        console.log(id);
+
         //初始化資料顯示 
         this.FolderSettings = data.data
-        this.editSetting = this.FolderSettings
-        console.log(this.FolderSettings, this.editSetting);
+        //初始化才需要兩物件一樣
+        if(this.$store.getters.liselected == id){
+          this.editSetting = this.FolderSettings
+        }
+        console.log(this.FolderSettings, this.editSetting,'初始化資料顯示');
         
         
        
