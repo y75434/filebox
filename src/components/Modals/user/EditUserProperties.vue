@@ -271,12 +271,12 @@
 <script>
 import { extend } from 'vee-validate';
 import { regex } from 'vee-validate/dist/rules';
+import i18n from '@/common/plugins/vue-i18n';
 
 extend('regex', {
     ...regex,
-    message: 'Password needs to contain 1 lower case, 1 upper case etc  至少八個字符，至少一個大寫字母，一個小寫字母，一個數字和一個特殊字符',
+    message: i18n.t('MODAL.PWPOLICY')
 })
-
 
 
 export default {

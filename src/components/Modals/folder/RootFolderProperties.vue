@@ -539,12 +539,12 @@ export default {
       this.$store.dispatch('setLiselected', this.tabData.folderId);
       this.arr = []
       this.testTree = {}
-      this.test(this.tabData.folderId)
+      this.getRootTree(this.tabData.folderId)
 
 
     },
     //想要一次跑完根資料夾樹狀
-    test(id){
+    getRootTree(id){
       // console.log('test', id);
       
       const data = JSON.stringify({        
@@ -560,7 +560,7 @@ export default {
             // console.log(this.testTree);          
             this.arr.push(this.testTree)
               if (this.testTree.subFolders.length > 0 ) {
-                this.test(this.testTree.subFolders[0].folderId)
+                this.getRootTree(this.testTree.subFolders[0].folderId)
               }
             })
             .catch(() => { // console.log(error.response.data); 

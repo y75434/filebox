@@ -1,122 +1,113 @@
 <template>
   <b-modal
     id="ResetNewPassword"
-    class="modal-content"
+    class="modal-content p-0"
     body-text-variant="warning"
     centered
     :title="$t('TITLE.RESETNEWPASSWORD')"
     header-bg-variant="bgheader"
-    cancel-variant="outline-secondary"
-    ok-variant="primary"
     body-bg-variant="bgmodal"
     footer-bg-variant="bgmodal"
+    hide-footer
   >
-    <validation-observer class="modal-popout-bg p-3">
-      <h3 class="text-center dark-blue">
-        {{ $t("GENERAL.RESETNEWPASSWORD") }}
-      </h3>
+    <div class="modal-body ">
+      <validation-observer class="modal-popout-bg  p-0">
+        <h3 class="text-center dark-blue">
+          {{ $t("GENERAL.RESETNEWPASSWORD") }}
+        </h3>
 
-      <div class="mb-3">
-        <label
-          for="username"
-          class="form-label"
-        >username</label>
-        <input
-          disabled
-          type="username"
-          class="form-control"
-          v-model="this.$store.getters.currentUser"
-        >
-      </div>
-
-      <div class="mb-3">
-        <label
-          for="oldpassword"
-          class="form-label"
-        >old password</label>
-        <input
-          type="password"
-          class="form-control"
-          v-model="oldPassword"
-        >
-      </div>
-
-
-      <div class="mb-3">
-        <validation-provider
-          v-slot="{ errors,classes}"
-          :rules="{ required: true, regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).*$/, min:8,}"
-          vid="password"
-        >
+        <div class="mb-3">
           <label
-            for="Newpassword"
+            for="username"
             class="form-label"
-          >{{ $t("GENERAL.NEWPASSWORD") }}</label>
+          >username</label>
+          <input
+            disabled
+            type="username"
+            class="form-control"
+            v-model="this.$store.getters.currentUser"
+          >
+        </div>
+
+        <div class="mb-3">
+          <label
+            for="oldpassword"
+            class="form-label"
+          >old password</label>
           <input
             type="password"
             class="form-control"
-            v-model="newPassword"
-            :class="classes"
+            v-model="oldPassword"
           >
-          <span class="text-danger">{{ errors[0] }}</span>
-        </validation-provider>
-      </div>
+        </div>
 
-      <p
-        v-if="this.status != ''"
-        class="text-danger"
-      >
-        {{ status }}
-      </p>
+
+        <div class="mb-3">
+          <validation-provider
+            v-slot="{ errors,classes,invalid }"
+            :rules="{ regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).*$/, min:8, password: true }"
+          >
+            <label
+              for="Newpassword"
+              class="form-label"
+            >{{ $t("GENERAL.NEWPASSWORD") }}</label>
+            <input
+              type="password"
+              class="form-control"
+              v-model="newPassword"
+              :class="classes"
+            >
+            <span class="text-danger">{{ errors[0] }}</span>
+            <div class="w-100 d-flex justify-content-center mt-5">
+              <button
+                :disabled="invalid || !newPassword"
+                type="button"
+                @click="changePassword"
+                class="modal-btn px-5 btn  justify-content-center d-flex btn-lg"
+              >
+                {{ $t("GENERAL.UPDATEPASSWORD") }}
+              </button>
+            </div>
+          </validation-provider>
+        </div>
+
+        <p
+          v-if="this.status != ''"
+          class="text-danger"
+        >
+          {{ status }}
+        </p>
 
       <!-- <div class="w-100 d-flex justify-content-center mt-5">
         <button
+          :disabled="errors"
           type="button"
           class="modal-btn px-5 btn  justify-content-center d-flex btn-lg"
         >
           {{ $t("GENERAL.UPDATEPASSWORD") }}
         </button>
       </div> -->
-    </validation-observer>
-
-    <template
-      #modal-cancel
-      variant="outline-primary"
-      class="cancel-btn"
-    >
-      {{ $t("GENERAL.CANCEL") }}
-    </template>
-
-    <template #modal-ok>
-      {{ $t("GENERAL.UPDATEPASSWORD") }}
-    </template>
-
-    <template #modal-footer>
-      <div class="w-100 justify-content-center d-flex">
-        <button
-          @click="cancel"
-          type="button"
-          class="sm-btn cancel-btn mx-3 btn justify-content-center d-flex"
-        >
-          {{ $t("GENERAL.CANCEL") }}
-        </button>
-
-        <button
-          @click="changePassword"
-          type="button"
-          class="sm-btn btn btn-danger text-white justify-content-center d-flex"
-        >
-          {{ $t("GENERAL.UPDATEPASSWORD") }}
-        </button>
-      </div>
-    </template>
+      </validation-observer>
+    </div>
   </b-modal>
 </template>
 
 <script>
+import { extend } from 'vee-validate';
+import { regex } from 'vee-validate/dist/rules';
+import i18n from '@/common/plugins/vue-i18n';
+// import { password  } from 'vee-validate/dist/rules';
+
+// extend('password', password);
+extend('regex', {
+    ...regex,
+    message: i18n.t('MODAL.PWPOLICY')
+    
+})
+
 export default {
-  name: "CreateFolder",
-  props: { title: { type: String, default: "Create Folder" } },
+  name: "ResetNewPassword",
+  props: { title: { type: String, default: "ResetNewPassword" } },
 
   data() {
     return {
@@ -130,16 +121,15 @@ export default {
   methods: {
    changePassword(){
         
-      const data = JSON.stringify(
-        {
-          username: this.$store.getters.currentUser,
-          oldPassword: this.oldPassword,
-          newPassword: this.newPassword,
-          editedBy:  this.$store.getters.userId,
-          editor:  this.$store.getters.currentUser
-        })
+      const data = JSON.stringify({
+        username: this.$store.getters.currentUser,
+        oldPassword: this.oldPassword,
+        newPassword: this.newPassword,
+        editedBy:  this.$store.getters.userId,
+        editor:  this.$store.getters.currentUser
+      })
        
-      this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/AD/ADUpdateUserPassword`,
+      this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Users/ChangePassword`,
       data,{ headers: window.headers })
         .then((data) => {
          
@@ -166,3 +156,14 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+
+::v-deep .modal-body {
+  border-bottom-right-radius: 10px !important;
+	border-bottom-left-radius: 10px !important;
+
+}
+</style>
+

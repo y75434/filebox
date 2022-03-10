@@ -31,7 +31,7 @@ export default {
 
     this.$bus.$on("notify:message", tree => {
       // 並將接收到的 message 傳給自己的 methods showAlert 去觸發 alert 事件。
-      console.log(tree,'點到不同root');
+      console.log(tree,'沒法跑到search的值,但可以跳轉路徑');
       this.$emit('treeClick', tree);  
     });
 

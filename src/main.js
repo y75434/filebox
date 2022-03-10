@@ -11,7 +11,7 @@ import axios from 'axios';
 import VueCompositionAPI from '@vue/composition-api'
 import { ValidationObserver, ValidationProvider, extend, localize } from 'vee-validate'
 import * as rules from 'vee-validate/dist/rules'
-import TW from 'vee-validate/dist/locale/zh_TW.json'
+// import TW from 'vee-validate/dist/locale/zh_TW.json'
 import 'splitpanes/dist/splitpanes.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import $ from 'jquery';
@@ -28,7 +28,7 @@ Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule])
 })
 
-localize('zh_TW', TW)
+// localize('zh_TW', TW)
 
 
 window.$ = $;

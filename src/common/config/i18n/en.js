@@ -158,7 +158,8 @@ export const locale = {
     LINKEXPIRES:'Link expires',
     LINKCANBEOPENED:' Link can be opened only',
     PROTECTLINKWITH:'Protect link with password',
-    CREATOR: 'Creator'
+    CREATOR: 'Creator',
+    PWPOLICY: 'Password needs to contain  8 characters, with at least 1 Upper Case, 1 lower case, 1 numeric character, and  1 special character.'
 
   },
   FOLDER:{

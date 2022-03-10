@@ -157,8 +157,8 @@ export const locale = {
     LINKEXPIRES:'連結過期',
     LINKCANBEOPENED:'連結只能打開',
     PROTECTLINKWITH:'用密碼保存連結',
-    CREATOR: '建立者'
-
+    CREATOR: '建立者',
+    PWPOLICY: '密碼需八個字元，至少一個大寫字母，一個小寫字母，一個數字和一個特殊字元'
   },
   FOLDER:{
     ROOTFOLDER: '根文件夾'

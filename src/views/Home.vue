@@ -937,11 +937,19 @@ export default {
       this.$store.dispatch('setNowFolderId', id);
 
       //驗證 root
-      const result = this.rootFolder.filter(item => id == item.folderId);      
+      const result = this.rootFolder.filter(item => id == item.folderId);
+      // 是rootfolder      
       if(result.length != 0){
-        if( 'name' in result[0]){
+      console.log(result)
+        //
+        // if( 'name' in result[0]){
           this.nowRootFolder = result[0]
-        }
+        // }
+        //sidebar點擊 而且是子資料夾
+      }else{
+         const a = this.$refs.TreeItem.trees
+          console.log(a)
+
       }
       
       if(!id){
@@ -967,7 +975,6 @@ export default {
           
           this.allFiles = data.data
           // this.firstPage = false
-          // this.$store.getters.userId
 
           //顯示路徑
          // this.getFolderTree(id)

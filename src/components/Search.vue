@@ -192,6 +192,7 @@ export default {
       this.$emit('back', id);
       this.treeSelected.id  = id
     },
+   
     //要跑這個func才會顯示路徑
     getFolderTree(id){
         const data = JSON.stringify({        
@@ -208,23 +209,7 @@ export default {
           console.log(data, 'admin');
           this.FolderTree = data.data
           this.arr.push(this.FolderTree) 
-
-
-          // console.log(this.$store.getters.treeArr, this.arr);
-
-          // if(compare){
-
-          // }
-
-
-          // if(this.$store.getters.treeArr != null){
-          //   this.arr = []
-          //   this.FolderTree = []
-          //   this.arr.push(this.$store.getters.treeArr)
-
-          // }
-       
-        
+          
         }).catch((error) => {
           console.log(error.response.data);        
         })
@@ -235,16 +220,11 @@ export default {
           console.log(data, 'normal');
           this.FolderTree = data.data
           this.arr.push(this.FolderTree)
-          // if(this.$store.getters.treeArr){
-          //   this.arr.push(this.$store.getters.treeArr)
-          // }
-
         
         }).catch((error) => {
           console.log(error.response.data);        
         })
       }
-// if(this.$store.getters.nowFolderId !== id){}
       console.log(this.FolderTree,'目前位置的父層');
       console.log(this.arr,'包含目前位置的tree');
 
