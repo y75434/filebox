@@ -475,7 +475,7 @@ export default {
   computed:{ 
     
     validateFather(){
-     return this.$store.getters.liselected.folderId === this.FolderSettings.folderId
+     return this.$store.getters.liselected.folderId === this.FolderSettings.folderId 
     },
     ...mapGetters(['liselected'])
   },
@@ -483,7 +483,14 @@ export default {
     liselected(){
         this.editSetting = this.$store.getters.liselected
         // console.log(this.editSetting.folderId);
-        this.PermissionTypes.map(x=>x.active = false);
+
+        this.PermissionTypes.map((x)=>{
+          this.$set(this.PermissionTypes, x.active, false)         
+            return x;
+        })
+
+        // this.PermissionTypes.map(x=>x.active = false);
+
         //arr為該rootfolder整個tree
         this.arr.forEach((item,index)=>{
 
@@ -580,8 +587,6 @@ export default {
         }
         console.log(this.FolderSettings, this.editSetting,'初始化資料顯示');
         
-        
-       
         this.getUserTable()
         this.getGroupTable()
 
@@ -672,7 +677,7 @@ export default {
             "description":"string",
             "inherit": this.editSetting.inhert,
             "settings":{
-              "storage":{ "space": this.space, "unitId": this.unitId },
+              "storage":{ "space": this.editSetting.space, "unitId": this.editSetting.unitId },
               "restrictedFileTypes":this.editSetting.settings.restrictedFileTypes,
               "accessPermissions":{
                 "self":this.editSetting.settings.accessPermissions.self,
@@ -730,8 +735,9 @@ export default {
     userCan(item){      
       // console.log('該用戶可用的行為', this.PermissionTypes);
       console.log('now user', item);
+
+      this.PermissionTypes.map(x=>x.active = false);
       this.haveUser = true
- 
       this.nowUser = item
 
       item.allow.forEach(x=>{

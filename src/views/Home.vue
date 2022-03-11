@@ -327,6 +327,7 @@
         :now-root-folder="nowRootFolder"
         @back="getSelected"
         @getRoot="getFolderTable"
+        ref="Search"
       />
       <div
         class="dqbz-main"
@@ -340,6 +341,7 @@
             style="width:20%"
           >
             <TreeItem 
+              ref="TreeItem"
               @treeClick="detectClick"
             />
           </Pane>
@@ -947,8 +949,11 @@ export default {
         // }
         //sidebar點擊 而且是子資料夾
       }else{
-         const a = this.$refs.TreeItem.trees
-          console.log(a)
+         //把點擊的加入search array
+         this.$refs.Search.getFolderTree(id)
+          // console.log(a)
+
+          // this.treeSelected = item;
 
       }
       

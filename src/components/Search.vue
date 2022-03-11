@@ -141,14 +141,12 @@ export default {
     return {
       searchQuery: null,
       folderTree:null,
-      arr: []
+      arr: [],
+      testArr:[],
+      testTree: null
     }
   },
-  // computed:{
-  //   compare(){
-  //     this.$store.getters.treeArr
-  //   } 
-  // },
+
   watch:{    
     nowRootFolder(){ 
       this.FolderTree = null
@@ -207,6 +205,21 @@ export default {
         data,{ headers: window.headers }).then((data) => { 
 
           console.log(data, 'admin');
+          //先跑回圈看nowrootfolder有無該folder
+          this.getRootTree(this.nowRootFolder.folderId)
+          
+          if(this.testArr.filter(i=>i.folderId == id.folderId)){
+            //nowrootfolder 有 就要把該id之後的資料夾刪掉
+            this.testArr = []
+          }else{
+            //loop tree取代現有arr 
+            //想把外層傳入值更換 目前無效
+            // console.log(this.testArr[0]);
+            
+            // this.testArr[0] = this.nowRootFolder
+            this.arr = this.testArr
+            // this.arr.unshift(this.nowRootFolder)
+          }
           this.FolderTree = data.data
           this.arr.push(this.FolderTree) 
           
@@ -229,7 +242,31 @@ export default {
       console.log(this.arr,'包含目前位置的tree');
 
     },
-    
+    //檢查根資料夾有無目前sidebar點擊的路徑
+    getRootTree(id){
+      // console.log('test', id);
+      
+      const data = JSON.stringify({        
+          "folderId": id,
+          "uerId": this.$store.getters.userId,
+          "groups": this.$store.getters.group
+         }) 
+
+        this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
+        data,{ headers: window.headers })
+          .then((data) => {
+            this.testTree = data.data;
+            // console.log(this.testTree);          
+            this.testArr.push(this.testTree)
+            //loop
+              if (this.testTree.subFolders.length > 0 ) {
+                this.getRootTree(this.testTree.subFolders[0].folderId)
+              }
+            })
+            .catch(() => { // console.log(error.response.data); 
+            });
+            console.log(this.testArr, 'test arr');
+    },
   }
 }
 
