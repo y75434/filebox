@@ -9,7 +9,7 @@ import i18n from './common/plugins/vue-i18n';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 import VueCompositionAPI from '@vue/composition-api'
-import { ValidationObserver, ValidationProvider, extend, localize } from 'vee-validate'
+import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
 import * as rules from 'vee-validate/dist/rules'
 // import TW from 'vee-validate/dist/locale/zh_TW.json'
 import 'splitpanes/dist/splitpanes.css';

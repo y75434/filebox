@@ -333,6 +333,7 @@
         class="dqbz-main"
       >
         <Splitpanes class="h-100 sel">
+         
           <Pane
             :size="paneSize"
             min-size="10"
@@ -340,10 +341,15 @@
             class="d-flex align-items-start"
             style="width:20%"
           >
-            <TreeItem 
+           <div             
+          ref="leftPanel"
+          style="width:100%">
+             <TreeItem 
               ref="TreeItem"
               @treeClick="detectClick"
             />
+          </div>
+         
           </Pane>
       
           <Pane         
@@ -354,7 +360,7 @@
               @mousedown="mouseDown($event)"
               @mousemove="mouseMove($event)"
               @mouseup="mouseUp($event)"
-              style="background:white;width:100%;height:100%;position:relative"
+              style="background:white;width:100%;height:100%;position:relative;"
             >
               <div class="d-flex">
                 <div
@@ -663,7 +669,10 @@ export default {
     },
     handler(event) { event.preventDefault(); }, 
     reloadPage() { window.location.reload(); },
-    showMenu(event) { this.$refs.menu.open(event); },
+    showMenu(event) { 
+      console.log('right')
+      this.$refs.menu.open(event);
+       },
     // 子層輸入傳父層
     selfUpdate(val) {
       this.searchQuery = val;
@@ -1013,15 +1022,24 @@ export default {
           console.log('err');         
         }
     },
+    right(e){
+      if(e.which == 3){
+        this.$refs.menu.open(e);
+      }
+    },
     mouseDown(e){
-      //  console.log(e.which,'1左 3右');
+    //  console.log(e.which,'1左 3右');
       //左鍵使用
       if(e.which == 1){
+        let x = this.$refs.leftPanel.clientWidth+2;
         let div = this.$refs.div;
         div.hidden = 0;
-        this.x1 = e.offsetX >=0? e.offsetX:0; 
-        this.y1 = e.offsetY >=0? e.offsetY:0;
+        this.x1 = e.clientX - x;
+        this.y1 = e.layerY >=0? e.layerY:0;
         this.reCalc(); 
+      } else {
+        console.log('AAAA')
+              this.$refs.menu.open(e);
       }
     },
     mouseUp(){ 
@@ -1030,12 +1048,14 @@ export default {
       // console.log('起來')
      },
     mouseMove(e){ 
-      this.x2 = e.offsetX >=0? e.offsetX:0; 
-      this.y2 = e.offsetY >=0? e.offsetY:0; 
-      let div = this.$refs.div;
-      if(div.hidden==0) {
-       this.reCalc();
-      }
+    let x = this.$refs.leftPanel.clientWidth+2;
+     this.x2 = e.clientX -x; 
+        this.y2 = e.layerY >=0? e.layerY:0; 
+        let div = this.$refs.div;
+        if(div.hidden==0) {
+        this.reCalc();
+        }
+     
     },
     reCalc() {
       // console.log('計算碰撞');
