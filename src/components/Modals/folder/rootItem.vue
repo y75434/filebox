@@ -3,7 +3,7 @@
     <!--  -->
     <div 
     @click="selectSelf(subitem)"
-    :style=" { backgroundColor: ( subitem.folderId == this.liselected ? '#d3eaff' : 'transparent' )}">
+    :style=" { backgroundColor: ( subitem.liselected ? '#d3eaff' : 'transparent' )}">
       <b-iconstack
         font-scale="1"
         rotate="90"
@@ -51,23 +51,29 @@ export default {
     return {
       subitem: this.tree,
       open: false,
-      liselected: "",
       selectedId:0,
       selfSetting: [],
-      
+      arr:[]
     }
   },
   mounted() {
-    // console.log(this.subitem, "sub");
+    console.log(this.subitem, "sub");
+    //把li加入到arr
+    this.arr.push(this.subitem)
   },
  
   methods: {
     selectSelf(subitem){
-      console.log(subitem, "被點擊");
-      subitem.isDark = true
-      this.liselected = subitem.folderId
-      // this.liselected = this.liselected.filter(x=>x.folderId == subitem.folderId)     
+      // this.$forceUpdate(); //强制刷新，解决页面不会重新渲染的问题
+      subitem.liselected = true
+      console.log(subitem, "被點擊",this.arr);
+           
+      this.arr.forEach(item => {
+        item.liselected = false;
+      })
+
       this.getSelfSettings(subitem.folderId)
+
       //  console.log(this.liselected, "this.liselected");
     },
     
@@ -85,14 +91,15 @@ export default {
         data,{ headers: window.headers })
           .then((data) => {
             this.subitem = data.data;
-            console.log(this.subitem, '沒東西');
-
+            console.log(this.subitem, 'li');
+           
           })
           .catch(() => {
             //  console.log(error.response.data);
           });
       }
     },
+    //把點擊到的li 傳到vuex
      getSelfSettings(id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => {  
@@ -100,7 +107,6 @@ export default {
         this.selfSetting = data.data
         this.$store.dispatch('setLiselected', this.selfSetting);
 
-        // this.putFolder()
 
       }).catch(() => {
         // console.log(error.response.data);        

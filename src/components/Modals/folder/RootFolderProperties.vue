@@ -490,9 +490,17 @@ export default {
         })
 
         // this.PermissionTypes.map(x=>x.active = false);
+        const id = this.$store.getters.liselected.folderId
+        this.arr = []
+        this.testTree = {}
+        this.getRootTree(id)
+
+
 
         //arr為該rootfolder整個tree
         this.arr.forEach((item,index)=>{
+          console.log(this.arr,'arr');
+
 
           if(this.editSetting.folderId == item.folderId && this.arr[index - 1] !== undefined){
             console.log(this.arr[index - 1],'上一層');
@@ -517,7 +525,7 @@ export default {
           });
         }
 
-        console.log(this.editSetting.settings.accessPermissions.self);
+        console.log(this.editSetting.settings.accessPermissions.self,'self  user');
 
       }
    },
