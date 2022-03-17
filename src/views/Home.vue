@@ -987,7 +987,7 @@ export default {
           // console.log(data);  
 
           
-          this.allFiles = data.data
+          this.allFiles = data.data.items
           // this.firstPage = false
 
           //顯示路徑

@@ -175,7 +175,7 @@
                 >
                   <!--  -->
                   <li
-                    v-for="item in this.members"
+                    v-for="item in this.editSetting.settings.members"
                     :key="item.id"
                     class="list-group-item border-0 p-0 mb-2"
                   >
@@ -344,7 +344,7 @@
                           type="number"
                           class="form-control m-0 w-50"
                           value=""
-                          v-model="space"
+                          v-model="editSetting.settings.storage.space"
                         >
                         <select
                           class="form-select w-50"
@@ -352,10 +352,10 @@
                           @change="storageSelected($event)"
                         >
                           <option
-                            v-for="(item,index) in StorageUnit"
+                            v-for="(item) in StorageUnit"
                             :key="item.id"
                             :value="item.storageUnitId"
-                            :selected="index === 0"
+                            :selected="editSetting.settings.storage.unitId"
                           >
                             {{ item.unit }}
                           </option>
@@ -586,10 +586,10 @@ export default {
 
         }
 
-         this.editSetting.settings.members.map((x)=>{
-          this.members.push(x)
+        //  this.editSetting.settings.members.map((x)=>{
+        //   this.members.push(x)
 
-        })
+        // })
 
         // this.members = this.editSetting.settings.members.self
 
@@ -626,19 +626,19 @@ export default {
     },
     //檔案類型勾選即加入api
     typeSelected(item){
-      if(this.nowUser.settings.self.allowFileTypes == null){
-        this.nowUser.settings.self.allowFileTypes = []
+      if(this.nowUser.self.allowFileTypes == null){
+        this.nowUser.self.allowFileTypes = []
       }
       if(item.active){
-        this.nowUser.settings.self.allowFileTypes.push(item.fileTypeId)
+        this.nowUser.self.allowFileTypes.push(item.fileTypeId)
       } else {
-        this.nowUser.settings.self.allowFileTypes = this.nowUser.settings.self.allowFileTypes.filter(x=>x !== item.fileTypeId);
+        this.nowUser.self.allowFileTypes = this.nowUser.self.allowFileTypes.filter(x=>x !== item.fileTypeId);
       }
 
-      this.nowUser.settings.self.allowFileTypes.forEach(x=>{
-        this.FileTypes.forEach(Types=>{
-          if(Types.fileTypeId == x) {
-            Types.active = true;
+      this.nowUser.self.allowFileTypes.forEach(x=>{
+        this.FileTypes.forEach(item=>{
+          if(item.fileTypeId == x) {
+            item.active = true;
           }
         })
       });
@@ -682,15 +682,24 @@ export default {
     },
     putFolder(){
 
+        //傳送之前先檢查值 如果是null 轉為[]
+
+        // this.editSetting.settings.members.forEach((x,index)=>{
+        //   if(x.self = null){
+        //     // this.$set(x.self, key, [])
+        //     x[key] = []
+        //   }
+        // });
+
 
         const data = JSON.stringify([
           {
-            "folderId":this.editSetting.folderId,
-            "name":this.editSetting.name,
-            "description":"string",
+            "folderId": this.editSetting.folderId,
+            "name": this.editSetting.name,
+            "description": this.editSetting.description,
             "inherit": this.editSetting.inhert,
             "settings":{
-              "storage":{ "space": this.editSetting.space, "unitId": this.editSetting.unitId },
+              "storage":{ "space": this.editSetting.settings.storage.space, "unitId": this.editSetting.settings.storage.unitId },
               "members": this.editSetting.settings.members
             },
             "editor": this.$store.getters.userId, 
@@ -771,7 +780,15 @@ export default {
         })
       });
 
-      //  let parent = this.editSetting.settings.members.filter(x=>x.memberId == item.memberId);
+      item.self.allowFileTypes.forEach(x=>{
+        this.FileTypes.forEach(item=>{
+          if(item.fileTypeId == x) {
+            item.active = true;
+          }
+        })
+      });
+
+      //  let parent = this.FolderSettings.settings.members.filter(x=>x.memberId == item.memberId);
       //  console.log(parent);
        
       //  if(parent.allow.length > 0){
@@ -795,7 +812,7 @@ export default {
       //   }
 
 
-      // console.log(this.PermissionTypes);
+      console.log(this.PermissionTypes);
 
     },
     //左邊切換
@@ -819,10 +836,10 @@ export default {
               "denialFileTypes": []
             },
             "parent": {
-              "allowPermission": null,
-              "denialPermission": null,
-              "allowFileTypes": null,
-              "denialFileTypes": null
+              "allowPermission": [],
+              "denialPermission": [],
+              "allowFileTypes": [],
+              "denialFileTypes": []
             }
           }
        );
