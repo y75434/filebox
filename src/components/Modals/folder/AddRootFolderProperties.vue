@@ -113,18 +113,18 @@
                   </p>
                 </div>
                 
-                <div class=" form-check">
+                <!-- <div class=" form-check">
                   <input
                     type="checkbox"
                     class="form-check-input"
-                    :disabled="inhert"
-                    v-model="inhert"
+                    :disabled="inherit"
+                    v-model="inherit"
                   >
                   <label
                     class="form-check-label"
                     for="exampleCheck1"
                   >{{ $t("MODAL.INHERITFROMPARENT") }}</label>
-                </div>
+                </div> -->
               </div>
             </div>
 
@@ -206,7 +206,7 @@
                   </li>
 
                   <li 
-                    v-for="item in editGroup.settings.accessPermissions.self"
+                    v-for="item in editGroup.settings.members"
                     :key="item.memberId"
                     class="list-group-item border-0 p-0"
                   >
@@ -243,9 +243,9 @@
                 <li class="list-group-item d-flex justify-content-end border p-2">
                   <p
                     class="ms-3 justify-content-end d-flex align-items-center"
-                    v-if="editGroup.settings.accessPermissions.self"
+                    v-if="editGroup.settings.members"
                   >
-                    <span class="dark-blue fw-bold">{{ editGroup.settings.accessPermissions.self.length || 0 }}
+                    <span class="dark-blue fw-bold">{{ editGroup.settings.members.length || 0 }}
                     </span>
                     <span>{{ $t("MODAL.SELECTED") }}</span>
                   </p>
@@ -464,10 +464,7 @@ export default {
       editGroup:{
         settings:{
           storage: { space: 0, unitId: "" },
-          accessPermissions:{
-            self: []
-          },
-          restrictedFileTypes: [],
+          members:[]
         },
       },
       nowUser:{
@@ -477,7 +474,6 @@ export default {
         deny: []
       },
       haveUser: false,
-      inhert: false
     };
   },
   methods: {  
@@ -492,7 +488,7 @@ export default {
     postFolder(){
       this.editGroup.uploaderName = this.$store.getters.currentUser;
       this.editGroup.uploadedBy = this.$store.getters.userId;
-      this.editGroup.settings.accessPermissions.parent = []
+      // this.editGroup.settings.accessPermissions.parent = []
 
       const data = JSON.stringify(this.editGroup,'post folder')
       console.log(data);
@@ -521,19 +517,35 @@ export default {
     },
      permissionSelected(item){
       if(item.selected == "allow"){
-        this.nowUser.allow.push(item.permissionTypeId) 
-        this.nowUser.deny = this.nowUser.deny.filter(x=>x !== item.permissionTypeId);
+        this.nowUser.self.allowPermission.push(item.permissionTypeId) 
+        this.nowUser.self.denialPermission = this.nowUser.self.denialPermission.filter(x=>x !== item.permissionTypeId);
       } else {
-        this.nowUser.deny.push(item.permissionTypeId)
-        this.nowUser.allow = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
+        this.nowUser.self.denialPermission.push(item.permissionTypeId)
+        this.nowUser.self.allowPermission = this.nowUser.self.allowPermission.filter(x=>x !== item.permissionTypeId);
       }
     },
+    typeSelected(item){
+      if(item.active){
+        this.nowUser.self.allowFileTypes.push(item.fileTypeId)
+      } else {
+        this.nowUser.self.allowFileTypes = this.nowUser.self.allowFileTypes.filter(x => x !== item.fileTypeId);
+      }
+
+       this.nowUser.self.allowFileTypes.forEach(x=>{
+        this.FileTypes.forEach(item=>{
+          if(item.fileTypeId == x) {
+            item.active = true;
+          }
+        })
+      });
+    },
+    //雙點擊取消單選匡
     cleanchecked(item) { 
-      if(this.nowUser.allow.indexOf(item.permissionTypeId) != -1){
-        this.nowUser.allow = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
+      if(this.nowUser.self.allowPermission.indexOf(item.permissionTypeId) != -1){
+        this.nowUser.self.allowPermission = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
         item.selected = false
       }else{
-        this.nowUser.deny = this.nowUser.deny.filter(x=>x !== item.permissionTypeId);
+        this.nowUser.self.denialPermission = this.nowUser.self.denialPermission.filter(x=>x !== item.permissionTypeId);
         item.selected = false
       }
     },
@@ -546,14 +558,6 @@ export default {
       }).catch(() => {
         // console.log(error.response.data);        
       })
-    },
-    typeSelected(item){
-      if(item.active){
-        this.editGroup.settings.restrictedFileTypes.push(item.fileTypeId)
-      } else {
-        this.editGroup.settings.restrictedFileTypes=this.editGroup.settings.restrictedFileTypes.filter(x=>x
-          !==item.fileTypeId);
-      }
     },
     getStorageUnit(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/Storage/Unit`)
@@ -597,50 +601,96 @@ export default {
         this.nowUser = item
 
         //點擊新用戶全部取消勾選
-        // this.PermissionTypes.map(x=>{
-        //   this.$set(this.PermissionTypes, x.active, false)
-        // });
-        item.allow.forEach(x=>{
+        this.PermissionTypes.map(x=>{
+          this.$set(this.PermissionTypes, x.active, false)
+          this.$set(this.PermissionTypes, x.selected, "")
+
+            return x;
+        });
+
+        this.FileTypes.map((x)=>{
+        this.$set(this.FileTypes, x.active, false)         
+          return x;
+      })
+     
+
+        item.self.allowPermission.forEach(x=>{
           this.PermissionTypes.forEach(permission=>{
             if(permission.permissionTypeId == x) {
-              permission.active = true;
+              permission.selected = 'allow';
             }
           })
-      });
+        });
+
+        item.self.denialPermission.forEach(x=>{
+          this.PermissionTypes.forEach(permission=>{
+            if(permission.permissionTypeId == x) {
+              permission.selected = 'deny';
+            }
+          })
+        });
+
+        item.self.allowFileTypes.forEach(x=>{
+          this.FileTypes.forEach(item=>{
+            if(item.fileTypeId == x) {
+              item.active = true;
+            }
+          })
+        });
 
       },
       //左邊切換
       userSelected(item){   
-          console.log(item ,'item');
-          if(this.editGroup.settings.accessPermissions.self.filter(x=>x.memberId == item.userId).length==0) {
-            this.editGroup.settings.accessPermissions.self.push(
-              { 
-                "memberId": item.userId, 
-                "memberName": item.userName, 
-                "isGroup": false, 
-                "allow": [], 
-                "deny": []
-              } 
-            );
+        console.log(item ,'item');
+        if(this.editGroup.settings.members.filter(x=>x.memberId == item.userId).length == 0) {
+          this.editGroup.settings.members.push(
+          {
+            "memberId": item.userId,
+            "memberName": item.userName,
+            "isGroup": false,
+            "self": {
+              "allowPermission": [],
+              "denialPermission": [],
+              "allowFileTypes": [],
+              "denialFileTypes": []
+            },
+            "parent": {
+              "allowPermission": [],
+              "denialPermission": [],
+              "allowFileTypes": [],
+              "denialFileTypes": []
+            }
           }
+          )
+        }
       },
       groupSelected(item){
         console.log(item ,'now select group');
-        if(this.editGroup.settings.accessPermissions.self.filter(x=>x.memberId == item.id).length==0) {
-          this.editGroup.settings.accessPermissions.self.push(
+        if(this.editGroup.settings.members.filter(x=>x.memberId == item.id).length == 0) {
+          this.editGroup.settings.members.push(
             { 
               "memberId": item.id, 
               "memberName": item.groupName, 
               "isGroup": true, 
-              "allow": [], 
-              "deny": []
+              "self": {
+                "allowPermission": [],
+                "denialPermission": [],
+                "allowFileTypes": [],
+                "denialFileTypes": []
+              },
+              "parent": {
+                "allowPermission": [],
+                "denialPermission": [],
+                "allowFileTypes": [],
+                "denialFileTypes": []
+              }
             } 
           );
         }
       }, 
       del(user){
         console.log('user',user);
-        this.editGroup.settings.accessPermissions.self =this.editGroup.settings.accessPermissions.self.filter(x=>x.memberId !== user.memberId);
+        this.editGroup.settings.members =this.editGroup.settings.members.filter(x=>x.memberId !== user.memberId);
       },
      
   },

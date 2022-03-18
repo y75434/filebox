@@ -46,11 +46,11 @@
           </div>
         </div>
             
-        <h5 class="text-dark">
+        <p class="text-dark">
           FolderSettings{{ FolderSettings }}
           <hr>
           editSetting{{ editSetting }}
-        </h5>
+        </p>
 
         <div class="row p-5 modal-sidebar">
           <div class="col-4 h-100 ">
@@ -85,7 +85,7 @@
                     type="checkbox"
                     class="form-check-input"
                     :disabled="validateFather"
-                    v-model="editSetting.inhert"
+                    v-model="inherit"
                     @change="checkInhert($event)"
                   >
                   <label
@@ -171,11 +171,11 @@
                 </li>
                 <div
                   class=""
-                  v-if="this.editSetting"
+                  v-if="this.members.length > 0"
                 >
                   <!--  -->
                   <li
-                    v-for="item in this.editSetting.settings.members"
+                    v-for="item in this.members"
                     :key="item.id"
                     class="list-group-item border-0 p-0 mb-2"
                   >
@@ -276,7 +276,7 @@
                           <span>deny</span>
                         </div>
                       </li>
-<!-- disabled="this.editSetting.settings.accessPermissions.parent != []" -->
+                      <!-- disabled="this.editSetting.settings.accessPermissions.parent != []" -->
                       <li
                         v-for="item in PermissionTypes"
                         :key="item.id"
@@ -343,8 +343,7 @@
                           placeholder="enter code"
                           type="number"
                           class="form-control m-0 w-50"
-                          value=""
-                          v-model="editSetting.settings.storage.space"
+                          v-model="space"
                         >
                         <select
                           class="form-select w-50"
@@ -352,11 +351,12 @@
                           @change="storageSelected($event)"
                         >
                           <option
-                            v-for="(item) in StorageUnit"
+                            v-for="(item,index) in StorageUnit"
                             :key="item.id"
                             :value="item.storageUnitId"
-                            :selected="editSetting.settings.storage.unitId"
+                            :selected=" index == 0"
                           >
+                            <!-- editSetting.settings.storage.unitId || -->
                             {{ item.unit }}
                           </option>
                         </select>
@@ -452,15 +452,17 @@ export default {
       count:0,
       nowUser:{ },
       haveUser: false,
-      unitId: "",
-      space: 0,
       editSetting: {
         settings:{
-          members:{}
+          storage: {},
+          members: []
         }
       },
+      space: 0, 
+      unitId: "",
       members:[],
       testTree: {},
+      inherit: false,
       arr:[],
       // storeChanged: this.$store.getters.liselected
     };
@@ -468,13 +470,17 @@ export default {
   computed:{ 
     
     validateFather(){
-     return this.$store.getters.liselected.folderId === this.FolderSettings.folderId 
+      
+     return this.$store.getters.liselected.folderId === this.FolderSettings.folderId || false 
     },
     ...mapGetters(['liselected'])
   },
   watch: {
     liselected(){
-        this.editSetting = this.$store.getters.liselected
+        if (this.$store.getters.liselected.folderId) {
+          this.editSetting = this.$store.getters.liselected
+
+        }
         // console.log(this.editSetting.folderId);
 
         this.PermissionTypes.map((x)=>{
@@ -505,20 +511,7 @@ export default {
             this.FolderSettings = this.editSetting
           }
         })
-
-        if(this.editSetting.inhert){
-          this.editSetting.settings.members.parent.allowPermission.forEach(x=>{
-            this.editSetting.settings.members.self.allowPermission.forEach(item=>{
-              if(item.memberId == x.memberId) {
-                item.inFather = true;
-              }else{
-                item.inFather = false;
-              }
-            })
-          });
-        }
-
-        console.log(this.editSetting.settings.members.self.allowPermission,'self  user');
+      
 
       }
    },
@@ -526,14 +519,20 @@ export default {
      this.$store.dispatch('setLiselected', null)
    },
   methods: { 
-    //inhert checkbox 
+    //inhert checkbox 需修改
     checkInhert(e){
       if(e.target.checked){
-        this.editSetting.settings.members.parent = this.FolderSettings.settings.members.self
-        console.log(this.editSetting, e.target.checked);
-      }else{
-        this.editSetting.settings.members.parent = []
-        console.log(this.editSetting, e.target.checked);
+
+        this.editSetting.settings.members.forEach(item => {
+          this.FolderSettings.settings.members.forEach(x => {
+            if(item == x) {
+              item.parent = x.self
+            }
+          })
+          console.log(this.editSetting.settings.members,'526');
+        })
+
+        //console.log(this.editSetting, e.target.checked);
       }
     },
     start() {
@@ -575,10 +574,13 @@ export default {
     getFolderSettings(id){  
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => { 
-        console.log(id);
+        console.log(id,this.$store.getters.liselected);
+
 
         //初始化資料顯示 
-        this.FolderSettings = data.data
+        this.FolderSettings = data.data        
+
+
 
         //初始化才需要兩物件一樣
         if(this.$store.getters.liselected == id){
@@ -586,15 +588,15 @@ export default {
 
         }
 
-        //  this.editSetting.settings.members.map((x)=>{
-        //   this.members.push(x)
+        this.space = this.editSetting.settings.storage.space
+        this.unitId = this.editSetting.settings.storage.unitId
 
-        // })
+       
 
-        // this.members = this.editSetting.settings.members.self
+        this.members = this.editSetting.settings.members
 
-        console.log(this.members);
-        console.log(this.FolderSettings, this.editSetting,'初始化資料顯示');
+        // console.log(this.members);
+        // console.log(this.FolderSettings, this.editSetting,'初始化資料顯示');
         
         this.getUserTable()
         this.getGroupTable()
@@ -697,9 +699,9 @@ export default {
             "folderId": this.editSetting.folderId,
             "name": this.editSetting.name,
             "description": this.editSetting.description,
-            "inherit": this.editSetting.inhert,
+            "inhert": this.inherit,
             "settings":{
-              "storage":{ "space": this.editSetting.settings.storage.space, "unitId": this.editSetting.settings.storage.unitId },
+              "storage":{ "space": this.space, "unitId": this.unitId },
               "members": this.editSetting.settings.members
             },
             "editor": this.$store.getters.userId, 
@@ -753,9 +755,16 @@ export default {
     userCan(item){      
       // console.log('該用戶可用的行為', this.PermissionTypes);
       console.log('now user', item);
-
+      //點擊後重新設定勾取匡
       this.PermissionTypes.map((x)=>{
-        this.$set(this.PermissionTypes, x.active, false)         
+        this.$set(this.PermissionTypes, x.active, false)  
+        this.$set(this.PermissionTypes, x.selected, "")
+       
+          return x;
+      })
+
+      this.FileTypes.map((x)=>{
+        this.$set(this.FileTypes, x.active, false)         
           return x;
       })
 
@@ -783,36 +792,53 @@ export default {
       item.self.allowFileTypes.forEach(x=>{
         this.FileTypes.forEach(item=>{
           if(item.fileTypeId == x) {
-            item.active = true;
+             item.active = true;
           }
         })
       });
 
-      //  let parent = this.FolderSettings.settings.members.filter(x=>x.memberId == item.memberId);
-      //  console.log(parent);
-       
-      //  if(parent.allow.length > 0){
-      //     parent.allow.forEach(x=>{
-      //       this.PermissionTypes.forEach(permission=>{
-      //         if(permission.permissionTypeId == x) {
-      //           permission.inFather = true;
-      //          }
-      //       })
-      //     });
-      //   }
 
-      //   if(parent.deny.length > 0){
-      //     parent.deny.forEach(x=>{
-      //       this.PermissionTypes.forEach(permission=>{
-      //         if(permission.permissionTypeId == x) {
-      //           permission.inFather = true;
-      //         }
-      //       })
-      //     });
-      //   }
+      //顯示radio匡 inFather狀態
+      if(this.inherit && this.nowUser.parent.allowPermission.length > 0){
+        this.nowUser.parent.allowPermission.forEach(x=>{
+          this.nowUser.self.allowPermission.forEach(item=>{
+            if(item == x) {
+              item.inFather = true;
+            }else{
+              item.inFather = false;
+            }
+          })
+        });
+      }
+
+       if(this.inherit && this.nowUser.parent.denialPermission.length > 0){
+        this.nowUser.parent.denialPermission.forEach(x=>{
+          this.nowUser.self.denialPermission.forEach(item=>{
+            if(item == x) {
+              item.inFather = true;
+            }else{
+              item.inFather = false;
+            }
+          })
+        });
+      }
+
+       if(this.inherit && this.nowUser.parent.allowFileTypes.length > 0){
+        this.nowUser.parent.allowFileTypes.forEach(x=>{
+          this.nowUser.self.allowFileTypes.forEach(item=>{
+            if(item == x) {
+              item.inFather = true;
+            }else{
+              item.inFather = false;
+            }
+          })
+        });
+      }
+
+      console.log(this.nowUser,'self  user');
 
 
-      console.log(this.PermissionTypes);
+      // console.log(this.PermissionTypes);
 
     },
     //左邊切換
@@ -861,10 +887,10 @@ export default {
             "denialFileTypes": []
            },
            "parent": {
-            "allowPermission": null,
-            "denialPermission": null,
-            "allowFileTypes": null,
-            "denialFileTypes": null
+            "allowPermission": [],
+            "denialPermission": [],
+            "allowFileTypes": [],
+            "denialFileTypes": []
            }
          } 
        );
