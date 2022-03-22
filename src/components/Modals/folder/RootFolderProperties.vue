@@ -48,7 +48,7 @@
             
         <p class="text-dark">
           FolderSettings{{ FolderSettings }}
-          <hr>
+          
           editSetting{{ editSetting }}
         </p>
 
@@ -460,79 +460,79 @@ export default {
       },
       space: 0, 
       unitId: "",
-      members:[],
+      // members:[],
       testTree: {},
       inherit: false,
       arr:[],
-      // storeChanged: this.$store.getters.liselected
     };
   },
   computed:{ 
-    
-    validateFather(){
-      
+    members:{  
+      set(){},//不能刪
+      get(){
+        return this.editSetting.settings.members
+      }
+    },   
+    validateFather(){   
      return this.$store.getters.liselected.folderId === this.FolderSettings.folderId || false 
     },
     ...mapGetters(['liselected'])
   },
   watch: {
     liselected(){
-        if (this.$store.getters.liselected.folderId) {
-          this.editSetting = this.$store.getters.liselected
-
-        }
-        // console.log(this.editSetting.folderId);
-
-        this.PermissionTypes.map((x)=>{
-          this.$set(this.PermissionTypes, x.active, false)         
-            return x;
-        })
-
-        // this.PermissionTypes.map(x=>x.active = false);
-        const id = this.$store.getters.liselected.folderId
-        this.arr = []
-        this.testTree = {}
-        this.getRootTree(id)
-
-
-
-        //arr為該rootfolder整個tree
-        this.arr.forEach((item,index)=>{
-          console.log(this.arr,'arr');
-
-
-          if(this.editSetting.folderId == item.folderId && this.arr[index - 1] !== undefined){
-            console.log(this.arr[index - 1],'上一層');
-            let id = this.arr[index - 1].folderId
-            //更改foldersetting 物件資料
-            this.getFolderSettings(id)
-          }else{
-            //如果this.arr[index - 1] == undefined 直接讓 editsetting 值給 foldersetting
-            this.FolderSettings = this.editSetting
-          }
-        })
-      
-
+      if (this.$store.getters.liselected.folderId) {
+        this.editSetting = this.$store.getters.liselected
       }
+      // console.log(this.editSetting.folderId);
+      this.PermissionTypes.map((x)=>{
+        this.$set(this.PermissionTypes, x.active, false)         
+          return x;
+      })
+
+      // this.PermissionTypes.map(x=>x.active = false);
+      const id = this.$store.getters.liselected.folderId
+      this.arr = []
+      this.testTree = {}
+      this.getRootTree(id)
+
+      //arr為該rootfolder整個tree
+      this.arr.forEach((item,index)=>{
+        console.log(this.arr,'arr');
+
+
+        if(this.editSetting.folderId == item.folderId && this.arr[index - 1] !== undefined){
+          console.log(this.arr[index - 1],'上一層');
+          let id = this.arr[index - 1].folderId
+          //更改foldersetting 物件資料
+          this.getFolderSettings(id)
+        }else{
+          //如果this.arr[index - 1] == undefined 直接讓 editsetting 值給 foldersetting
+          this.FolderSettings = this.editSetting
+        }
+      })
+    },
    },
    created(){
      this.$store.dispatch('setLiselected', null)
    },
-  methods: { 
-    //inhert checkbox 需修改
+   methods: { 
+    //inhert checkbox變動
     checkInhert(e){
       if(e.target.checked){
-
-        this.editSetting.settings.members.forEach(item => {
+        this.members.forEach(item => {
           this.FolderSettings.settings.members.forEach(x => {
             if(item == x) {
               item.parent = x.self
             }
           })
-          console.log(this.editSetting.settings.members,'526');
+          console.log(this.members,'changed');
         })
-
-        //console.log(this.editSetting, e.target.checked);
+      //console.log(this.editSetting, e.target.checked);
+      //當選匡為false,members的parent都是 []
+      }else{
+        this.members.filter.forEach(x=>{
+          x.self = []
+        });
       }
     },
     start() {
@@ -544,54 +544,46 @@ export default {
       this.arr = []
       this.testTree = {}
       this.getRootTree(this.tabData.folderId)
-
-
     },
     //想要一次跑完根資料夾樹狀
     getRootTree(id){
       // console.log('test', id);
       
       const data = JSON.stringify({        
-          "folderId": id,
-          "uerId": this.$store.getters.userId,
-          "groups": this.$store.getters.group
-         }) 
+        "folderId": id,
+        "uerId": this.$store.getters.userId,
+        "groups": this.$store.getters.group
+        }) 
 
-        this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
-        data,{ headers: window.headers })
-          .then((data) => {
-            this.testTree = data.data;
-            // console.log(this.testTree);          
-            this.arr.push(this.testTree)
-              if (this.testTree.subFolders.length > 0 ) {
-                this.getRootTree(this.testTree.subFolders[0].folderId)
-              }
-            })
-            .catch(() => { // console.log(error.response.data); 
-            });
-            console.log(this.arr, 'arr');
+      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
+      data,{ headers: window.headers })
+        .then((data) => {
+          this.testTree = data.data;
+          // console.log(this.testTree);          
+          this.arr.push(this.testTree)
+            if (this.testTree.subFolders.length > 0 ) {
+              this.getRootTree(this.testTree.subFolders[0].folderId)
+            }
+          })
+          .catch(() => { // console.log(error.response.data); 
+          });
+          console.log(this.arr, 'arr');
     },
     getFolderSettings(id){  
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => { 
         console.log(id,this.$store.getters.liselected);
 
-
         //初始化資料顯示 
         this.FolderSettings = data.data        
-
-
 
         //初始化才需要兩物件一樣
         if(this.$store.getters.liselected == id){
           this.editSetting = this.FolderSettings
-
         }
 
         this.space = this.editSetting.settings.storage.space
         this.unitId = this.editSetting.settings.storage.unitId
-
-       
 
         this.members = this.editSetting.settings.members
 
@@ -661,13 +653,11 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileTypes`)
       .then((data) => {  
         this.FileTypes = data.data
-       
-          
+              
       }).catch(() => {
         // console.log(error.response.data);        
       })
-    },
-    
+    },    
     getStorageUnit(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/Storage/Unit`)
       .then((data) => {  
@@ -711,7 +701,6 @@ export default {
 
         console.log(data);
 
-
         this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
           data,{ headers: window.headers }).then((data) => { 
 
@@ -723,8 +712,6 @@ export default {
             this.$swal.fire({ title: error.response.data, icon: 'error' })
         
           })
-
-      
 
       //if no parent
       // this.FolderSettings.settings.accessPermissions.parent = []
@@ -758,8 +745,7 @@ export default {
       //點擊後重新設定勾取匡
       this.PermissionTypes.map((x)=>{
         this.$set(this.PermissionTypes, x.active, false)  
-        this.$set(this.PermissionTypes, x.selected, "")
-       
+        this.$set(this.PermissionTypes, x.selected, "")    
           return x;
       })
 
@@ -771,69 +757,84 @@ export default {
       // this.PermissionTypes.map(x=>x.active = false);
       this.haveUser = true
       this.nowUser = item
-    
 
-      item.self.allowPermission.forEach(x=>{
+    
+      if(!this.nowUser.self.allowPermission){
+        this.nowUser.self.allowPermission = []
+      }
+
+      this.nowUser.self.allowPermission.forEach(x=>{
         this.PermissionTypes.forEach(permission=>{
           if(permission.permissionTypeId == x) {
             permission.selected = 'allow';
           }
         })
       });
+      
+      if(!this.nowUser.self.denialPermission){
+        this.nowUser.self.denialPermission = []
+      }
 
-       item.self.denialPermission.forEach(x=>{
+       this.nowUser.self.denialPermission.forEach(x=>{
         this.PermissionTypes.forEach(permission=>{
           if(permission.permissionTypeId == x) {
             permission.selected = 'deny';
           }
         })
       });
+  
+     if(!this.nowUser.self.allowFileTypes){
+        this.nowUser.self.allowFileTypes = []
+      }
 
-      item.self.allowFileTypes.forEach(x=>{
+      this.nowUser.self.allowFileTypes.forEach(x=>{
         this.FileTypes.forEach(item=>{
           if(item.fileTypeId == x) {
              item.active = true;
           }
         })
       });
-
+    
 
       //顯示radio匡 inFather狀態
-      if(this.inherit && this.nowUser.parent.allowPermission.length > 0){
+      if(this.inherit == true && this.nowUser.parent.allowPermission.length > 0){
         this.nowUser.parent.allowPermission.forEach(x=>{
-          this.nowUser.self.allowPermission.forEach(item=>{
+          this.PermissionTypes.forEach(item=>{
             if(item == x) {
-              item.inFather = true;
+              x.inFather = true;
             }else{
-              item.inFather = false;
+              x.inFather = false;
             }
-          })
+          })          
         });
       }
 
-       if(this.inherit && this.nowUser.parent.denialPermission.length > 0){
+      // console.log('檢查infather',this.nowUser.parent.allowFileTypes);
+
+       if(this.inherit == true && this.nowUser.parent.denialPermission.length > 0){
         this.nowUser.parent.denialPermission.forEach(x=>{
-          this.nowUser.self.denialPermission.forEach(item=>{
-            if(item == x) {
-              item.inFather = true;
-            }else{
-              item.inFather = false;
-            }
-          })
+            this.PermissionTypes.forEach(item=>{
+              if(item == x) {
+                x.inFather = true;
+              }else{
+                x.inFather = false;
+              }
+          })  
         });
       }
 
-       if(this.inherit && this.nowUser.parent.allowFileTypes.length > 0){
+
+       if(this.inherit == true && this.nowUser.parent.allowFileTypes.length > 0){
         this.nowUser.parent.allowFileTypes.forEach(x=>{
-          this.nowUser.self.allowFileTypes.forEach(item=>{
+          this.FileTypes.forEach(item=>{
             if(item == x) {
-              item.inFather = true;
+              x.inFather = true;
             }else{
-              item.inFather = false;
+              x.inFather = false;
             }
           })
-        });
-      }
+        })
+       }
 
       console.log(this.nowUser,'self  user');
 
@@ -902,6 +903,7 @@ export default {
      console.log('user',this.editSetting.settings.members);
 
      this.editSetting.settings.members = this.editSetting.settings.members.filter(x => x.memberId !== user.memberId)    
+    //  this.members = this.editSetting.settings.members
 
     },
     
