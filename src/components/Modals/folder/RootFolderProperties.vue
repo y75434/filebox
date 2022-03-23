@@ -85,7 +85,7 @@
                     type="checkbox"
                     class="form-check-input"
                     :disabled="validateFather"
-                    v-model="inherit"
+                    v-model="editSetting.settings.inherit"
                     @change="checkInhert($event)"
                   >
                   <label
@@ -298,7 +298,7 @@
                             :disabled="item.inFather"
                             :checked="item.inFather"
                             @change="permissionSelected(item)"
-                            @dblclick="cleanchecked(item)"
+                            @dblclick="cleanChecked(item)"
                             :id="item.id"
                           >
                           <input
@@ -308,7 +308,7 @@
                             value="deny"
                             :disabled="item.inFather"
                             :checked="item.inFather"
-                            @dblclick="cleanchecked(item)"
+                            @dblclick="cleanChecked(item)"
                             @change="permissionSelected(item)"
                             :id="item.id"
                           >
@@ -462,11 +462,17 @@ export default {
       unitId: "",
       // members:[],
       testTree: {},
-      inherit: false,
+      // inherit: false,
       arr:[],
     };
   },
   computed:{ 
+    // inherit:{  
+    //   set(){},//不能刪
+    //   get(){
+    //     return this.editSetting.settings.inherit
+    //   }
+    // }, 
     members:{  
       set(){},//不能刪
       get(){
@@ -522,17 +528,26 @@ export default {
         this.members.forEach(item => {
           this.FolderSettings.settings.members.forEach(x => {
             if(item == x) {
+              //繼承父層打勾的話 parent換成父層資料 self變成空陣列
               item.parent = x.self
+              item.self = []
             }
           })
-          console.log(this.members,'changed');
+          console.log(this.members,'checked');
         })
-      //console.log(this.editSetting, e.target.checked);
-      //當選匡為false,members的parent都是 []
       }else{
-        this.members.filter.forEach(x=>{
-          x.self = []
-        });
+        this.members.forEach(item => {
+          this.FolderSettings.settings.members.forEach(x => {
+            console.log(x);
+            if(item == x) {
+              //繼承父層取消打勾的話 parent改 [] self換成父層資料
+              item.parent = []
+              console.log(item.self,x.self);
+              item.self = x.self
+            }
+          })
+        console.log(this.members,'unchecked');
+        })
       }
     },
     start() {
@@ -639,7 +654,7 @@ export default {
 
     },
     //雙點擊取消單選匡
-    cleanchecked(item) { 
+    cleanChecked(item) { 
       if(this.nowUser.self.allowPermission.indexOf(item.permissionTypeId) != -1){
         this.nowUser.self.allowPermission = this.nowUser.self.allowPermission.filter(x=>x !== item.permissionTypeId);
         item.selected = false
@@ -689,7 +704,7 @@ export default {
             "folderId": this.editSetting.folderId,
             "name": this.editSetting.name,
             "description": this.editSetting.description,
-            "inhert": this.inherit,
+            "inhert": this.editSetting.settings.inherit,
             "settings":{
               "storage":{ "space": this.space, "unitId": this.unitId },
               "members": this.editSetting.settings.members
@@ -740,7 +755,6 @@ export default {
     },
     //點擊針對個人允許行為
     userCan(item){      
-      // console.log('該用戶可用的行為', this.PermissionTypes);
       console.log('now user', item);
       //點擊後重新設定勾取匡
       this.PermissionTypes.map((x)=>{
@@ -754,14 +768,104 @@ export default {
           return x;
       })
 
-      // this.PermissionTypes.map(x=>x.active = false);
       this.haveUser = true
       this.nowUser = item
 
+      //依據繼承與否進行函式
+      if(this.editSetting.settings.inherit == true) {
+        this.inheritParent()
+      }else{
+        console.log('notInherit');
+        this.notInherit()
+      }
     
+    },
+    inheritParent(){
+      //顯示radio匡 inFather狀態
+      if(this.nowUser.parent.allowPermission.length > 0){
+        this.nowUser.parent.allowPermission.forEach(x=>{
+          this.PermissionTypes.forEach(item=>{
+            if(x == item.permissionTypeId) {
+              item.inFather = true;
+            }else{
+              item.inFather = false;
+            }
+          })          
+        });
+      }
+
+      console.log('檢查infather',this.PermissionTypes,);
+
+       if(this.nowUser.parent.denialPermission.length > 0){
+        this.nowUser.parent.denialPermission.forEach(x=>{
+            this.PermissionTypes.forEach(item=>{
+              if(x == item.permissionTypeId) {
+                item.inFather = true;
+              }else{
+                item.inFather = false;
+              }
+          })  
+        });
+      }
+
+       if(this.nowUser.parent.allowFileTypes.length > 0){
+        this.nowUser.parent.allowFileTypes.forEach(x=>{
+          this.FileTypes.forEach(item=>{
+            if(x == item.permissionTypeId) {
+              item.inFather = true;
+            }else{
+              item.inFather = false;
+            }
+          })
+        })
+       }
+
+       //parent radio 設定
+
+        if(!this.nowUser.parent.allowPermission){
+          this.nowUser.parent.allowPermission = []
+        }
+
+       this.nowUser.parent.allowPermission.forEach(x=>{
+        this.PermissionTypes.forEach(permission=>{
+          if(permission.permissionTypeId == x) {
+            permission.selected = 'allow';
+          }
+        })
+      });
+      
+      if(!this.nowUser.parent.denialPermission){
+        this.nowUser.self.denialPermission = []
+      }
+
+       this.nowUser.parent.denialPermission.forEach(x=>{
+        this.PermissionTypes.forEach(permission=>{
+          if(permission.permissionTypeId == x) {
+            permission.selected = 'deny';
+          }
+        })
+      });
+  
+     if(!this.nowUser.parent.allowFileTypes){
+        this.nowUser.parent.allowFileTypes = []
+      }
+
+      this.nowUser.parent.allowFileTypes.forEach(x=>{
+        this.FileTypes.forEach(item=>{
+          if(item.fileTypeId == x) {
+             item.active = true;
+          }
+        })
+      });
+
+      // console.log(this.nowUser,'self  user');
+    },
+    notInherit(){
       if(!this.nowUser.self.allowPermission){
         this.nowUser.self.allowPermission = []
       }
+
+      console.log(this.nowUser);
 
       this.nowUser.self.allowPermission.forEach(x=>{
         this.PermissionTypes.forEach(permission=>{
@@ -794,53 +898,6 @@ export default {
           }
         })
       });
-    
-
-      //顯示radio匡 inFather狀態
-      if(this.inherit == true && this.nowUser.parent.allowPermission.length > 0){
-        this.nowUser.parent.allowPermission.forEach(x=>{
-          this.PermissionTypes.forEach(item=>{
-            if(item == x) {
-              x.inFather = true;
-            }else{
-              x.inFather = false;
-            }
-          })          
-        });
-      }
-
-      // console.log('檢查infather',this.nowUser.parent.allowFileTypes);
-
-       if(this.inherit == true && this.nowUser.parent.denialPermission.length > 0){
-        this.nowUser.parent.denialPermission.forEach(x=>{
-            this.PermissionTypes.forEach(item=>{
-              if(item == x) {
-                x.inFather = true;
-              }else{
-                x.inFather = false;
-              }
-          })  
-        });
-      }
-
-
-       if(this.inherit == true && this.nowUser.parent.allowFileTypes.length > 0){
-        this.nowUser.parent.allowFileTypes.forEach(x=>{
-          this.FileTypes.forEach(item=>{
-            if(item == x) {
-              x.inFather = true;
-            }else{
-              x.inFather = false;
-            }
-          })
-        })
-       }
-
-      console.log(this.nowUser,'self  user');
-
-
-      // console.log(this.PermissionTypes);
-
     },
     //左邊切換
     userSelected(item){
