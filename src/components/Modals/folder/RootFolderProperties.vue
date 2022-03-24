@@ -48,7 +48,7 @@
             
         <p class="text-dark">
           FolderSettings{{ FolderSettings }}
-          
+          <hr>
           editSetting{{ editSetting }}
         </p>
 
@@ -519,7 +519,7 @@ export default {
     },
    },
    created(){
-     this.$store.dispatch('setLiselected', null)
+     this.$store.dispatch('setLiselected', {folderId:""})
    },
    methods: { 
     //inhert checkbox變動

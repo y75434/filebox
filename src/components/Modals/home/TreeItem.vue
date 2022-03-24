@@ -38,18 +38,19 @@ export default {
   },
   methods: {
    getRootFolder(){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
-        .then((data) => { 
-          this.trees = data.data;
-          this.trees.map(x=>{
-            x.hasChildren = false;
-            x.subFolders = null;
-            return x;
-          });
-          console.log(this.trees,'全部rootfolder');//rootfolder
-        }).catch(error => {
-          console.log(error.response.data);        
-        })
+    this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
+      .then((data) => { 
+        this.trees = data.data;
+        this.trees.map(x=>{
+          x.hasChildren = false;
+          x.subFolders = null;
+          return x;
+        });
+        console.log(this.trees,'全部rootfolder');//rootfolder
+      }).catch(error => {
+        console.log(error.response.data);        
+      })
+
   },   
  
   // treeClick(tree) {

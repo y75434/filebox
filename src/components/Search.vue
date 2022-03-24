@@ -143,10 +143,14 @@ export default {
       folderTree:null,
       arr: [],
       testArr:[],
-      testTree: null
+      testTree: null,
+      trees:[]
+
     }
   },
-
+  created(){
+   this.getRootFolder()
+  },
   watch:{    
     nowRootFolder(){ 
       this.FolderTree = null
@@ -193,6 +197,8 @@ export default {
    
     //要跑這個func才會顯示路徑
     getFolderTree(id){
+      console.log('getFolderTree');
+
         const data = JSON.stringify({        
           "folderId": id,
           "uerId": this.$store.getters.userId,
@@ -204,23 +210,16 @@ export default {
         this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
         data,{ headers: window.headers }).then((data) => { 
 
-          console.log(data, 'admin');
+          // console.log(data, 'admin');
           //先跑回圈看nowrootfolder有無該folder
           this.getRootTree(this.nowRootFolder.folderId)
-          
-          if(this.testArr.filter(i=>i.folderId == id.folderId)){
-            //nowrootfolder 有 就要把該id之後的資料夾刪掉
-            this.testArr = []
-          }else{
-            //loop tree取代現有arr 
-            //想把外層傳入值更換 目前無效
-            // console.log(this.testArr[0]);
-            
-            // this.testArr[0] = this.nowRootFolder
-            this.arr = this.testArr
-            // this.arr.unshift(this.nowRootFolder)
-          }
+          this.testArr = []
+
+         
           this.FolderTree = data.data
+
+          //刪除arr重複值
+          this.arr = this.arr.filter(x=>x.folderId !== this.FolderTree.folderId);
           this.arr.push(this.FolderTree) 
           
         }).catch((error) => {
@@ -244,29 +243,62 @@ export default {
     },
     //檢查根資料夾有無目前sidebar點擊的路徑
     getRootTree(id){
-      // console.log('test', id);
-      
       const data = JSON.stringify({        
-          "folderId": id,
-          "uerId": this.$store.getters.userId,
-          "groups": this.$store.getters.group
-         }) 
+        "folderId": id,
+        "uerId": this.$store.getters.userId,
+        "groups": this.$store.getters.group
+      }) 
 
-        this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
-        data,{ headers: window.headers })
-          .then((data) => {
-            this.testTree = data.data;
-            // console.log(this.testTree);          
+      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
+      data,{ headers: window.headers })
+        .then((data) => {
+          this.testTree = data.data;
+          console.log(this.testTree.name,'253');   
+          console.log(this.testArr,'254');
+          //把now root換掉
+
+            //nowrootfolder 有 就要把該id之後的資料夾刪掉
+            //loop tree取代現有arr 
+            //想把外層傳入值更換 目前無效
+            //要找this.tree
+              
+            // this.nowRootFolder = this.testArr[0]
+
+            // console.log('測到rootfolder不同換 tree');
+            // this.arr = this.testArr
+            // this.arr.unshift(this.nowRootFolder)
+            
+      
+
             this.testArr.push(this.testTree)
-            //loop
-              if (this.testTree.subFolders.length > 0 ) {
-                this.getRootTree(this.testTree.subFolders[0].folderId)
-              }
-            })
-            .catch(() => { // console.log(error.response.data); 
-            });
-            console.log(this.testArr, 'test arr');
-    },
+            if (this.testTree.subFolders.length > 0 ) {
+              this.getRootTree(this.testTree.subFolders[0].folderId)
+            }
+          })
+          .catch(() => { // console.log(error.response.data); 
+          });
+          console.log(this.testArr, 'test arr 281');
+    },//一次跑完所有樹狀
+    getRootFolder(){
+      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
+        .then((data) => { 
+          this.trees = data.data;
+          
+          console.log(this.trees,'全部rootfolder');//rootfolder
+
+
+          this.trees.forEach((item)=>{
+            this.getRootTree(item.folderId)
+          
+          })
+
+        }).catch(error => {
+          console.log(error.response.data);        
+        })
+
+        
+
+  },   
   }
 }
 
