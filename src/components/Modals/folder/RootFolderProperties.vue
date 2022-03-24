@@ -48,7 +48,7 @@
             
         <p class="text-dark">
           FolderSettings{{ FolderSettings }}
-          <hr>
+          ------------------
           editSetting{{ editSetting }}
         </p>
 
@@ -68,6 +68,35 @@
               <h5 class="m-0 fw-bold">
                 {{ $t("MODAL.ACCESSCONTROLFOR") }}
               </h5>
+              <button @click="clean()">clean</button>
+
+              <!-- <li
+                v-for="item in tempTypes"
+                :key="item.id"
+                class="list-group-item w-100 border-0 p-0 justify-content-between d-flex"
+              >
+                <label
+                  class="form-check-label w-100"
+                >
+                  {{ item.name }}
+                </label>
+                <div class=" w-100">
+                  <input
+                    v-model="item.selected"
+                    class="form-check-input mx-3"
+                    type="radio"
+                    value="allow"
+                    :name="item.name"
+                  >
+                  <input
+                    v-model="item.selected"
+                    class="form-check-input mx-3"
+                    type="radio"
+                    value="deny"
+                    :name="item.name"
+                  >
+                </div>
+              </li> -->
 
               <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
@@ -277,7 +306,7 @@
                         </div>
                       </li>
                       <!-- disabled="this.editSetting.settings.accessPermissions.parent != []" -->
-                      <li
+                      <!-- <li
                         v-for="item in PermissionTypes"
                         :key="item.id"
                         class="list-group-item w-100 border-0 p-0 justify-content-between d-flex"
@@ -289,14 +318,13 @@
                           {{ item.name }}
                         </label>
                         <div class=" w-100">
-                          <!-- :disabled="this.FolderSettings.settings.accessPermissions.parent" -->
                           <input
                             v-model="item.selected"
                             class="form-check-input mx-3"
                             type="radio"
                             value="allow"
+                            :name="item.permissionTypeId"
                             :disabled="item.inFather"
-                            :checked="item.inFather"
                             @change="permissionSelected(item)"
                             @dblclick="cleanChecked(item)"
                             :id="item.id"
@@ -306,14 +334,14 @@
                             class="form-check-input mx-3"
                             type="radio"
                             value="deny"
+                            :name="item.permissionTypeId"
                             :disabled="item.inFather"
-                            :checked="item.inFather"
                             @dblclick="cleanChecked(item)"
                             @change="permissionSelected(item)"
                             :id="item.id"
                           >
                         </div>
-                      </li>
+                      </li> -->
                     </ul>
                   </div>
                   <div
@@ -444,6 +472,7 @@ export default {
     return {
       FolderSettings:[],
       PermissionTypes:[],
+      tempTypes:[],
       FileTypes:[],
       StorageUnit:{},
       useritems: [],
@@ -490,10 +519,10 @@ export default {
         this.editSetting = this.$store.getters.liselected
       }
       // console.log(this.editSetting.folderId);
-      this.PermissionTypes.map((x)=>{
-        this.$set(this.PermissionTypes, x.active, false)         
-          return x;
-      })
+      // this.PermissionTypes.map((x)=>{
+      //   this.$set(this.PermissionTypes, x.active, false)         
+      //     return x;
+      // })
 
       // this.PermissionTypes.map(x=>x.active = false);
       const id = this.$store.getters.liselected.folderId
@@ -523,7 +552,12 @@ export default {
    },
    methods: { 
     //inhert checkbox變動
+    clean(){
+      this.PermissionTypes.map(x=>x.selected = false);
+    }
+    ,
     checkInhert(e){
+      this.editSetting.inherit = !this.editSetting.inherit
       if(e.target.checked){
         this.members.forEach(item => {
           this.FolderSettings.settings.members.forEach(x => {
@@ -616,7 +650,8 @@ export default {
     getPermissionTypes(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/PermissionTypes`)
       .then((data) => {  
-        this.PermissionTypes = data.data
+        this.PermissionTypes = data.data;
+        this.tempTypes = data.data;
         this.PermissionTypes.map(x=>x.active = false);
     
         // console.log(this.PermissionTypes);
@@ -691,12 +726,14 @@ export default {
 
         //傳送之前先檢查值 如果是null 轉為[]
 
-        // this.editSetting.settings.members.forEach((x,index)=>{
-        //   if(x.self = null){
-        //     // this.$set(x.self, key, [])
-        //     x[key] = []
-        //   }
-        // });
+        this.editSetting.settings.members.forEach((x)=>{
+           let keys = Object.keys(x.self);
+           keys.forEach(key=>{
+             if(x.self[key]==null || x.self[key]==undefined) {
+                x.self[key] = [];
+             }
+           })
+        });
 
 
         const data = JSON.stringify([
@@ -756,12 +793,14 @@ export default {
     //點擊針對個人允許行為
     userCan(item){      
       console.log('now user', item);
+      console.log('PermissionTypes', this.PermissionTypes);
       //點擊後重新設定勾取匡
       this.PermissionTypes.map((x)=>{
-        this.$set(this.PermissionTypes, x.active, false)  
-        this.$set(this.PermissionTypes, x.selected, "")    
+        x.active = false;
+        x.selected = false;   
           return x;
       })
+
 
       this.FileTypes.map((x)=>{
         this.$set(this.FileTypes, x.active, false)         
@@ -770,6 +809,17 @@ export default {
 
       this.haveUser = true
       this.nowUser = item
+
+      this.PermissionTypes.map(x=>{
+        let temps = this.nowUser.self.allowPermission.filter(permission=>permission==x.permissionTypeId);
+        if(temps.length>0) {
+          x.selected = 'allow';
+        }else {
+          x.selected = 'deny';
+        }
+        return x;
+      })
+      console.log(this.PermissionTypes);
 
       //依據繼承與否進行函式
       if(this.editSetting.settings.inherit == true) {
