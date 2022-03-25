@@ -67,8 +67,8 @@
             >
               <h5 class="m-0 fw-bold">
                 {{ $t("MODAL.ACCESSCONTROLFOR") }}
+                <button @click="clean()">clean</button>
               </h5>
-              <button @click="clean()">clean</button>
 
               <!-- <li
                 v-for="item in tempTypes"
@@ -306,7 +306,7 @@
                         </div>
                       </li>
                       <!-- disabled="this.editSetting.settings.accessPermissions.parent != []" -->
-                      <!-- <li
+                      <li
                         v-for="item in PermissionTypes"
                         :key="item.id"
                         class="list-group-item w-100 border-0 p-0 justify-content-between d-flex"
@@ -341,7 +341,7 @@
                             :id="item.id"
                           >
                         </div>
-                      </li> -->
+                      </li>
                     </ul>
                   </div>
                   <div
@@ -554,8 +554,7 @@ export default {
     //inhert checkbox變動
     clean(){
       this.PermissionTypes.map(x=>x.selected = false);
-    }
-    ,
+    },
     checkInhert(e){
       this.editSetting.inherit = !this.editSetting.inherit
       if(e.target.checked){
@@ -660,12 +659,25 @@ export default {
       })
     },
     permissionSelected(item){
-      if(item.selected == "allow"){
+      if(item.selected == "allow" && this.editSetting.settings.inherit == false){
+        console.log('1');
         this.nowUser.self.allowPermission.push(item.permissionTypeId) 
         this.nowUser.self.denialPermission = this.nowUser.self.denialPermission.filter(x=>x !== item.permissionTypeId);
-      } else {
+      
+      } else if(item.selected == "deny" && !this.editSetting.settings.inherit == false){
+        console.log('2');
         this.nowUser.self.denialPermission.push(item.permissionTypeId)
         this.nowUser.self.allowPermission = this.nowUser.self.allowPermission.filter(x=>x !== item.permissionTypeId);
+      
+      }else if(item.selected == "allow" && this.editSetting.settings.inherit == true){
+        console.log('3');
+        this.nowUser.parent.allowPermission.push(item.permissionTypeId)
+        this.nowUser.parent.denialPermission = this.nowUser.parent.denialPermission.filter(x=>x !== item.permissionTypeId);
+      
+      }else{
+        console.log('4');
+        this.nowUser.parent.denialPermission.push(item.permissionTypeId)
+        this.nowUser.parent.allowPermission = this.nowUser.parent.allowPermission.filter(x=>x !== item.permissionTypeId);
       }
     },
     //檔案類型勾選即加入api
@@ -690,13 +702,37 @@ export default {
     },
     //雙點擊取消單選匡
     cleanChecked(item) { 
-      if(this.nowUser.self.allowPermission.indexOf(item.permissionTypeId) != -1){
-        this.nowUser.self.allowPermission = this.nowUser.self.allowPermission.filter(x=>x !== item.permissionTypeId);
-        item.selected = false
-      }else{
-        this.nowUser.self.denialPermission = this.nowUser.self.denialPermission.filter(x=>x !== item.permissionTypeId);
-        item.selected = false
+      //檢查self有無資料
+      if(this.nowUser.self.allowPermission){
+
+        // console.log(this.nowUser.self);
+
+        Object.values(this.nowUser.self).forEach((x)=>{
+          let keys = Object.keys(x);
+          keys.forEach(key=>{
+            
+            if(x[key].indexOf(item.permissionTypeId) != -1) {
+              item.selected = false
+            }
+          })
+        });
       }
+     
+      //檢查parent有無資料
+      if(this.nowUser.parent.allowPermission){
+
+        Object.values(this.nowUser.parent).forEach((x)=>{
+          let keys = Object.keys(x);
+          keys.forEach(key=>{
+            
+            if(x[key].indexOf(item.permissionTypeId) != -1) {
+              console.log(item);
+              item.selected = false
+            }
+          })
+        });
+      }
+      
 
     },
     getFileTypes(){
@@ -729,7 +765,7 @@ export default {
         this.editSetting.settings.members.forEach((x)=>{
            let keys = Object.keys(x.self);
            keys.forEach(key=>{
-             if(x.self[key]==null || x.self[key]==undefined) {
+             if(x.self[key] == null || x.self[key] == undefined) {
                 x.self[key] = [];
              }
            })
@@ -810,16 +846,7 @@ export default {
       this.haveUser = true
       this.nowUser = item
 
-      this.PermissionTypes.map(x=>{
-        let temps = this.nowUser.self.allowPermission.filter(permission=>permission==x.permissionTypeId);
-        if(temps.length>0) {
-          x.selected = 'allow';
-        }else {
-          x.selected = 'deny';
-        }
-        return x;
-      })
-      console.log(this.PermissionTypes);
+     
 
       //依據繼承與否進行函式
       if(this.editSetting.settings.inherit == true) {
@@ -831,6 +858,18 @@ export default {
     
     },
     inheritParent(){
+      this.PermissionTypes.map(x=>{
+        let temps = this.nowUser.parent.allowPermission.filter(permission=>permission==x.permissionTypeId);
+        if(temps.length>0) {
+          x.selected = 'allow';
+        }else {
+          x.selected = 'deny';
+        }
+        return x;
+      })
+      console.log(this.PermissionTypes);
+
+
       //顯示radio匡 inFather狀態
       if(this.nowUser.parent.allowPermission.length > 0){
         this.nowUser.parent.allowPermission.forEach(x=>{
@@ -911,8 +950,21 @@ export default {
       // console.log(this.nowUser,'self  user');
     },
     notInherit(){
+
+
       if(!this.nowUser.self.allowPermission){
         this.nowUser.self.allowPermission = []
+      }else{
+        this.PermissionTypes.map(x=>{
+          let temps = this.nowUser.self.allowPermission.filter(permission=>permission==x.permissionTypeId);
+          if(temps.length>0) {
+            x.selected = 'allow';
+          }else {
+            x.selected = 'deny';
+          }
+          return x;
+        })
+        console.log(this.PermissionTypes);
       }
 
       console.log(this.nowUser);

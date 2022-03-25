@@ -1,9 +1,9 @@
 <template>
-<div class="list-unstyled">
+  <div class="list-unstyled">
     <!--  -->
     <div 
-    @click="selectSelf(subitem)"
-    :style=" { backgroundColor: ( subitem.liselected ? '#d3eaff' : 'transparent' )}">
+      @click="selectSelf(subitem)"
+      :style=" { backgroundColor: ( subitem.liselected ? '#d3eaff' : 'transparent' )}">
       <b-iconstack
         font-scale="1"
         rotate="90"
@@ -64,14 +64,16 @@ export default {
  
   methods: {
     selectSelf(subitem){
-      // this.$forceUpdate(); //强制刷新，解决页面不会重新渲染的问题
-      subitem.liselected = true
-      console.log(subitem, "被點擊",this.arr);
-           
-      this.arr.forEach(item => {
-        item.liselected = false;
-      })
+      console.log( this.arr, "67");
 
+      //  this.arr.forEach(item => {
+      //   item.liselected = false;
+      // })
+
+      subitem.liselected = true
+      console.log(subitem, "73",this.arr);
+           
+     
       this.getSelfSettings(subitem.folderId)
 
       //  console.log(this.liselected, "this.liselected");
