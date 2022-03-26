@@ -53,7 +53,8 @@ export default {
       open: false,
       selectedId:0,
       selfSetting: [],
-      arr:[]
+      arr:[],
+      trees:null
     }
   },
   mounted() {
@@ -61,22 +62,35 @@ export default {
     //把li加入到arr
     this.arr.push(this.subitem)
   },
- 
+  created(){
+    console.log('HELLO')
+    this.trees = Object.assign({},this.subitem);
+    this.setDefault();
+  },
   methods: {
+    setDefault(){
+      console.log(this.tree);
+    },
+    findObj(data,name) {
+      if(data.name == name) 
+          return data;
+      else {
+          if(data.subFolders!=null)
+              return this.findObj(data.subFolders,name);
+          else {
+              return null;
+          }
+              
+      }  
+    },
     selectSelf(subitem){
-      console.log( this.arr, "67");
+    this.setDefault();
 
-      //  this.arr.forEach(item => {
-      //   item.liselected = false;
-      // })
-
-      subitem.liselected = true
-      console.log(subitem, "73",this.arr);
+    subitem.liselected = true
            
-     
-      this.getSelfSettings(subitem.folderId)
-
-      //  console.log(this.liselected, "this.liselected");
+     console.log(subitem);
+     this.getSelfSettings(subitem.folderId)
+      this.$forceUpdate();
     },
     
     toggle(subitem) {
@@ -93,7 +107,10 @@ export default {
         data,{ headers: window.headers })
           .then((data) => {
             this.subitem = data.data;
-            console.log(this.subitem, 'li');
+            var item =  this.findObj(this.trees,this.subitem.name);
+            item.subFolders = this.subitem;
+            console.log('all tree',this.trees);
+            
            
           })
           .catch(() => {

@@ -603,7 +603,7 @@ export default {
           })
         });
       }
-      
+      this.$forceUpdate();
 
     },
     getFileTypes(){
@@ -672,7 +672,7 @@ export default {
         if(temps.length>0) {
           x.selected = 'allow';
         }else {
-          x.selected = 'deny';
+          x.selected = false;
         }
         return x;
       })
@@ -685,6 +685,7 @@ export default {
         console.log('notInherit');
         this.notInherit()
       }
+      this.$forceUpdate();
     
     },
     inheritParent(){

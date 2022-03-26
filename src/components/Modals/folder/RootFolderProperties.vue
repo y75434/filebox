@@ -509,7 +509,7 @@ export default {
       }
     },   
     validateFather(){   
-     return this.$store.getters.liselected.folderId === this.FolderSettings.folderId || false 
+     return this.$store.getters.liselected.folderId === this.FolderSettings.folderId || true 
     },
     ...mapGetters(['liselected'])
   },
@@ -659,6 +659,7 @@ export default {
       })
     },
     permissionSelected(item){
+      console.log('permissionSelected',this.nowUser)
       if(item.selected == "allow" && this.editSetting.settings.inherit == false){
         console.log('1');
         this.nowUser.self.allowPermission.push(item.permissionTypeId) 
@@ -703,35 +704,38 @@ export default {
     //雙點擊取消單選匡
     cleanChecked(item) { 
       //檢查self有無資料
-      if(this.nowUser.self.allowPermission){
+      // if(this.nowUser.self.allowPermission){
 
-        // console.log(this.nowUser.self);
+      //   // console.log(this.nowUser.self);
 
-        Object.values(this.nowUser.self).forEach((x)=>{
-          let keys = Object.keys(x);
-          keys.forEach(key=>{
+      //   Object.values(this.nowUser.self).forEach((x)=>{
+      //     let keys = Object.keys(x);
+      //     keys.forEach(key=>{
             
-            if(x[key].indexOf(item.permissionTypeId) != -1) {
-              item.selected = false
-            }
-          })
-        });
-      }
+      //       if(x[key].indexOf(item.permissionTypeId) != -1) {
+      //         item.selected = false
+      //       }
+      //     })
+      //   });
+      // }
      
-      //檢查parent有無資料
-      if(this.nowUser.parent.allowPermission){
+      // //檢查parent有無資料
+      // if(this.nowUser.parent.allowPermission){
 
-        Object.values(this.nowUser.parent).forEach((x)=>{
-          let keys = Object.keys(x);
-          keys.forEach(key=>{
+      //   Object.values(this.nowUser.parent).forEach((x)=>{
+      //     let keys = Object.keys(x);
+      //     keys.forEach(key=>{
             
-            if(x[key].indexOf(item.permissionTypeId) != -1) {
-              console.log(item);
-              item.selected = false
-            }
-          })
-        });
-      }
+      //       if(x[key].indexOf(item.permissionTypeId) != -1) {
+      //         console.log(item);
+      //         item.selected = false
+      //       }
+      //     })
+      //   });
+      // }
+      item.selected = false
+      this.$forceUpdate();
+
       
 
     },
@@ -761,7 +765,7 @@ export default {
     putFolder(){
 
         //傳送之前先檢查值 如果是null 轉為[]
-
+        console.log(this.editSetting.settings.members);
         this.editSetting.settings.members.forEach((x)=>{
            let keys = Object.keys(x.self);
            keys.forEach(key=>{
@@ -844,9 +848,31 @@ export default {
       })
 
       this.haveUser = true
-      this.nowUser = item
+      this.nowUser = item;
 
-     
+      var self = Object.keys(this.nowUser.self);
+      self.forEach(key=>{
+          if(this.nowUser.self[key] == null || this.nowUser.self[key] == undefined) {
+            this.nowUser.self[key] = [];
+          }
+      })
+
+      var parent = Object.keys(this.nowUser.parent);
+      parent.forEach(key=>{
+          if(this.nowUser.parent[key] == null || this.nowUser.parent[key] == undefined) {
+            this.nowUser.parent[key] = [];
+          }
+      })
+
+      this.PermissionTypes.map(x=>{
+        let temps = this.nowUser.self.allowPermission.filter(permission=>permission==x.permissionTypeId);
+        if(temps.length>0) {
+          x.selected = 'allow';
+        }else {
+          x.selected = false;
+        }
+        return x;
+      })
 
       //依據繼承與否進行函式
       if(this.editSetting.settings.inherit == true) {
@@ -855,6 +881,9 @@ export default {
         console.log('notInherit');
         this.notInherit()
       }
+
+      this.$forceUpdate();
+
     
     },
     inheritParent(){
