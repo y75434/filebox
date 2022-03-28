@@ -1061,8 +1061,11 @@ methods: {
             console.log(data);
             
             this.eventsitems= data.data
-            this.count = this.eventsitems.length  
-          return this.eventsitems;
+            this.count = this.eventsitems.length 
+            // this.$forceUpdate();
+ 
+          // return this.eventsitems;
+
 
           }).catch(error => {
             console.log(error.response.data);        

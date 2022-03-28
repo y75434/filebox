@@ -48,12 +48,10 @@ export default {
             return x;
           });
           //取得該folder tree
-          console.log(this.id);
-          
-          if(!this.id){
-           this.id = this.$store.getters.liselected.folderId
-          }
-
+          // console.log(this.id, '51');
+          // 更換rootfolder   
+          this.id = this.$store.getters.liselected
+           
           this.trees = this.trees.filter(i => i.folderId === this.id)
 
           console.log(this.trees[0],'重新讀取root'); 

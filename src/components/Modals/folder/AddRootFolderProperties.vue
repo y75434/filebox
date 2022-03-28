@@ -320,7 +320,7 @@
                             type="radio"
                             value="allow"
                             @change="permissionSelected(item)"
-                            @dblclick="cleanchecked(item)"
+                            @dblclick="cleanChecked(item)"
                             :id="item.id"
                           >
                           <input
@@ -328,7 +328,7 @@
                             class="form-check-input mx-3"
                             type="radio"
                             value="deny"
-                            @dblclick="cleanchecked(item)"
+                            @dblclick="cleanChecked(item)"
                             @change="permissionSelected(item)"
                             :id="item.id"
                           >
@@ -405,6 +405,7 @@
                       >
                         <div
                           v-for="item in FileTypes"
+                          :disabled="item.inFather"
                           :key="item.id"
                           class="form-check mx-2 "
                           :id="item.id"
@@ -488,7 +489,6 @@ export default {
     postFolder(){
       this.editGroup.uploaderName = this.$store.getters.currentUser;
       this.editGroup.uploadedBy = this.$store.getters.userId;
-      // this.editGroup.settings.accessPermissions.parent = []
 
       const data = JSON.stringify(this.editGroup,'post folder')
       console.log(data);
@@ -515,7 +515,7 @@ export default {
         // console.log(error.response.data);        
       })
     },
-     permissionSelected(item){
+    permissionSelected(item){
       if(item.selected == "allow"){
         this.nowUser.self.allowPermission.push(item.permissionTypeId) 
         this.nowUser.self.denialPermission = this.nowUser.self.denialPermission.filter(x=>x !== item.permissionTypeId);
@@ -524,6 +524,7 @@ export default {
         this.nowUser.self.allowPermission = this.nowUser.self.allowPermission.filter(x=>x !== item.permissionTypeId);
       }
     },
+    //add rootfolder 只會有self denialFileTypes永遠為空
     typeSelected(item){
       if(item.active){
         this.nowUser.self.allowFileTypes.push(item.fileTypeId)
@@ -531,23 +532,26 @@ export default {
         this.nowUser.self.allowFileTypes = this.nowUser.self.allowFileTypes.filter(x => x !== item.fileTypeId);
       }
 
-       this.nowUser.self.allowFileTypes.forEach(x=>{
-        this.FileTypes.forEach(item=>{
-          if(item.fileTypeId == x) {
-            item.active = true;
-          }
-        })
-      });
+      //  this.nowUser.self.allowFileTypes.forEach(x=>{
+      //   this.FileTypes.forEach(item=>{
+      //     if(item.fileTypeId == x) {
+      //       item.active = true;
+      //     }
+      //   })
+      // });
     },
     //雙點擊取消單選匡
-    cleanchecked(item) { 
-      if(this.nowUser.self.allowPermission.indexOf(item.permissionTypeId) != -1){
-        this.nowUser.self.allowPermission = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
-        item.selected = false
-      }else{
-        this.nowUser.self.denialPermission = this.nowUser.self.denialPermission.filter(x=>x !== item.permissionTypeId);
-        item.selected = false
-      }
+    cleanChecked(item) { 
+      // if(this.nowUser.self.allowPermission.indexOf(item.permissionTypeId) != -1){
+      //   this.nowUser.self.allowPermission = this.nowUser.allow.filter(x=>x !== item.permissionTypeId);
+      //   item.selected = false
+      // }else{
+      //   this.nowUser.self.denialPermission = this.nowUser.self.denialPermission.filter(x=>x !== item.permissionTypeId);
+      //   item.selected = false
+      // }
+
+      item.selected = false
+      this.$forceUpdate();
     },
     getFileTypes(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileTypes`)
@@ -572,7 +576,7 @@ export default {
     storageSelected(event){
       console.log(event.target.value)
       
-        this.editGroup.settings.storage.unitId = event.target.value
+      this.editGroup.settings.storage.unitId = event.target.value
       
     },
     getUserTable () {  
@@ -594,25 +598,23 @@ export default {
       },
       //點擊針對個人允許行為
       userCan(item){
-        
-        
-        console.log('該用戶可用的行為',this.PermissionTypes);
+             
+        console.log(item,this.PermissionTypes);
         this.haveUser = true
         this.nowUser = item
 
         //點擊新用戶全部取消勾選
         this.PermissionTypes.map(x=>{
-          this.$set(this.PermissionTypes, x.active, false)
-          this.$set(this.PermissionTypes, x.selected, "")
-
+          x.active = false;
+          x.selected = false;  
             return x;
         });
 
         this.FileTypes.map((x)=>{
-        this.$set(this.FileTypes, x.active, false)         
-          return x;
-      })
-     
+          x.active = false;
+            return x;
+        })
+        this.$forceUpdate();
 
         item.self.allowPermission.forEach(x=>{
           this.PermissionTypes.forEach(permission=>{

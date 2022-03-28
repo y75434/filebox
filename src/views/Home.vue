@@ -333,7 +333,6 @@
         class="dqbz-main"
       >
         <Splitpanes class="h-100 sel">
-         
           <Pane
             :size="paneSize"
             min-size="10"
@@ -341,15 +340,15 @@
             class="d-flex align-items-start"
             style="width:20%"
           >
-           <div             
-          ref="leftPanel"
-          style="width:100%">
-             <TreeItem 
-              ref="TreeItem"
-              @treeClick="detectClick"
-            />
-          </div>
-         
+            <div             
+              ref="leftPanel"
+              style="width:100%"
+            >
+              <TreeItem 
+                ref="TreeItem"
+                @treeClick="detectClick"
+              />
+            </div>
           </Pane>
       
           <Pane         
@@ -658,11 +657,11 @@ export default {
         console.log('selectAllCheckbox')
         let imgs = document.querySelectorAll('img');
         imgs.forEach(img=>{
-            if(img.id!=='') {
-              this.resultQuery.filter(x=>x.folderId===img.id)[0].ischecked = false;
-              img.setAttribute("style","background-color:white");
-              img.setAttribute('data-selected','false')
-            }
+          if(img.id!=='') {
+            this.resultQuery.filter(x=>x.folderId===img.id)[0].ischecked = false;
+            img.setAttribute("style","background-color:white");
+            img.setAttribute('data-selected','false')
+          }
            
         });
       }
@@ -712,18 +711,21 @@ export default {
         item.ischecked = true
         return item;
       })
+      this.$forceUpdate();
     },
     selectNone(){
       this.resultQuery.map(item =>{
       item.ischecked = false;
       return item;
       })
+      this.$forceUpdate();
     },
     invert(){
       this.resultQuery.map(item =>{
       item.ischecked = !item.ischecked; 
       return item;
      })
+     this.$forceUpdate();
     },
     //預設畫面在這
     getFolderTable(){

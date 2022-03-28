@@ -67,36 +67,7 @@
             >
               <h5 class="m-0 fw-bold">
                 {{ $t("MODAL.ACCESSCONTROLFOR") }}
-                <button @click="clean()">clean</button>
               </h5>
-
-              <!-- <li
-                v-for="item in tempTypes"
-                :key="item.id"
-                class="list-group-item w-100 border-0 p-0 justify-content-between d-flex"
-              >
-                <label
-                  class="form-check-label w-100"
-                >
-                  {{ item.name }}
-                </label>
-                <div class=" w-100">
-                  <input
-                    v-model="item.selected"
-                    class="form-check-input mx-3"
-                    type="radio"
-                    value="allow"
-                    :name="item.name"
-                  >
-                  <input
-                    v-model="item.selected"
-                    class="form-check-input mx-3"
-                    type="radio"
-                    value="deny"
-                    :name="item.name"
-                  >
-                </div>
-              </li> -->
 
               <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
@@ -114,7 +85,7 @@
                     type="checkbox"
                     class="form-check-input"
                     :disabled="validateFather"
-                    v-model="editSetting.settings.inherit"
+                    v-model="editSetting.inherit"
                     @change="checkInhert($event)"
                   >
                   <label
@@ -472,7 +443,6 @@ export default {
     return {
       FolderSettings:[],
       PermissionTypes:[],
-      tempTypes:[],
       FileTypes:[],
       StorageUnit:{},
       useritems: [],
@@ -489,19 +459,11 @@ export default {
       },
       space: 0, 
       unitId: "",
-      // members:[],
       testTree: {},
-      // inherit: false,
       arr:[],
     };
   },
   computed:{ 
-    // inherit:{  
-    //   set(){},//不能刪
-    //   get(){
-    //     return this.editSetting.settings.inherit
-    //   }
-    // }, 
     members:{  
       set(){},//不能刪
       get(){
@@ -509,7 +471,7 @@ export default {
       }
     },   
     validateFather(){   
-     return this.$store.getters.liselected.folderId === this.FolderSettings.folderId || true 
+     return this.$store.getters.liselected.folderId === this.FolderSettings.folderId || this.$store.getters.liselected === this.FolderSettings.folderId 
     },
     ...mapGetters(['liselected'])
   },
@@ -518,13 +480,7 @@ export default {
       if (this.$store.getters.liselected.folderId) {
         this.editSetting = this.$store.getters.liselected
       }
-      // console.log(this.editSetting.folderId);
-      // this.PermissionTypes.map((x)=>{
-      //   this.$set(this.PermissionTypes, x.active, false)         
-      //     return x;
-      // })
-
-      // this.PermissionTypes.map(x=>x.active = false);
+  
       const id = this.$store.getters.liselected.folderId
       this.arr = []
       this.testTree = {}
@@ -552,9 +508,6 @@ export default {
    },
    methods: { 
     //inhert checkbox變動
-    clean(){
-      this.PermissionTypes.map(x=>x.selected = false);
-    },
     checkInhert(e){
       this.editSetting.inherit = !this.editSetting.inherit
       if(e.target.checked){
@@ -640,6 +593,7 @@ export default {
         
         this.getUserTable()
         this.getGroupTable()
+        this.$forceUpdate();
 
 
       }).catch(() => {
@@ -650,7 +604,6 @@ export default {
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/PermissionTypes`)
       .then((data) => {  
         this.PermissionTypes = data.data;
-        this.tempTypes = data.data;
         this.PermissionTypes.map(x=>x.active = false);
     
         // console.log(this.PermissionTypes);
@@ -659,84 +612,56 @@ export default {
       })
     },
     permissionSelected(item){
-      console.log('permissionSelected',this.nowUser)
-      if(item.selected == "allow" && this.editSetting.settings.inherit == false){
+      console.log('652', item, this.editSetting.inherit)
+      if(item.selected == "allow" && this.editSetting.inherit == false){
         console.log('1');
         this.nowUser.self.allowPermission.push(item.permissionTypeId) 
         this.nowUser.self.denialPermission = this.nowUser.self.denialPermission.filter(x=>x !== item.permissionTypeId);
       
-      } else if(item.selected == "deny" && !this.editSetting.settings.inherit == false){
+      } else if(item.selected == "deny" && !this.editSetting.inherit == false){
         console.log('2');
         this.nowUser.self.denialPermission.push(item.permissionTypeId)
         this.nowUser.self.allowPermission = this.nowUser.self.allowPermission.filter(x=>x !== item.permissionTypeId);
       
-      }else if(item.selected == "allow" && this.editSetting.settings.inherit == true){
+      }else if(item.selected == "allow" && this.editSetting.inherit == true){
         console.log('3');
         this.nowUser.parent.allowPermission.push(item.permissionTypeId)
         this.nowUser.parent.denialPermission = this.nowUser.parent.denialPermission.filter(x=>x !== item.permissionTypeId);
       
-      }else{
+      }else if(item.selected == "deny" && this.editSetting.inherit == true){
         console.log('4');
         this.nowUser.parent.denialPermission.push(item.permissionTypeId)
         this.nowUser.parent.allowPermission = this.nowUser.parent.allowPermission.filter(x=>x !== item.permissionTypeId);
+      }else{
+        console.log('5');
+        
       }
     },
     //檔案類型勾選即加入api
     typeSelected(item){
-      if(this.nowUser.self.allowFileTypes == null){
-        this.nowUser.self.allowFileTypes = []
-      }
-      if(item.active){
+
+      console.log(item);
+
+      if(this.editSetting.inherit == false){
         this.nowUser.self.allowFileTypes.push(item.fileTypeId)
-      } else {
-        this.nowUser.self.allowFileTypes = this.nowUser.self.allowFileTypes.filter(x=>x !== item.fileTypeId);
+      } else if(this.editSetting.inherit == true){
+        this.nowUser.parent.allowFileTypes = this.nowUser.parent.allowFileTypes.filter(x=>x !== item.fileTypeId);
       }
 
-      this.nowUser.self.allowFileTypes.forEach(x=>{
-        this.FileTypes.forEach(item=>{
-          if(item.fileTypeId == x) {
-            item.active = true;
-          }
-        })
-      });
+      // this.nowUser.self.allowFileTypes.forEach(x=>{
+      //   this.FileTypes.forEach(item=>{
+      //     if(item.fileTypeId == x) {
+      //       item.active = true;
+      //     }
+      //   })
+      // });
 
     },
     //雙點擊取消單選匡
     cleanChecked(item) { 
-      //檢查self有無資料
-      // if(this.nowUser.self.allowPermission){
-
-      //   // console.log(this.nowUser.self);
-
-      //   Object.values(this.nowUser.self).forEach((x)=>{
-      //     let keys = Object.keys(x);
-      //     keys.forEach(key=>{
-            
-      //       if(x[key].indexOf(item.permissionTypeId) != -1) {
-      //         item.selected = false
-      //       }
-      //     })
-      //   });
-      // }
-     
-      // //檢查parent有無資料
-      // if(this.nowUser.parent.allowPermission){
-
-      //   Object.values(this.nowUser.parent).forEach((x)=>{
-      //     let keys = Object.keys(x);
-      //     keys.forEach(key=>{
-            
-      //       if(x[key].indexOf(item.permissionTypeId) != -1) {
-      //         console.log(item);
-      //         item.selected = false
-      //       }
-      //     })
-      //   });
-      // }
+      
       item.selected = false
       this.$forceUpdate();
-
-      
 
     },
     getFileTypes(){
@@ -764,49 +689,54 @@ export default {
     },
     putFolder(){
 
-        //傳送之前先檢查值 如果是null 轉為[]
-        console.log(this.editSetting.settings.members);
-        this.editSetting.settings.members.forEach((x)=>{
-           let keys = Object.keys(x.self);
-           keys.forEach(key=>{
-             if(x.self[key] == null || x.self[key] == undefined) {
-                x.self[key] = [];
-             }
-           })
-        });
-
-
-        const data = JSON.stringify([
-          {
-            "folderId": this.editSetting.folderId,
-            "name": this.editSetting.name,
-            "description": this.editSetting.description,
-            "inhert": this.editSetting.settings.inherit,
-            "settings":{
-              "storage":{ "space": this.space, "unitId": this.unitId },
-              "members": this.editSetting.settings.members
-            },
-            "editor": this.$store.getters.userId, 
-            "editorName":this.$store.getters.currentUser,
-          }
-        ])
-
-        console.log(data);
-
-        this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
-          data,{ headers: window.headers }).then((data) => { 
-
-            console.log(data);
-            this.$swal.fire({ title: 'success', icon: 'success' })
-
-          }).catch(error => {
-            console.log(error.response.data);    
-            this.$swal.fire({ title: error.response.data, icon: 'error' })
-        
+      //傳送之前先檢查值 如果是null 轉為[]
+      console.log(this.editSetting.settings.members);
+      this.editSetting.settings.members.forEach((x)=>{
+        //檢查self
+          let keys = Object.keys(x.self);
+          keys.forEach(key=>{
+            if(x.self[key] == null || x.self[key] == undefined) {
+              x.self[key] = [];
+            }
           })
+          //檢查parent
+          let parentKeys = Object.keys(x.parent);
+          parentKeys.forEach(key=>{
+            if(x.parent[key] == null || x.parent[key] == undefined) {
+              x.parent[key] = [];
+            }
+          })
+      });
 
-      //if no parent
-      // this.FolderSettings.settings.accessPermissions.parent = []
+
+      const data = JSON.stringify([
+        {
+          "folderId": this.editSetting.folderId,
+          "name": this.editSetting.name,
+          "description": this.editSetting.description,
+          "inhert": this.editSetting.inherit,
+          "settings":{
+            "storage":{ "space": this.space, "unitId": this.unitId },
+            "members": this.editSetting.settings.members
+          },
+          "editor": this.$store.getters.userId, 
+          "editorName":this.$store.getters.currentUser,
+        }
+      ])
+
+      console.log(data);
+
+      this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
+        data,{ headers: window.headers }).then((data) => { 
+
+          console.log(data);
+          this.$swal.fire({ title: 'success', icon: 'success' })
+
+        }).catch(error => {
+          console.log(error.response.data);    
+          this.$swal.fire({ title: error.response.data, icon: 'error' })
+      
+        })
 
       this.editSetting = {}
       
@@ -841,15 +771,19 @@ export default {
           return x;
       })
 
-
       this.FileTypes.map((x)=>{
-        this.$set(this.FileTypes, x.active, false)         
+        x.active = false;
           return x;
       })
+      // console.log('815', this.FileTypes);
+
+
+      this.$forceUpdate();
 
       this.haveUser = true
       this.nowUser = item;
 
+      //把 null 改 []
       var self = Object.keys(this.nowUser.self);
       self.forEach(key=>{
           if(this.nowUser.self[key] == null || this.nowUser.self[key] == undefined) {
@@ -864,18 +798,9 @@ export default {
           }
       })
 
-      this.PermissionTypes.map(x=>{
-        let temps = this.nowUser.self.allowPermission.filter(permission=>permission==x.permissionTypeId);
-        if(temps.length>0) {
-          x.selected = 'allow';
-        }else {
-          x.selected = false;
-        }
-        return x;
-      })
 
       //依據繼承與否進行函式
-      if(this.editSetting.settings.inherit == true) {
+      if(this.editSetting.inherit == true) {
         this.inheritParent()
       }else{
         console.log('notInherit');
@@ -889,7 +814,7 @@ export default {
     inheritParent(){
       this.PermissionTypes.map(x=>{
         let temps = this.nowUser.parent.allowPermission.filter(permission=>permission==x.permissionTypeId);
-        if(temps.length>0) {
+        if(temps.length > 0) {
           x.selected = 'allow';
         }else {
           x.selected = 'deny';
@@ -912,9 +837,7 @@ export default {
         });
       }
 
-      console.log('檢查infather',this.PermissionTypes,);
-
-       if(this.nowUser.parent.denialPermission.length > 0){
+      if(this.nowUser.parent.denialPermission.length > 0){
         this.nowUser.parent.denialPermission.forEach(x=>{
             this.PermissionTypes.forEach(item=>{
               if(x == item.permissionTypeId) {
@@ -940,10 +863,6 @@ export default {
 
        //parent radio 設定
 
-        if(!this.nowUser.parent.allowPermission){
-          this.nowUser.parent.allowPermission = []
-        }
-
        this.nowUser.parent.allowPermission.forEach(x=>{
         this.PermissionTypes.forEach(permission=>{
           if(permission.permissionTypeId == x) {
@@ -952,10 +871,6 @@ export default {
         })
       });
       
-      if(!this.nowUser.parent.denialPermission){
-        this.nowUser.self.denialPermission = []
-      }
-
        this.nowUser.parent.denialPermission.forEach(x=>{
         this.PermissionTypes.forEach(permission=>{
           if(permission.permissionTypeId == x) {
@@ -963,10 +878,6 @@ export default {
           }
         })
       });
-  
-     if(!this.nowUser.parent.allowFileTypes){
-        this.nowUser.parent.allowFileTypes = []
-      }
 
       this.nowUser.parent.allowFileTypes.forEach(x=>{
         this.FileTypes.forEach(item=>{
@@ -976,25 +887,18 @@ export default {
         })
       });
 
-      // console.log(this.nowUser,'self  user');
     },
-    notInherit(){
-
-
-      if(!this.nowUser.self.allowPermission){
-        this.nowUser.self.allowPermission = []
-      }else{
-        this.PermissionTypes.map(x=>{
-          let temps = this.nowUser.self.allowPermission.filter(permission=>permission==x.permissionTypeId);
-          if(temps.length>0) {
-            x.selected = 'allow';
-          }else {
-            x.selected = 'deny';
-          }
-          return x;
-        })
-        console.log(this.PermissionTypes);
-      }
+    notInherit(){ 
+      this.PermissionTypes.map(x=>{
+        let temps = this.nowUser.self.allowPermission.filter(permission=>permission==x.permissionTypeId);
+        if(temps.length>0) {
+          x.selected = 'allow';
+        }else {
+          x.selected = 'deny';
+        }
+        return x;
+      })
+      console.log(this.PermissionTypes);
 
       console.log(this.nowUser);
 
@@ -1005,10 +909,6 @@ export default {
           }
         })
       });
-      
-      if(!this.nowUser.self.denialPermission){
-        this.nowUser.self.denialPermission = []
-      }
 
        this.nowUser.self.denialPermission.forEach(x=>{
         this.PermissionTypes.forEach(permission=>{
@@ -1018,10 +918,6 @@ export default {
         })
       });
   
-     if(!this.nowUser.self.allowFileTypes){
-        this.nowUser.self.allowFileTypes = []
-      }
-
       this.nowUser.self.allowFileTypes.forEach(x=>{
         this.FileTypes.forEach(item=>{
           if(item.fileTypeId == x) {
