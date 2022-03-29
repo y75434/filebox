@@ -21,7 +21,7 @@
                 alt="copy"
                 :disabled="this.selectedTrue.length === 0 || this.firstPage"
                 @click="copy"
-                :style=" this.selectedNumber>0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :style=" this.selectedNumber > 0 && this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.COPY") }}</span>
             </div>
@@ -32,8 +32,8 @@
                 src="@/assets/images/cmd/paste@2x.png"
                 alt="paste"
                 :disabled="this.selectedTrue.length === 0 || this.firstPage"
-                @click="paste"
-                :style=" this.selectedTrue.length > 0 ? {opacity:'1'} : {opacity:'0.3'}"
+                @click="this.selectedTrue.length > 0 && paste"
+                :style=" this.selectedTrue.length > 0 && this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.PASTE") }}</span>
             </div>
@@ -45,7 +45,7 @@
                 alt=""
                 :disabled="this.selectedTrue.length === 0 || this.firstPage"
                 @click="cut"
-                :style=" this.selectedNumber > 0 ?
+                :style=" this.selectedNumber > 0 && this.firstPage == false ?
                   {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class=" nav-text text-center">{{ $t("HOME.CUT") }}</span>
@@ -63,7 +63,7 @@
                 alt=""
                 :disabled="this.selectedTrue.length === 0 || this.firstPage"
                 @click="paste"
-                :style="this.selectedNumber > 0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :style="this.selectedNumber > 0 && this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">
                 {{ $t("HOME.DELETE") }}
@@ -71,14 +71,13 @@
             </li>
             <li 
               @click="RenameItem"
-              :disabled="!this.nowSelected"
-
+              :disabled="this.selectedTrue.length != 1 || this.firstPage"
               class="d-flex flex-column w-50"
             >
               <img
                 src="@/assets/images/cmd/rename@2x.png"
                 alt=""
-                :style=" canUse ? {opacity:'1'} : {opacity:'0.3'}"
+                :style=" this.selectedNumber == 1 && this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.RENAME") }}</span>
             </li>
@@ -93,9 +92,9 @@
                 src="@/assets/images/file/new folder@2x.png"
                 alt=""
                 @click="CreateFolder"
-                :disabled="this.selectedNumber > 0 || !this.firstPage"
+                :disabled="this.selectedNumber > 0 || this.firstPage"
                 :style="
-                  this.selectedNumber === 0 || !this.firstPage ? {opacity:'1'} : {opacity:'0.3'}"
+                  this.selectedLength === 0 && this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
               >
 
               <span class="nav-text text-center">{{ $t("HOME.NEW") }}</span>
@@ -111,8 +110,8 @@
               <img
                 src="@/assets/images/cmd/download@2x.png"
                 alt=""
-                :disabled="this.selectedLength > 0 || !canUse"
-                :style=" this.selectedLength > 0 || canUse ? {opacity:'1'} : {opacity:'0.3'}"
+                :disabled="this.selectedLength == 0"
+                :style=" this.selectedNumber > 0 && this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.DOWNLOAD") }}</span>
             </div>
@@ -123,8 +122,8 @@
                 src="@/assets/images/cmd/upload@2x.png"
                 alt=""
                 @click="UploadFiles"
-                :disabled="this.selectedTrue.length > 0 || this.firstPage == true"
-                :style=" this.selectedTrue.length == 0 || this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
+                :disabled="this.selectedTrue.length > 0 "
+                :style="this.selectedNumber == 0 && this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.UPLOAD") }}</span>
             </li>
@@ -421,19 +420,15 @@
 
         
     
-    <!-- v-if="this.selectedLength > 0" v-if="this.firstPage != true" -->
+    <!-- v-if="this.selectedLength > 0 || this.firstPage != true"  -->
     <ContextMenu ref="menu">
-      <ul class="text-dark">
-        <!-- <li @click="getSelected(this.nowSelected.folderId)">
-          <img
-            src="@/assets/images/cmd/add@2x.png"
-            class="icon24px"
-          >open
-        </li> -->
-
+      <ul
+        class="text-dark" 
+        v-if=" this.firstPage == false"
+      >
         <!-- v-if="this.selectedLength = 0" -->
         <li
-          v-if="canUse || !this.firstPage"
+          v-if="this.selectedNumber == 0"
           @click="CreateFolder"
         >
           <img
@@ -443,7 +438,7 @@
         </li>
         <!--  -->
         <li
-          v-if="canUse || this.selectedLength > 0"
+          v-if="this.selectedNumber > 0"
           @click="copy()"
         >
           <img
@@ -453,7 +448,7 @@
         </li>
         <!--  -->
         <li
-          v-if="canUse || this.selectedLength > 0"
+          v-if="this.selectedNumber > 0"
           @click="cut()"
         >
           <img
@@ -472,6 +467,7 @@
         </li>
         <!-- v-if="canUse || this.selectedNumber > 0" -->
         <li
+          v-if="this.selectedNumber > 0"
           @click="download()"
         >
           <img
@@ -481,6 +477,7 @@
         </li>
         <!-- v-if="canUse || this.selectedNumber == 1" -->
         <li
+          v-if="this.selectedNumber == 1"
           @click="RenameItem"
         >
           <img
@@ -490,7 +487,7 @@
         </li>
         <li
           @click="DeleteFolder"
-          v-if="canUse || this.selectedNumber > 0"
+          v-if="this.selectedNumber > 0"
         >
           <img
             src="@/assets/images/cmd/delete@2x-2.png"
@@ -630,17 +627,15 @@ export default {
       set(){ },//不能刪
       get(){
        return Object.keys(this.resultQuery).filter(key =>
-           this.resultQuery[key].ischecked === true).length            
-        }  
+        this.resultQuery[key].ischecked === true).length            
+      }  
     },
     resultQuery(){
-        return this.allFiles.filter(item =>
-          item.name.toLowerCase().includes(this.searchQuery))
+      return this.allFiles.filter(item =>
+        item.name.toLowerCase().includes(this.searchQuery))
     },
     canUse() {
       return Object.hasOwn(this.nowSelected, 'id')
-
-      //  this.nowSelected.some(id);  
     },
     Detail() {
       return {
@@ -661,15 +656,19 @@ export default {
             this.resultQuery.filter(x=>x.folderId===img.id)[0].ischecked = false;
             img.setAttribute("style","background-color:white");
             img.setAttribute('data-selected','false')
-          }
-           
+          }          
         });
       }
     },
     handler(event) { event.preventDefault(); }, 
-    reloadPage() { window.location.reload(); },
+    reloadPage() { 
+      window.location.reload();
+      //重新整理頁面並跳到原本頁面 
+      let id = this.$store.getters.nowFolderId
+      this.getSelected(id)
+    },
     showMenu(event) { 
-      console.log('right')
+      // console.log('right')
       this.$refs.menu.open(event);
        },
     // 子層輸入傳父層
@@ -774,6 +773,8 @@ export default {
     checkSelected(){
         if(this.selectedNumber === 0){
           this.selectedTrue = []
+          console.log('1');
+          
         }else{
           this.selectedTrue = Object.entries(this.arr)
             .map(([id, type]) => {
@@ -987,10 +988,11 @@ export default {
       data,{ headers: window.headers })
         .then((data) => { 
           // console.log(data);  
-
-          
+       
           this.allFiles = data.data.items
-          // this.firstPage = false
+          this.firstPage = false
+          //每次到新路徑選取的要清空
+          this.arr = []
 
           //顯示路徑
          // this.getFolderTree(id)
@@ -1040,8 +1042,7 @@ export default {
         this.y1 = e.layerY >=0? e.layerY:0;
         this.reCalc(); 
       } else {
-        console.log('AAAA')
-              this.$refs.menu.open(e);
+        this.$refs.menu.open(e);
       }
     },
     mouseUp(){ 

@@ -440,8 +440,16 @@
               </template>
 
               <template #cell()="data">
-                <img
+                <!-- <img
                   :src="data.item.pic"
+                  class="icon32px"
+                > -->
+                <!-- <img
+                  :src="require(`@/assets/images/${data.item.pic}`)"
+                  class="icon32px"
+                > -->
+                <img
+                  :src="'@/assets/images/' + data.item.pic + '.png'"
                   class="icon32px"
                 >
                 {{ data.item.actionType }}
@@ -739,24 +747,44 @@ data() {
     groupitems: [],
     folderitems: [],
     eventsitems: [],
-    eventpics: [ 
-      { id: 0,pic: require('@/assets/images/icon/browse@2x.png'), eventName: this.$t('GENERAL.BROWSE'),"actionType": "Browse",},
-      { id: 1, pic: require('@/assets/images/cmd/logout@2x.png'), eventName: this.$t('GENERAL.LOGIN'),"actionType": "Login",},
-      { id: 2, pic: require('@/assets/images/cmd/preview@2x.png') , eventName: this.$t('GENERAL.PREVIEW'),"actionType": "Preview"},
-      { id: 3, pic: require('@/assets/images/cmd/download@2x.png'), eventName: this.$t('HOME.DOWNLOAD'),"actionType": "Download"},
-      { id: 4, pic:require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.PUBLICLINK'),"actionType": "Public links"},
-      { id: 5, pic:require('@/assets/images/file/folder@2x.png'), eventName:this.$t('GENERAL.CREATEMOVE'),"actionType": "Create"},
-      { id: 6, pic:require('@/assets/images/cmd/rename@2x.png'), eventName:this.$t('HOME.RENAME'),"actionType": "Rename"},
-      { id: 7, pic:require('@/assets/images/cmd/cut@2x.png'), eventName:this.$t('GENERAL.MOVE'),"actionType": "Move"},
-      { id: 8, pic:require('@/assets/images/file/extractallfiles@2x.png'), eventName:this.$t('GENERAL.EXTRACT'),"actionType": "Extract"},
-      { id: 9, pic:require('@/assets/images/cmd/logout@2x.png'), eventName:this.$t('GENERAL.LOGOUT'),"actionType": "Log out"},
-      { id: 10, pic:require('@/assets/images/cmd/delete@2x-2.png'), eventName:this.$t('HOME.DELETE'),"actionType": "Delete"},
-      { id: 11, pic:require('@/assets/images/cmd/copy@2x.png'), eventName:this.$t('HOME.COPY'),"actionType": "Copy"},
-      { id: 12, pic:require('@/assets/images/file/addtozip@2x.png'),eventName:this.$t('GENERAL.COMPRESS'),"actionType": "Compress"},
-      { id: 13, pic:require('@/assets/images/cmd/upload@2x.png'),eventName:this.$t('HOME.UPLOAD'),"actionType": "Upload"},
-      { id: 14, pic:require('@/assets/images/cmd/edit@2x.png'),eventName:this.$t('HOME.UPLOAD'),"actionType": "Edit"},
+    eventpics: 
+    // [ 
+    //   { id: 0,pic: require('@/assets/images/icon/browse@2x.png'), eventName: this.$t('GENERAL.BROWSE'),"actionType": "Browse",},
+    //   { id: 1, pic: require('@/assets/images/cmd/logout@2x.png'), eventName: this.$t('GENERAL.LOGIN'),"actionType": "Login",},
+    //   { id: 2, pic: require('@/assets/images/cmd/preview@2x.png') , eventName: this.$t('GENERAL.PREVIEW'),"actionType": "Preview"},
+    //   { id: 3, pic: require('@/assets/images/cmd/download@2x.png'), eventName: this.$t('HOME.DOWNLOAD'),"actionType": "Download"},
+    //   { id: 4, pic:require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.PUBLICLINK'),"actionType": "Public links"},
+    //   { id: 5, pic:require('@/assets/images/file/folder@2x.png'), eventName:this.$t('GENERAL.CREATEMOVE'),"actionType": "Create"},
+    //   { id: 6, pic:require('@/assets/images/cmd/rename@2x.png'), eventName:this.$t('HOME.RENAME'),"actionType": "Rename"},
+    //   { id: 7, pic:require('@/assets/images/cmd/cut@2x.png'), eventName:this.$t('GENERAL.MOVE'),"actionType": "Move"},
+    //   { id: 8, pic:require('@/assets/images/file/extractallfiles@2x.png'), eventName:this.$t('GENERAL.EXTRACT'),"actionType": "Extract"},
+    //   { id: 9, pic:require('@/assets/images/cmd/logout@2x.png'), eventName:this.$t('GENERAL.LOGOUT'),"actionType": "Log out"},
+    //   { id: 10, pic:require('@/assets/images/cmd/delete@2x-2.png'), eventName:this.$t('HOME.DELETE'),"actionType": "Delete"},
+    //   { id: 11, pic:require('@/assets/images/cmd/copy@2x.png'), eventName:this.$t('HOME.COPY'),"actionType": "Copy"},
+    //   { id: 12, pic:require('@/assets/images/file/addtozip@2x.png'),eventName:this.$t('GENERAL.COMPRESS'),"actionType": "Compress"},
+    //   { id: 13, pic:require('@/assets/images/cmd/upload@2x.png'),eventName:this.$t('HOME.UPLOAD'),"actionType": "Upload"},
+    //   { id: 14, pic:require('@/assets/images/cmd/edit@2x.png'),eventName:this.$t('HOME.UPLOAD'),"actionType": "Edit"},
+
+    // ],
+    [ 
+      { id: 0, pic: 'icon/browse@2x.png', eventName: this.$t('GENERAL.BROWSE'),"actionType": "Browse",},      
+      { id: 1, pic: 'cmd/logout@2x.png', eventName: this.$t('GENERAL.LOGIN'),"actionType": "Login",},
+      { id: 2, pic: 'cmd/preview@2x.png' , eventName: this.$t('GENERAL.PREVIEW'),"actionType": "Preview"},
+      { id: 3, pic: 'cmd/download@2x.png', eventName: this.$t('HOME.DOWNLOAD'),"actionType": "Download"},
+      { id: 4, pic:'file/publiclink@2x.png', eventName: this.$t('GENERAL.PUBLICLINK'),"actionType": "Public links"},
+      { id: 5, pic:'file/folder@2x.png', eventName:this.$t('GENERAL.CREATEMOVE'),"actionType": "Create"},
+      { id: 6, pic:'cmd/rename@2x.png', eventName:this.$t('HOME.RENAME'),"actionType": "Rename"},
+      { id: 7, pic:'cmd/cut@2x.png', eventName:this.$t('GENERAL.MOVE'),"actionType": "Move"},
+      { id: 8, pic:'file/extractallfiles@2x.png', eventName:this.$t('GENERAL.EXTRACT'),"actionType": "Extract"},
+      { id: 9, pic:'cmd/logout@2x.png', eventName:this.$t('GENERAL.LOGOUT'),"actionType": "Log out"},
+      { id: 10, pic:'cmd/delete@2x-2.png', eventName:this.$t('HOME.DELETE'),"actionType": "Delete"},
+      { id: 11, pic:'cmd/copy@2x.png', eventName:this.$t('HOME.COPY'),"actionType": "Copy"},
+      { id: 12, pic:'file/addtozip@2x.png',eventName:this.$t('GENERAL.COMPRESS'),"actionType": "Compress"},
+      { id: 13, pic:'cmd/upload@2x.png',eventName:this.$t('HOME.UPLOAD'),"actionType": "Upload"},
+      { id: 14, pic:'cmd/edit@2x.png',eventName:this.$t('HOME.UPLOAD'),"actionType": "Edit"},
 
     ],
+    
     linkitems: [],
     // selectedRow : null,
     selected: {},//單選
@@ -788,12 +816,22 @@ created(){
 
 },
 computed:{
-
   filFolder(){
     return this.folderitems.filter(x=>x.name.toLowerCase().includes(this.searchText))
   },
 },
+watch: {
+  imgUrl(path) {
+    require(`@/assets/images/${path}`);
+  }
+},
 methods: { 
+  // imgUrl(path) {
+  //   console.log(path);
+    
+
+  //   return ('@/assets/images/', + path)
+  // },
   toggleAll(checked) { 
     console.log(checked);
   if(checked) {
@@ -1012,7 +1050,6 @@ methods: {
   search(){
     switch (this.currentSelected) {
       case 1:
-
         this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}&UserStatus=${this.status}`)
           .then(data => {  
             console.log(data);
@@ -1058,8 +1095,7 @@ methods: {
         this.axios.post(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`,
         data,{ headers: window.headers })
           .then(data => {  
-            console.log(data);
-            
+            console.log(data);        
             this.eventsitems= data.data
             this.count = this.eventsitems.length 
             // this.$forceUpdate();

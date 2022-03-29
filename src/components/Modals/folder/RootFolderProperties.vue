@@ -648,14 +648,6 @@ export default {
         this.nowUser.parent.allowFileTypes = this.nowUser.parent.allowFileTypes.filter(x=>x !== item.fileTypeId);
       }
 
-      // this.nowUser.self.allowFileTypes.forEach(x=>{
-      //   this.FileTypes.forEach(item=>{
-      //     if(item.fileTypeId == x) {
-      //       item.active = true;
-      //     }
-      //   })
-      // });
-
     },
     //雙點擊取消單選匡
     cleanChecked(item) { 
