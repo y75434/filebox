@@ -197,7 +197,6 @@ export default {
    
     //要跑這個func才會顯示路徑
     getFolderTree(id){
-      console.log('getFolderTree');
 
         const data = JSON.stringify({        
           "folderId": id,
@@ -206,7 +205,7 @@ export default {
         })   
         // console.log(data, 'foldertree request');
 
-      if(this.$store.getters.isAdmin){
+      if(this.$store.getters.isAdmin != null){
         this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
         data,{ headers: window.headers }).then((data) => { 
 
@@ -226,6 +225,7 @@ export default {
           console.log(error.response.data);        
         })
       }else{
+
         this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`,
         data,{ headers: window.headers }).then((data) => { 
 
@@ -248,36 +248,40 @@ export default {
         "uerId": this.$store.getters.userId,
         "groups": this.$store.getters.group
       }) 
+      if(this.$store.getters.isAdmin != null) {
 
-      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
-      data,{ headers: window.headers })
-        .then((data) => {
-          this.testTree = data.data;
-          console.log(this.testTree.name,'253');   
-          console.log(this.testArr,'254');
-          //把now root換掉
 
-            //nowrootfolder 有 就要把該id之後的資料夾刪掉
-            //loop tree取代現有arr 
-            //想把外層傳入值更換 目前無效
-            //要找this.tree
-              
-            // this.nowRootFolder = this.testArr[0]
+        this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
+        data,{ headers: window.headers })
+          .then((data) => {
+            this.testTree = data.data;
+            // console.log(this.testTree,'每個資料夾各跑一次');
 
-            // console.log('測到rootfolder不同換 tree');
-            // this.arr = this.testArr
-            // this.arr.unshift(this.nowRootFolder)
-            
-      
+            //把now root換掉
 
-            this.testArr.push(this.testTree)
-            if (this.testTree.subFolders.length > 0 ) {
-              this.getRootTree(this.testTree.subFolders[0].folderId)
-            }
-          })
-          .catch(() => { // console.log(error.response.data); 
-          });
-          console.log(this.testArr, 'test arr 281');
+              //nowrootfolder 有 就要把該id之後的資料夾刪掉
+              //loop tree取代現有arr 
+              //想把外層傳入值更換 目前無效
+              //要找this.tree
+                
+              // this.nowRootFolder = this.FolderTree
+
+console.log(this.nowRootFolder);
+
+              // console.log('測到rootfolder不同換 tree');
+              // this.arr = this.testArr
+              // this.arr = this.arr.filter(x=>x.folderId !== this.FolderTree.folderId);
+
+
+              // this.testArr.push(this.testTree)
+              // if (this.testTree.subFolders.length > 0 ) {
+              //   this.getRootTree(this.testTree.subFolders[0].folderId)
+              // }
+            })
+            .catch(() => { // console.log(error.response.data); 
+            });
+        }
+          console.log(this.testArr, 'all folder');
     },//一次跑完所有樹狀
     getRootFolder(){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)

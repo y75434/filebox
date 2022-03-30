@@ -78,8 +78,9 @@ export default {
          }) 
 
         //  console.log(data);
+        console.log('2');
 
-        if(this.$store.getters.isAdmin) {
+        if(this.$store.getters.isAdmin != null) {
             this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
             data,{ headers: window.headers })
             .then((data) => { 
@@ -92,6 +93,7 @@ export default {
             //  console.log(error.response.data);        
           })
         }else{
+          console.log('2');
            this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`,
            data,{ headers: window.headers })
           .then((data) => { 
@@ -113,7 +115,7 @@ export default {
 
       // this.$bus.$emit("showAlert", tree);
       // this.$emit('subClick', tree);  這行沒用
-      console.log(tree,'點擊sidebar 當前資料夾');        
+      console.log(tree,'點擊sidebar 當前資料夾',this.subitem);        
     }, 
   }
 }

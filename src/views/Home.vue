@@ -676,8 +676,8 @@ export default {
       this.searchQuery = val;
       console.log('子層輸入傳父層',this.searchQuery);
     },
-     delUpdate(val) {
-      this.selectedTrue = val;
+    delUpdate() {
+      this.selectedTrue = [];
       console.log('刪完變空的',this.selectedTrue);
 
     },
@@ -729,7 +729,7 @@ export default {
     //預設畫面在這
     getFolderTable(){
 
-      if(this.$store.getters.isAdmin){
+      if(this.$store.getters.isAdmin != null){
 
         this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
           .then((data) => { 
@@ -747,7 +747,8 @@ export default {
           })
       }else{
 
-        const data = JSON.stringify({        
+        const data = JSON.stringify({ 
+          "folderId": [],       
           "uerId": this.$store.getters.userId,
           "groups": this.$store.getters.group
         })  
@@ -990,6 +991,8 @@ export default {
           // console.log(data);  
        
           this.allFiles = data.data.items
+          //render沒更新
+          this.$forceUpdate()
           this.firstPage = false
           //每次到新路徑選取的要清空
           this.arr = []
