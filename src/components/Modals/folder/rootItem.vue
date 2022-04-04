@@ -54,42 +54,53 @@ export default {
       selectedId:0,
       selfSetting: [],
       arr:[],
-      trees:null
+      trees:null,
+      isFirst:true
     }
   },
   mounted() {
-    console.log(this.subitem, "sub");
     //把li加入到arr
     this.arr.push(this.subitem)
   },
   created(){
-    console.log('HELLO')
-    this.trees = Object.assign({},this.subitem);
-    this.setDefault();
+    if(this.subitem.createdOn) {
+      this.trees = Object.assign({},this.subitem);
+      console.log('initTree',this.trees);
+      this.setDefault();
+    }
+  
   },
   methods: {
     setDefault(){
-      console.log(this.tree);
     },
-    findObj(data,name) {
-      if(data.name == name) 
-          return data;
-      else {
-          if(data.subFolders!=null)
-              return this.findObj(data.subFolders,name);
-          else {
-              return null;
-          }
-              
-      }  
+    findObj(data, name) {
+    // 如果是Array則進一步往下判斷
+    if (Array.isArray(data)) {
+      // 判斷外層的名稱是否為要找的物件
+      var arrayItem = data.filter((x) => x.name == name);
+      if (arrayItem.length > 0) {
+        return arrayItem[0];
+      } else {
+        return null;
+      }
+    } else {
+      // 如果不是Array 則判斷名稱與要找的物件是否相符合，不符則再往下找
+      if (data.name == name) {
+        return data;
+      } else {
+        if (data.subFolders != null) {
+          return this.findObj(data.subFolders, name);
+        } else {
+          return null;
+        }
+      }
+    }
     },
     selectSelf(subitem){
     this.setDefault();
 
-    subitem.liselected = true
-           
-     console.log(subitem);
-     this.getSelfSettings(subitem.folderId)
+      subitem.liselected = true
+      this.getSelfSettings(subitem.folderId)
       this.$forceUpdate();
     },
     
@@ -106,9 +117,14 @@ export default {
         this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
         data,{ headers: window.headers })
           .then((data) => {
+            console.log('nowTree',data.data);
             this.subitem = data.data;
-            var item =  this.findObj(this.trees,this.subitem.name);
-            item.subFolders = this.subitem;
+            this.subitem.liselected = true;
+            var item =  this.findObj(this.trees,data.data.name);
+            console.log('item',item);
+            if(item!==null){
+              item.subFolders = data.data.subFolders
+            }
             console.log('all tree',this.trees);
             
            
@@ -122,10 +138,8 @@ export default {
      getSelfSettings(id){
       this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => {  
-        console.log('tree更改store',data.data);
         this.selfSetting = data.data
         this.$store.dispatch('setLiselected', this.selfSetting);
-
 
       }).catch(() => {
         // console.log(error.response.data);        

@@ -323,11 +323,11 @@
 
             <!-- 不用這個會跳頁 :pages="useritems" -->
 
-            <b-pagination-nav
-              :pages="useritems"
+            <b-pagination
+              @change="changePage($event)"
               v-model="currentPage"
-              :total-rows="Math.ceil(useritems.length / 10)"
-              :per-page="perPage"
+              :per-page="10"
+              :total-rows="useritems.length"
             />
           </div>
 
@@ -413,6 +413,7 @@
               v-model="currentPage"
               :per-page="perPage"
             />
+
           </div>
 
           <div
@@ -440,16 +441,9 @@
               </template>
 
               <template #cell()="data">
-                <!-- <img
-                  :src="data.item.pic"
-                  class="icon32px"
-                > -->
-                <!-- <img
-                  :src="require(`@/assets/images/${data.item.pic}`)"
-                  class="icon32px"
-                > -->
+                
                 <img
-                  :src="'@/assets/images/' + data.item.pic + '.png'"
+                  :src="require(`../assets/images/${data.item.pic}`)"
                   class="icon32px"
                 >
                 {{ data.item.actionType }}
@@ -460,11 +454,24 @@
               </template>
             </b-table>
 
-            <b-pagination-nav
+            <!-- <b-pagination-nav
+              @change="changePage($event)"
+              v-model="currentPage"
+              base-url="#"
+              :no-page-detect="true"
+              :number-of-pages="Math.ceil(eventsitems.length / 10)"
+            /> -->
+            <b-pagination
+              @change="changePage($event)"
+              v-model="currentPage"
+              :per-page="10"
+              :total-rows="eventsitems.length"
+            />
+            <!-- <b-pagination-nav
               :pages="eventsitems"
               v-model="currentPage"
               :per-page="perPage"
-            />
+            /> -->
           </div>
 
 
@@ -512,10 +519,17 @@
               </template>
             </b-table>
 
-            <b-pagination-nav
+            <!-- <b-pagination-nav
               :pages="linkitems"
               v-model="currentPage"
               :per-page="perPage"
+            /> -->
+            <b-pagination
+              @change="changePage($event)"
+              v-model="currentPage"
+              base-url="#"
+              :no-page-detect="true"
+              :number-of-pages="Math.ceil(linkitems.length / 10)"
             />
           </div>
         </b-col>
@@ -832,6 +846,9 @@ methods: {
 
   //   return ('@/assets/images/', + path)
   // },
+  changePage($event){
+    console.log($event)
+  },
   toggleAll(checked) { 
     console.log(checked);
   if(checked) {
