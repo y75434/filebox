@@ -491,7 +491,7 @@ export default {
       this.editGroup.uploadedBy = this.$store.getters.userId;
 
       const data = JSON.stringify(this.editGroup,'post folder')
-      console.log(data);
+      console.log(data,'494');
 
       this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CreateRootFolder`,
       data,{ headers:  window.headers })
@@ -502,7 +502,7 @@ export default {
       }).catch(error => {
         console.log(error.response.data);        
       })
-      setTimeout(() => {this.$emit('reload');},2000)
+      // setTimeout(() => {this.$emit('reload');},2000)
     },
    
     getPermissionTypes(){

@@ -115,6 +115,8 @@ export default {
 
       // this.$bus.$emit("showAlert", tree);
       // this.$emit('subClick', tree);  這行沒用
+
+      //要把sidebar的該資料夾樹狀  傳到search.vue
       console.log(tree,'點擊sidebar 當前資料夾',this.subitem);        
     }, 
   }

@@ -748,7 +748,7 @@ export default {
       }else{
 
         const data = JSON.stringify({ 
-          "folderId": [],       
+          // "folderId": [],       
           "uerId": this.$store.getters.userId,
           "groups": this.$store.getters.group
         })  

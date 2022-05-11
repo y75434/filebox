@@ -209,7 +209,7 @@ export default {
         this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
         data,{ headers: window.headers }).then((data) => { 
 
-          // console.log(data, 'admin');
+          console.log(data, 'admin');
           //先跑回圈看nowrootfolder有無該folder
           this.getRootTree(this.nowRootFolder.folderId)
           this.testArr = []
