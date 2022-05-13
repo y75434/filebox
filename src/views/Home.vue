@@ -32,7 +32,7 @@
                 src="@/assets/images/cmd/paste@2x.png"
                 alt="paste"
                 :disabled="this.selectedTrue.length === 0 || this.firstPage"
-                @click="this.selectedTrue.length > 0 && paste"
+                @click="paste"
                 :style=" this.selectedTrue.length > 0 && this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="nav-text text-center">{{ $t("HOME.PASTE") }}</span>
@@ -494,6 +494,9 @@
             class="icon24px"
           >{{ $t("HOME.DELETE") }}
         </li>
+        <li @click="view">
+          view
+        </li>
       </ul>
     </ContextMenu>
 
@@ -859,11 +862,17 @@ export default {
         "userId": this.$store.getters.userId,
         "userName": this.$store.getters.currentUser
       });
+      // ${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/View
 
-      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/View`,
+      this.axios.post(`https://cmqtest.doqubiz.com:6102/DocManagement/View`,
       data,{ headers: window.headers })
       .then((data) => { 
-      
+        // let reader = new FileReader()
+        //   reader.onload = (event) => {
+        //       this.product.image = event.target.result
+        //   }
+        //   reader.readAsDataURL(data.data)
+
 
         console.log(data);
 
@@ -871,6 +880,9 @@ export default {
       }).catch(error => {
         console.log(error.response.data);        
       }) 
+      
+      window.open('https://cmqtest.doqubiz.com:4430/view/?url=${tmepKey}', '_blank').focus();
+
     },
     copy(){
       this.copyFile = true
@@ -886,7 +898,7 @@ export default {
     },
     //paste
     paste() {
-      this.checkSelected()
+      // this.checkSelected()
       
       if(this.$refs.menu.open){ this.$refs.menu.close(); }
 
@@ -901,7 +913,7 @@ export default {
         }
       );
       
-      console.log(data,'paste');
+      console.log(data,'paste  904');
 
 
       if(this.copyFile){
@@ -916,7 +928,7 @@ export default {
 
           }).catch(error => {
             console.log(error.response.data); 
-            this.$swal.fire({ title: error, icon: 'error' })
+            this.$swal.fire({ title: error.response.data.error, icon: 'error' })
       
           })
         
@@ -932,8 +944,8 @@ export default {
 
 
         }).catch(error => {
-          console.log(error);
-          this.$swal.fire({ title: error, icon: 'error' })
+          console.log(error, error.response.data.error);
+          this.$swal.fire({ title: error.response.data.error, icon: 'error' })
     
         })
       this.cutFile = false
@@ -942,7 +954,7 @@ export default {
 
     this.$store.dispatch('nowFile', null);
     this.selectedTrue = []
-    this.reloadPage()
+    // this.reloadPage()
 
     },
    

@@ -726,7 +726,7 @@ export default {
 
         }).catch(error => {
           console.log(error.response.data);    
-          this.$swal.fire({ title: error.response.data, icon: 'error' })
+          this.$swal.fire({ title: error.response.data.error, icon: 'error' })
       
         })
 

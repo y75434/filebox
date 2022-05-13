@@ -413,7 +413,6 @@
               v-model="currentPage"
               :per-page="perPage"
             />
-
           </div>
 
           <div
@@ -440,12 +439,25 @@
                 {{ data.item.user }} 
               </template>
 
-              <template #cell()="data">
-                
-                <img
+              <template #cell()="data">  
+                <!-- 無法跳 -->
+
+                <!-- <img
                   :src="require(`../assets/images/${data.item.pic}`)"
                   class="icon32px"
+                > -->
+                <!-- <img :src="getImgUrl(data.item.pic)" /> -->
+                <!-- <img
+                  :src="require(`@/assets/images/` + data.item.pic)"
+                  class="icon32px"
+                > -->
+                <!-- 可以跳 但圖片無法顯示 -->
+                <img
+                  :src="data.item.pic"
+                  class="icon32px"
                 >
+
+
                 {{ data.item.actionType }}
               </template>
               
@@ -1117,7 +1129,7 @@ methods: {
             this.count = this.eventsitems.length 
             // this.$forceUpdate();
  
-          // return this.eventsitems;
+          return this.eventsitems;
 
 
           }).catch(error => {
@@ -1170,6 +1182,9 @@ methods: {
         
       }
 
+    },
+    getImgUrl(imagePath) {
+      return require(`@/assets/images/${imagePath}`);
     },
   }
 }
