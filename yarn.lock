@@ -1679,7 +1679,7 @@
   "resolved" "https://registry.nlark.com/acorn-walk/download/acorn-walk-7.2.0.tgz?cache=0&sync_timestamp=1630916608758&other_urls=https%3A%2F%2Fregistry.nlark.com%2Facorn-walk%2Fdownload%2Facorn-walk-7.2.0.tgz"
   "version" "7.2.0"
 
-"acorn@^6.0.0 || ^7.0.0 || ^8.0.0", "acorn@^7.1.1", "acorn@^7.4.0":
+"acorn@^6.0.0 || ^7.0.0 || ^8.0.0", "acorn@^7.1.1", "acorn@^7.4.0", "acorn@^7.4.1":
   "integrity" "sha1-/q7SVZc9LndVW4PbwIhRpsY1IPo="
   "resolved" "https://registry.nlark.com/acorn/download/acorn-7.4.1.tgz"
   "version" "7.4.1"
@@ -2048,7 +2048,7 @@
     "mixin-deep" "^1.2.0"
     "pascalcase" "^0.1.1"
 
-"base64-js@^1.0.2":
+"base64-js@^1.0.2", "base64-js@^1.5.1":
   "integrity" "sha1-GxtEAWClv3rUC2UPCVljSBkDkwo="
   "resolved" "https://registry.npm.taobao.org/base64-js/download/base64-js-1.5.1.tgz"
   "version" "1.5.1"
@@ -2911,7 +2911,7 @@
     "browserslist" "^4.17.3"
     "semver" "7.0.0"
 
-"core-js@^3.6.5":
+"core-js@^3.6.5", "core-js@^3.8.3":
   "integrity" "sha512-LeLBMgEGSsG7giquSzvgBrTS7V5UL6ks3eQlUSbN8dJStlLFiRzUm5iqsRyzUB8carhfKjkJ2vzKqE6z1Vga9g=="
   "resolved" "https://registry.npmjs.org/core-js/-/core-js-3.19.3.tgz"
   "version" "3.19.3"
@@ -3021,6 +3021,11 @@
     "public-encrypt" "^4.0.0"
     "randombytes" "^2.0.0"
     "randomfill" "^1.0.3"
+
+"crypto-js@^4.0.0":
+  "integrity" "sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw=="
+  "resolved" "https://registry.npmjs.org/crypto-js/-/crypto-js-4.1.1.tgz"
+  "version" "4.1.1"
 
 "css-color-names@^0.0.4", "css-color-names@0.0.4":
   "integrity" "sha1-gIrcLnnPhHOAabZGyyDsJ762KeA="
@@ -6332,6 +6337,17 @@
   "resolved" "https://registry.npm.taobao.org/obuf/download/obuf-1.1.2.tgz"
   "version" "1.1.2"
 
+"oidc-client@^1.11.5":
+  "integrity" "sha512-LcKrKC8Av0m/KD/4EFmo9Sg8fSQ+WFJWBrmtWd+tZkNn3WT/sQG3REmPANE9tzzhbjW6VkTNy4xhAXCfPApAOg=="
+  "resolved" "https://registry.npmjs.org/oidc-client/-/oidc-client-1.11.5.tgz"
+  "version" "1.11.5"
+  dependencies:
+    "acorn" "^7.4.1"
+    "base64-js" "^1.5.1"
+    "core-js" "^3.8.3"
+    "crypto-js" "^4.0.0"
+    "serialize-javascript" "^4.0.0"
+
 "on-finished@~2.3.0":
   "integrity" "sha1-IPEzZIGwg811M3mSoWlxqi2QaUc="
   "resolved" "https://registry.npm.taobao.org/on-finished/download/on-finished-2.3.0.tgz"
@@ -8385,10 +8401,10 @@
     "unquote" "~1.1.1"
     "util.promisify" "~1.0.0"
 
-"sweetalert2@11.x":
-  "integrity" "sha512-0JBlA36T1e0fuihcyvg4FjoucCOYNmbYDLrEOenGMVg1Jw7UHaC7FmDFp1qf9UGbO89pjgDJrfkThYln8TrYEQ=="
-  "resolved" "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.3.6.tgz"
-  "version" "11.3.6"
+"sweetalert2@^11.3.10", "sweetalert2@11.x":
+  "integrity" "sha512-/3nhG5QCREkPUndAbOF9h1IM7lgCIU/evsNXd/YUfa9eJ04M+hxksxIio8hhtH16UnWd2GvJ+zvFQ8H9hLRhsw=="
+  "resolved" "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.3.10.tgz"
+  "version" "11.3.10"
 
 "table@^5.2.3":
   "integrity" "sha1-EpLRlQDOP4YFOwXw6Ofko7shB54="

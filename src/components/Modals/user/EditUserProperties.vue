@@ -307,9 +307,9 @@ export default {
 
 
       const data = JSON.stringify({
-        
-        "id": this.personData.userId,
-        "userName": this.personData.userName,
+        "editor":this.$store.getters.userId,
+        "Id": this.personData.userId,
+        // "userName": this.personData.userName,
         "firstName": this.personData.firstName,
         "middleName": this.personData.middleName,
         "lastName": this.personData.lastName,
@@ -322,7 +322,13 @@ export default {
         "cannotChangePassword": this.personData.cannotChangePassword,
         "passwordNeverExpires": this.personData.passwordNeverExpires,
         "isEnabled": this.personData.isEnabled,
-        "unlockAccount": this.personData.unlockAccount
+        // "unlockAccount": this.personData.unlockAccount
+    
+        "lastLogon": this.personData.lastLogon,
+        "createdOn": this.personData.createdOn,
+        "modifiedOn": this.personData.modifiedOn,
+        "loginCount": this.personData.loginCount,   
+        "islockedAccount": this.personData.islockedAccount
 
       })
 

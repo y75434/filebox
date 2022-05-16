@@ -873,6 +873,7 @@ export default {
         //   }
         //   reader.readAsDataURL(data.data)
 
+        window.open('https://cmqtest.doqubiz.com:4430/view/?url='+ data.data,'_blank').focus();
 
         console.log(data);
 
@@ -881,7 +882,6 @@ export default {
         console.log(error.response.data);        
       }) 
       
-      window.open('https://cmqtest.doqubiz.com:4430/view/?url=${tmepKey}', '_blank').focus();
 
     },
     copy(){
