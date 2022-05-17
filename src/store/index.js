@@ -9,7 +9,7 @@ export default new Vuex.Store({
   state: {
     currentUser: null,
     isAdmin: false,
-    // token: "", // 存放jwt token
+    token: "", // 存放jwt token
     isLogin: false,
     userId: null,
     nowFolderId: null, 
@@ -80,6 +80,9 @@ export default new Vuex.Store({
     setTreeArr ({ commit }, treeArr) {
      commit('SET_TREEARR', treeArr)
     }, 
+    setToken ({ commit }, token) {
+     commit('SET_TOKEN', token)
+    }, 
   },
   getters: {
     currentUser: state => state.currentUser,
@@ -90,7 +93,8 @@ export default new Vuex.Store({
     nowFile: state => state.nowFile,
     group: state => state.group,
     liselected: state => state.liselected,
-    treeArr: state => state.treeArr
+    treeArr: state => state.treeArr,
+    token: state => state.token
 
   },
   

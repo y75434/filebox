@@ -61,6 +61,11 @@
           class="dqbz-btn btn btn-primary col-12"
         >{{ $t("GENERAL.LOGIN") }}</a>
 
+        <a
+          @click="test"
+          class="dqbz-btn btn btn-primary col-12"
+        >test</a>
+
         <p class="my-4">
           <span>{{ $t("GENERAL.OR") }}</span>
         </p>
@@ -85,6 +90,10 @@ import ForgotPassword from '../components/Modals/login/ForgotPassword.vue';
 import RequestEmailSent from '../components/Modals/login/RequestEmailSent.vue';
 import ResetNewPassword from '../components/Modals/login/ResetNewPassword.vue';
 import ResetSuccess from '../components/Modals/login/ResetSuccess.vue';
+import Cookies from 'js-cookie'
+import Mgr from '../services/authService'
+import cmqRequest from "@/http/cmqRequest";
+
 
 
 export default {
@@ -96,6 +105,7 @@ export default {
     ResetSuccess
   },
 	data: () => ({
+    mgr: new Mgr(),
     loginForm:{
       username: "",
       password: "",
@@ -105,21 +115,73 @@ export default {
     userId: ""
   }),
   methods:{
+    saveAccount(t = "", b = "") {
+      window.localStorage.setItem("savedAccount", JSON.stringify({t, b}));
+    },
     ResetNewPassword(){ this.$bvModal.show('ResetNewPassword'); },
     getUserTable (name) {
 
-    this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers`)
-    .then((data) => {
-      this.useritems = data.data
-      const ans = this.useritems.filter(item=>item.userName == name)[0];
-      this.userId = ans.userId;
-      this.$store.dispatch('setUserId', this.userId);
+      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers`)
+      .then((data) => {
+        this.useritems = data.data
+        const ans = this.useritems.filter(item=>item.userName == name)[0];
+        this.userId = ans.userId;
+        this.$store.dispatch('setUserId', this.userId);
 
-      }).catch(error => {
-      console.log(error);
-      })
+        }).catch(error => {
+        console.log(error);
+        })
 
     },
+    test() {
+      const data = JSON.stringify({username:this.loginForm.username,password:this.loginForm.password})
+
+      cmqRequest.post(`https://cmqtest.doqubiz.com:5099/api/AD/LoginADUser`, data)
+        .then(data => {
+        if(data.data.success == true){
+          
+
+        this.$store.dispatch('setAuth', data.data.success);
+        this.$store.dispatch('setGroup', data.data.groups);
+        this.$store.dispatch('setUser', this.loginForm.username);
+
+        if(data.data.isAdmin == true){
+          this.$store.dispatch('setAdmin', true);
+        }else{
+          this.$store.dispatch('setAdmin', false);
+
+        }
+
+        this.getUserTable(this.loginForm.username)
+
+
+        Cookies.set('loginAccount', JSON.stringify(this.loginForm))
+        Cookies.set('loginFromLocal', true) //local登录
+        this.$store.dispatch('setToken', sessionStorage.getItem('orgToken'));
+             
+          this.saveAccount(
+            this.loginForm.username,
+            this.loginForm.password
+          );
+
+          this.loginForm = {
+            username: "",
+            password: ""
+          }
+          
+          this.$router.push('/');
+        }else{
+          this.wrong = true
+        }
+        
+        console.log(data);
+          
+      });
+
+    },
+
+
+
     login(){
       const data = JSON.stringify({username:this.loginForm.username,password:this.loginForm.password})
 
@@ -143,8 +205,15 @@ export default {
 
         this.getUserTable(this.loginForm.username)
 
-        // this.$store.dispatch('setToken', res.token);
 
+        Cookies.set('loginAccount', JSON.stringify(this.loginForm))
+        Cookies.set('loginFromLocal', true) //local登录
+        this.$store.dispatch('setToken', sessionStorage.getItem('orgToken'));
+             
+          this.saveAccount(
+            this.loginForm.username,
+            this.loginForm.password
+          );
 
           this.loginForm = {
             username: "",

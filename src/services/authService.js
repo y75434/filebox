@@ -3,6 +3,9 @@ import Oidc from 'oidc-client';
 
 const mgr = new Oidc.UserManager({
   // authority: 'https://cmqtest.doqubiz.com:5098',
+  redirect_uri: 'http://localhost:8080/callback.html',
+  post_logout_redirect_uri: 'http://localhost:8080/', 
+
   authority: 'https://cmqtest.doqubiz.com/oidc/',
   client_id: 'SPA.Filebox.Client',
   scope: 'openid profile OrgApi LogApi LinkApi DocApi offline_access',
@@ -110,6 +113,7 @@ export default class SecurityService {
     })
   }
 
+  //本地登入
   signInLocal() {
     mgr.signinRedirect({
       extraQueryParams: {
