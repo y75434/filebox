@@ -10,11 +10,13 @@
     var mgr = new Oidc.UserManager({response_mode: 'query',userStore: new Oidc.WebStorageStateStore()});
 
     mgr.signinRedirectCallback().then(function (user) {
-      console.log("signin response success", JSON.stringify(user));
-      console.log("access token:", user.access_token);
-      console.log("id token", user.id_token);
-      console.log("is admin:", user.profile.IsAdmin);
-      console.log("user groups:", user.profile.Groups);
+      // console.log("signin response success", JSON.stringify(user));
+      // console.log("access token:", user.access_token);
+      // console.log("id token", user.id_token);
+      // console.log("is admin:", user.profile.IsAdmin);
+      // console.log("user groups:", user.profile.Groups);
+                  console.log("USER", user);
+
       // alert('access_token:' + user.access_token);
       // alert('is admin:' + user.profile.IsAdmin);
       // alert('user groups:' + user.profile.Groups);

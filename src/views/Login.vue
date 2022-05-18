@@ -92,7 +92,7 @@ import ResetNewPassword from '../components/Modals/login/ResetNewPassword.vue';
 import ResetSuccess from '../components/Modals/login/ResetSuccess.vue';
 import Cookies from 'js-cookie'
 import Mgr from '../services/authService'
-import cmqRequest from "@/http/cmqRequest";
+// import cmqRequest from "@/http/cmqRequest";
 
 
 
@@ -134,49 +134,84 @@ export default {
 
     },
     test() {
-      const data = JSON.stringify({username:this.loginForm.username,password:this.loginForm.password})
+      this.mgr.signIn()
 
-      cmqRequest.post(`https://cmqtest.doqubiz.com:5099/api/AD/LoginADUser`, data)
-        .then(data => {
-        if(data.data.success == true){
-          
-
-        this.$store.dispatch('setAuth', data.data.success);
-        this.$store.dispatch('setGroup', data.data.groups);
-        this.$store.dispatch('setUser', this.loginForm.username);
-
-        if(data.data.isAdmin == true){
-          this.$store.dispatch('setAdmin', true);
-        }else{
-          this.$store.dispatch('setAdmin', false);
-
-        }
-
-        this.getUserTable(this.loginForm.username)
+     
 
 
-        Cookies.set('loginAccount', JSON.stringify(this.loginForm))
-        Cookies.set('loginFromLocal', true) //local登录
-        this.$store.dispatch('setToken', sessionStorage.getItem('orgToken'));
-             
-          this.saveAccount(
-            this.loginForm.username,
-            this.loginForm.password
-          );
 
-          this.loginForm = {
-            username: "",
-            password: ""
-          }
-          
-          this.$router.push('/');
-        }else{
-          this.wrong = true
-        }
+
+//       this.axios.get(`https://cmqtest.doqubiz.com:5098/connect/authorize?response_type=code&client_id=SPA.Filebox.Client&scope=openid%20profile%20OrgApi%20LogApi%20LinkApi%20DocApi%20offline_access&redirect_uri=https%3A%2F%2Fcmqtest.doqubiz.com%2Fcallback.html&code_challenge=N2cTSUHl78Qtw6ykd3zkftlLaKvb2Ne-FsTXeRiLfDA&code_challenge_method=S256`,
+//       { headers: window.headers }).then((data) => {
+     
+       
         
-        console.log(data);
+//         console.log(data);
+//       }).catch(error => {
           
-      });
+//           console.log(error);          
+      
+//       })
+
+//       this.axios.get(`https://cmqtest.doqubiz.com:5098/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dcode%26client_id%3DSPA.Filebox.Client%26scope%3Dopenid%2520profile%2520OrgApi%2520LogApi%2520LinkApi%2520DocApi%2520offline_access%26redirect_uri%3Dhttps%253A%252F%252Fcmqtest.doqubiz.com%252Fcallback.html%26code_challenge%3DN2cTSUHl78Qtw6ykd3zkftlLaKvb2Ne-FsTXeRiLfDA%26code_challenge_method%3DS256
+// 200`,
+//       { headers: window.headers }).then((data) => {
+     
+       
+        
+//         console.log(data);
+//       }).catch(error => {
+          
+//           console.log(error);          
+      
+//       })
+
+
+
+
+      // const data = JSON.stringify({username:this.loginForm.username,password:this.loginForm.password})
+
+      // cmqRequest.post(`https://cmqtest.doqubiz.com:5099/api/AD/LoginADUser`, data)
+      //   .then(data => {
+      //   if(data.data.success == true){
+          
+
+      //   this.$store.dispatch('setAuth', data.data.success);
+      //   this.$store.dispatch('setGroup', data.data.groups);
+      //   this.$store.dispatch('setUser', this.loginForm.username);
+
+      //   if(data.data.isAdmin == true){
+      //     this.$store.dispatch('setAdmin', true);
+      //   }else{
+      //     this.$store.dispatch('setAdmin', false);
+
+      //   }
+
+      //   this.getUserTable(this.loginForm.username)
+
+
+      //   Cookies.set('loginAccount', JSON.stringify(this.loginForm))
+      //   Cookies.set('loginFromLocal', true) //local登录
+        // this.$store.dispatch('setToken', sessionStorage.getItem('orgToken'));
+             
+      //     this.saveAccount(
+      //       this.loginForm.username,
+      //       this.loginForm.password
+      //     );
+
+      //     this.loginForm = {
+      //       username: "",
+      //       password: ""
+      //     }
+          
+      //     this.$router.push('/');
+      //   }else{
+      //     this.wrong = true
+      //   }
+        
+      //   console.log(data);
+          
+      // });
 
     },
 

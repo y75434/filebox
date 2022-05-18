@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from "vuex-persistedstate";
+import jwt_decode from "jwt-decode";
 
 Vue.use(Vuex)
 
@@ -81,7 +82,19 @@ export default new Vuex.Store({
      commit('SET_TREEARR', treeArr)
     }, 
     setToken ({ commit }, token) {
-     commit('SET_TOKEN', token)
+
+    let tokenInfo = jwt_decode(token)
+      let user = {
+        userId: tokenInfo.sub,
+        isAdmin: tokenInfo.IsAdmin,
+        groups: tokenInfo.Groups,
+        userMustChangePassword: tokenInfo.UserMustChangePassword,
+        userCannotChangePassword: tokenInfo.UserCannotChangePassword
+      }
+      commit('setLoginUser', user)
+      commit('setUserName', {name: tokenInfo.UserName, nickname: tokenInfo.UserName})
+
+    //  commit('SET_TOKEN', token)
     }, 
   },
   getters: {

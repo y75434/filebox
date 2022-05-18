@@ -2,11 +2,11 @@
 import Oidc from 'oidc-client';
 
 const mgr = new Oidc.UserManager({
-  // authority: 'https://cmqtest.doqubiz.com:5098',
-  redirect_uri: 'http://localhost:8080/callback.html',
-  post_logout_redirect_uri: 'http://localhost:8080/', 
-
-  authority: 'https://cmqtest.doqubiz.com/oidc/',
+  redirect_uri: 'http://localhost:8081/callback.html',
+  post_logout_redirect_uri: 'http://localhost:8081/', 
+  token_endpoint: "https://cmqtest.doqubiz.com:5098/connect/token",
+  authority: 'https://cmqtest.doqubiz.com:5098/connect/authorize',
+  silent_redirect_uri: 'https://cmqtest.doqubiz.com/silent-renew.html',
   client_id: 'SPA.Filebox.Client',
   scope: 'openid profile OrgApi LogApi LinkApi DocApi offline_access',
   userStore: new Oidc.WebStorageStateStore({store: window.localStorage}),
@@ -74,6 +74,8 @@ export default class SecurityService {
   getUser() {
     let self = this
     return new Promise((resolve, reject) => {
+      console.log('getUser');
+      
       mgr.getUser().then(function (user) {
         if (user == null) {
           self.signIn()
@@ -108,6 +110,8 @@ export default class SecurityService {
 
   // Redirect of the current window to the authorization endpoint.
   signIn() {
+    
+
     mgr.signinRedirect().catch(function (err) {
       console.log(err)
     })

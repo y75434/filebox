@@ -10,7 +10,7 @@ let getToken = function (url) {
   let token = sessionStorage.getItem('orgToken')
   switch (scope) {
     case '5099': //org
-        console.log(token);
+        console.log('13',token);
       token = sessionStorage.getItem('orgToken')
       break;
     case '6102': //doc
