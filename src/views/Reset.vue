@@ -33,7 +33,7 @@
           </h5>
           <a
             class="my-3 light-blue"
-          >Htts://www.mail.google.com/mail/u/0/?tab=rm&ogbl#inbox/FMfcgxwLsSXXLZRXmJNvrjDwCvVQPmZB</a>
+          >Htts://www.mail.google.com/mail/u/0/?tab=rm&ogbl#inbox/fcgxwLsSXXLZRXmJNvrjDwCvVQPmZB</a>
         </div>
         
         

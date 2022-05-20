@@ -15,7 +15,7 @@
       // console.log("id token", user.id_token);
       // console.log("is admin:", user.profile.IsAdmin);
       // console.log("user groups:", user.profile.Groups);
-                  console.log("USER", user);
+      console.log("USER", user);
 
       // alert('access_token:' + user.access_token);
       // alert('is admin:' + user.profile.IsAdmin);
@@ -24,7 +24,7 @@
       sessionStorage.setItem('docToken', user.access_token)
       sessionStorage.setItem('eventToken', user.access_token)
       sessionStorage.setItem('linkToken', user.access_token)
-      // window.location.href = '../file';
+      window.location.href = '../';
     }).catch(function (err) {
       console.log(err);
     });

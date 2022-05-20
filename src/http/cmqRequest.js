@@ -2,15 +2,14 @@ import axios from 'axios'
 import {Promise} from 'es6-promise'
 
 let getToken = function (url) {
-  console.log(url);
-  console.log(sessionStorage);
+  // console.log(url);
+  // console.log(sessionStorage);
 
   let scope = url.split(':')[2].substr(0, 4)
     console.log(scope);
   let token = sessionStorage.getItem('orgToken')
   switch (scope) {
     case '5099': //org
-        console.log('13',token);
       token = sessionStorage.getItem('orgToken')
       break;
     case '6102': //doc

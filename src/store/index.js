@@ -6,7 +6,7 @@ import jwt_decode from "jwt-decode";
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  namescaped: true,
+  // namescaped: true,
   state: {
     currentUser: null,
     isAdmin: false,
