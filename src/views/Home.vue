@@ -550,6 +550,7 @@ import AddEditPublicLink from'@/components/Modals/link/AddEditPublicLink.vue';
 import ContextMenu from '@/components/ContextMenu.vue';
 import TreeItem from '@/components/Modals/home/TreeItem.vue';
 // import Detail from '../components/Display/Detail.vue';
+// import cmqRequest from '../http/cmqRequest'
 
 
 export default {
@@ -860,29 +861,47 @@ export default {
       const data =  JSON.stringify({
         "fileId": this.nowSelected.id,
         "userId": this.$store.getters.userId,
-        "userName": this.$store.getters.currentUser
+        "userName": this.$store.getters.currentUser,
+        "groups": this.$store.getters.group
+
       });
+        console.log(data);
+        console.log(sessionStorage.getItem('docToken'));
+
+
+  
       // ${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/View
 
-      this.axios.post(`https://cmqtest.doqubiz.com:6102/DocManagement/View`,
-      data,{ headers: window.headers })
+      this.axios.post(`https://192.168.110.180:6102/DocManagement/View`,
+      data,
+      { "headers": {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + sessionStorage.getItem('docToken')
+      } })
       .then((data) => { 
-        // let reader = new FileReader()
-        //   reader.onload = (event) => {
-        //       this.product.image = event.target.result
-        //   }
-        //   reader.readAsDataURL(data.data)
+       
 
-        window.open('https://cmqtest.doqubiz.com:4430/view/?url='+ data.data,'_blank').focus();
+        window.open('https://192.168.110.180:6102/DocManagement/view/?url='+ data.data,'_blank').focus();
 
         console.log(data);
 
+        // cmqRequest.post(`https://cmqtest.doqubiz.com:6102/DocManagement/View`)
+        //   .then(resp => {
+        //     if (resp.status === 200) {
+        //       console.log(resp.data, resp,'884')
 
-      }).catch(error => {
-        console.log(error.response.data);        
-      }) 
+
+        //       window.open('https://cmqtest.doqubiz.com:4430/view/?url='+ resp.data,'_blank').focus();
+        //     }
+        //   })
+
+
+        //   .catch(error => {
+        //     console.log(error.response.data);        
+        //   })
+         })
       
-
+      
     },
     copy(){
       this.copyFile = true

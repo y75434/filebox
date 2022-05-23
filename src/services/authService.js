@@ -2,38 +2,23 @@
 import Oidc from 'oidc-client';
 
 const mgr = new Oidc.UserManager({
-  redirect_uri: 'http://localhost:8081/callback.html',
-  post_logout_redirect_uri: 'http://localhost:8081/', 
-  // "authority": "https://cmqtest.doqubiz.com:5098/connect/authorize",
+  redirect_uri: 'http://localhost:8080/callback.html',
+  post_logout_redirect_uri: 'http://localhost:8080/', 
+  // authority: "https://cmqtest.doqubiz.com:5098/connect/authorize",
     // authority: 'https://cmqtest.doqubiz.com/oidc/',
 
   authority: 'https://cmqtest.doqubiz.com:5098/',
-  silent_redirect_uri: 'http://localhost:8081/silent-renew.html',
+  silent_redirect_uri: 'http://localhost:8080/silent-renew.html',
   client_id: 'SPA.Filebox.Client',
   scope: 'openid profile OrgApi LogApi LinkApi DocApi offline_access',
   userStore: new Oidc.WebStorageStateStore({store: window.localStorage}),
   automaticSilentRenew: true, //new
   response_type: 'code',
   filterProtocolClaims: true,
-  // loadUserInfo: true
+  loadUserInfo: true
 })
 
-// const mgr = new Oidc.UserManager({
-//   // authority: 'https://cmqtest.doqubiz.com:5098',
-//   authority: 'https://cmqtest.doqubiz.com/oidc/',
-//   client_id: 'SPA.Filebox.Client',
-//   redirect_uri: process.env.NODE_ENV === "production" ? 'https://cmqtest.doqubiz.com/callback.html' : 'http://localhost:8081/callback.html', //production
-//   // redirect_uri: 'http://localhost:8080/callback.html',
-//   post_logout_redirect_uri: process.env.NODE_ENV === "production" ? 'https://cmqtest.doqubiz.com/' : 'http://localhost:8081/', //production
-//   // post_logout_redirect_uri: 'http://localhost:8080/login',
-//   scope: 'openid profile OrgApi LogApi LinkApi DocApi offline_access',
-//   userStore: new Oidc.WebStorageStateStore({store: window.localStorage}),
-//   automaticSilentRenew: true, //new
-//   silent_redirect_uri: 'http://localhost:8081/silent-renew.html',
-//   response_type: 'code',
-//   filterProtocolClaims: true,
-//   loadUserInfo: true
-// })
+
 
 Oidc.Log.logger = console;
 Oidc.Log.level = Oidc.Log.INFO;

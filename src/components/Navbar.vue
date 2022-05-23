@@ -85,6 +85,7 @@
 
 <script>
 import UserSetting from '../components/Modals/UserSetting.vue';
+import Mgr from '../services/authService'
 
 export default {
 name: "Navbar",
@@ -95,11 +96,7 @@ name: "Navbar",
   },
   data: () => ({
     
-      
-     
-      
-      
-      
+    mgr: new Mgr(),
 
   }),
   methods: {
@@ -109,10 +106,17 @@ name: "Navbar",
     logout(){
 
     // this.$store.dispatch('setToken', "");
+      sessionStorage.removeItem('orgToken')
+      sessionStorage.removeItem('docToken')
+      sessionStorage.removeItem('eventToken')
+      sessionStorage.removeItem('linkToken')
+      this.mgr.signOut()
 
        this.$router.push('/login').catch(err => {err})
 
        this.$store.dispatch('setAuth', false);
+       this.$store.dispatch('setAdmin', false);
+
 
       // this.$router.push('/login', () => {}, (e) => {
       //     console.log('输出报错',e) 
