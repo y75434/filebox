@@ -79,6 +79,8 @@ router.beforeEach(function (to, from, next) {
             router.push({name: 'login'})
         }
       // this.$store.dispatch('setToken', sessionStorage.getItem('orgToken'))
+      
+      console.log(auth);        
 
         
     }

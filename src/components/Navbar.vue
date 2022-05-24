@@ -116,6 +116,10 @@ name: "Navbar",
 
        this.$store.dispatch('setAuth', false);
        this.$store.dispatch('setAdmin', false);
+       this.$store.dispatch('setUser', '');
+       this.$store.dispatch('setGroup', '');
+
+
 
 
       // this.$router.push('/login', () => {}, (e) => {
