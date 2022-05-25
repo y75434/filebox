@@ -428,6 +428,7 @@
 <script>
 import rootTreeItem from './rootTreeItem.vue';
 import { mapGetters } from 'vuex';
+import cmqRequest from '@/http/cmqRequest'
 
 export default {
   name: "RootFolderProperties",
@@ -556,7 +557,7 @@ export default {
         "groups": this.$store.getters.group
         }) 
 
-      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
+      cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
       data,{ headers: window.headers })
         .then((data) => {
           this.testTree = data.data;
@@ -571,7 +572,7 @@ export default {
           console.log(this.arr, 'arr');
     },
     getFolderSettings(id){  
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
+      cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => { 
         console.log(id,this.$store.getters.liselected);
 
@@ -601,7 +602,7 @@ export default {
       })
     },
     getPermissionTypes(){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/PermissionTypes`)
+      cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/PermissionTypes`)
       .then((data) => {  
         this.PermissionTypes = data.data;
         this.PermissionTypes.map(x=>x.active = false);
@@ -657,7 +658,7 @@ export default {
 
     },
     getFileTypes(){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileTypes`)
+      cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileTypes`)
       .then((data) => {  
         this.FileTypes = data.data
               
@@ -666,7 +667,7 @@ export default {
       })
     },    
     getStorageUnit(){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/Storage/Unit`)
+      cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/Storage/Unit`)
       .then((data) => {  
         this.StorageUnit = data.data
       }).catch(() => {
@@ -718,7 +719,7 @@ export default {
 
       console.log(data);
 
-      this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
+      cmqRequest.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
         data,{ headers: window.headers }).then((data) => { 
 
           console.log(data);
@@ -735,7 +736,7 @@ export default {
 
     },
     getUserTable(){  
-      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
+      cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
         .then((data) => {          
           this.useritems = data.data
 
@@ -745,7 +746,7 @@ export default {
         })
     },
     getGroupTable() {  
-    this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroups`)
+      cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroups`)
       .then(data => {  
         this.groupitems = data.data 
       }).catch(error => {

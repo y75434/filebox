@@ -550,7 +550,7 @@ import AddEditPublicLink from'@/components/Modals/link/AddEditPublicLink.vue';
 import ContextMenu from '@/components/ContextMenu.vue';
 import TreeItem from '@/components/Modals/home/TreeItem.vue';
 // import Detail from '../components/Display/Detail.vue';
-// import cmqRequest from '../http/cmqRequest'
+import cmqRequest from '../http/cmqRequest'
 
 
 export default {
@@ -734,8 +734,9 @@ export default {
     getFolderTable(){
 
       if(this.$store.getters.isAdmin != null){
+        let dataBody = {}
 
-        this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
+        cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`, dataBody)
           .then((data) => { 
             this.allFiles = data.data
             this.firstPage = true
@@ -758,7 +759,7 @@ export default {
         })  
 
         console.log(data, 'normal get root');
-        this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`,
+        cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`,
         data,{ headers: window.headers })
           .then((data) => { 
             this.allFiles = data.data
@@ -813,7 +814,7 @@ export default {
       // this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`,
       // data,config)
 
-      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`, data,config)
+      cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`, data,config)
 
       .then((res) => { 
         const dataFromHeader = res.headers['content-disposition'];
@@ -872,7 +873,7 @@ export default {
   
       // ${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/View
 
-      this.axios.post(`https://192.168.110.180:6102/DocManagement/View`,
+      cmqRequest.post(`https://192.168.110.180:6102/DocManagement/View`,
       data,
       { "headers": {
         'Content-Type': 'application/json',
@@ -938,7 +939,7 @@ export default {
       if(this.copyFile){
         
         // copy post ok
-            this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CopyAndPaste`,
+            cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CopyAndPaste`,
           data,{  headers: window.headers })
           .then((data) => {  
             console.log(data);
@@ -955,7 +956,7 @@ export default {
 
       }else if(this.cutFile){    
       // cut paste
-        this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CutAndPaste`,
+        cmqRequest.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CutAndPaste`,
         data,{  headers: window.headers })
         .then((data) => {  
           console.log(data);
@@ -1016,8 +1017,8 @@ export default {
 
          console.log('換路徑請求',data);
          
-      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/GetItems/`,
-      data,{ headers: window.headers })
+      cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/GetItems/`,
+      data)
         .then((data) => { 
           // console.log(data);  
        

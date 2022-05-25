@@ -163,7 +163,7 @@ export default {
         this.$store.dispatch('setUserId', tokenInfo.sub);
 
 
-        this.$store.dispatch('setUser', 'varsha');
+        this.$store.dispatch('setUser', 'admin');
       
 
       

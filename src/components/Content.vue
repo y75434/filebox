@@ -709,6 +709,7 @@ import EventProperties from '@/components/Modals/events/EventProperties.vue';
 import RenameItem from '../components/Modals/home/RenameItem.vue';
 import openLink from'@/components/Modals/link/openLink.vue';
 import DeleteMul from '@/components/Modals/user/DeleteMul.vue';
+import cmqRequest from "@/http/cmqRequest"
 
 
 export default {
@@ -1005,7 +1006,7 @@ methods: {
     this.$bvModal.show('EventProperties');
   },
   getUserTable () {  
-    this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers`)
+    cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers`)
       .then((data) => {          
         this.useritems = data.data
         // console.log(this.useritems);
@@ -1016,7 +1017,7 @@ methods: {
       })
   },
   getGroupTable () {  
-    this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroups`)
+    cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroups`)
       .then(data => {  
         this.groupitems = data.data 
         this.count = this.groupitems.length      
@@ -1025,7 +1026,7 @@ methods: {
       })
   },//預設傳空物件
     getEventTable(){
-      this.axios.post(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`,
+      cmqRequest.post(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`,
       {},{ headers: window.headers })
         .then(data => {  
           this.eventsitems = data.data 
@@ -1046,7 +1047,7 @@ methods: {
   },
   // change this.eventsSelected value 
   getEventType(){ 
-    this.axios.get(`${process.env.VUE_APP_EVENTS_APIPATH}/ActionType/GetAll`)
+    cmqRequest.get(`${process.env.VUE_APP_EVENTS_APIPATH}/ActionType/GetAll`)
       .then((data) => {
         data.data.forEach(item =>{
           this.events.push(item)
@@ -1058,7 +1059,7 @@ methods: {
 
   },
   getLinkTable(){
-    this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll`)
+    cmqRequest.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll`)
       .then((data) => { 
         this.linkitems = data.data 
         this.count = this.linkitems.length
@@ -1067,10 +1068,12 @@ methods: {
       })
   },
   getFolderTable(){
-    this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
+   
+    cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
       .then((data) => { 
         this.folderitems = data.data 
         this.count = this.folderitems.length
+
       }).catch(() => {
         // console.log(error.response.data);        
       })
@@ -1079,7 +1082,7 @@ methods: {
   search(){
     switch (this.currentSelected) {
       case 1:
-        this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}&UserStatus=${this.status}`)
+        cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}&UserStatus=${this.status}`)
           .then(data => {  
             console.log(data);
             this.useritems = data.data 
@@ -1090,7 +1093,7 @@ methods: {
           })
         break;
       case 2: 
-        this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroups?searchString=${this.searchText}`)
+        cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroups?searchString=${this.searchText}`)
           .then(data => {  
             this.groupitems = data.data 
             this.count = this.groupitems.length  
@@ -1121,7 +1124,7 @@ methods: {
         console.log(data);
 
 
-        this.axios.post(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`,
+        cmqRequest.post(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`,
         data,{ headers: window.headers })
           .then(data => {  
             console.log(data);        
@@ -1140,7 +1143,7 @@ methods: {
       }
       case 5: 
       // 測試過後端無法過濾
-      this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll?searchString=${this.searchText}`)
+      cmqRequest.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll?searchString=${this.searchText}`)
           .then(data => {  
             this.linkitems = data.data 
             this.count = this.linkitems.length  
@@ -1167,7 +1170,7 @@ methods: {
         })   
 
 
-      this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithoutPassword`,
+      cmqRequest.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithoutPassword`,
       data,{ headers: window.headers }) 
         .then((data) => {
           let a = data.data.message

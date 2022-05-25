@@ -152,6 +152,7 @@
 
 <script>
 import UploadFilesConflict from '@/components/Modals/home/UploadFilesConflict.vue';
+import cmqRequest from '@/http/cmqRequest'
 
 export default {
   name: "UploadFiles",
@@ -206,9 +207,14 @@ export default {
       // console.log(formData);
 
 
+      // "headers": {
+      //   'Content-Type': 'application/json',
+      //   'Authorization': 'Bearer ' + getToken(url)
+      // }
 
-      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
-      formData)
+
+      cmqRequest.upload(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
+      formData,)
       .then((data) => { 
         console.log(data);
 
@@ -229,7 +235,7 @@ export default {
       })
 
       this.clear()
-      setTimeout(() => {this.$emit('reload');},2000)
+      // setTimeout(() => {this.$emit('reload');},2000)
 
     },
     onFileChange(e) {

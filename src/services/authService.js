@@ -4,10 +4,10 @@ import Oidc from 'oidc-client';
 const mgr = new Oidc.UserManager({
   redirect_uri: 'http://localhost:8080/callback.html',
   post_logout_redirect_uri: 'http://localhost:8080/', 
-  authority: 'http://192.168.110.180:5098/',
+  authority: 'https://192.168.110.180:5098/',
   silent_redirect_uri: 'http://localhost:8080/silent-renew.html',
-  client_id: 'SPA.Filebox.Client',
-  scope: 'openid profile OrgApi LogApi LinkApi DocApi offline_access',
+  client_id: 'SPA.Filebox.Client.Testing',
+  scope: 'openid profile OrgApi LogApi LinkApi DocApi offline_access SettingsApi',
   userStore: new Oidc.WebStorageStateStore({store: window.localStorage}),
   automaticSilentRenew: true, //new
   response_type: 'code',

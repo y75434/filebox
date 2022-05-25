@@ -3,7 +3,7 @@ import {Promise} from 'es6-promise'
 
 let getToken = function (url) {
   // console.log(url);
-  // console.log(sessionStorage);
+  console.log(sessionStorage);
 
   let scope = url.split(':')[2].substr(0, 4)
     console.log(scope);
@@ -85,18 +85,22 @@ export default {
    * @param data
    * @return {Promise}
    */
-  upload(url, data = {}, uploadConfig, config = {
+  upload(url, data = {}, config = {
     "headers": {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + getToken(url)
     }
   }) {
-    config.onUploadProgress = uploadConfig.onUploadProgress
+    // config.onUploadProgress = uploadConfig.onUploadProgress
     return new Promise((resolve, reject) => {
       axios.post(url, data, config)
         .then(response => {
+            console.log('right')
+
           resolve(response)
         }, err => {
+                      console.log('right')
+
           reject(err.response)
         })
         .catch(err => {
