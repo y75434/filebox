@@ -42,6 +42,8 @@
 
 <script>
 import rootItem from "./rootItem.vue";
+import cmqRequest from "@/http/cmqRequest"
+
 
 export default {
   name: "rootItem",
@@ -114,8 +116,8 @@ export default {
          }) 
 
       if (this.open) {
-        this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
-        data,{ headers: window.headers })
+        cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
+        data)
           .then((data) => {
             console.log('nowTree',data.data);
             this.subitem = data.data;
@@ -136,7 +138,7 @@ export default {
     },
     //把點擊到的li 傳到vuex
      getSelfSettings(id){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
+      cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => {  
         this.selfSetting = data.data
         this.$store.dispatch('setLiselected', this.selfSetting);

@@ -95,11 +95,11 @@ export default {
     return new Promise((resolve, reject) => {
       axios.post(url, data, config)
         .then(response => {
-            console.log('right')
+            console.log('success')
 
           resolve(response)
         }, err => {
-                      console.log('right')
+            console.log('right')
 
           reject(err.response)
         })

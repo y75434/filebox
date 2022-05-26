@@ -242,6 +242,8 @@
 </template>
 
 <script>
+import cmqRequest from '@/http/cmqRequest'
+
 
 export default {
   name: "EditPublicLink",
@@ -278,8 +280,8 @@ export default {
 
         console.log(data);
 
-      this.axios.post(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/Create`,
-      data,{ headers: window.headers }) .then((data) => {
+      cmqRequest.post(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/Create`,
+      data) .then((data) => {
 
         console.log(data);
       }).catch(error => {
@@ -300,8 +302,8 @@ export default {
         
         console.log(data);
 
-      this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/`,
-      data,{ headers: window.headers }).then((data) => {
+      cmqRequest.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/`,
+      data).then((data) => {
         console.log(data);
       }).catch(error => {
           console.log(error.response.data);          

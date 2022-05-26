@@ -69,7 +69,11 @@
     </template>
   </b-modal>
 </template>
+
 <script>
+import cmqRequest from '@/http/cmqRequest'
+
+
 export default {
 	name: 'DeleteUser',
 	props: {
@@ -134,7 +138,7 @@ export default {
 
       },
      deleteGroup(id) {  
-      this.axios.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/`,
+      cmqRequest.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/`,
       {data:{ "id": id,"editedBy": this.$store.getters.userId, "editor":this.$store.getters.currentUser}})
         .then((data) => {
         
@@ -147,7 +151,7 @@ export default {
       // console.log('137',id);
       // console.log('138',this.delData);  
 
-      this.axios.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Users`
+      cmqRequest.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Users`
       ,{data:{ "id": id,"editor":this.$store.getters.userId}})
         .then(() => {
           this.$nextTick(() => { this.userInput = '';
@@ -163,7 +167,7 @@ export default {
         //它不會刪除記錄，而只是將刪除標誌設置為打開或關閉
         console.log('97',id);
         
-      this.axios.delete(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link`,
+      cmqRequest.delete(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link`,
       {data:{ "id": id ,"editor": this.$store.getters.userId, "editorName":this.$store.getters.currentUser}})
         .then((data) => {
           console.log(data);
@@ -177,7 +181,7 @@ export default {
 
     },
     deleteFolder(id) {  
-      this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
+      cmqRequest.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
       {data:{  
         "items": [ { "id": id, "type": 0 }],
         "editor": this.$store.getters.userId,

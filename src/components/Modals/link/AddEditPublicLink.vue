@@ -264,7 +264,7 @@
 </template>
 
 <script>
-
+import cmqRequest from "@/http/cmqRequest"
 
 export default {
   name: "EditPublicLink",
@@ -311,8 +311,8 @@ export default {
         console.log(data);
 
 
-      this.axios.post(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/Create`,
-      data,{ headers: window.headers }) .then((data) => {
+      cmqRequest.post(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/Create`,
+      data).then((data) => {
         console.log(data);
         }).catch(error => {
             console.log(error.response.data);          
@@ -321,7 +321,7 @@ export default {
         setTimeout(() => {this.$emit('reload');},2000)
     }, 
     GenerateURL() { 
-      this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GenerateURL`) 
+      cmqRequest.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GenerateURL`) 
         .then((data) => {
           this.personData.url = data.data.url
 

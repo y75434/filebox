@@ -266,6 +266,9 @@
 </template>
 
 <script>
+import cmqRequest from '@/http/cmqRequest'
+
+
 export default {
   name: "AddNewUser",
   props: { title: { type: String, default: "Add New User" } },
@@ -293,8 +296,8 @@ export default {
       console.log(data);
 
 
-      this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/Users/CreateUser`,
-      data,{ headers: window.headers })
+      cmqRequest.post(`${process.env.VUE_APP_USER_APIPATH}/api/Users/CreateUser`,
+      data)
         .then((data) => {
 
         console.log(data);

@@ -230,6 +230,8 @@
 </template>
 
 <script>
+import cmqRequest from "@/http/cmqRequest"
+
 export default {
   name: "EditGroupProperties",
   props: { 
@@ -263,7 +265,7 @@ export default {
     },
       
     getGroup () {  
-      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/${this.group.id}`)
+      cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/${this.group.id}`)
         .then((data) => {          
           this.group.groupDescription = data.data.groupDescription
           this.api = data.data
@@ -297,8 +299,8 @@ export default {
       })
       console.log(data);
         
-    this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroup`,
-      data,{ headers: window.headers })
+    cmqRequest.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroup`,
+      data)
         .then((data) => {
 
         console.log(data);
@@ -309,7 +311,7 @@ export default {
 
     },
     getUserTable () {  
-      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
+      cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
         .then((data) => {          
           this.useritems = data.data
           console.log('all user',this.useritems);

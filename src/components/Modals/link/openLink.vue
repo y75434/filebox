@@ -77,6 +77,8 @@
 </template>
 
 <script>
+import cmqRequest from "@/http/cmqRequest"
+
 export default {
   name: "OpenLink",
   props: { 
@@ -106,8 +108,8 @@ export default {
           
 
 
-      this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithPassword`,
-      data,{ headers: window.headers }) 
+      cmqRequest.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithPassword`,
+      data) 
         .then((data) => {
 
 

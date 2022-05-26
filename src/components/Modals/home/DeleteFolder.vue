@@ -56,6 +56,8 @@
 </template>
 
 <script>
+import cmqRequest from "@/http/cmqRequest"
+
 export default {
   name: "DeleteFolder",
   props: { 
@@ -84,7 +86,7 @@ export default {
         "groups": this.$store.getters.group
       });
       
-      this.axios.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,{ data: { 
+      cmqRequest.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,{ data: { 
         "items": this.$store.getters.nowFile, 
         "editor":this.$store.getters.userId,
         "editorName":this.$store.getters.currentUser,

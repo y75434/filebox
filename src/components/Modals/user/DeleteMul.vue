@@ -51,7 +51,11 @@
     </template>
   </b-modal>
 </template>
+
 <script>
+import cmqRequest from '@/http/cmqRequest'
+
+
 export default {
 	name: 'DeleteMul',
 	props: {
@@ -89,7 +93,7 @@ export default {
       this.mul = this.mul.map(x=>x.userId) 
       console.log(this.mul);
 
-      this.axios.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Users/DeleteMultipleUser`
+      cmqRequest.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Users/DeleteMultipleUser`
       ,{data:{ "guids": this.mul,"editor": this.$store.getters.currentUser,"editedBy":this.$store.getters.userId}})
         .then(() => {
           this.$nextTick(() => { this.$bvModal.hide('DeleteMul'); });
@@ -110,7 +114,7 @@ export default {
       console.log(this.mul);
       
   
-      this.axios.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Users/DeleteMultipleGroups`
+      cmqRequest.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Users/DeleteMultipleGroups`
       ,{data:{ "guids": this.mul,"editor": this.$store.getters.currentUser,"editedBy":this.$store.getters.userId}})
         .then(() => {
           this.$nextTick(() => { this.$bvModal.hide('DeleteMul'); });

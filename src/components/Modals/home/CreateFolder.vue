@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import cmqRequest from "@/http/cmqRequest"
+
 export default {
   name: "CreateFolder",
   props: { 
@@ -70,8 +72,8 @@ export default {
       console.log(data);
       
 
-      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CreateFolder`,
-      data,{ headers: window.headers })
+      cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CreateFolder`,
+      data)
       .then((data) => { 
         console.log(data);
 

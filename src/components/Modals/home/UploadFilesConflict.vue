@@ -66,6 +66,9 @@
 </template>
 
 <script>
+import cmqRequest from "@/http/cmqRequest"
+
+
 export default {
   name: "UploadFilesConflict",
   props: { 
@@ -138,7 +141,7 @@ export default {
        
       console.log(this.obj);
 
-      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,formData)
+      cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,formData)
       .then((data) => { 
         console.log(data);
 

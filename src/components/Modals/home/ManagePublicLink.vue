@@ -116,6 +116,7 @@ import ContextMenu from '@/components/ContextMenu.vue';
 import EditPublicLink from'@/components/Modals/link/EditPublicLink.vue';
 import DeleteUser from '@/components/Modals/user/DeleteUser.vue';
 import openLink from'@/components/Modals/link/openLink.vue';
+import cmqRequest from "@/http/cmqRequest"
 
 export default {
   name: 'ImportUser',
@@ -154,7 +155,7 @@ export default {
     },
     
     getLinkTable(){
-      this.axios.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll`)
+      cmqRequest.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll`)
         .then((data) => { 
           this.linkitems = data.data 
           this.count = this.linkitems.length
@@ -173,8 +174,8 @@ export default {
         })   
 
 
-      this.axios.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithoutPassword`,
-      data,{ headers: window.headers }) 
+      cmqRequest.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithoutPassword`,
+      data) 
         .then((data) => {
           let a = data.data.message
           console.log(data.data.message);

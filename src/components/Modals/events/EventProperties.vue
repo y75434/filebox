@@ -106,6 +106,8 @@
 </template>
 
 <script>
+import cmqRequest from "@/http/cmqRequest"
+
 export default {
   name: "EventProperties",
   props: { 
@@ -119,10 +121,8 @@ export default {
   },
   methods: { 
     addLog(id) {  
-      this.axios.post(`${process.env.APIPATH}/Log/GetLogProperty/${id}`)
+      cmqRequest.post(`${process.env.APIPATH}/Log/GetLogProperty/${id}`)
         .then((data) => {
-
-         
 
         console.log(data);
       }).catch(error => {

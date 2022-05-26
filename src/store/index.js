@@ -17,8 +17,8 @@ export default new Vuex.Store({
     nowFile: null,
     group: null,
     liselected: null,
-    treeArr: null
-
+    treeArr: null,
+    nowRootFolder: null
   },
   mutations: {
     SET_AUTH(state, isLogin){
@@ -49,6 +49,9 @@ export default new Vuex.Store({
     },
     SET_TREEARR(state, treeArr){
       state.treeArr = treeArr
+    },
+    SET_ROOT(state, nowRootFolder){
+      state.nowRootFolder = nowRootFolder
     },
    
   },
@@ -81,13 +84,9 @@ export default new Vuex.Store({
     setTreeArr ({ commit }, treeArr) {
      commit('SET_TREEARR', treeArr)
     }, 
-    // setToken ({ commit }, ) {
-
-    //   commit('setLoginUser', user)
-    //   commit('setUserName', {name: tokenInfo.UserName, nickname: tokenInfo.UserName})
-
-    // //  commit('SET_TOKEN', token)
-    // }, 
+    setRoot ({ commit }, nowRootFolder ) {
+      commit('SET_ROOT', nowRootFolder)
+    },
   },
   getters: {
     currentUser: state => state.currentUser,
@@ -99,7 +98,7 @@ export default new Vuex.Store({
     group: state => state.group,
     liselected: state => state.liselected,
     treeArr: state => state.treeArr,
-    token: state => state.token
+    nowRootFolder: state => state.nowRootFolder,
 
   },
   

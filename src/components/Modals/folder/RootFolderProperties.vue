@@ -558,7 +558,7 @@ export default {
         }) 
 
       cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
-      data,{ headers: window.headers })
+      data)
         .then((data) => {
           this.testTree = data.data;
           // console.log(this.testTree);          
@@ -615,7 +615,7 @@ export default {
     permissionSelected(item){
       console.log('652', item, this.editSetting.inherit)
       if(item.selected == "allow" && this.editSetting.inherit == false){
-        console.log('1');
+        console.log('1',this.nowUser);
         this.nowUser.self.allowPermission.push(item.permissionTypeId) 
         this.nowUser.self.denialPermission = this.nowUser.self.denialPermission.filter(x=>x !== item.permissionTypeId);
       
@@ -683,23 +683,24 @@ export default {
     putFolder(){
 
       //傳送之前先檢查值 如果是null 轉為[]
-      console.log(this.editSetting.settings.members);
-      this.editSetting.settings.members.forEach((x)=>{
-        //檢查self
-          let keys = Object.keys(x.self);
-          keys.forEach(key=>{
-            if(x.self[key] == null || x.self[key] == undefined) {
-              x.self[key] = [];
-            }
-          })
-          //檢查parent
-          let parentKeys = Object.keys(x.parent);
-          parentKeys.forEach(key=>{
-            if(x.parent[key] == null || x.parent[key] == undefined) {
-              x.parent[key] = [];
-            }
-          })
-      });
+      console.log(this.editSetting.settings.members,'686',this.editSetting);
+      
+      // this.editSetting.settings.members.forEach((x)=>{
+      //   //檢查self
+      //     let keys = Object.keys(x.self);
+      //     keys.forEach(key=>{
+      //       if(x.self[key] == null || x.self[key] == undefined) {
+      //         x.self[key] = [];
+      //       }
+      //     })
+      //     //檢查parent
+      //     let parentKeys = Object.keys(x.parent);
+      //     parentKeys.forEach(key=>{
+      //       if(x.parent[key] == null || x.parent[key] == undefined) {
+      //         x.parent[key] = [];
+      //       }
+      //     })
+      // });
 
 
       const data = JSON.stringify([
@@ -720,7 +721,7 @@ export default {
       console.log(data);
 
       cmqRequest.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
-        data,{ headers: window.headers }).then((data) => { 
+        data).then((data) => { 
 
           console.log(data);
           this.$swal.fire({ title: 'success', icon: 'success' })

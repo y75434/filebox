@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import cmqRequest from '@/http/cmqRequest'
+
 export default {
   name: "RenameItem",
   props: { 
@@ -77,7 +79,7 @@ export default {
         })
         console.log(data);
 
-      this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Users/EditUserName`,data,{  headers: window.headers })
+      cmqRequest.put(`${process.env.VUE_APP_USER_APIPATH}/api/Users/EditUserName`,data)
         .then(() => {
              this.personData = {}
             this.$swal.fire({ title: 'success', icon: 'success' })
@@ -96,8 +98,8 @@ export default {
             "editorName":  this.$store.getters.currentUser
           })
 
-          this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroupName`,
-          data,{ headers: window.headers })
+          cmqRequest.put(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/EditGroupName`,
+          data)
           .then(() => { 
             this.$swal.fire({ title: 'success', icon: 'success' })
 
@@ -121,8 +123,8 @@ export default {
             console.log('data',data);         
 
 
-          this.axios.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Rename`,
-          data,{ headers: window.headers })
+          cmqRequest.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Rename`,
+          data)
           .then(() => { 
             this.$swal.fire({ title: 'success', icon: 'success' })
 

@@ -169,7 +169,7 @@
             </button>
           </div>
         </div>
-      </div>
+      </div> 
               
 
 
@@ -240,6 +240,9 @@
 </template>
 
 <script>
+import cmqRequest from '@/http/cmqRequest'
+
+
 export default {
 name: 'ImportUser',
 props: { title: { type: String, default: 'Import User' }, 
@@ -286,7 +289,7 @@ props: { title: { type: String, default: 'Import User' },
 
       console.log(data);
 
-      this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/SaveADUsersToDB`,
+      cmqRequest.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/SaveADUsersToDB`,
       data,{  headers: window.headers }).then((data) => {
 
         console.log(data);
@@ -296,8 +299,10 @@ props: { title: { type: String, default: 'Import User' },
         setTimeout(() => {this.$emit('reload');},2000)
       },
       getUser(){
+                   console.log('302');
+
        
-        this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/AD/GetUsers?searchString=${this.searchText}`)
+        cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/AD/GetUsers?searchString=${this.searchText}`)
         .then((data) => {  
           this.allUser = data.data
           //  console.log(this.allUser);
@@ -310,8 +315,8 @@ props: { title: { type: String, default: 'Import User' },
        
         const data = JSON.stringify(this.ad)
 
-        this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/connectDynamicAD`,
-        data,{ headers: window.headers })
+        cmqRequest.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/connectDynamicAD`,
+        data)
           .then((data) => {
 
 

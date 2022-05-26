@@ -128,6 +128,7 @@
 </template>
 
 <script>
+import cmqRequest from "@/http/cmqRequest"
 
 
 export default {
@@ -158,6 +159,8 @@ export default {
 
       console.log('rootFolder changed'); 
       this.getFolderTree(this.nowRootFolder.folderId) 
+
+      this.$store.dispatch(`setRoot`, this.nowRootFolder);
     },
     treeSelected(){
       this.getFolderTree(this.treeSelected.id)
@@ -206,8 +209,8 @@ export default {
         // console.log(data, 'foldertree request');
 
       if(this.$store.getters.isAdmin != null){
-        this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
-        data,{ headers: window.headers }).then((data) => { 
+        cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
+        data).then((data) => { 
 
           console.log(data, 'admin');
           //先跑回圈看nowrootfolder有無該folder
@@ -226,8 +229,8 @@ export default {
         })
       }else{
 
-        this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`,
-        data,{ headers: window.headers }).then((data) => { 
+        cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`,
+        data).then((data) => { 
 
           console.log(data, 'normal');
           this.FolderTree = data.data
@@ -251,8 +254,8 @@ export default {
       if(this.$store.getters.isAdmin != null) {
 
 
-        this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
-        data,{ headers: window.headers })
+        cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
+        data)
           .then((data) => {
             this.testTree = data.data;
             // console.log(this.testTree,'每個資料夾各跑一次');
@@ -284,7 +287,7 @@ console.log(this.nowRootFolder);
           console.log(this.testArr, 'all folder');
     },//一次跑完所有樹狀
     getRootFolder(){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
+      cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
         .then((data) => { 
           this.trees = data.data;
           
@@ -303,6 +306,7 @@ console.log(this.nowRootFolder);
         
 
   },   
+  
   }
 }
 

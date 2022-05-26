@@ -550,7 +550,7 @@ import AddEditPublicLink from'@/components/Modals/link/AddEditPublicLink.vue';
 import ContextMenu from '@/components/ContextMenu.vue';
 import TreeItem from '@/components/Modals/home/TreeItem.vue';
 // import Detail from '../components/Display/Detail.vue';
-import cmqRequest from '../http/cmqRequest'
+import cmqRequest from '@/http/cmqRequest'
 
 
 export default {
@@ -672,7 +672,7 @@ export default {
       this.getSelected(id)
     },
     showMenu(event) { 
-      // console.log('right')
+      console.log('right')
       this.$refs.menu.open(event);
        },
     // 子層輸入傳父層
@@ -760,7 +760,7 @@ export default {
 
         console.log(data, 'normal get root');
         cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFolders`,
-        data,{ headers: window.headers })
+        data)
           .then((data) => { 
             this.allFiles = data.data
             this.firstPage = false
@@ -939,8 +939,8 @@ export default {
       if(this.copyFile){
         
         // copy post ok
-            cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CopyAndPaste`,
-          data,{  headers: window.headers })
+        cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CopyAndPaste`,
+          data)
           .then((data) => {  
             console.log(data);
             this.$swal.fire({ title: data.status, icon: 'success' })
@@ -957,7 +957,7 @@ export default {
       }else if(this.cutFile){    
       // cut paste
         cmqRequest.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CutAndPaste`,
-        data,{  headers: window.headers })
+        data)
         .then((data) => {  
           console.log(data);
           this.$swal.fire({ title: data.status, icon: 'success' })

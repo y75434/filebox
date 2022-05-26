@@ -448,6 +448,8 @@
 </template>
 
 <script>
+import cmqRequest from "@/http/cmqRequest"
+
 export default {
   name: "AddRootFolderProperties",
   props: { 
@@ -493,8 +495,8 @@ export default {
       const data = JSON.stringify(this.editGroup,'post folder')
       console.log(data,'494');
 
-      this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CreateRootFolder`,
-      data,{ headers:  window.headers })
+      cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/CreateRootFolder`,
+      data)
       .then((data) => { 
         console.log(data);
         this.editGroup = {}
@@ -506,7 +508,7 @@ export default {
     },
    
     getPermissionTypes(){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/PermissionTypes`)
+      cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/PermissionTypes`)
       .then((data) => {  
         this.PermissionTypes = data.data
         //  console.log(this.PermissionTypes);
@@ -554,7 +556,7 @@ export default {
       this.$forceUpdate();
     },
     getFileTypes(){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileTypes`)
+      cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FileTypes`)
       .then((data) => {  
         this.FileTypes = data.data
         //  console.log(this.FileTypes);
@@ -564,7 +566,7 @@ export default {
       })
     },
     getStorageUnit(){
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/Storage/Unit`)
+      cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/Storage/Unit`)
       .then((data) => {  
         this.StorageUnit = data.data
         //  console.log(this.StorageUnit);
@@ -580,7 +582,7 @@ export default {
       
     },
     getUserTable () {  
-      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
+      cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
         .then((data) => {          
           this.useritems = data.data            
           this.count = this.useritems.length + this.groupitems.length      
@@ -589,7 +591,7 @@ export default {
         })
       },
       getGroupTable() {  
-        this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroups`)
+        cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/GetGroups`)
           .then(data => {  
             this.groupitems = data.data 
           }).catch(error => {

@@ -226,6 +226,8 @@
 </template>
 
 <script>
+import cmqRequest from "@/http/cmqRequest"
+
 export default {
   name: "NewGroupProperties",
   props: { title: { type: String, default: "New Group Properties" } },
@@ -260,8 +262,7 @@ export default {
       })
        console.log(data);   
 
-    this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/CreateGroup`,data,
-    { headers: window.headers })
+    cmqRequest.post(`${process.env.VUE_APP_USER_APIPATH}/api/Groups/CreateGroup`,data)
       .then((data) => {
   
        console.log(data);   
@@ -273,7 +274,7 @@ export default {
 
     },
     getUserTable () {  
-      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
+      cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
         .then((data) => {          
           this.useritems = data.data
           

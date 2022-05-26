@@ -272,6 +272,8 @@
 import { extend } from 'vee-validate';
 import { regex } from 'vee-validate/dist/rules';
 import i18n from '@/common/plugins/vue-i18n';
+import cmqRequest from '@/http/cmqRequest'
+
 
 extend('regex', {
     ...regex,
@@ -335,8 +337,8 @@ export default {
       console.log(data);
 
 
-      this.axios.put(`${process.env.VUE_APP_USER_APIPATH}/api/Users/EditUser`,
-      data,{ headers: window.headers })
+      cmqRequest.put(`${process.env.VUE_APP_USER_APIPATH}/api/Users/EditUser`,
+      data)
         .then((data) => {
 
         console.log(data);

@@ -35,6 +35,8 @@
 
 <script>
 import item from './Item.vue'
+import cmqRequest from "@/http/cmqRequest"
+
 
 export default {
  name:'item',
@@ -58,7 +60,7 @@ export default {
     start(){
         this.open = !this.open
       if(this.open) {
-          this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`)
+          cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`)
         .then((data) => { 
           this.subitem = data.data;
           console.log(this.subitem, this.open);
@@ -78,11 +80,11 @@ export default {
          }) 
 
         //  console.log(data);
-        console.log('2');
+        console.log('83');
 
         if(this.$store.getters.isAdmin != null) {
-            this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
-            data,{ headers: window.headers })
+            cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
+            data)
             .then((data) => { 
               this.subitem = data.data;
               console.log(this.subitem,'admin',this.open);
@@ -93,9 +95,9 @@ export default {
             //  console.log(error.response.data);        
           })
         }else{
-          console.log('2');
-           this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`,
-           data,{ headers: window.headers })
+          console.log('98');
+           cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`,
+           data)
           .then((data) => { 
             this.subitem = data.data;
             console.log(this.subitem, 'normal',this.open);

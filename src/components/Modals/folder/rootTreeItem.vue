@@ -17,6 +17,8 @@
 
 <script>
 import rootItem from "./rootItem.vue";
+import cmqRequest from "@/http/cmqRequest"
+
 
 export default {
   components: { rootItem },
@@ -36,8 +38,7 @@ export default {
   methods: {
     // start() { this.getRootFolder(); },
     getRootFolder() {
-      this.axios
-        .get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
+        cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
         .then((data) => {
           console.log(data.data);
           

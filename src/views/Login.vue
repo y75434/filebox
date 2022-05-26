@@ -92,7 +92,7 @@ import ResetNewPassword from '../components/Modals/login/ResetNewPassword.vue';
 import ResetSuccess from '../components/Modals/login/ResetSuccess.vue';
 import Cookies from 'js-cookie'
 import Mgr from '../services/authService'
-// import cmqRequest from "@/http/cmqRequest";
+import cmqRequest from "@/http/cmqRequest";
 // import { UserManager, WebStorageStateStore } from 'oidc-client';
 import jwt_decode from "jwt-decode";
 
@@ -124,7 +124,7 @@ export default {
     ResetNewPassword(){ this.$bvModal.show('ResetNewPassword'); },
     getUserTable (name) {
 
-      this.axios.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers`)
+      cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers`)
       .then((data) => {
         this.useritems = data.data
         const ans = this.useritems.filter(item=>item.userName == name)[0];
@@ -175,8 +175,8 @@ export default {
     login(){
       const data = JSON.stringify({username:this.loginForm.username,password:this.loginForm.password})
 
-      this.axios.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/LoginADUser`,
-      data,{ headers: window.headers }).then((data) => {
+      cmqRequest.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/LoginADUser`,
+      data).then((data) => {
      
         if(data.data.success == true){
           
@@ -228,8 +228,8 @@ export default {
         ip:this.ip
       })
        
-      this.axios.post(`${process.env.APIPATH}api/AD/connectDynamicAD`,
-      data,{ headers: window.headers })
+      cmqRequest.post(`${process.env.APIPATH}api/AD/connectDynamicAD`,
+      data)
         .then((data) => {
          
         console.log(data);

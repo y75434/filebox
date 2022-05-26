@@ -853,12 +853,7 @@ watch: {
   }
 },
 methods: { 
-  // imgUrl(path) {
-  //   console.log(path);
-    
-
-  //   return ('@/assets/images/', + path)
-  // },
+  
   changePage($event){
     console.log($event)
   },
@@ -1027,7 +1022,7 @@ methods: {
   },//預設傳空物件
     getEventTable(){
       cmqRequest.post(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`,
-      {},{ headers: window.headers })
+      {})
         .then(data => {  
           this.eventsitems = data.data 
           this.eventsitems.map(item =>{
@@ -1125,7 +1120,7 @@ methods: {
 
 
         cmqRequest.post(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`,
-        data,{ headers: window.headers })
+        data)
           .then(data => {  
             console.log(data);        
             this.eventsitems= data.data
@@ -1171,7 +1166,7 @@ methods: {
 
 
       cmqRequest.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithoutPassword`,
-      data,{ headers: window.headers }) 
+      data) 
         .then((data) => {
           let a = data.data.message
           console.log(data.data.message);

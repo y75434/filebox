@@ -204,19 +204,39 @@ export default {
 
       }));
 
-      // console.log(formData);
+      console.log(formData);
+ 
 
+      // let token = sessionStorage.getItem('docToken')
+    
 
-      // "headers": {
+      // this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
+      // formData,{"headers": {
       //   'Content-Type': 'application/json',
-      //   'Authorization': 'Bearer ' + getToken(url)
-      // }
+      //   'Authorization': 'Bearer ' + token
+      //  }})
+      // .then((data) => { 
+      //   console.log(data, token);
 
+      //   if(data.data.code == 1005){
+      //     this.$swal.fire({ title: data.data.msg, icon: 'info' })
+      //     this.$bvModal.show('UploadFilesConflict');
+
+      //   }else{
+      //     this.$swal.fire({ title: data.data.msg, icon: 'success' })
+      //     this.$bvModal.hide('UploadFiles');
+
+      //   }
+
+
+      // }).catch(error => {
+      //   console.log(error);     
+   
+      // })
 
       cmqRequest.upload(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
-      formData,)
+      formData)
       .then((data) => { 
-        console.log(data);
 
         if(data.data.code == 1005){
           this.$swal.fire({ title: data.data.msg, icon: 'info' })
@@ -230,7 +250,7 @@ export default {
 
 
       }).catch(error => {
-        console.log(error.response.data);     
+        console.log(error);     
    
       })
 

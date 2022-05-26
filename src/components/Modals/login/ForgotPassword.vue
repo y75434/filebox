@@ -52,6 +52,7 @@
 </template>
 
 <script>
+
 export default {
   name: "CreateFolder",
   props: { title: { type: String, default: "Forgot Password" } },

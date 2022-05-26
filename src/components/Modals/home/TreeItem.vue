@@ -16,6 +16,8 @@
 
 <script>
 import item from './Item.vue'
+import cmqRequest from "@/http/cmqRequest"
+
 
 export default {
   components:{item},
@@ -39,7 +41,7 @@ export default {
    getRootFolder(){
      if(this.$store.getters.isAdmin != null) {
 
-      this.axios.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
+      cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
         .then((data) => { 
           this.trees = data.data;
           this.trees.map(x=>{
