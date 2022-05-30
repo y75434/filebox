@@ -50,6 +50,8 @@ export default {
             return x;
           });
           console.log(this.trees,'全部rootfolder');//rootfolder
+          this.$store.dispatch('setTreeArr', this.trees);
+
         }).catch(error => {
           console.log(error.response.data);        
         })

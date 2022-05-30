@@ -3,10 +3,10 @@ import {Promise} from 'es6-promise'
 
 let getToken = function (url) {
   // console.log(url);
-  console.log(sessionStorage);
+  // console.log(sessionStorage);
 
   let scope = url.split(':')[2].substr(0, 4)
-    console.log(scope);
+    // console.log(scope);
   let token = sessionStorage.getItem('orgToken')
   switch (scope) {
     case '5099': //org
@@ -115,7 +115,7 @@ export default {
    * @param data
    * @return {Promise}
    */
-  download(url, data = {},downloadConfig,config = {
+  download(url, data = {},config = {
     "headers": {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + getToken(url),
@@ -123,7 +123,7 @@ export default {
     },
     responseType: 'arraybuffer'
   }) {
-    config.onDownloadProgress = downloadConfig.onDownloadProgress
+    // config.onDownloadProgress = downloadConfig.onDownloadProgress
     return new Promise((resolve, reject) => {
       axios.post(url, data, config)
         .then(response => {

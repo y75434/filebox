@@ -17,7 +17,7 @@ export default new Vuex.Store({
     nowFile: null,
     group: null,
     liselected: null,
-    treeArr: null,
+    treeArr: [],
     nowRootFolder: null
   },
   mutations: {
@@ -49,6 +49,7 @@ export default new Vuex.Store({
     },
     SET_TREEARR(state, treeArr){
       state.treeArr = treeArr
+
     },
     SET_ROOT(state, nowRootFolder){
       state.nowRootFolder = nowRootFolder
@@ -81,8 +82,9 @@ export default new Vuex.Store({
     setLiselected ({ commit }, liselected) {
       commit('SET_SETLISELECTED', liselected)
     },
-    setTreeArr ({ commit }, treeArr) {
+    setTreeArr (treeArr) {
      commit('SET_TREEARR', treeArr)
+
     }, 
     setRoot ({ commit }, nowRootFolder ) {
       commit('SET_ROOT', nowRootFolder)

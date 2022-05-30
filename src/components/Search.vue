@@ -200,6 +200,8 @@ export default {
    
     //要跑這個func才會顯示路徑
     getFolderTree(id){
+      console.log( '要跑這個func才會顯示路徑');
+
 
         const data = JSON.stringify({        
           "folderId": id,
@@ -269,7 +271,7 @@ export default {
                 
               // this.nowRootFolder = this.FolderTree
 
-console.log(this.nowRootFolder);
+          console.log(this.nowRootFolder);
 
               // console.log('測到rootfolder不同換 tree');
               // this.arr = this.testArr

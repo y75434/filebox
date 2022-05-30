@@ -495,7 +495,7 @@
               class="col-12 b-col text-dark cursor"
               @contextmenu="operational($event)"
               @row-hovered="rowSelected"
-              @row-dblclicked="checkOpen()"
+              @row-dblclicked="checkOpen(linkitems)"
               @row-selected="selectMuti"
               selectable
               ref="selectableTable"
@@ -1155,35 +1155,17 @@ methods: {
 
       
     },
-    checkOpen() {
-      if(this.selected.isPublic){
+    checkOpen(item) {
+        console.log(item);
 
-        const data = JSON.stringify({        
-          "linkId": this.selected.linkId,
-          "userId": this.$store.getters.userId,
-          "username": this.$store.getters.currentUser
-        })   
+      window.open(item[0].url,'_blank').focus();
 
 
-      cmqRequest.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithoutPassword`,
-      data) 
-        .then((data) => {
-          let a = data.data.message
-          console.log(data.data.message);
-          if(a.indexOf('Please')> -1){
-            this.$bvModal.show('openLink');
-          }
-      }).catch(error => {
-          console.log(error);          
-        })
 
         
       }
 
     },
-    getImgUrl(imagePath) {
-      return require(`@/assets/images/${imagePath}`);
-    },
-  }
+  // }
 }
 </script>

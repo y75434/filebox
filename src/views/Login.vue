@@ -143,6 +143,8 @@ export default {
       this.mgr.signIn()
 
 
+
+
       let tokenInfo = jwt_decode(sessionStorage.getItem('orgToken'))
       let user = {
         userId: tokenInfo.sub,

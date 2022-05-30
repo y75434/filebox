@@ -804,17 +804,17 @@ export default {
   
       console.log('download data',data);
 
-      const config = {
-        header:{
-          Accept: 'application/zip',
-        },
-        responseType: 'arraybuffer'
-      }
+      // const config = {
+      //   header:{
+      //     Accept: 'application/zip',
+      //   },
+      //   responseType: 'arraybuffer'
+      // }
       
       // this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`,
       // data,config)
 
-      cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`, data,config)
+      cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`, data)
 
       .then((res) => { 
         const dataFromHeader = res.headers['content-disposition'];
@@ -867,7 +867,6 @@ export default {
 
       });
         console.log(data);
-        console.log(sessionStorage.getItem('docToken'));
 
 
   
@@ -882,24 +881,12 @@ export default {
       .then((data) => { 
        
 
-        window.open('https://192.168.110.180:6102/DocManagement/view/?url='+ data.data,'_blank').focus();
+        window.open('https://cmqtest.doqubiz.com:4430/View/?url='+ data.data,'_blank').focus();
 
         console.log(data);
 
-        // cmqRequest.post(`https://cmqtest.doqubiz.com:6102/DocManagement/View`)
-        //   .then(resp => {
-        //     if (resp.status === 200) {
-        //       console.log(resp.data, resp,'884')
+   
 
-
-        //       window.open('https://cmqtest.doqubiz.com:4430/view/?url='+ resp.data,'_blank').focus();
-        //     }
-        //   })
-
-
-        //   .catch(error => {
-        //     console.log(error.response.data);        
-        //   })
          })
       
       
@@ -1020,7 +1007,7 @@ export default {
       cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/GetItems/`,
       data)
         .then((data) => { 
-          // console.log(data);  
+          // console.log(data.items,'1023');  
        
           this.allFiles = data.data.items
           //render沒更新

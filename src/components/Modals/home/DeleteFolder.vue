@@ -91,7 +91,7 @@ export default {
         "editor":this.$store.getters.userId,
         "editorName":this.$store.getters.currentUser,
         "groups": this.$store.getters.group
-      }, headers: window.headers })
+      }})
         .then(() => {     
           this.$swal.fire({ title: '$t("GENERAL.DELSUCCESS")', icon: 'success' })
         }).catch(() => {

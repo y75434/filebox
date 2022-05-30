@@ -80,7 +80,6 @@ export default {
          }) 
 
         //  console.log(data);
-        console.log('83');
 
         if(this.$store.getters.isAdmin != null) {
             cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
@@ -88,14 +87,43 @@ export default {
             .then((data) => { 
               this.subitem = data.data;
               console.log(this.subitem,'admin',this.open);
-              // this.arr.push(this.subitem) 
+              
+              // console.log(this.subitem.subFolders);
+
+        //  {        
+        //   index: x,
+        //   groups: this.subitem
+        //  }
+
+            // let tempItem = array.find(arrayItem => {
+            //   return item.parentId === arrayItem.folderId
+            // })
+
+
+              //陣列加入
+              this.subitem.subFolders.forEach((item)=>{
+          
+  // let tempItem = array.find(arrayItem => {
+  //             return item.parentId === arrayItem.folderId
+  //           })
+
+                  let self = []
+                  self.push(this.subitem)
+                  self.push(item)
+                  console.log(self);
+                  
+
+              })
+
+                console.log(this.arr,'全部包含所有arr');        
+
+
 
 
           }).catch(() => {
             //  console.log(error.response.data);        
           })
         }else{
-          console.log('98');
            cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`,
            data)
           .then((data) => { 
@@ -115,9 +143,7 @@ export default {
       //不能刪
       this.$bus.$emit("notify:message", tree);
 
-      // this.$bus.$emit("showAlert", tree);
-      // this.$emit('subClick', tree);  這行沒用
-
+     
       //要把sidebar的該資料夾樹狀  傳到search.vue
       console.log(tree,'點擊sidebar 當前資料夾',this.subitem);        
     }, 

@@ -131,7 +131,7 @@ export default {
         this.$nextTick(() => { 
           this.userInput = '';
           this.$bvModal.hide('modal-delete-user'); 
-          setTimeout(() => {this.$emit('reload');},2000)
+          // setTimeout(() => {this.$emit('reload');},2000)
 
 
         });
@@ -166,9 +166,15 @@ export default {
       deleteLink(id) {  
         //它不會刪除記錄，而只是將刪除標誌設置為打開或關閉
         console.log('97',id);
+
+        const data = { 
+          "id": id, 
+          "editor": this.$store.getters.userId,
+          "editorName":this.$store.getters.currentUser,
+        }
+        console.log(data);
         
-      cmqRequest.delete(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link`,
-      {data:{ "id": id ,"editor": this.$store.getters.userId, "editorName":this.$store.getters.currentUser}})
+      cmqRequest.delete(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link`,data)
         .then((data) => {
           console.log(data);
         this.$nextTick(() => { this.userInput = '';
@@ -177,16 +183,19 @@ export default {
       }).catch(error => {
           console.log(error);          
         })
-      setTimeout(() => {this.$emit('reload');},2000)
+      // setTimeout(() => {this.$emit('reload');},2000)
 
     },
     deleteFolder(id) {  
-      cmqRequest.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
-      {data:{  
+      const data = {  
         "items": [ { "id": id, "type": 0 }],
         "editor": this.$store.getters.userId,
         "editorName":this.$store.getters.currentUser,
-        "groups": this.$store.getters.group}})
+        "groups": this.$store.getters.group}
+        console.log(data);
+        
+      cmqRequest.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
+      data)
         .then((data) => {
           console.log(data);
       }).catch(error => {

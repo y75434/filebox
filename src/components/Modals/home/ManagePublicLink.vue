@@ -164,33 +164,14 @@ export default {
         })
     },
     checkOpen(item) { 
+      console.log(item);
 
-      if(item.isPublic){
-
-        const data = JSON.stringify({        
-          "linkId": item.linkId,
-          "userId": this.$store.getters.userId,
-          "username": this.$store.getters.currentUser
-        })   
-
-
-      cmqRequest.put(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/OpenLinkUrlWithoutPassword`,
-      data) 
-        .then((data) => {
-          let a = data.data.message
-          console.log(data.data.message);
-          if(a.indexOf('Please')> -1){
-            this.$bvModal.show('openLink');
-          }
-      }).catch(error => {
-          console.log(error);          
-        })
-
-        
+      window.open(item.url,'_blank').focus();
+      
       }
 
     },   
-   }
+  //  }
 }
 </script>
 
