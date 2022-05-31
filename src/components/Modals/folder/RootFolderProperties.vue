@@ -46,11 +46,11 @@
           </div>
         </div>
             
-        <p class="text-dark">
+        <!-- <p class="text-dark">
           FolderSettings{{ FolderSettings }}
           ------------------
           editSetting{{ editSetting }}
-        </p>
+        </p> -->
 
         <div class="row p-5 modal-sidebar">
           <div class="col-4 h-100 ">

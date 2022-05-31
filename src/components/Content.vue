@@ -109,12 +109,11 @@
                             :options="events"
                             value-field="actionTypeId"
                             text-field="name"
-
+                            @change="search()"
                             :aria-describedby="ariaDescribedby"
                             class="mx-1"
                             aria-label="events"
                             stacked
-                            @change="search()"
                           />
                         </div>
                       </template>
@@ -443,20 +442,20 @@
                 <!-- 無法跳 -->
 
                 <!-- <img
+                  :src="require(`${data.item.pic}`)"
+                  class="icon32px"
+                > -->
+
+                <img
                   :src="require(`../assets/images/${data.item.pic}`)"
                   class="icon32px"
-                > -->
-                <!-- <img :src="getImgUrl(data.item.pic)" /> -->
-                <!-- <img
-                  :src="require(`@/assets/images/` + data.item.pic)"
-                  class="icon32px"
-                > -->
-                <!-- 可以跳 但圖片無法顯示 -->
-                <img
-                  :src="data.item.pic"
-                  class="icon32px"
-                >
+                > 
 
+                <!-- 可以跳 但圖片無法顯示 -->
+                <!-- <img
+                  :src="(`@/assets/images/${data.item.pic}`)"
+                  class="icon32px"
+                > -->
 
                 {{ data.item.actionType }}
               </template>
@@ -650,19 +649,28 @@
         ref="EditUserProperties"
         :tab-data="selected"
       />
-      <ImportUser ref="ImportUser" @reload="reloadPage"/>
+      <ImportUser
+        ref="ImportUser"
+        @reload="reloadPage"
+      />
       <delete-user
         ref="DeleteUser"
         :del-data="selected"
         @reload="reloadPage"
       />
-      <NewGroupProperties ref="NewGroupProperties" @reload="reloadPage"/>
+      <NewGroupProperties
+        ref="NewGroupProperties"
+        @reload="reloadPage"
+      />
       <EditGroupProperties 
         :tab-data="selected"
         ref="EditGroupProperties"
         @reload="reloadPage"
       />
-      <AddNewUser ref="AddNewUser" @reload="reloadPage"/>
+      <AddNewUser
+        ref="AddNewUser"
+        @reload="reloadPage"
+      />
       <RootFolderProperties
         ref="RootFolderProperties"
         :tab-data="selected"
@@ -847,13 +855,9 @@ computed:{
     return this.folderitems.filter(x=>x.name.toLowerCase().includes(this.searchText))
   },
 },
-watch: {
-  imgUrl(path) {
-    require(`@/assets/images/${path}`);
-  }
-},
+
 methods: { 
-  
+
   changePage($event){
     console.log($event)
   },
@@ -872,7 +876,7 @@ methods: {
    console.log(this.events);
    // this.eventsSelected = checked ? this.events.slice() : [] 
   },
-  handler(event) { event.preventDefault(); }, 
+  handler(event) { event.preventDefault(); },
   reloadPage() { window.location.reload(); },
   getData() {
     eventBus.$on('menuItems',(item)=>{
@@ -1103,7 +1107,6 @@ methods: {
 
         break;
       case 4: {
- 
         console.log(this.events);
 
         let obj ={
@@ -1127,6 +1130,17 @@ methods: {
             this.count = this.eventsitems.length 
             // this.$forceUpdate();
  
+          this.eventsitems.map(item =>{
+            let actionType = this.eventpics.filter(x=>x.actionType === item.actionType);
+            if(actionType.length>0) {
+              item.pic = actionType[0].pic;
+            } else {
+              item.pic = 'ERROR'
+            }
+            return item;
+          }) 
+
+
           return this.eventsitems;
 
 

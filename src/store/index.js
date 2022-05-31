@@ -10,13 +10,13 @@ export default new Vuex.Store({
   state: {
     currentUser: null,
     isAdmin: false,
-    token: "", // 存放jwt token
     isLogin: false,
     userId: null,
     nowFolderId: null, 
     nowFile: null,
     group: null,
     liselected: null,
+    markfolder: null,//rootfolder setting
     treeArr: [],
     nowRootFolder: null
   },
@@ -54,6 +54,9 @@ export default new Vuex.Store({
     SET_ROOT(state, nowRootFolder){
       state.nowRootFolder = nowRootFolder
     },
+    SET_MARK(state, markfolder){
+      state.markfolder = markfolder
+    },
    
   },
   actions: {
@@ -82,12 +85,14 @@ export default new Vuex.Store({
     setLiselected ({ commit }, liselected) {
       commit('SET_SETLISELECTED', liselected)
     },
-    setTreeArr (treeArr) {
+    setTreeArr ({ commit }, treeArr) {
      commit('SET_TREEARR', treeArr)
-
     }, 
     setRoot ({ commit }, nowRootFolder ) {
       commit('SET_ROOT', nowRootFolder)
+    },
+    setMark ({ commit }, markfolder ) {
+      commit('SET_MARK', markfolder)
     },
   },
   getters: {
@@ -101,6 +106,7 @@ export default new Vuex.Store({
     liselected: state => state.liselected,
     treeArr: state => state.treeArr,
     nowRootFolder: state => state.nowRootFolder,
+    markfolder: state => state.markfolder,
 
   },
   
