@@ -17,7 +17,7 @@ export default new Vuex.Store({
     group: null,
     liselected: null,
     markfolder: null,//rootfolder setting
-    treeArr: [],
+    // treeArr: null,
     nowRootFolder: null
   },
   mutations: {
@@ -47,10 +47,16 @@ export default new Vuex.Store({
     SET_SETLISELECTED(state, liselected){
       state.liselected = liselected
     },
-    SET_TREEARR(state, treeArr){
-      state.treeArr = treeArr
-
-    },
+    // //初始化根資料夾
+    // SET_TREEARR(state, treeArr){
+    //   state.treeArr = treeArr
+    // },
+    // //子資料夾加入陣列
+    // ADD_TASK(state, subitem) {
+    //   state.treeArr.push(subitem)
+        
+    // },
+    //還有用？？
     SET_ROOT(state, nowRootFolder){
       state.nowRootFolder = nowRootFolder
     },
@@ -88,6 +94,9 @@ export default new Vuex.Store({
     setTreeArr ({ commit }, treeArr) {
      commit('SET_TREEARR', treeArr)
     }, 
+    addTask({ commit }, subitem) {  
+      commit("ADD_TASK", subitem);
+    },
     setRoot ({ commit }, nowRootFolder ) {
       commit('SET_ROOT', nowRootFolder)
     },
@@ -104,7 +113,7 @@ export default new Vuex.Store({
     nowFile: state => state.nowFile,
     group: state => state.group,
     liselected: state => state.liselected,
-    treeArr: state => state.treeArr,
+    // treeArr: state => state.treeArr,
     nowRootFolder: state => state.nowRootFolder,
     markfolder: state => state.markfolder,
 

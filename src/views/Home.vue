@@ -583,8 +583,8 @@ export default {
       { id: 3, name: 'TAR' , pic: require('@/assets/images/file/tar@2x.png'),extension:'.tar'},
       { id: 4, name: 'ZIP' , pic:require('@/assets/images/file/addtozip@2x.png'),extension:'.zip'},
       { id: 5, name: 'html' ,pic:require('@/assets/images/file/addtozip@2x.png'),extension:'.html'},
-      { id: 6, name: 'png',pic:require('@/assets/images/file/tile@2x.png'),extension:'.png'},
-      { id: 7, name:'jpeg',pic:require('@/assets/images/file/tile@2x.png'),extension:'.jpeg'},
+      { id: 6, name: 'png',pic:"",extension:'.png'},
+      { id: 7, name:'jpeg',pic:"",extension:'.jpeg'},
       { id: 8,name:'ppt',pic:require('@/assets/images/file/ppt@2x.png'),extension:'.ppt'},
       { id: 9,name:'word',pic:require('@/assets/images/file/word@2x.png'),extension:'.word'},
       { id: 10, name:'excel',pic:require('@/assets/images/file/excel@2x.png'),extension:'.excel'},
@@ -745,8 +745,11 @@ export default {
             this.allFiles.map(item=>{
               const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
               item.pic = datapic.pic;
+              // let preview = new Image();
+              // preview.pic = item.thumbnail; 
               return item
-              });        
+              });  
+              
           }).catch(error => {
             console.log(error.response.data);        
           })
@@ -769,6 +772,10 @@ export default {
             this.allFiles.map(item=>{
               const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
               item.pic = datapic.pic;
+              // let preview = new Image();
+              // preview.pic = item.thumbnail; 
+              console.log(item.thumbnail);        
+
               return item
               });        
           }).catch(error => {
@@ -804,15 +811,6 @@ export default {
   
       console.log('download data',data);
 
-      // const config = {
-      //   header:{
-      //     Accept: 'application/zip',
-      //   },
-      //   responseType: 'arraybuffer'
-      // }
-      
-      // this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`,
-      // data,config)
 
       cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`, data)
 
@@ -974,18 +972,18 @@ export default {
       const result = this.rootFolder.filter(item => id == item.folderId);
       // 是rootfolder      
       if(result.length != 0){
-      console.log(result)
-        //
-        // if( 'name' in result[0]){
-          this.nowRootFolder = result[0]
-        // }
+          console.log(result)
+           if( 'name' in result[0]){
+            this.nowRootFolder = result[0]
+           }
+        
         //sidebar點擊 而且是子資料夾
       }else{
          //把點擊的加入search array
          this.$refs.Search.getFolderTree(id)
           // console.log(a)
-
           // this.treeSelected = item;
+
 
       }
       
@@ -1022,7 +1020,12 @@ export default {
         //點擊後上層開始顯示路徑
         this.allFiles.map(item=>{ 
           const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
-          item.pic = datapic.pic;          
+          item.pic = datapic.pic;  
+          //顯示縮圖
+          if(!item.pic){
+            item.pic = item.thumbnail
+          }
+        
           return item 
         });
 

@@ -52,19 +52,19 @@ export default {
   created(){
     // console.log(this.subitem, 'sub')
     this.start()  
-    this.$store.dispatch('setTreeArr', null);
+    // this.$store.dispatch('setTreeArr', null);
 
   },
   methods:{ 
-
+    //還有用？？？？？
     start(){
-        this.open = !this.open
+      this.open = !this.open
       if(this.open) {
           cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`)
         .then((data) => { 
           this.subitem = data.data;
           console.log(this.subitem, this.open);
-            this.open = !this.open
+          this.open = !this.open
 
         }).catch(() => {
           //  console.log(error.response.data);        
@@ -86,39 +86,18 @@ export default {
             data)
             .then((data) => { 
               this.subitem = data.data;
-              console.log(this.subitem,'admin',this.open);
-              
-              // console.log(this.subitem.subFolders);
-
-        //  {        
-        //   index: x,
-        //   groups: this.subitem
-        //  }
-
-            // let tempItem = array.find(arrayItem => {
-            //   return item.parentId === arrayItem.folderId
-            // })
-
-
-              //陣列加入
+              // console.log(this.subitem, 'toggle folder');
+           
+      
+              //子資料夾加入index和parentId
               this.subitem.subFolders.forEach((item)=>{
-          
-  // let tempItem = array.find(arrayItem => {
-  //             return item.parentId === arrayItem.folderId
-  //           })
 
-                  let self = []
-                  self.push(this.subitem)
-                  self.push(item)
-                  console.log(self);
-                  
+                item.parentId = this.subitem.folderId  
+                this.$bus.$emit("pass", item);
 
               })
 
-                console.log(this.arr,'全部包含所有arr');        
-
-
-
+              // console.log(this.subitem.subFolders,'toggle subfolder');        
 
           }).catch(() => {
             //  console.log(error.response.data);        
@@ -136,16 +115,13 @@ export default {
         }
     },   
     subClick(tree) {
-      //  要去監測該資料夾的上層並傳回search.vue
       
-      //  this.$bus.$emit("showAlert", tree);
-      //  this.$store.dispatch('setTreeArr', tree);
       //不能刪
       this.$bus.$emit("notify:message", tree);
 
      
       //要把sidebar的該資料夾樹狀  傳到search.vue
-      console.log(tree,'點擊sidebar 當前資料夾',this.subitem);        
+      console.log(tree,'點擊sidebar 當前資料夾');        
     }, 
   }
 }

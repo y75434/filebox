@@ -129,6 +129,7 @@
 
 <script>
 import cmqRequest from "@/http/cmqRequest"
+import eventBus from "@/bus.js";
 
 
 export default {
@@ -150,7 +151,7 @@ export default {
     }
   },
   created(){
-   this.getRootFolder()
+  //  this.getRootFolder()
   },
   watch:{    
     nowRootFolder(){ 
@@ -169,20 +170,20 @@ export default {
 
   },
   methods: {
-    showAlert(){
-     this.$bus.$on("showAlert", tree => {
-      this.getFolderTree(tree.folderId);
-      console.log(tree);
+    // showAlert(){
+    //  this.$bus.$on("showAlert", tree => {
+    //   this.getFolderTree(tree.folderId);
+    //   console.log(tree,'175');
       
-    });    
-   },
+    // });    
+  //  },
    update() {
     this.$emit('update', this.searchQuery);   
     }, 
     //返回上一層 目前返回到該 rootfolder 裏面
     back(){
       this.arr.pop()
-      console.log(this.arr,'回上層');
+      // console.log(this.arr,'回上層');
 
       if(this.arr.length > 0){
         this.$emit('back', this.arr[this.arr.length -1].folderId);
@@ -214,10 +215,18 @@ export default {
         cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
         data).then((data) => { 
 
-          console.log(data, 'admin');
+          console.log(data, 'father');
           //先跑回圈看nowrootfolder有無該folder
-          this.getRootTree(this.nowRootFolder.folderId)
-          this.testArr = []
+          // this.getRootTree(this.nowRootFolder.folderId)
+          // this.testArr = []
+
+          eventBus.$on("passSideBar", this.passLog); // include parent 傳給search
+          console.log(this.passLog);
+          
+          if(this.passLog){
+            this.arr = this.passLog
+          }
+
 
          
           this.FolderTree = data.data
@@ -242,72 +251,49 @@ export default {
           console.log(error.response.data);        
         })
       }
-      console.log(this.FolderTree,'目前位置的父層');
-      console.log(this.arr,'包含目前位置的tree');
+      console.log(this.FolderTree,'當前點擊');
+      console.log(this.arr,'顯示的陣列');
 
     },
-    //檢查根資料夾有無目前sidebar點擊的路徑
-    getRootTree(id){
-      const data = JSON.stringify({        
-        "folderId": id,
-        "uerId": this.$store.getters.userId,
-        "groups": this.$store.getters.group
-      }) 
-      if(this.$store.getters.isAdmin != null) {
+    //檢查根資料夾有無目前sidebar點擊的路徑 
+    // getRootTree(id){
+    //   const data = JSON.stringify({        
+    //     "folderId": id,
+    //     "uerId": this.$store.getters.userId,
+    //     "groups": this.$store.getters.group
+    //   }) 
+    //   if(this.$store.getters.isAdmin != null) {
 
-
-        cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
-        data)
-          .then((data) => {
-            this.testTree = data.data;
-            // console.log(this.testTree,'每個資料夾各跑一次');
-
-            //把now root換掉
-
-              //nowrootfolder 有 就要把該id之後的資料夾刪掉
-              //loop tree取代現有arr 
-              //想把外層傳入值更換 目前無效
-              //要找this.tree
-                
-              // this.nowRootFolder = this.FolderTree
-
-          console.log(this.nowRootFolder);
-
-              // console.log('測到rootfolder不同換 tree');
-              // this.arr = this.testArr
-              // this.arr = this.arr.filter(x=>x.folderId !== this.FolderTree.folderId);
-
-
-              // this.testArr.push(this.testTree)
-              // if (this.testTree.subFolders.length > 0 ) {
-              //   this.getRootTree(this.testTree.subFolders[0].folderId)
-              // }
-            })
-            .catch(() => { // console.log(error.response.data); 
-            });
-        }
-          console.log(this.testArr, 'all folder');
-    },//一次跑完所有樹狀
-    getRootFolder(){
-      cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
-        .then((data) => { 
-          this.trees = data.data;
+    //     cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
+    //     data)
+    //       .then((data) => {
+    //         this.testTree = data.data;
+    //         console.log(this.testTree,'每個資料夾各跑一次');
+ 
+    //         })
+    //         .catch(() => { // console.log(error.response.data); 
+    //         });
+    //     }
+    //       console.log(this.testArr, 'sidebar點擊會觸發');
+    // },
+    //一次跑完所有樹狀
+  //   getRootFolder(){
+  //     cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/RootFoldersForAdminPage`)
+  //       .then((data) => { 
+  //         this.trees = data.data;
           
-          console.log(this.trees,'全部rootfolder');//rootfolder
+  //         // console.log(this.trees,'全部rootfolder');//rootfolder
 
+  //         this.trees.forEach((item)=>{
+  //           item.index = 0
 
-          this.trees.forEach((item)=>{
-            this.getRootTree(item.folderId)
-          
-          })
+  //         })
+  //         console.log(this.trees,'parentId add index'); // parentId
 
-        }).catch(error => {
-          console.log(error.response.data);        
-        })
-
-        
-
-  },   
+  //       }).catch(error => {
+  //         console.log(error.response.data);        
+  //       })
+  // },   
   
   }
 }
