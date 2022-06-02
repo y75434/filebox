@@ -49,28 +49,9 @@ export default {
       arr:[]  
     }
   },
-  created(){
-    // console.log(this.subitem, 'sub')
-    this.start()  
-    // this.$store.dispatch('setTreeArr', null);
-
-  },
+ 
   methods:{ 
-    //還有用？？？？？
-    start(){
-      this.open = !this.open
-      if(this.open) {
-          cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTree`)
-        .then((data) => { 
-          this.subitem = data.data;
-          console.log(this.subitem, this.open);
-          this.open = !this.open
-
-        }).catch(() => {
-          //  console.log(error.response.data);        
-        })
-      }
-    },     
+     
     toggle(subitem){
         this.open = !this.open
          const data = JSON.stringify({        

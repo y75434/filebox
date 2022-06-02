@@ -93,7 +93,6 @@ import ResetSuccess from '../components/Modals/login/ResetSuccess.vue';
 import Cookies from 'js-cookie'
 import Mgr from '../services/authService'
 import cmqRequest from "@/http/cmqRequest";
-// import { UserManager, WebStorageStateStore } from 'oidc-client';
 import jwt_decode from "jwt-decode";
 
 

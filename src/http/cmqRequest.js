@@ -1,5 +1,8 @@
 import axios from 'axios'
 import {Promise} from 'es6-promise'
+// import router from '@/router/index'
+import store from '@/store/index';
+
 
 let getToken = function (url) {
   // console.log(url);
@@ -206,9 +209,20 @@ export default {
           resolve(response)
         }, err => {
           reject(err.response)
+          if (err.response.status === 401) {
+              console.log('210000000000');        
+
+              sessionStorage.removeItem('orgToken')
+              sessionStorage.removeItem('docToken')
+              sessionStorage.removeItem('eventToken')
+              sessionStorage.removeItem('linkToken')
+              store.state.isLogin = false
+
+          }
         })
         .catch(err => {
           reject(err)
+
         })
     })
   },

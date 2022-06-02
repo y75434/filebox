@@ -85,6 +85,7 @@
 
 <script>
 import UserSetting from '../components/Modals/UserSetting.vue';
+import Mgr from '../services/authService'
 
 export default {
   name: "AdminNav",
@@ -92,15 +93,26 @@ export default {
     UserSetting
   },
   data: () => ({
+    mgr: new Mgr(),
 
   }),
   methods: {
     usersetting(){ this.$bvModal.show('UserSetting'); },
     logout(){
-    // this.$store.dispatch('setToken', "");
 
-    this.$router.push('/login').catch(err => {err})
-    this.$store.dispatch('setAuth', false);
+        sessionStorage.removeItem('orgToken')
+        sessionStorage.removeItem('docToken')
+        sessionStorage.removeItem('eventToken')
+        sessionStorage.removeItem('linkToken')
+        this.mgr.signOut()
+
+       this.$router.push('/login').catch(err => {err})
+
+       this.$store.dispatch('setAuth', false);
+       this.$store.dispatch('setAdmin', false);
+       this.$store.dispatch('setUser', '');
+       this.$store.dispatch('setGroup', '');
+
 
 
   }

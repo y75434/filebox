@@ -36,29 +36,21 @@ export default {
       // 檢查
       if(tree['parentId']){
         this.passLog = []
-
         this.checkFather(tree.parentId)
-        console.log('39');        
-
-      }else{
-        
+        console.log('40');        
+      }else{    
         this.passLog = []
-        console.log('44', tree);        
-
+        console.log('43', tree);        
       }
-
       this.passLog.push(tree)
       this.$emit('treeClick', tree);  //傳到home頁跑路徑
 
     });
 
     //子層傳來的值存放以方便做比較
-    this.$bus.$on("pass", subitem => {
-     
+    this.$bus.$on("pass", subitem => {   
       this.compare.push(subitem)
       console.log(this.compare);
-      
-
     });
 
   },
@@ -74,7 +66,7 @@ export default {
             x.subFolders = null;
             return x;
           });
-          console.log(this.trees,'全部rootfolder');//rootfolder
+          // console.log(this.trees,'全部rootfolder');//rootfolder
 
         }).catch(error => {
           console.log(error.response.data);        

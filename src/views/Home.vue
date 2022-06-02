@@ -382,10 +382,11 @@
                     @change="setSelectNumber()"
                   >
                   <img
-                    :src="item.pic"
+                    :src="item.thumbnail"
                     :id="item.id"
                     class="folder-icon"
                   >
+                
                   <div
                     class="text-dark text-center text-truncate"
                     style="max-width: 100px;"
@@ -578,17 +579,6 @@ export default {
     selectedItems: [],//邊框
     treeItems: [
       { id: 0, name: 'Folder',pic: require('@/assets/images/file/single folder@2x.png'),extension:'.folder'},
-      { id: 1, name: '7Z', pic: require('@/assets/images/file/7zip@2x.png'),extension:'.7zip'},
-      { id: 2, name: 'RAR', pic: require('@/assets/images/file/rar@2x.png'),extension:'.rar'},
-      { id: 3, name: 'TAR' , pic: require('@/assets/images/file/tar@2x.png'),extension:'.tar'},
-      { id: 4, name: 'ZIP' , pic:require('@/assets/images/file/addtozip@2x.png'),extension:'.zip'},
-      { id: 5, name: 'html' ,pic:require('@/assets/images/file/addtozip@2x.png'),extension:'.html'},
-      { id: 6, name: 'png',pic:"",extension:'.png'},
-      { id: 7, name:'jpeg',pic:"",extension:'.jpeg'},
-      { id: 8,name:'ppt',pic:require('@/assets/images/file/ppt@2x.png'),extension:'.ppt'},
-      { id: 9,name:'word',pic:require('@/assets/images/file/word@2x.png'),extension:'.word'},
-      { id: 10, name:'excel',pic:require('@/assets/images/file/excel@2x.png'),extension:'.excel'},
-      { id: 11, name:'null',pic:require('@/assets/images/file/single folder@2x.png'),extension:null},
     ],
     renderCheckboxs: false,
     treeSelected: null,
@@ -743,15 +733,30 @@ export default {
             this.rootFolder = this.allFiles
           
             this.allFiles.map(item=>{
-              const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
-              item.pic = datapic.pic;
-              // let preview = new Image();
-              // preview.pic = item.thumbnail; 
+              item.thumbnail = this.treeItems[0].pic;
               return item
-              });  
+            });  
               
           }).catch(error => {
-            console.log(error.response.data);        
+             if (error.response.status === 401) {
+              console.log('771');        
+
+              //place your reentry code
+              sessionStorage.removeItem('orgToken')
+              sessionStorage.removeItem('docToken')
+              sessionStorage.removeItem('eventToken')
+              sessionStorage.removeItem('linkToken')
+              this.mgr.signOut()
+
+            this.$router.push('/login').catch(err => {err})
+
+            this.$store.dispatch('setAuth', false);
+            this.$store.dispatch('setAdmin', false);
+            this.$store.dispatch('setUser', '');
+            this.$store.dispatch('setGroup', '');
+
+            }
+
           })
       }else{
 
@@ -770,14 +775,9 @@ export default {
             this.rootFolder = this.allFiles
           
             this.allFiles.map(item=>{
-              const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
-              item.pic = datapic.pic;
-              // let preview = new Image();
-              // preview.pic = item.thumbnail; 
-              console.log(item.thumbnail);        
-
+              item.thumbnail = this.treeItems[0].pic;
               return item
-              });        
+            });        
           }).catch(error => {
             console.log(error.response.data);        
           })
@@ -1019,11 +1019,9 @@ export default {
 
         //點擊後上層開始顯示路徑
         this.allFiles.map(item=>{ 
-          const datapic = this.treeItems.filter(y=>y.extension == item.extension)[0];
-          item.pic = datapic.pic;  
-          //顯示縮圖
-          if(!item.pic){
-            item.pic = item.thumbnail
+          
+          if(!item.extension){
+            item.thumbnail = this.treeItems[0].pic
           }
         
           return item 

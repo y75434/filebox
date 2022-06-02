@@ -150,9 +150,7 @@ export default {
 
     }
   },
-  created(){
-  //  this.getRootFolder()
-  },
+
   watch:{    
     nowRootFolder(){ 
       this.FolderTree = null
@@ -170,13 +168,7 @@ export default {
 
   },
   methods: {
-    // showAlert(){
-    //  this.$bus.$on("showAlert", tree => {
-    //   this.getFolderTree(tree.folderId);
-    //   console.log(tree,'175');
-      
-    // });    
-  //  },
+   
    update() {
     this.$emit('update', this.searchQuery);   
     }, 

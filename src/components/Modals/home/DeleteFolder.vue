@@ -79,19 +79,19 @@ export default {
       // console.log('nowFile',this.$store.getters.nowFile)
       //刪一般file , folder ok 
 
-      console.log({ 
+ 
+
+      const data = { 
         "items": this.$store.getters.nowFile, 
         "editor":this.$store.getters.userId,
         "editorName":this.$store.getters.currentUser,
         "groups": this.$store.getters.group
-      });
+      }
+
+      console.log(data);
+
       
-      cmqRequest.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,{ data: { 
-        "items": this.$store.getters.nowFile, 
-        "editor":this.$store.getters.userId,
-        "editorName":this.$store.getters.currentUser,
-        "groups": this.$store.getters.group
-      }})
+      cmqRequest.delete(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,data)
         .then(() => {     
           this.$swal.fire({ title: '$t("GENERAL.DELSUCCESS")', icon: 'success' })
         }).catch(() => {
