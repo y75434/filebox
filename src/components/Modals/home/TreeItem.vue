@@ -18,7 +18,6 @@
 import item from './Item.vue'
 import cmqRequest from "@/http/cmqRequest"
 
-
 export default {
   components:{item},
   name: "TreeItem",
@@ -34,15 +33,22 @@ export default {
    this.getRootFolder()
 
     this.$bus.$on("notify:message", tree => {
-      // 並將接收到的 message 傳給自己的 methods showAlert 去觸發 alert 事件。
+      // 檢查
       if(tree['parentId']){
+        this.passLog = []
+
         this.checkFather(tree.parentId)
+        console.log('39');        
+
+      }else{
+        
+        this.passLog = []
+        console.log('44', tree);        
+
       }
 
-      console.log(tree,'當下點擊folder');
       this.passLog.push(tree)
-      this.$emit('treeClick', tree);  //only one
-      // this.$emit('treeClick', this.passLog);  // include parent 傳給search
+      this.$emit('treeClick', tree);  //傳到home頁跑路徑
 
     });
 
@@ -97,33 +103,24 @@ export default {
               console.log(data.data);        
 
               this.now = data.data;
-              console.log(this.now,'跑幾次代表有幾個父層'); 
-              
-
-              
-              
+                         
               //比照compare紀錄
               this.now = this.compare.filter(i => i.folderId === this.now.folderId)
-              console.log('108',this.now);
-
-              if(this.now){
-                //已經是最上層folder
-                this.passLog.unshift(this.now)
-                console.log('111',this.now);
-
-
-              }else{
-                //把第一筆符合資料放入
-                this.passLog.unshift(this.now[0])
-              }
-
-              console.log(this.passLog, 'all tree');
+         
 
               if(this.now[0]['parentId']){
-                console.log('有father');
+                // 有father
+                console.log('114');
+
+                this.passLog.unshift(this.now[0])
+
                 this.checkFather(this.now[0].parentId)
               }else{
+                this.passLog.unshift(this.now[0])
+                console.log( '123', this.passLog );
+
                 this.$bus.$emit("passSideBar", this.passLog); // include parent 傳給search
+                this.passLog = []
 
               }
 

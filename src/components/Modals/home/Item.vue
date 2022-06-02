@@ -96,8 +96,8 @@ export default {
                 this.$bus.$emit("pass", item);
 
               })
-
-              // console.log(this.subitem.subFolders,'toggle subfolder');        
+              //根資料夾也順便傳
+              this.$bus.$emit("pass", this.subitem);
 
           }).catch(() => {
             //  console.log(error.response.data);        
@@ -118,7 +118,6 @@ export default {
       
       //不能刪
       this.$bus.$emit("notify:message", tree);
-
      
       //要把sidebar的該資料夾樹狀  傳到search.vue
       console.log(tree,'點擊sidebar 當前資料夾');        
