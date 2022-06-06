@@ -46,11 +46,11 @@
           </div>
         </div>
             
-        <!-- <p class="text-dark">
+        <p class="text-dark">
           FolderSettings{{ FolderSettings }}
           ------------------
-          editSetting{{ editSetting }}
-        </p> -->
+          editSetting {{ editSetting }}
+        </p>
 
         <div class="row p-5 modal-sidebar">
           <div class="col-4 h-100 ">
@@ -87,6 +87,7 @@
                     :disabled="validateFather"
                     v-model="editSetting.inherit"
                     @change="checkInhert($event)"
+                    id="exampleCheck1"
                   >
                   <label
                     class="form-check-label"
@@ -460,17 +461,18 @@ export default {
       },
       space: 0, 
       unitId: "",
-      testTree: {},
-      arr:[],
+      // testTree: {},
+      // arr:[],
+      members: []
     };
   },
   computed:{ 
-    members:{  
-      set(){},//不能刪
-      get(){
-        return this.editSetting.settings.members
-      }
-    },   
+    // members:{  
+    //   set(){},//不能刪
+    //   get(){
+    //     return this.editSetting.settings.members
+    //   }
+    // },   
     validateFather(){   
      return this.$store.getters.liselected.folderId === this.FolderSettings.folderId || this.$store.getters.liselected === this.FolderSettings.folderId 
     },
@@ -480,28 +482,11 @@ export default {
     liselected(){
       if (this.$store.getters.liselected.folderId) {
         this.editSetting = this.$store.getters.liselected
+        this.members = this.editSetting.settings.members
+        // this.$set(this.editSetting.inherit, checked, this.$store.getters.liselected.inherit)
+
+
       }
-  
-      const id = this.$store.getters.liselected.folderId
-      this.arr = []
-      this.testTree = {}
-      this.getRootTree(id)
-
-      //arr為該rootfolder整個tree
-      this.arr.forEach((item,index)=>{
-        console.log(this.arr,'arr');
-
-
-        if(this.editSetting.folderId == item.folderId && this.arr[index - 1] !== undefined){
-          console.log(this.arr[index - 1],'上一層');
-          let id = this.arr[index - 1].folderId
-          //更改foldersetting 物件資料
-          this.getFolderSettings(id)
-        }else{
-          //如果this.arr[index - 1] == undefined 直接讓 editsetting 值給 foldersetting
-          this.FolderSettings = this.editSetting
-        }
-      })
     },
    },
    created(){
@@ -510,31 +495,28 @@ export default {
    methods: { 
     //inhert checkbox變動
     checkInhert(e){
-      this.editSetting.inherit = !this.editSetting.inherit
+      // this.editSetting.inherit = !this.editSetting.inherit
       if(e.target.checked){
+   
+        this.members =  this.FolderSettings.settings.members
+
         this.members.forEach(item => {
-          this.FolderSettings.settings.members.forEach(x => {
-            if(item == x) {
-              //繼承父層打勾的話 parent換成父層資料 self變成空陣列
-              item.parent = x.self
-              item.self = []
+            item.parent = item.self
+            item.self = {
+              "allowPermission": [],
+              "denialPermission": [],
+              "allowFileTypes": [],
+              "denialFileTypes": []
             }
-          })
-          console.log(this.members,'checked');
         })
+
+        console.log( this.members,'checked');
+
       }else{
-        this.members.forEach(item => {
-          this.FolderSettings.settings.members.forEach(x => {
-            console.log(x);
-            if(item == x) {
-              //繼承父層取消打勾的話 parent改 [] self換成父層資料
-              item.parent = []
-              console.log(item.self,x.self);
-              item.self = x.self
-            }
-          })
+    
+        //恢復原本設定
+        this.members =  this.editSetting.settings.members
         console.log(this.members,'unchecked');
-        })
       }
     },
     start() {
@@ -543,38 +525,12 @@ export default {
       this.getFileTypes()
       this.getStorageUnit()
       this.$store.dispatch('setLiselected', this.tabData.folderId);
-      this.arr = []
-      this.testTree = {}
-      this.getRootTree(this.tabData.folderId)
-    },
-    //想要一次跑完根資料夾樹狀
-    getRootTree(id){
-      // console.log('test', id);
-      
-      const data = JSON.stringify({        
-        "folderId": id,
-        "uerId": this.$store.getters.userId,
-        "groups": this.$store.getters.group
-        }) 
-
-      cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
-      data)
-        .then((data) => {
-          this.testTree = data.data;
-          // console.log(this.testTree);          
-          this.arr.push(this.testTree)
-            if (this.testTree.subFolders.length > 0 ) {
-              this.getRootTree(this.testTree.subFolders[0].folderId)
-            }
-          })
-          .catch(() => { // console.log(error.response.data); 
-          });
-          console.log(this.arr, 'arr');
     },
     getFolderSettings(id){  
       cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => { 
-        console.log(id,this.$store.getters.liselected);
+        // console.log(id,this.$store.getters.liselected,'579');
+        console.log('初始化');
 
         //初始化資料顯示 
         this.FolderSettings = data.data        
@@ -589,8 +545,6 @@ export default {
 
         this.members = this.editSetting.settings.members
 
-        // console.log(this.members);
-        // console.log(this.FolderSettings, this.editSetting,'初始化資料顯示');
         
         this.getUserTable()
         this.getGroupTable()
@@ -613,28 +567,28 @@ export default {
       })
     },
     permissionSelected(item){
-      console.log('652', item, this.editSetting.inherit)
+      console.log(this.nowUser, item, this.editSetting.inherit)
       if(item.selected == "allow" && this.editSetting.inherit == false){
-        console.log('1',this.nowUser);
+        console.log('allow');
         this.nowUser.self.allowPermission.push(item.permissionTypeId) 
         this.nowUser.self.denialPermission = this.nowUser.self.denialPermission.filter(x=>x !== item.permissionTypeId);
       
       } else if(item.selected == "deny" && !this.editSetting.inherit == false){
-        console.log('2');
+        console.log('deny');
         this.nowUser.self.denialPermission.push(item.permissionTypeId)
         this.nowUser.self.allowPermission = this.nowUser.self.allowPermission.filter(x=>x !== item.permissionTypeId);
       
       }else if(item.selected == "allow" && this.editSetting.inherit == true){
-        console.log('3');
+        console.log('allow');
         this.nowUser.parent.allowPermission.push(item.permissionTypeId)
         this.nowUser.parent.denialPermission = this.nowUser.parent.denialPermission.filter(x=>x !== item.permissionTypeId);
       
       }else if(item.selected == "deny" && this.editSetting.inherit == true){
-        console.log('4');
+        console.log('deny');
         this.nowUser.parent.denialPermission.push(item.permissionTypeId)
         this.nowUser.parent.allowPermission = this.nowUser.parent.allowPermission.filter(x=>x !== item.permissionTypeId);
       }else{
-        console.log('5');
+        console.log('err');
         
       }
     },
@@ -683,7 +637,7 @@ export default {
     putFolder(){
 
       //傳送之前先檢查值 如果是null 轉為[]
-      console.log(this.editSetting.settings.members,'686',this.editSetting);
+      console.log(this.editSetting.settings.members,'put method',this.editSetting);
       
       // this.editSetting.settings.members.forEach((x)=>{
       //   //檢查self
@@ -711,7 +665,7 @@ export default {
           "inhert": this.editSetting.inherit,
           "settings":{
             "storage":{ "space": this.space, "unitId": this.unitId },
-            "members": this.editSetting.settings.members
+            "members": this.members
           },
           "editor": this.$store.getters.userId, 
           "editorName":this.$store.getters.currentUser,
@@ -740,6 +694,7 @@ export default {
       cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers?searchString=${this.searchText}`)
         .then((data) => {          
           this.useritems = data.data
+          console.log(this.useritems);        
 
           this.count = this.useritems.length + this.groupitems.length     
         }).catch(error => {
@@ -757,7 +712,7 @@ export default {
     //點擊針對個人允許行為
     userCan(item){      
       console.log('now user', item);
-      console.log('PermissionTypes', this.PermissionTypes);
+      // console.log('PermissionTypes', this.PermissionTypes);
       //點擊後重新設定勾取匡
       this.PermissionTypes.map((x)=>{
         x.active = false;
@@ -771,30 +726,32 @@ export default {
       })
       // console.log('815', this.FileTypes);
 
-
       this.$forceUpdate();
 
       this.haveUser = true
       this.nowUser = item;
 
       //把 null 改 []
-      var self = Object.keys(this.nowUser.self);
-      self.forEach(key=>{
-          if(this.nowUser.self[key] == null || this.nowUser.self[key] == undefined) {
-            this.nowUser.self[key] = [];
-          }
-      })
+      // var self = Object.keys(this.nowUser.self);
+      // self.forEach(key=>{
+      //     if(this.nowUser.self[key] == null || this.nowUser.self[key] == undefined) {
+      //       this.nowUser.self[key] = [];
+      //     }
+      // })
 
-      var parent = Object.keys(this.nowUser.parent);
-      parent.forEach(key=>{
-          if(this.nowUser.parent[key] == null || this.nowUser.parent[key] == undefined) {
-            this.nowUser.parent[key] = [];
-          }
-      })
+      // var parent = Object.keys(this.nowUser.parent);
+      // parent.forEach(key=>{
+      //     if(this.nowUser.parent[key] == null || this.nowUser.parent[key] == undefined) {
+      //       this.nowUser.parent[key] = [];
+      //     }
+      // })
+
+
 
 
       //依據繼承與否進行函式
-      if(this.editSetting.inherit == true) {
+      if(this.editSetting.inherit) {
+        console.log('Inherit');
         this.inheritParent()
       }else{
         console.log('notInherit');
@@ -806,16 +763,19 @@ export default {
     
     },
     inheritParent(){
+      console.log(this.nowUser);
+
+
       this.PermissionTypes.map(x=>{
         let temps = this.nowUser.parent.allowPermission.filter(permission=>permission==x.permissionTypeId);
-        if(temps.length > 0) {
-          x.selected = 'allow';
-        }else {
-          x.selected = 'deny';
-        }
-        return x;
+          if(temps.length > 0) {
+            x.selected = 'allow';
+          }else {
+            x.selected = 'deny';
+          }
+          return x;
       })
-      console.log(this.PermissionTypes);
+      // console.log(this.PermissionTypes);
 
 
       //顯示radio匡 inFather狀態
@@ -892,9 +852,9 @@ export default {
         }
         return x;
       })
-      console.log(this.PermissionTypes);
+      //console.log(this.PermissionTypes);
 
-      console.log(this.nowUser);
+      //console.log(this.nowUser);
 
       this.nowUser.self.allowPermission.forEach(x=>{
         this.PermissionTypes.forEach(permission=>{
@@ -924,12 +884,12 @@ export default {
     userSelected(item){
       console.log(item ,'item');
 
-      if(!this.editSetting.settings.members){
-        this.editSetting.settings.members = []
-      }
+      // if(!this.editSetting.settings.members){
+      //   this.editSetting.settings.members = []
+      // }
 
-      if(this.editSetting.settings.members.filter(x=>x.memberId == item.userId).length == 0) {
-       this.editSetting.settings.members.push(
+      if(this.members.filter(x=>x.memberId == item.userId).length == 0) {
+       this.members.push(
          {
             "memberId": item.userId,
             "memberName": item.userName,
@@ -948,13 +908,13 @@ export default {
             }
           }
        );
-       console.log('目前選擇名單', this.editSetting.settings.members);
+       console.log('目前選擇名單', this.members);
       }   
     },
     groupSelected(item){
       console.log(item ,'now select group');
-      if(this.editSetting.settings.members.filter(x=>x.memberId == item.id).length == 0) {
-       this.editSetting.settings.members.push(
+      if(this.members.filter(x=>x.memberId == item.id).length == 0) {
+       this.members.push(
          { 
            "memberId": item.id, 
            "memberName": item.groupName, 
@@ -973,14 +933,14 @@ export default {
            }
          } 
        );
-       console.log('目前選擇名單', this.editSetting.settings.members);
+       console.log('目前選擇名單', this.members);
       }
     },   
     //ok
     del(user){
-     console.log('user',this.editSetting.settings.members);
+     console.log('user',this.members);
 
-     this.editSetting.settings.members = this.editSetting.settings.members.filter(x => x.memberId !== user.memberId)    
+     this.members = this.members.filter(x => x.memberId !== user.memberId)    
     //  this.members = this.editSetting.settings.members
 
     },

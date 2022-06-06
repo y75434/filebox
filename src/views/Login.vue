@@ -57,14 +57,14 @@
         </div>
           
         <a
-          @click="login"
+          @click="test"
           class="dqbz-btn btn btn-primary col-12"
         >{{ $t("GENERAL.LOGIN") }}</a>
 
-        <a
+        <!-- <a
           @click="test"
           class="dqbz-btn btn btn-primary col-12"
-        >test</a>
+        >test</a> -->
 
         <p class="my-4">
           <span>{{ $t("GENERAL.OR") }}</span>
@@ -116,6 +116,32 @@ export default {
     wrong: false,
     userId: ""
   }),
+  created(){
+    this.mgr.signIn()
+
+    let tokenInfo = jwt_decode(sessionStorage.getItem('orgToken'))
+      let user = {
+        userId: tokenInfo.sub,
+        isAdmin: tokenInfo.IsAdmin,
+        groups: tokenInfo.Groups,
+        userMustChangePassword: tokenInfo.UserMustChangePassword,
+        userCannotChangePassword: tokenInfo.UserCannotChangePassword
+      }
+
+        console.log(user);
+        if(user){
+
+          this.$store.dispatch('setAuth', true);
+        }
+
+        this.$store.dispatch('setAdmin', tokenInfo.IsAdmin);
+        this.$store.dispatch('setGroup', tokenInfo.Groups);
+        this.$store.dispatch('setUserId', tokenInfo.sub);
+
+
+        this.$store.dispatch('setUser', 'admin');
+
+  },
   methods:{
     saveAccount(t = "", b = "") {
       window.localStorage.setItem("savedAccount", JSON.stringify({t, b}));
@@ -144,27 +170,27 @@ export default {
 
 
 
-      let tokenInfo = jwt_decode(sessionStorage.getItem('orgToken'))
-      let user = {
-        userId: tokenInfo.sub,
-        isAdmin: tokenInfo.IsAdmin,
-        groups: tokenInfo.Groups,
-        userMustChangePassword: tokenInfo.UserMustChangePassword,
-        userCannotChangePassword: tokenInfo.UserCannotChangePassword
-      }
+      // let tokenInfo = jwt_decode(sessionStorage.getItem('orgToken'))
+      // let user = {
+      //   userId: tokenInfo.sub,
+      //   isAdmin: tokenInfo.IsAdmin,
+      //   groups: tokenInfo.Groups,
+      //   userMustChangePassword: tokenInfo.UserMustChangePassword,
+      //   userCannotChangePassword: tokenInfo.UserCannotChangePassword
+      // }
 
-        console.log(user);
-        if(user){
+      //   console.log(user);
+      //   if(user){
 
-          this.$store.dispatch('setAuth', true);
-        }
+      //     this.$store.dispatch('setAuth', true);
+      //   }
 
-        this.$store.dispatch('setAdmin', tokenInfo.IsAdmin);
-        this.$store.dispatch('setGroup', tokenInfo.Groups);
-        this.$store.dispatch('setUserId', tokenInfo.sub);
+      //   this.$store.dispatch('setAdmin', tokenInfo.IsAdmin);
+      //   this.$store.dispatch('setGroup', tokenInfo.Groups);
+      //   this.$store.dispatch('setUserId', tokenInfo.sub);
 
 
-        this.$store.dispatch('setUser', 'admin');
+      //   this.$store.dispatch('setUser', 'admin');
       
 
       

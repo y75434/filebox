@@ -290,7 +290,7 @@ props: { title: { type: String, default: 'Import User' },
       console.log(data);
 
       cmqRequest.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/SaveADUsersToDB`,
-      data,{  headers: window.headers }).then((data) => {
+      data).then((data) => {
 
         console.log(data);
       }).catch(error => {

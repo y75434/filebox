@@ -15,7 +15,6 @@ import 'splitpanes/dist/splitpanes.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import $ from 'jquery';
 import picture from '@/common/images';
-import headers from '@/apis/utils.js';
 import VueSweetalert2 from 'vue-sweetalert2';
 
 
@@ -34,7 +33,6 @@ Object.keys(rules).forEach((rule) => {
 window.$ = $;
 
 window.picture = picture;
-window.headers = headers;
 
 Vue.component('ValidationObserver', ValidationObserver)
 Vue.component('ValidationProvider', ValidationProvider)
@@ -54,6 +52,5 @@ new Vue({
   store,
   i18n,
   picture,
-  headers,
   render: h => h(App)
 }).$mount('#app')

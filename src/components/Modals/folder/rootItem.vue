@@ -61,22 +61,16 @@ export default {
       isFirst:true
     }
   },
-  // mounted() {
-  //   //把li加入到arr
-  //   this.arr.push(this.subitem)
-  // },
   created(){
     if(this.subitem.createdOn) {
       this.trees = Object.assign({},this.subitem);
       console.log('initTree',this.trees);
       this.$store.dispatch('setMark', { folderId:"aaa" });
-
     }
-  
   },
   computed:{
     markfolderId(){
-        return this.$store.getters.markfolder.folderId
+      return this.$store.getters.markfolder.folderId
     }
   },
   methods: {
@@ -147,6 +141,7 @@ export default {
       .then((data) => {  
         this.selfSetting = data.data
         this.$store.dispatch('setMark',this.selfSetting );
+        this.$store.dispatch('setLiselected',this.selfSetting );
 
       }).catch(() => {
         // console.log(error.response.data);        

@@ -210,7 +210,7 @@ export default {
         }, err => {
           reject(err.response)
           if (err.response.status === 401) {
-              console.log('210000000000');        
+              console.log('get 401');        
 
               sessionStorage.removeItem('orgToken')
               sessionStorage.removeItem('docToken')
