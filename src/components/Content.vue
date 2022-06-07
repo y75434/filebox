@@ -254,7 +254,6 @@
         <div class="d-flex">
           <button
             @click="reloadPage"
-
             type="button"
             class="user-btn  btn d-flex align-items-center mr-3"
           > 
@@ -717,6 +716,7 @@ import EventProperties from '@/components/Modals/events/EventProperties.vue';
 import RenameItem from '../components/Modals/home/RenameItem.vue';
 import openLink from'@/components/Modals/link/openLink.vue';
 import DeleteMul from '@/components/Modals/user/DeleteMul.vue';
+
 import cmqRequest from "@/http/cmqRequest"
 
 
@@ -736,8 +736,7 @@ components:{
   AddRootFolderProperties,
   EditGroupProperties,
   openLink,
-  DeleteMul
-
+  DeleteMul,
 },
 data() {
   return {
@@ -783,24 +782,6 @@ data() {
     folderitems: [],
     eventsitems: [],
     eventpics: 
-    // [ 
-    //   { id: 0,pic: require('@/assets/images/icon/browse@2x.png'), eventName: this.$t('GENERAL.BROWSE'),"actionType": "Browse",},
-    //   { id: 1, pic: require('@/assets/images/cmd/logout@2x.png'), eventName: this.$t('GENERAL.LOGIN'),"actionType": "Login",},
-    //   { id: 2, pic: require('@/assets/images/cmd/preview@2x.png') , eventName: this.$t('GENERAL.PREVIEW'),"actionType": "Preview"},
-    //   { id: 3, pic: require('@/assets/images/cmd/download@2x.png'), eventName: this.$t('HOME.DOWNLOAD'),"actionType": "Download"},
-    //   { id: 4, pic:require('@/assets/images/file/publiclink@2x.png'), eventName: this.$t('GENERAL.PUBLICLINK'),"actionType": "Public links"},
-    //   { id: 5, pic:require('@/assets/images/file/folder@2x.png'), eventName:this.$t('GENERAL.CREATEMOVE'),"actionType": "Create"},
-    //   { id: 6, pic:require('@/assets/images/cmd/rename@2x.png'), eventName:this.$t('HOME.RENAME'),"actionType": "Rename"},
-    //   { id: 7, pic:require('@/assets/images/cmd/cut@2x.png'), eventName:this.$t('GENERAL.MOVE'),"actionType": "Move"},
-    //   { id: 8, pic:require('@/assets/images/file/extractallfiles@2x.png'), eventName:this.$t('GENERAL.EXTRACT'),"actionType": "Extract"},
-    //   { id: 9, pic:require('@/assets/images/cmd/logout@2x.png'), eventName:this.$t('GENERAL.LOGOUT'),"actionType": "Log out"},
-    //   { id: 10, pic:require('@/assets/images/cmd/delete@2x-2.png'), eventName:this.$t('HOME.DELETE'),"actionType": "Delete"},
-    //   { id: 11, pic:require('@/assets/images/cmd/copy@2x.png'), eventName:this.$t('HOME.COPY'),"actionType": "Copy"},
-    //   { id: 12, pic:require('@/assets/images/file/addtozip@2x.png'),eventName:this.$t('GENERAL.COMPRESS'),"actionType": "Compress"},
-    //   { id: 13, pic:require('@/assets/images/cmd/upload@2x.png'),eventName:this.$t('HOME.UPLOAD'),"actionType": "Upload"},
-    //   { id: 14, pic:require('@/assets/images/cmd/edit@2x.png'),eventName:this.$t('HOME.UPLOAD'),"actionType": "Edit"},
-
-    // ],
     [ 
       { id: 0, pic: 'icon/browse@2x.png', eventName: this.$t('GENERAL.BROWSE'),"actionType": "Browse",},      
       { id: 1, pic: 'cmd/logout@2x.png', eventName: this.$t('GENERAL.LOGIN'),"actionType": "Login",},
@@ -817,9 +798,7 @@ data() {
       { id: 12, pic:'file/addtozip@2x.png',eventName:this.$t('GENERAL.COMPRESS'),"actionType": "Compress"},
       { id: 13, pic:'cmd/upload@2x.png',eventName:this.$t('HOME.UPLOAD'),"actionType": "Upload"},
       { id: 14, pic:'cmd/edit@2x.png',eventName:this.$t('HOME.UPLOAD'),"actionType": "Edit"},
-
     ],
-    
     linkitems: [],
     // selectedRow : null,
     selected: {},//單選
@@ -828,9 +807,7 @@ data() {
     filter: null,
     sortDirection: 'All',
     events: [],//events api
-    //["string","Browse","Login","Preview","Download","Public links","Create","Rename","Move","Extract","Logout","Delete","Copy","Compress","Upload"]
     allSelected: false,
-    // eventsSelected:[this.$t('GENERAL.BROWSE'), this.$t("GENERAL.LOGIN"),this.$t("GENERAL.PREVIEW"), this.$t("HOME.DOWNLOAD"),this.$t("GENERAL.PUBLICLINK"),this.$t("GENERAL.CREATEMOVE"),this.$t("HOME.RENAME"),this.$t("GENERAL.MOVE"),this.$t("GENERAL.EXTRACT"),this.$t("GENERAL.LOGOUT"),this.$t("HOME.DELETE"),this.$t("HOME.COPY"),this.$t("GENERAL.COMPRESS"),this.$t('HOME.UPLOAD')],
     eventsSelected:[],//被勾選的
     searchText:"",
     status:"",
@@ -1004,6 +981,7 @@ methods: {
   EventProperties(){
     this.$bvModal.show('EventProperties');
   },
+ 
   getUserTable () {  
     cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/Users/GetUsers`)
       .then((data) => {          

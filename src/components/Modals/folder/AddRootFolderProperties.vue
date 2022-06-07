@@ -657,12 +657,6 @@ export default {
               "denialPermission": [],
               "allowFileTypes": [],
               "denialFileTypes": []
-            },
-            "parent": {
-              "allowPermission": [],
-              "denialPermission": [],
-              "allowFileTypes": [],
-              "denialFileTypes": []
             }
           }
           )
@@ -677,12 +671,6 @@ export default {
               "memberName": item.groupName, 
               "isGroup": true, 
               "self": {
-                "allowPermission": [],
-                "denialPermission": [],
-                "allowFileTypes": [],
-                "denialFileTypes": []
-              },
-              "parent": {
                 "allowPermission": [],
                 "denialPermission": [],
                 "allowFileTypes": [],

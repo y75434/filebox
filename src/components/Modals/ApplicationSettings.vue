@@ -16,7 +16,10 @@
       ref="form"
       @submit.stop.prevent="handleSubmit"
     > -->
-    <div class="modal-popout-bg p-3" style="height:500px">
+    <div
+      class="modal-popout-bg p-3"
+      style="height:500px"
+    >
       <ul
         class="nav nav-tabs"
         id="myTab"
@@ -91,6 +94,7 @@
                 for=""
               >
                 {{ $t("MODAL.PASSWORDSWILLEXPIRE") }} <input
+                  v-model="Settings.general.passwordExpireAfter"
                   type="text"
                   class=" form-control w-25 mx-2"
                 >{{ $t("MODAL.DAYS") }}
@@ -104,6 +108,7 @@
               >
                 {{ $t("MODAL.WILLBELOCKEDOUT") }}
                 <input
+                  v-model="Settings.general.lockedAfter"
                   type="text"
                   class=" form-control w-25 mx-2"
                 >{{ $t("MODAL.INVALIDLOGIN") }}
@@ -118,6 +123,7 @@
               >
                 {{ $t("MODAL.MAXIMUMPUBLICLINKAGE") }}
                 <input
+                  v-model="Settings.general.maximumLinkPeriod"
                   type="text"
                   class=" form-control w-25 mx-2"
                 >{{ $t("MODAL.DAYS") }}
@@ -133,6 +139,7 @@
               >
                 {{ $t("MODAL.MAXIMUMPUBLICLINKHITS") }}
                 <input
+                  v-model="Settings.general.maximumLinkHits"
                   type="text"
                   class=" form-control w-25 mx-2"
                 >
@@ -256,9 +263,11 @@
                   class="form-check-label align-items-center d-flex"
                   for=""
                 >
-                  {{ $t("MODAL.MAXIMUMLOGSIZE") }}  <input
+                  {{ $t("MODAL.MAXIMUMLOGSIZE") }}  
+                  <input
                     type="text"
                     class=" form-control mx-3 w-25"
+                    v-model="Settings.log.maximumRecord"
                   >{{ $t("MODAL.EVENTS") }}
 
                 </label>
@@ -271,9 +280,11 @@
                   class="form-check-label align-items-center d-flex"
                   for=""
                 >
-                  {{ $t("MODAL.DELETEEVENTSOLDERTHAN") }}<input
+                  {{ $t("MODAL.DELETEEVENTSOLDERTHAN") }}
+                  <input
                     type="text"
                     class=" form-control mx-3 w-25"
+                    v-model="Settings.log.maximumKeepingDays"
                   > {{ $t("MODAL.DAYS") }}
 
 
@@ -303,6 +314,7 @@
               type="checkbox"
               value=""
               id="Sendemailnotifications"
+              v-model="Settings.smtp.isEnabled"
             >
             <label
               class="form-check-label"
@@ -325,6 +337,7 @@
               type="email"
               class="form-control inline-block width-270"
               id="Fromemailaddress"
+              v-model="Settings.smtp.address"
             >
           </div>
 
@@ -340,8 +353,11 @@
             <select
               class="form-select width-270"
               aria-label="Default select example"
+              v-model="Settings.smtp.host"
             >
-              <option selected>
+              <option
+                selected        
+              >
                 {{ $t("MODAL.ANONYMOUS") }}
               </option>
             </select>
@@ -357,6 +373,7 @@
               type="email"
               class="form-control inline-block width-150"
               id="SMTPport"
+              v-model="Settings.smtp.port"
             >
           </div>
 
@@ -369,8 +386,8 @@
                   
                   
             <select
-              class="form-select  width-270
-"
+              class="form-select  width-270"  
+              v-model="Settings.smtp.authType"
               aria-label="Default select example"
             >
               <option selected>
@@ -390,6 +407,7 @@
               type="Password"
               class="form-control width-270"
               id="Username"
+              v-model="Settings.smtp.user"
               disabled
             >
           </div>
@@ -403,6 +421,7 @@
               class="form-control width-270"
               id="Password"
               disabled
+              v-model="Settings.smtp.password"
             >
           </div>
           <div class="form-check">
@@ -411,6 +430,7 @@
               type="checkbox"
               value=""
               id="UseSSL"
+              v-model="Settings.smtp.isEnabledSSL"
             >
             <label
               class="form-check-label"
@@ -448,6 +468,8 @@
 </template>
 
 <script>
+import cmqRequest from '@/http/cmqRequest'
+
 export default {
   name: "ApplicationSettings",
   props: { title: { type: String, default: "Application Settings" } },
@@ -455,9 +477,74 @@ export default {
   data() {
     return {
       showModal: false,
+      smtpAuthTypes:[],
+      Settings:{     
+        general: {
+          passwordExpireAfter: 30,
+          lockedAfter: 5,
+          maximumLinkPeriod: 5,
+          maximumLinkHits: 5
+        },
+        log: {
+          maximumRecord: 30000,
+          maximumKeepingDays: 30
+        },
+        smtp: {
+          isEnabled: false,
+          address: "",
+          host: "",
+          port: "",
+          authType: 1,
+          user: "",
+          password: "",
+          isEnabledSSL: true
+        }
+      }
     };
   },
   methods: {
+    start() {
+      this.getSettings()
+      this.getSMTPAuthType()
+      
+    },
+    getSMTPAuthType(){
+      cmqRequest.get(`${process.env.VUE_APP_SETTING_APIPATH}/Settings/SMTPAuthenticationTypes`)
+        .then((data) => {  
+          this.smtpAuthTypes = data.data;
+    
+          console.log(this.smtpAuthTypes);
+         
+        }).catch(() => {
+      })
+    },
+    getSettings(){
+      cmqRequest.get(`${process.env.VUE_APP_SETTING_APIPATH}/Settings`)
+        .then((data) => {  
+          this.Settings = data.data;
+    
+          console.log(this.Settings);
+         
+        }).catch(() => {
+      })
+    },
+    patch(){
+      const data = JSON.stringify(this.Settings)
+            
+      console.log('data',data);         
+
+
+      cmqRequest.patch(`${process.env.VUE_APP_SETTING_APIPATH}/Settings`,
+      data)
+      .then(() => { 
+        this.$swal.fire({ title: 'success', icon: 'success' })
+
+
+      }).catch(error => {
+        this.$swal.fire({ title: error.response.data, icon: 'error' })
+    
+      })
+    },
     show() {
       this.showModal = true;
     },

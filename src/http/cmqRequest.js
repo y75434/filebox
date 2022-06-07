@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {Promise} from 'es6-promise'
-// import router from '@/router/index'
+import router from '@/router/index'
 import store from '@/store/index';
 
 
@@ -24,6 +24,10 @@ let getToken = function (url) {
     case '6101': //link
       token = sessionStorage.getItem('linkToken')
       break;
+    case '6103': //setting
+      token = sessionStorage.getItem('settingToken')
+      break;
+
   }
   return token
 }
@@ -216,6 +220,12 @@ export default {
               sessionStorage.removeItem('docToken')
               sessionStorage.removeItem('eventToken')
               sessionStorage.removeItem('linkToken')
+              sessionStorage.removeItem('settingToken')
+              router.push('login');
+
+
+
+
               store.state.isLogin = false
 
           }

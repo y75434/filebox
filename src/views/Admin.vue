@@ -81,9 +81,9 @@
 import { Splitpanes, Pane } from "splitpanes";
 import AdminNav from "@/components/AdminNav.vue";
 import AboutFileVista from '@/components/Modals/AboutFileVista.vue';
-import ApplicationSettings from '../components/Modals/ApplicationSettings.vue';
 import Sidebar from '../components/Sidebar.vue'
 import Content from '../components/Content.vue'
+import ApplicationSettings from '@/components/Modals/ApplicationSettings.vue';
 
 export default {
 name: "Admin",
@@ -94,7 +94,8 @@ name: "Admin",
     AboutFileVista,
     ApplicationSettings,
     Sidebar,
-    Content
+    Content,
+
   },
   data: () => ({
     msg: 'Edit Group Properties',
@@ -126,6 +127,8 @@ name: "Admin",
     AboutFileVista() { this.$refs.modal.show() },
     ApplicationSettings(){
       this.$bvModal.show('ApplicationSettings');
+      this.$refs.ApplicationSettings.start()
+
     },
   }
 };
