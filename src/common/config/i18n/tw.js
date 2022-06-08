@@ -56,7 +56,9 @@ export const locale = {
     SELECTALL: '全選',
     PREVIEW: '預覽',
     CLOSE: '關閉',
-    REQUIRE: '必填'
+    REQUIRE: '必填',
+    QUATA: '額度'
+
   },
   HOME:{
     COPY: '複製',

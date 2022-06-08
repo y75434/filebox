@@ -56,8 +56,8 @@ export const locale = {
     SELECTALL: 'Select All',
     PREVIEW: 'Preview',
     CLOSE: 'Close',
-    REQUIRE: 'Required'
-
+    REQUIRE: 'Required',
+    QUATA: 'Quata'
   },
   HOME:{
     COPY: 'Copy',

@@ -129,6 +129,25 @@
             </li>
             <span class="text-center">{{ $t("HOME.TRANSFER") }}</span>
           </div>
+          <div class="divider" />
+          <div class="fn-w-60 d-flex align-items-center">
+            <div 
+              @click="view"
+              class="d-flex flex-column "
+            >
+              <img
+                class="icon60px"
+                src="@/assets/images/cmd/preview@2x.png"
+                alt=""
+                :disabled="this.selectedLength == 0"
+                :style=" this.selectedNumber > 0 && this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
+              >
+              <span class="nav-text text-center">{{ $t("GENERAL.PREVIEW") }}</span>
+            </div>
+           
+
+            <span class="text-center">{{ $t("GENERAL.PREVIEW") }}</span>
+          </div>
           <!-- 留著 -->
           <!-- <div class="divider" />
           <div class="fn-w-100 d-flex align-items-center">
@@ -157,12 +176,13 @@
               @click="AddPublicLink"
               title="Create public link..."
               class="bg-light text-dark border-0 p-0 d-flex"
+              :style=" this.selectedNumber > 0 && this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
             >
+            <!--   :disabled="this.selectedTrue.length === 0 || this.firstPage"-->
               <img
                 src="@/assets/images/file/publiclink@2x.png"
                 class="nav-icon pe-1 mx-auto"
-                :disabled="this.selectedLength == 0"
-                :style=" this.selectedLength > 0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :style=" this.selectedLength > 0 && this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="d-sm-none d-md-block d-lg-block text-truncate">{{ $t("HOME.CREATEPUBLICLINK") }}
 
@@ -171,15 +191,15 @@
 
             <b-button
               @click="ManagePublicLink"
-              :disabled="this.selectedLength > 0"
               v-b-tooltip.hover
               title="Manage public links..."
               class="bg-light text-dark border-0 p-0 d-flex"
+              :style=" this.selectedNumber > 0 && this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
             >
               <img
                 src="@/assets/images/icon/managepubliclink@2x.png"
                 class="nav-icon pe-1 mx-auto"
-                :style=" this.selectedLength = 0 ? {opacity:'1'} : {opacity:'0.3'}"
+                :style=" this.selectedLength > 0 && this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
               >
               <span class="d-sm-none d-md-block d-lg-block ">{{ $t("HOME.MANAGEPUBLICLINKS") }}</span>
             </b-button>
@@ -416,11 +436,7 @@
         </Splitpanes>
       </div>
     </div>
-
-   
-
-        
-    
+ 
     <!-- v-if="this.selectedLength > 0 || this.firstPage != true"  -->
     <ContextMenu ref="menu">
       <ul
@@ -496,7 +512,12 @@
           >{{ $t("HOME.DELETE") }}
         </li>
         <li @click="view">
-          view
+          <img
+            src="@/assets/images/cmd/preview@2x.png"
+            class="icon24px"
+            v-if="this.selectedNumber > 0"
+          >
+          {{ $t("GENERAL.PREVIEW") }}
         </li>
       </ul>
     </ContextMenu>

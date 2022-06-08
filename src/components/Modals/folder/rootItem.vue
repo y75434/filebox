@@ -142,6 +142,8 @@ export default {
         this.selfSetting = data.data
         this.$store.dispatch('setMark',this.selfSetting );
         this.$store.dispatch('setLiselected',this.selfSetting );
+        console.log('this.selfSetting',data.data);
+
 
       }).catch(() => {
         // console.log(error.response.data);        

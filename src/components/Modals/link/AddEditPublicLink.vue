@@ -76,7 +76,7 @@
         <div
           class="d-flex flex-column justify-content-between p-3"
         >
-          <div class="form-check">
+          <div class="form-check mb-2">
             <input
               class="form-check-input"
               type="checkbox"
@@ -91,41 +91,42 @@
               {{ $t("MODAL.OPENLINKEDFILE") }}
             </label>
           </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id=""
-            >
+          <div class="form-check mb-2">
             <label
               class="form-check-label align-items-center d-flex"
               for=""
             >
+              <input
+                class="form-check-input me-1"
+                type="checkbox"
+                v-model="expireDay"
+              >
               {{ $t("MODAL.LINKEXPIRES") }}<input
                 v-model="personData.expireDay"
-
+                :disabled="!expireDay"
                 type="number"
                 class="mx-2 form-control w-25"
               >{{ $t("MODAL.DAYS") }}
 
             </label>
           </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id=""
-            >
+          <div class="form-check mb-2">
             <label
               class="form-check-label align-items-center d-flex"
               for=""
+              style="vertical-align:middle"
             >
+              <input
+                class="form-check-input me-1"
+                type="checkbox"
+                v-model="expireDay"
+                style="vertical-align:middle"
+              >
               {{ $t("MODAL.LINKCANBEOPENED") }}<input
                 type="number"
                 class="mx-2 form-control w-25"
                 v-model="personData.viewableTimes"
+                :disabled="!viewableTimes"
               >{{ $t("GENERAL.TIMES") }}
 
 
@@ -135,13 +136,12 @@
 
           <div class="form-check">
             <input
-              class="form-check-input"
+              class="form-check-input mb-2"
               type="checkbox"
-              value=""
-              id="Changeuserpassword"
+              v-model="password"
             >
             <label
-              class="form-check-label"
+              class="form-check-label mb-2"
               for="Changeuserpassword"
             >
               {{ $t("MODAL.PROTECTLINKWITH") }}
@@ -162,9 +162,9 @@
                   v-model="personData.password"
                   type="Password"
                   id="Password"
-                  placeholder="******"
                   class="form-control width-220"
                   :class="classes"
+                  :disabled="!password"
                 >
               </div>
               <span class="text-danger">{{ errors[0] }}</span>
@@ -184,9 +184,10 @@
                 </label><input
                   type="password"
                   id="Confirmpassword"
-                  placeholder="******"
                   class="form-control width-220"
                   :class="classes"
+                  v-model="cfpassword"
+                  :disabled="!password"
                 >
               </div>
               <span class="text-danger">{{ errors[0] }}</span>
@@ -195,41 +196,41 @@
                 
 
           <hr class="">
-          <validation-provider
+          <!-- <validation-provider
             v-slot="{ errors, classes}"
             rules="required"
-          >
-            <div class="mb-3">
-              <label
-                for="Public link"
-                class="form-label"
-              >{{ $t("GENERAL.PUBLICLINK") }} </label>
-              <div class="d-flex justify-content-between">
-                <input
-                  type="text"
-                  class="form-control w-75 obj"
-                  id="Public link"
-                  v-model="personData.url"
-                  :class="classes"
-                >
-             
-                <b-button
-                  class="bg-green border-0"
-                  @click="copyText()"
-                >
-                  {{ $t("GENERAL.COPYLINK") }}
-                </b-button>
-              </div>
+          > -->
+          <div class="mb-3">
+            <label
+              for="Public link"
+              class="form-label"
+            >{{ $t("GENERAL.PUBLICLINK") }} </label>
+            <div class="d-flex justify-content-between">
+              <!-- <input
+                type="text"
+                class="form-control w-75 obj"
+                id="Public link"
+                v-model="personData.url"
+              > -->
+              <span>Height:{{ personData.url }}</span>
 
               <b-button
                 class="bg-green border-0"
-                @click="GenerateURL()"
+                @click="copyText()"
               >
-                GenerateURL
+                {{ $t("GENERAL.COPYLINK") }}
               </b-button>
             </div>
-            <span class="text-danger">{{ errors[0] }}</span>
-          </validation-provider>
+
+            <b-button
+              class="bg-green border-0"
+              @click="GenerateURL()"
+            >
+              GenerateURL
+            </b-button>
+          </div>
+          <!-- <span class="text-danger">{{ errors[0] }}</span> -->
+          <!-- </validation-provider> -->
         </div>
       </div>
     </validation-observer>
@@ -253,6 +254,7 @@
           </b-button>
           <b-button
             variant="primary"
+            :disabled="pwValidity"
             @click="handleOk"
           >
             {{ $t("GENERAL.OK") }}
@@ -278,7 +280,12 @@ export default {
       showModal: false,
       personData: {},
       items: [],
-      linkurl: ""
+      linkurl: "",
+      cfpassword: "",
+      expireDay: false,
+      viewableTimes: false,
+      password: false,
+
     };
   },
   // 無法馬上更新值
@@ -287,6 +294,17 @@ export default {
   //     return this.personData
   //   }
   // },
+  // watch: {
+  //   url:{
+  //     immediate: true
+
+  //   }
+  // },
+  computed: {
+		pwValidity() {
+      return this.personData.password !== this.cfpassword;
+		},
+	},
   methods: {
     handleOk(bvModalEvt) {
         bvModalEvt.preventDefault()       
@@ -294,6 +312,9 @@ export default {
         this.$bvModal.hide('AddEditPublicLink');
       },
     post() { 
+        if(this.personData.password === ""){
+          this.personData.password = null
+        }
 
 
         const data = JSON.stringify({
@@ -318,12 +339,14 @@ export default {
             console.log(error.response.data);          
         })
 
-        setTimeout(() => {this.$emit('reload');},2000)
+        // setTimeout(() => {this.$emit('reload');},2000)
     }, 
     GenerateURL() { 
       cmqRequest.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GenerateURL`) 
         .then((data) => {
           this.personData.url = data.data.url
+          this.$forceUpdate
+          // this.personData.url = this.url
 
           console.log(data.data.url);
       }).catch(error => {

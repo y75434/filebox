@@ -76,7 +76,7 @@
                     class="icon32px"
                   >
                   <p class="fw-bold m-0">
-                    {{ editSetting.name }}3333
+                    {{ editSetting.name }}
                   </p>
                 </div>
               
@@ -323,7 +323,7 @@
                     aria-labelledby="nav-profile-tab"
                   >
                     <p class="fw-bold">
-                      Quata
+                      {{ $t("GENERAL.QUATA") }}
                     </p>
                     <div
                       class="form-check"
@@ -333,6 +333,7 @@
                         value=""
                         id="flexCheckDefault"
                         class="form-check-input"
+                        v-model="storageRest"
                       >
                       <label
                         for="flexCheckDefault"
@@ -344,6 +345,7 @@
                           type="number"
                           class="form-control m-0 w-50"
                           v-model="space"
+                          :disabled="!storageRest"
                         >
                         <select
                           class="form-select w-50"
@@ -351,6 +353,7 @@
                           @change="storageSelected($event)"
                         >
                           <option
+                            :disabled="!storageRest"
                             v-for="(item) in StorageUnit"
                             :key="item.id"
                             :value="item.storageUnitId"
@@ -371,6 +374,7 @@
                         <input
                           type="checkbox"
                           class="form-check-input"
+                          v-model="RESTRICT"
                         >
                         <label
                           for="flexCheckDefault"
@@ -389,6 +393,7 @@
                           :id="item.id"
                         >
                           <input
+                            :disabled="!RESTRICT"
                             type="checkbox"
                             class="form-check-input"
                             v-model="item.active"
@@ -461,9 +466,9 @@ export default {
       },
       space: 0, 
       unitId: "",
-      // testTree: {},
-      // arr:[],
-      oldValue: []
+      oldValue: [],
+      storageRest: false,
+      RESTRICT: false
     };
   },
   computed:{ 
@@ -474,11 +479,25 @@ export default {
   },
   watch: {
     liselected(){
-      console.log(this.$store.getters.liselected.folderId,'4777');
+      console.log(this.$store.getters.liselected,'4777');
       if (this.$store.getters.liselected.folderId) {
         this.editSetting = this.$store.getters.liselected
-        // this.members = this.editSetting.settings.members
-        console.log(this.editSetting,'488880');
+
+         if(this.editSetting.settings.storage == null){
+          this.editSetting.settings = {
+            storage:{
+              space: 0,
+              unitId: "b48b6ee3-8a0e-4042-80e8-33a33ed10d63"
+            }
+          }
+        }
+
+        if (this.editSetting.settings['members'] == null){
+          this.editSetting.settings.members = []
+        }
+
+        console.log(this.editSetting,'492222222');
+
 
       }
     },

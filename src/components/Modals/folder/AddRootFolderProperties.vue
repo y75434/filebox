@@ -343,7 +343,7 @@
                     aria-labelledby="nav-profile-tab"
                   >
                     <p class="fw-bold">
-                      Quata
+                      {{ $t("GENERAL.QUATA") }}
                     </p>
                     <div
                       class="form-check"
@@ -353,6 +353,7 @@
                         value=""
                         id="flexCheckDefault"
                         class="form-check-input"
+                        v-model="storageRest"
                       >
                       <label
                         for="flexCheckDefault"
@@ -364,7 +365,7 @@
                           placeholder="enter code"
                           type="number"
                           class="form-control m-0 w-50"
-                          value=""
+                          :disabled="!storageRest"
                           v-model="editGroup.settings.storage.space"
                         >
                         <select
@@ -373,6 +374,7 @@
                           @change="storageSelected($event)"
                         >
                           <option
+                            :disabled="!storageRest"
                             v-for="(item,index) in StorageUnit"
                             :key="item.id"
                             :value="item.storageUnitId"
@@ -392,6 +394,7 @@
                         <input
                           type="checkbox"
                           class="form-check-input"
+                          v-model="RESTRICT"
                         >
                         <label
                           for="flexCheckDefault"
@@ -405,12 +408,12 @@
                       >
                         <div
                           v-for="item in FileTypes"
-                          :disabled="item.inFather"
                           :key="item.id"
                           class="form-check mx-2 "
                           :id="item.id"
                         >
                           <input
+                            :disabled="!RESTRICT"
                             type="checkbox"
                             class="form-check-input"
                             v-model="item.active"
@@ -477,6 +480,8 @@ export default {
         deny: []
       },
       haveUser: false,
+      storageRest: false,
+      RESTRICT: false
     };
   },
   methods: {  
