@@ -172,7 +172,7 @@
                 </li>
                 <div
                   class=""
-                  v-if="this.editSetting.settings.members.length > 0"
+                  v-if="this.editSetting.settings.members"
                 >
                   <!--  -->
                   <li
@@ -334,6 +334,7 @@
                         id="flexCheckDefault"
                         class="form-check-input"
                         v-model="storageRest"
+                        :disabled="this.editSetting.folderId != this.FolderSettings.folderId"
                       >
                       <label
                         for="flexCheckDefault"
@@ -345,7 +346,7 @@
                           type="number"
                           class="form-control m-0 w-50"
                           v-model="space"
-                          :disabled="!storageRest"
+                          :disabled="this.editSetting.inherit || !storageRest"
                         >
                         <select
                           class="form-select w-50"
@@ -357,7 +358,7 @@
                             v-for="(item) in StorageUnit"
                             :key="item.id"
                             :value="item.storageUnitId"
-                            :selected=" item.storageUnitId == editSetting.settings.storage.unitId"
+                            :selected=" item.storageUnitId == FolderSettings.settings.storage.unitId"
                           >
                             <!-- editSetting.settings.storage.unitId || -->
                             {{ item.unit }}
@@ -375,9 +376,11 @@
                           type="checkbox"
                           class="form-check-input"
                           v-model="RESTRICT"
+                          :disabled="this.editSetting.inherit"
+                          id="flexCheckDefault2"
                         >
                         <label
-                          for="flexCheckDefault"
+                          for="flexCheckDefault2"
                           class="form-check-label"
                         > {{ $t("MODAL.RESTRICTFILETYPES") }}
                         </label>
@@ -473,29 +476,32 @@ export default {
   },
   computed:{ 
     validateFather(){   
-     return this.$store.getters.liselected.folderId === this.FolderSettings.folderId || this.$store.getters.liselected === this.FolderSettings.folderId 
+     return this.$store.getters.liselected.folderId == this.FolderSettings.folderId || this.$store.getters.liselected === this.FolderSettings.folderId 
     },
     ...mapGetters(['liselected'])
   },
   watch: {
     liselected(){
-      console.log(this.$store.getters.liselected,'4777');
+      console.log(this.$store.getters.liselected.name,'change');
       if (this.$store.getters.liselected.folderId) {
         this.editSetting = this.$store.getters.liselected
 
-         if(this.editSetting.settings.storage == null){
-          this.editSetting.settings = {
-            storage:{
-              space: 0,
-              unitId: "b48b6ee3-8a0e-4042-80e8-33a33ed10d63"
-            }
-          }
-        }
+        //  if(this.editSetting.settings.storage == null){
+        //   this.editSetting.settings = {
+        //     storage:{
+        //       space: 0,
+        //       unitId: "b48b6ee3-8a0e-4042-80e8-33a33ed10d63"
+        //     }
+        //   }
+        // }
 
-        if (this.editSetting.settings['members'] == null){
-          this.editSetting.settings.members = []
-        }
+        // if (this.editSetting.settings['members'] === null){
+        //   this.editSetting.settings.members = []
+        // }
 
+        this.oldValue = this.editSetting.settings.members
+
+        this.reset()
         console.log(this.editSetting,'492222222');
 
 
@@ -510,9 +516,8 @@ export default {
     checkInhert(e){
       // this.editSetting.inherit = !this.editSetting.inherit
       if(e.target.checked){
-        this.oldValue = this.editSetting.settings.members
         this.editSetting.settings.members =  this.FolderSettings.settings.members
-
+        this.reset()
         console.log( this.editSetting.settings.members,'checked');
 
       }else{
@@ -809,6 +814,11 @@ export default {
           }
         })
       });
+
+       // disabled取消 
+       this.PermissionTypes.forEach(item=>{
+          item.inFather = false;
+       })
     },
     //左邊切換
     userSelected(item){

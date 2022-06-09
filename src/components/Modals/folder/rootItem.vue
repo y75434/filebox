@@ -139,10 +139,15 @@ export default {
      getSelfSettings(id){
       cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => {  
+        console.log(data.data,'old ');
+
         this.selfSetting = data.data
         this.$store.dispatch('setMark',this.selfSetting );
-        this.$store.dispatch('setLiselected',this.selfSetting );
-        console.log('this.selfSetting',data.data);
+        this.$store.dispatch('setLiselected',data.data );
+
+        // this.$store.dispatch('setLiselected',this.selfSetting );
+        // console.log(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`);
+
 
 
       }).catch(() => {

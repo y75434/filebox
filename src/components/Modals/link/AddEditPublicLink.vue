@@ -119,7 +119,7 @@
               <input
                 class="form-check-input me-1"
                 type="checkbox"
-                v-model="expireDay"
+                v-model="viewableTimes"
                 style="vertical-align:middle"
               >
               {{ $t("MODAL.LINKCANBEOPENED") }}<input
@@ -145,7 +145,6 @@
               for="Changeuserpassword"
             >
               {{ $t("MODAL.PROTECTLINKWITH") }}
-
             </label>
             <validation-provider
               v-slot="{ errors,classes}"
@@ -212,22 +211,22 @@
                 id="Public link"
                 v-model="personData.url"
               > -->
-              <span>Height:{{ personData.url }}</span>
-
-              <b-button
-                class="bg-green border-0"
-                @click="copyText()"
-              >
-                {{ $t("GENERAL.COPYLINK") }}
-              </b-button>
+              <span class="text-truncate">{{ personData.url }}</span>
             </div>
 
             <b-button
+              class="bg-green border-0 mb-2"
+              @click="copyText()"
+            >
+              {{ $t("GENERAL.COPYLINK") }}
+            </b-button>
+
+            <!-- <b-button
               class="bg-green border-0"
               @click="GenerateURL()"
             >
               GenerateURL
-            </b-button>
+            </b-button> -->
           </div>
           <!-- <span class="text-danger">{{ errors[0] }}</span> -->
           <!-- </validation-provider> -->
@@ -344,8 +343,10 @@ export default {
     GenerateURL() { 
       cmqRequest.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GenerateURL`) 
         .then((data) => {
-          this.personData.url = data.data.url
-          this.$forceUpdate
+          // this.personData.url = data.data.url
+          this.$set(this.personData, 'url', data.data.url)
+
+          // this.$forceUpdate
           // this.personData.url = this.url
 
           console.log(data.data.url);

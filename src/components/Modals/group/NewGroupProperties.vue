@@ -16,7 +16,7 @@
       <div
         class="p-3 w-100 d-flex align-items-center justify-content-between mb-2"
       >
-        <label for="Name">{{ $t("MODAL.USERNAME") }}required</label>
+        <label for="Name">{{ $t("MODAL.USERNAME") }}<span class="text-danger">{{ $t("GENERAL.REQUIRE") }}</span></label>
         <input
           type="Name"
           id="Name"
@@ -27,7 +27,7 @@
       <div
         class="p-3 w-100 d-flex align-items-center justify-content-between mb-2"
       >
-        <label for="Username">{{ $t("MODAL.DESCRIPTION") }}required</label>
+        <label for="Username">{{ $t("MODAL.DESCRIPTION") }}<span class="text-danger">{{ $t("GENERAL.REQUIRE") }}</span></label>
         <input
           type="Username"
           id="Username"
@@ -83,7 +83,7 @@
             class="table border h-100 overflow-auto"
           >
             <thead>
-              <tr>
+              <tr style="height:80px">
                 <th scope="col">
                   <div class="form-check">
                     <input
@@ -284,19 +284,19 @@ export default {
         })
     },
     userSelected(item){
-    //  console.log(item);
+     console.log(item);
 
         
       //沒該用戶
       if(this.groupUserRelations.filter(x=>x.userId == item.userId).length==0) {
          this.groupUserRelations.push({ "userName": item.userName, "userId": item.userId, "roleId": item.selected });
-        //  console.log(this.groupUserRelations);
+         console.log(this.groupUserRelations);
 
       }else{
         //先把資料刪掉再加入更新資料
         this.groupUserRelations = this.groupUserRelations.filter(x=>x.userId !== item.userId);
-        this.groupUserRelations.push({ "userName": item.userName, "userID": item.userId, "roleId": item.selected });
-        //  console.log(this.groupUserRelations);
+        this.groupUserRelations.push({ "userName": item.userName, "userId": item.userId, "roleId": item.selected });
+         console.log(this.groupUserRelations);
 
       }
 

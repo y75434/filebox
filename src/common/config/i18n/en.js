@@ -85,8 +85,6 @@ export const locale = {
     TRANSFER: 'Transfer',
     CLIPBOARD: 'Clipboard',
     LAYOUT:'Layout'
-  
-
   },
   MODAL:{
     USERNAME:'User name',
@@ -160,11 +158,10 @@ export const locale = {
     PROTECTLINKWITH:'Protect link with password',
     CREATOR: 'Creator',
     PWPOLICY: 'Password needs to contain  8 characters, with at least 1 Upper Case, 1 lower case, 1 numeric character, and  1 special character.'
-
   },
   FOLDER:{
     ROOTFOLDER:'Root Folder',
-    FEATURETESTS:'Feature Tests'
+    // FEATURETESTS:'Feature Tests'
   },
   TITLE:{
     DELETEFOLDER:'Delete Folder',
@@ -187,5 +184,16 @@ export const locale = {
     USERSETTING:'User Setting',
     EDITUSERPROPERTIES:'EditUserProperties',
     CREATEPUBLICLINK: 'Create Public Link'
+  },
+  TABLE:{
+    LASTLOGON: 'Last Login Time',
+    LOGINCOUNT: 'Login Count',
+    CREATEDON: 'Date Created',
+    MODIFIEDON: 'Date Modified',
+    VIEWED:'Hit Count',
+    GROUPNAME:'groupName',
+    MEMBERSCOUNT:'membersCount',
+    ACTIONTYPE:'actionType'
+    
   }
 }

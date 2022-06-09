@@ -718,7 +718,10 @@ export default {
       }
     },
     ManagePublicLink(){this.$bvModal.show('ManagePublicLink');},
-    AddPublicLink(){ this.$bvModal.show('AddEditPublicLink'); },
+    AddPublicLink(){ 
+      this.$bvModal.show('AddEditPublicLink'); 
+      this.$refs.AddEditPublicLink.GenerateURL()
+    },
     // checkbox func
     selectAll() {   
       this.resultQuery.map(item =>{

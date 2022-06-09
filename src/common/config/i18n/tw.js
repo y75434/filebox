@@ -58,7 +58,6 @@ export const locale = {
     CLOSE: '關閉',
     REQUIRE: '必填',
     QUATA: '額度'
-
   },
   HOME:{
     COPY: '複製',
@@ -86,8 +85,6 @@ export const locale = {
     TRANSFER:'轉移',
     CLIPBOARD: '剪貼板',
     LAYOUT:'顯示',
-
-
   },
    MODAL:{
     USERNAME:'用戶名稱',
@@ -163,7 +160,8 @@ export const locale = {
     PWPOLICY: '密碼需八個字元，至少一個大寫字母，一個小寫字母，一個數字和一個特殊字元'
   },
   FOLDER:{
-    ROOTFOLDER: '根文件夾'
+    ROOTFOLDER: '根文件夾',
+    // FEATURETESTS:'Feature Tests'
   },
   TITLE:{
     DELETEFOLDER:'刪除資料夾',
@@ -186,5 +184,16 @@ export const locale = {
     USERSETTING:'使用者設定',
     EDITUSERPROPERTIES:'用戶設定',
     CREATEPUBLICLINK: '新增公共連結'
+  },
+  TABLE:{
+    LASTLOGON: '上次登入時間',
+    LOGINCOUNT: '登入次數',
+    CREATEDON: '建立日期',
+    MODIFIEDON: '修改日期',
+    VIEWED:'點擊次數',
+    GROUPNAME:'群組名稱',
+    MEMBERSCOUNT:'成員數量',
+    ACTIONTYPE:'屬性'
+    
   }
 }
