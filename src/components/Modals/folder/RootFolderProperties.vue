@@ -12,6 +12,7 @@
     footer-bg-variant="white"
     size="xl"
     @ok="putFolder"
+    :ok-disabled="unchecked"
   >
     <div class="modal-popout-bg ">
       <div
@@ -187,7 +188,7 @@
                         @dblclick="userCan(item)"
                         src="@/assets/images/icon/Union.png"
                         class="icon24px"
-                        :style=" item.inFather ? {opacity:'0.3'} : {opacity:'1'}"
+                        :style=" editSetting.inherit ? {opacity:'0.3'} : {opacity:'1'}"
                       >
                       <!--  -->
                       <img
@@ -195,7 +196,7 @@
                         @dblclick="userCan(item)"
                         src="@/assets/images/icon/group@2x.png"
                         class="icon24px"
-                        :style=" item.inFather ? {opacity:'0.3'} : {opacity:'1'}"
+                        :style=" editSetting.inherit ? {opacity:'0.3'} : {opacity:'1'}"
                       >
                       <label
                         class="form-check-label"
@@ -206,7 +207,7 @@
                           @click="del(item)"
                           src="@/assets/images/cmd/del.png"
                           class="icon-20px"
-                          v-if="!item.inFather"
+                          v-if="!editSetting.inherit"
                         >
                       </label>
                     </div>
@@ -469,9 +470,10 @@ export default {
       },
       space: 0, 
       unitId: "",
-      oldValue: [],
+      // oldValue: [],
       storageRest: false,
-      RESTRICT: false
+      RESTRICT: false,
+      unchecked: false
     };
   },
   computed:{ 
@@ -499,9 +501,11 @@ export default {
         //   this.editSetting.settings.members = []
         // }
 
-        this.oldValue = this.editSetting.settings.members
+        // this.oldValue = this.editSetting.settings.members
 
         this.reset()
+        this.unchecked = false
+
         console.log(this.editSetting,'492222222');
 
 
@@ -522,13 +526,16 @@ export default {
 
       }else{
     
-        //恢復原本設定
-        this.editSetting.settings.members =  this.oldValue
+        //把根資料夾的成員從子資料夾成員刪除
+        this.editSetting.settings.members = this.editSetting.settings.members.filter(item => !this.FolderSettings.settings.members.includes(item));
+        this.unchecked = true
+
 
         this.reset()
         this.$forceUpdate();
 
-        console.log(this.editSetting.settings.members,'unchecked');
+        console.log(this.editSetting.settings.members,'unchecked',
+        this.FolderSettings.settings.members);
       }
     },
     start() {
@@ -839,7 +846,13 @@ export default {
               "denialPermission": [ ],
               "allowFileTypes": [],
               "denialFileTypes": []
-            }
+            },
+            "parent": {
+            "allowPermission": [ ],
+            "denialPermission": [ ],
+            "allowFileTypes": [],
+            "denialFileTypes": []
+           }
           }
        );
        console.log('目前選擇名單', this.editSetting.settings.members);
@@ -858,6 +871,12 @@ export default {
             "denialPermission": [ ],
             "allowFileTypes": [],
             "denialFileTypes": []
+           },
+           "parent": {
+            "allowPermission": [ ],
+            "denialPermission": [ ],
+            "allowFileTypes": [],
+            "denialFileTypes": []
            }
          } 
        );
@@ -869,7 +888,7 @@ export default {
      console.log('user',user);
 
      this.editSetting.settings.members = this.editSetting.settings.members.filter(x => x.memberId !== user.memberId)    
-    //  this.members = this.editSetting.settings.members
+     this.reset()
 
     },
     

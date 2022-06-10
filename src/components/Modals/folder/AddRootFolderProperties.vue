@@ -195,16 +195,16 @@
                 </li>
               </ul>
               <ul class="list-group d-flex flex-column justify-content-between bg-white col-3 p-0 h-100 border">
-                <div class="">
-                  <li class="form-check list-group-item border-0 p-0">
-                    <p
-                      type="text"
-                      class="form-control fw-bold"
-                    >
-                      {{ $t("MODAL.SELECTEDGROUPSUSERS") }}
-                    </p>
-                  </li>
-
+                <li class="form-check list-group-item border-0 p-0">
+                  <p
+                    type="text"
+                    class="form-control fw-bold"
+                  >
+                    {{ $t("MODAL.SELECTEDGROUPSUSERS") }}
+                  </p>
+                </li>
+                  
+                <div>
                   <li 
                     v-for="item in editGroup.settings.members"
                     :key="item.memberId"
@@ -234,7 +234,7 @@
                           src="@/assets/images/cmd/del.png"
                           class="icon-20px"
                         >
-                      <!-- </p> -->
+                        <!-- </p> -->
                       </label>
                     </div>
                   </li>

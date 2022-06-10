@@ -104,7 +104,7 @@
           <div class="divider" />
           <div class="fn-w-100 d-flex align-items-center">
             <div
-              @click="download()"
+              @click="downloadItems()"
               class="d-flex flex-column w-50"
             >
               <img
@@ -821,6 +821,7 @@ export default {
         
        console.log(this.selectedTrue,'selectedTrue');
     },
+    //舊版本的下載 下載後無法開啟
     download() {   
       if(this.$refs.menu.open){ this.$refs.menu.close(); }
       this.checkSelected()   
@@ -836,7 +837,7 @@ export default {
       console.log('download data',data);
 
 
-      cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`, data)
+      cmqRequest.download(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`, data)
 
       .then((res) => { 
         const dataFromHeader = res.headers['content-disposition'];
@@ -879,6 +880,56 @@ export default {
         this.numberToString(now.getSeconds()) 
 
       }.zip`;
+    },
+    //success
+    downloadItems() {
+
+        this.checkSelected()   
+        const data =   
+        //new
+          {
+            "items": this.selectedTrue,//array
+            "user":  this.$store.getters.userId,
+            "userName": this.$store.getters.currentUser,
+            "groups": this.$store.getters.group
+          }
+  
+        console.log('download data',data);
+
+
+        cmqRequest.download(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/Download`, data)
+          .then(resp => {
+            console.log('downloadItems:', resp)
+            console.log(decodeURIComponent(resp.headers['content-disposition'].split('UTF-8\'\'')[1]))
+            let acceptType = resp.headers['content-type']
+            let fileName = decodeURIComponent( resp.headers['content-disposition'].split('UTF-8\'\'')[1])
+            if (resp.status === 200 || resp.status === 204) {
+              if (window.navigator.msSaveBlob) {  // IE專用
+                try {
+                  window.navigator.msSaveBlob(new Blob([resp.data], {type: acceptType}), '')  
+                } catch (e) {
+                  console.log(e)
+                }
+              } else {
+                let url = window.URL.createObjectURL(new Blob([resp.data], {type: acceptType}))
+                console.log('url:', url)
+                let link = document.createElement('a')
+                link.style.display = 'none'
+                link.href = url
+                link.setAttribute('download', fileName)// 文件名
+                document.body.appendChild(link)
+                link.click()
+                document.body.removeChild(link) // 下載完成移除元素
+                window.URL.revokeObjectURL(url) // 釋放掉blob對象
+
+              }
+            }
+          })
+          .catch(err => {
+            console.log(err)
+            
+          })
+      
     },
     view(){
       const data =  JSON.stringify({
