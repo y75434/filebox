@@ -870,7 +870,7 @@ methods: {
     switch (this.currentSelected) {
       case 1:
         this.getUserTable();
-        this.count = this.useritems.length        
+        this.count = this.useritems        
         return [];
       case 2: 
         this.getGroupTable();       

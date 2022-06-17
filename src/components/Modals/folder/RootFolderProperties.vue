@@ -188,15 +188,13 @@
                         @dblclick="userCan(item)"
                         src="@/assets/images/icon/Union.png"
                         class="icon24px"
-                        :style=" editSetting.inherit ? {opacity:'0.3'} : {opacity:'1'}"
                       >
-                      <!--  -->
+                      <!-- :style=" editSetting.inherit ? {opacity:'0.3'} : {opacity:'1'}"  -->
                       <img
                         v-else
                         @dblclick="userCan(item)"
                         src="@/assets/images/icon/group@2x.png"
                         class="icon24px"
-                        :style=" editSetting.inherit ? {opacity:'0.3'} : {opacity:'1'}"
                       >
                       <label
                         class="form-check-label"
@@ -470,7 +468,6 @@ export default {
       },
       space: 0, 
       unitId: "",
-      // oldValue: [],
       storageRest: false,
       RESTRICT: false,
       unchecked: false
@@ -488,25 +485,12 @@ export default {
       if (this.$store.getters.liselected.folderId) {
         this.editSetting = this.$store.getters.liselected
 
-        //  if(this.editSetting.settings.storage == null){
-        //   this.editSetting.settings = {
-        //     storage:{
-        //       space: 0,
-        //       unitId: "b48b6ee3-8a0e-4042-80e8-33a33ed10d63"
-        //     }
-        //   }
-        // }
-
-        // if (this.editSetting.settings['members'] === null){
-        //   this.editSetting.settings.members = []
-        // }
-
-        // this.oldValue = this.editSetting.settings.members
 
         this.reset()
         this.unchecked = false
 
-        console.log(this.editSetting,'492222222');
+        // console.log(this.editSetting,'liselected');
+        // console.log(this.FolderSettings.settings.members);
 
 
       }
@@ -518,9 +502,62 @@ export default {
    methods: { 
     //inhert checkbox變動
     checkInhert(e){
-      // this.editSetting.inherit = !this.editSetting.inherit
       if(e.target.checked){
-        this.editSetting.settings.members =  this.FolderSettings.settings.members
+
+        //
+          if (this.editSetting.settings.members.length != 0) { 
+            this.editSetting.settings.members.forEach(x=>{
+              this.FolderSettings.settings.members.forEach(item=>{
+                
+                if(x.memberId == item.memberId) {
+                  x.parent = item.self
+                  console.log(x,'子資料夾有該用戶');
+
+                // }else{
+                //   //子資料夾沒有該用戶 
+                //   console.log(item.memberName,'子資料夾沒有該用戶');
+
+                //   let temp =  JSON.parse(JSON.stringify(item))
+                //   temp.parent = temp.self
+                //   temp.self = {
+                //     allowPermission: [],
+                //     denialPermission: [],
+                //     allowFileTypes: [],
+                //     denialFileTypes: []
+                //   }
+                //   //子資料夾加入值
+                //   this.editSetting.settings.members.push(temp)
+                //   console.log('push',temp);
+
+                }
+              })
+            })
+
+          }else{
+            //editSetting.length = 0
+            //直接把根資料夾資料搬過來
+
+            this.editSetting.settings.members = JSON.parse(JSON.stringify(this.FolderSettings.settings.members))
+            // console.log(this.editSetting.settings.members,'541');
+
+            this.editSetting.settings.members.forEach(x=>{
+                x.parent = x.self
+                x.self = {
+                  allowPermission: [],
+                  denialPermission: [],
+                  allowFileTypes: [],
+                  denialFileTypes: []
+                }
+
+               
+
+            })
+
+            console.log(this.editSetting.settings.members);
+
+          }
+          
+     
         this.reset()
         console.log( this.editSetting.settings.members,'checked');
 
@@ -529,6 +566,8 @@ export default {
         //把根資料夾的成員從子資料夾成員刪除
         this.editSetting.settings.members = this.editSetting.settings.members.filter(item => !this.FolderSettings.settings.members.includes(item));
         this.unchecked = true
+
+    
 
 
         this.reset()
@@ -549,7 +588,8 @@ export default {
       //點擊後重新設定勾取匡
       this.PermissionTypes.map((x)=>{
         x.active = false;
-        x.selected = false;   
+        x.selected = false;  
+        x.inFather = false; 
           return x;
       })
 
@@ -561,8 +601,8 @@ export default {
     getFolderSettings(id){  
       cmqRequest.get(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderSettings/${id}`)
       .then((data) => { 
-        console.log(id,this.$store.getters.liselected,'579');
-        console.log('初始化');
+        // console.log(id,this.$store.getters.liselected,'579');
+        // console.log('初始化');
 
         //初始化資料顯示 
         this.FolderSettings = data.data        
@@ -596,18 +636,20 @@ export default {
       })
     },
     permissionSelected(item){
-      // console.log(this.nowUser, item, this.editSetting.inherit)
-      if(item.selected == "allow" && this.editSetting.inherit == false){
+      console.log(this.nowUser, item, this.editSetting.inherit)
+
+      if(item.selected == "allow" ){
         console.log('allow');
         this.nowUser.self.allowPermission.push(item.permissionTypeId) 
         this.nowUser.self.denialPermission = this.nowUser.self.denialPermission.filter(x=>x !== item.permissionTypeId);
       
-      } else if(item.selected == "deny" && !this.editSetting.inherit == false){
+      } else if(item.selected == "deny"){
         console.log('deny');
         this.nowUser.self.denialPermission.push(item.permissionTypeId)
         this.nowUser.self.allowPermission = this.nowUser.self.allowPermission.filter(x=>x !== item.permissionTypeId);
       
-      }else{
+      }
+      else{
         console.log('err');
         
       }
@@ -629,7 +671,15 @@ export default {
     },
     //雙點擊取消單選匡
     cleanChecked(item) { 
-      
+      console.log(item,'cleanChecked')
+
+      if(item.selected == "allow" ){
+        console.log('allow');
+        this.nowUser.self.allowPermission = this.nowUser.self.allowPermission.filter(x=>x !== item.permissionTypeId);  
+      } else if(item.selected == "deny"){
+        console.log('deny');
+        this.nowUser.self.denialPermission = this.nowUser.self.denialPermission.filter(x=>x !== item.permissionTypeId);
+      }
       item.selected = false
       this.$forceUpdate();
 
@@ -671,6 +721,23 @@ export default {
       //       }
       //     })
       // });
+
+
+      //傳送前先檢查inherit ,inherit為true,把每個member的parent obj 刪掉
+      //並且和FolderSettings的做比較 self裏面的typeid 只留下和 FolderSettings 不重複的
+    if(!this.validateFather){
+
+       this.editSetting.settings.members.forEach(x=>{
+        //所有的parent 為空
+        delete x.parent    
+
+        });
+        console.log(this.editSetting.settings.members,'748');
+
+
+      }
+
+        console.log(this.editSetting.settings.members);
 
 
       const data = JSON.stringify([
@@ -748,6 +815,7 @@ export default {
 
 
       //依據繼承與否進行函式
+      
       if(this.editSetting.inherit) {
         console.log('Inherit');
         this.inheritParent()
@@ -761,40 +829,71 @@ export default {
     
     },
     inheritParent(){
+      console.log('inFather',this.nowUser);
 
       this.PermissionTypes.map(x=>{
-        let temps = this.nowUser.self.allowPermission.filter(permission=>permission==x.permissionTypeId);
+        //parent allow
+        let temps = this.nowUser.parent.allowPermission.filter(permission=>permission==x.permissionTypeId);
           if(temps.length > 0) {
             x.selected = 'allow';
-          }else {
-            x.selected = 'deny';
+            x.inFather = true;
+
           }
+        //parent deny
+        let denytemps = this.nowUser.parent.denialPermission.filter(permission=>permission==x.permissionTypeId);
+          if(denytemps.length > 0) {
+            x.selected = 'deny';
+            x.inFather = true;
+
+          }
+
+        let selfallow = this.nowUser.self.allowPermission.filter(permission=>permission==x.permissionTypeId);
+        if(selfallow.length > 0) {
+          x.selected = 'allow';
+
+        }
+
+        let selfdeny = this.nowUser.self.denialPermission.filter(permission=>permission==x.permissionTypeId);
+          if(selfdeny.length > 0) {
+            x.selected = 'deny';
+
+          }
+
+          //來自根資料夾disable
+          // if(this.FolderSettings.settings.members.filter(x => x.memberId === this.nowUser.memberId).length != 0){
+          //    x.inFather = true;
+          //    console.log('inFather',this.nowUser.memberName);
+          // }
+
           return x;
       })
       console.log(this.PermissionTypes);
 
 
       // radio匡全部disabled 
-       this.PermissionTypes.forEach(item=>{
-          item.inFather = true;
-       })
+      //  this.PermissionTypes.forEach(item=>{
+      //     item.inFather = true;
+      //  })
 
-      // console.log(this.nowUser.self.allowPermission);
 
  
 
     },
     notInherit(){ 
-      this.PermissionTypes.map(x=>{
-        let temps = this.nowUser.self.allowPermission.filter(permission=>permission==x.permissionTypeId);
-        if(temps.length>0) {
+
+       this.PermissionTypes.map(x => {
+        let allow = this.nowUser.self.allowPermission.filter(item => item == x.permissionTypeId);
+        if(allow.length>0) {
           x.selected = 'allow';
-        }else {
-          x.selected = 'deny';
         }
+
+        let deny = this.nowUser.self.allowPermission.filter(item => item == x.permissionTypeId);
+          if(deny.length>0) {
+            x.selected = 'deny';
+          }
+
         return x;
       })
-      //console.log(this.PermissionTypes);
 
       console.log(this.nowUser);
 
@@ -802,6 +901,8 @@ export default {
         this.PermissionTypes.forEach(permission=>{
           if(permission.permissionTypeId == x) {
             permission.selected = 'allow';
+            permission.inFather = false;
+
           }
         })
       });
@@ -810,6 +911,7 @@ export default {
         this.PermissionTypes.forEach(permission=>{
           if(permission.permissionTypeId == x) {
             permission.selected = 'deny';
+            permission.inFather = false;
           }
         })
       });
@@ -830,10 +932,6 @@ export default {
     //左邊切換
     userSelected(item){
       console.log(item ,'item');
-
-      // if(!this.editSetting.settings.members){
-      //   this.editSetting.settings.members = []
-      // }
 
       if(this.editSetting.settings.members.filter(x=>x.memberId == item.userId).length == 0) {
        this.editSetting.settings.members.push(

@@ -6,7 +6,8 @@ const mgr = new Oidc.UserManager({
   post_logout_redirect_uri: 'http://localhost:8080/', 
   authority: 'https://192.168.110.180:5098/',
   silent_redirect_uri: 'http://localhost:8080/silent-renew.html',
-  client_id: 'SPA.Filebox.Client.Testing',
+  // client_id: 'SPA.Filebox.Client.Testing',
+  client_id: 'SPA.Filebox.Client',
   scope: 'openid profile OrgApi LogApi LinkApi DocApi offline_access SettingsApi',
   userStore: new Oidc.WebStorageStateStore({store: window.localStorage}),
   automaticSilentRenew: true, //new
