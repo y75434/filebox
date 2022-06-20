@@ -46,8 +46,7 @@ export default new Vuex.Store({
     SET_SETLISELECTED(state, liselected){
       state.liselected = liselected
     },
-  
-    //還有用？？
+    //search bar 上面的根資料夾
     SET_ROOT(state, nowRootFolder){
       state.nowRootFolder = nowRootFolder
     },
@@ -55,6 +54,7 @@ export default new Vuex.Store({
     SET_MARK(state, markfolder){
       state.markfolder = markfolder
     },
+   
    
   },
   actions: {

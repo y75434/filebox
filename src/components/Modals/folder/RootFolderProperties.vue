@@ -12,8 +12,8 @@
     footer-bg-variant="white"
     size="xl"
     @ok="putFolder"
-    :ok-disabled="unchecked"
   >
+    <!--     :ok-disabled="unchecked" -->
     <div class="modal-popout-bg ">
       <div
         class="modal-body bg-gray p-3"
@@ -80,6 +80,8 @@
                     {{ editSetting.name }}
                   </p>
                 </div>
+
+                <v-btn @click="putTest">putTest</v-btn>
               
                 <div class=" form-check">
                   <input
@@ -470,7 +472,8 @@ export default {
       unitId: "",
       storageRest: false,
       RESTRICT: false,
-      unchecked: false
+      rootStorage: []
+      // unchecked: false
     };
   },
   computed:{ 
@@ -481,19 +484,41 @@ export default {
   },
   watch: {
     liselected(){
-      console.log(this.$store.getters.liselected.name,'change');
-      if (this.$store.getters.liselected.folderId) {
-        this.editSetting = this.$store.getters.liselected
 
+        console.log(this.$store.getters.liselected.name,'change');
+
+        if (this.$store.getters.liselected.folderId) {
+
+          //更換資料夾時要把資料暫存到
+            const target = this.rootStorage.find(item => item.folderId === this.editSetting.folderId);
+
+            if(target){
+
+              //第二次以後撈rootStorage資料
+              //更新rootStorage舊資料
+              
+              Object.assign(target,JSON.parse(JSON.stringify(this.editSetting)));
+              console.log(this.rootStorage,'取代',this.editSetting.name);
+              //資料夾第一次點擊時要抓vuex資料
+              let api = this.$store.getters.liselected
+              this.editSetting = api
+            }else{        
+
+              this.rootStorage.push(this.editSetting)
+              console.log(this.rootStorage,'加入',this.editSetting.name);
+            }
+
+          // console.log(this.editSetting,'liselected');
+          // console.log(this.FolderSettings.settings.members);
+
+        }else{
+          //第一次點擊才需撈後端資料
+          this.editSetting = this.$store.getters.liselected
+          console.log(this.editSetting,'點開modal');
+        }
 
         this.reset()
-        this.unchecked = false
 
-        // console.log(this.editSetting,'liselected');
-        // console.log(this.FolderSettings.settings.members);
-
-
-      }
     },
    },
    created(){
@@ -512,23 +537,6 @@ export default {
                 if(x.memberId == item.memberId) {
                   x.parent = item.self
                   console.log(x,'子資料夾有該用戶');
-
-                // }else{
-                //   //子資料夾沒有該用戶 
-                //   console.log(item.memberName,'子資料夾沒有該用戶');
-
-                //   let temp =  JSON.parse(JSON.stringify(item))
-                //   temp.parent = temp.self
-                //   temp.self = {
-                //     allowPermission: [],
-                //     denialPermission: [],
-                //     allowFileTypes: [],
-                //     denialFileTypes: []
-                //   }
-                //   //子資料夾加入值
-                //   this.editSetting.settings.members.push(temp)
-                //   console.log('push',temp);
-
                 }
               })
             })
@@ -548,16 +556,11 @@ export default {
                   allowFileTypes: [],
                   denialFileTypes: []
                 }
-
-               
-
             })
 
             console.log(this.editSetting.settings.members);
-
           }
-          
-     
+            
         this.reset()
         console.log( this.editSetting.settings.members,'checked');
 
@@ -565,9 +568,7 @@ export default {
     
         //把根資料夾的成員從子資料夾成員刪除
         this.editSetting.settings.members = this.editSetting.settings.members.filter(item => !this.FolderSettings.settings.members.includes(item));
-        this.unchecked = true
-
-    
+        // this.unchecked = true
 
 
         this.reset()
@@ -745,7 +746,7 @@ export default {
           "folderId": this.editSetting.folderId,
           "name": this.editSetting.name,
           "description": this.editSetting.description,
-          "inhert": this.editSetting.inherit,
+          "inherit": this.editSetting.inherit,
           "settings":{
             "storage":{ "space": this.space, "unitId": this.unitId },
             "members": this.editSetting.settings.members
@@ -771,6 +772,90 @@ export default {
 
       this.editSetting = {}
       
+
+    },
+     putTest(){
+
+      //記得加入最後一次點擊的資料夾 並取代它在rootStorage的資料
+      let temp = this.editSetting
+      this.rootStorage = this.rootStorage.filter(x => x.folderId != temp.folderId)    
+      this.rootStorage.push(temp)
+
+      console.log(temp,'temp');
+      
+      let root = this.rootStorage.filter(x => x.folderId == this.FolderSettings.folderId)[0]   
+      console.log(root,'root');
+
+      let son = this.rootStorage.filter(x => x.folderId != this.FolderSettings.folderId)    
+        console.log(son,'son');
+
+      son.forEach(x=>{
+        //所有的parent 為空
+        delete x.settings.members.parent    
+      });
+
+      // console.log(son,'son');
+
+      // const rootData = JSON.stringify([
+      //   {
+      //     "folderId": this.editSetting.folderId,
+      //     "name": this.editSetting.name,
+      //     "description": this.editSetting.description,
+      //     "inherit": this.editSetting.inherit,
+      //     "settings":{
+      //       "storage":{ "space": this.space, "unitId": this.unitId },
+      //       "members": this.editSetting.settings.members
+      //     },
+      //     "editor": this.$store.getters.userId, 
+      //     "editorName":this.$store.getters.currentUser,
+      //   }
+      // ])  
+
+      // const rootData = JSON.stringify([root])
+
+      // Object.entries(son)
+
+      son.push(root)
+
+      // const combinedObj = {};
+
+       son.forEach((item) => {
+        item.editor = this.$store.getters.userId;
+        item.editorName = this.$store.getters.currentUser;
+        item.settings.storage = { space: this.space, unitId: this.unitId };
+
+      });
+
+    //  json = JSON.stringify([json])
+
+
+      console.log(son,'829');
+
+
+
+      const loop = Promise.all(
+        son.map((item) => new Promise((resolve) => {
+
+          console.log(item ,'put obj');
+
+
+          cmqRequest.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,item).then((data) => { 
+            console.log(data);
+            // this.$swal.fire({ title: 'success', icon: 'success' })
+
+          }).catch(error => {
+            console.log(error.response.data.error);    
+            // this.$swal.fire({ title: error.response.data.error, icon: 'error' })
+        
+          })
+          resolve();
+        }))
+      );
+
+      loop.then(() => {
+        console.log('loop finished');
+      });
+  
 
     },
     getUserTable(){  
@@ -984,8 +1069,8 @@ export default {
     //ok
     del(user){
      console.log('user',user);
-
      this.editSetting.settings.members = this.editSetting.settings.members.filter(x => x.memberId !== user.memberId)    
+
      this.reset()
 
     },
