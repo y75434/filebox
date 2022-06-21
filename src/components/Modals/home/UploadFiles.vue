@@ -207,33 +207,6 @@ export default {
       console.log(formData);
  
 
-      // let token = sessionStorage.getItem('docToken')
-    
-
-      // this.axios.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
-      // formData,{"headers": {
-      //   'Content-Type': 'application/json',
-      //   'Authorization': 'Bearer ' + token
-      //  }})
-      // .then((data) => { 
-      //   console.log(data, token);
-
-      //   if(data.data.code == 1005){
-      //     this.$swal.fire({ title: data.data.msg, icon: 'info' })
-      //     this.$bvModal.show('UploadFilesConflict');
-
-      //   }else{
-      //     this.$swal.fire({ title: data.data.msg, icon: 'success' })
-      //     this.$bvModal.hide('UploadFiles');
-
-      //   }
-
-
-      // }).catch(error => {
-      //   console.log(error);     
-   
-      // })
-
       cmqRequest.upload(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement`,
       formData)
       .then((data) => { 

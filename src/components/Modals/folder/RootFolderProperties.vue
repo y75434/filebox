@@ -11,7 +11,7 @@
     body-bg-variant="bgmodal"
     footer-bg-variant="white"
     size="xl"
-    @ok="putFolder"
+    @ok="putTest"
   >
     <!--     :ok-disabled="unchecked" -->
     <div class="modal-popout-bg ">
@@ -81,7 +81,6 @@
                   </p>
                 </div>
 
-                <v-btn @click="putTest">putTest</v-btn>
               
                 <div class=" form-check">
                   <input
@@ -175,7 +174,6 @@
                 </li>
                 <div
                   class=""
-                  v-if="this.editSetting.settings.members"
                 >
                   <!--  -->
                   <li
@@ -209,6 +207,7 @@
                           class="icon-20px"
                           v-if="!editSetting.inherit"
                         >
+                        <!-- item.canDelete -->
                       </label>
                     </div>
                   </li>
@@ -477,6 +476,7 @@ export default {
     };
   },
   computed:{ 
+    
     validateFather(){   
      return this.$store.getters.liselected.folderId == this.FolderSettings.folderId || this.$store.getters.liselected === this.FolderSettings.folderId 
     },
@@ -499,6 +499,8 @@ export default {
               
               Object.assign(target,JSON.parse(JSON.stringify(this.editSetting)));
               console.log(this.rootStorage,'取代',this.editSetting.name);
+              //取消勾選
+              // this.editSetting.inherit.active == false
               //資料夾第一次點擊時要抓vuex資料
               let api = this.$store.getters.liselected
               this.editSetting = api
@@ -514,7 +516,7 @@ export default {
         }else{
           //第一次點擊才需撈後端資料
           this.editSetting = this.$store.getters.liselected
-          console.log(this.editSetting,'點開modal');
+          console.log(this.editSetting.name,'點開modal');
         }
 
         this.reset()
@@ -525,6 +527,7 @@ export default {
      this.$store.dispatch('setLiselected', {folderId:""})
    },
    methods: { 
+   
     //inhert checkbox變動
     checkInhert(e){
       if(e.target.checked){
@@ -536,6 +539,9 @@ export default {
                 
                 if(x.memberId == item.memberId) {
                   x.parent = item.self
+                  // 子資料夾未繼承的成員
+                  // x.canDelete = false
+    
                   console.log(x,'子資料夾有該用戶');
                 }
               })
@@ -549,6 +555,7 @@ export default {
             // console.log(this.editSetting.settings.members,'541');
 
             this.editSetting.settings.members.forEach(x=>{
+                // x.canDelete = false
                 x.parent = x.self
                 x.self = {
                   allowPermission: [],
@@ -568,8 +575,8 @@ export default {
     
         //把根資料夾的成員從子資料夾成員刪除
         this.editSetting.settings.members = this.editSetting.settings.members.filter(item => !this.FolderSettings.settings.members.includes(item));
-        // this.unchecked = true
-
+        //子資料夾的成員可自由刪除
+        // this.editSetting.settings.members.forEach(item => item.canDelete = true);
 
         this.reset()
         this.$forceUpdate();
@@ -660,14 +667,14 @@ export default {
     //檔案類型勾選即加入api
     typeSelected(item){
 
-      console.log(item);
-
-      if(this.editSetting.inherit == false){
+      console.log(item);  
+  
+      if(item.active == true){
         this.nowUser.self.allowFileTypes.push(item.fileTypeId)
-      } 
-      //else if(this.editSetting.inherit == true){
-        // this.nowUser.parent.allowFileTypes = this.nowUser.parent.allowFileTypes.filter(x=>x !== item.fileTypeId);
-      //}
+      }else{
+        this.nowUser.self.allowFileTypes = this.nowUser.self.allowFileTypes.filter(x=>x !== item.fileTypeId); 
+      }
+     
 
     },
     //雙點擊取消單選匡
@@ -811,13 +818,8 @@ export default {
       //   }
       // ])  
 
-      // const rootData = JSON.stringify([root])
-
-      // Object.entries(son)
-
       son.push(root)
 
-      // const combinedObj = {};
 
        son.forEach((item) => {
         item.editor = this.$store.getters.userId;
@@ -826,15 +828,11 @@ export default {
 
       });
 
-    //  json = JSON.stringify([json])
-
-
-      console.log(son,'829');
-
-
 
       const loop = Promise.all(
         son.map((item) => new Promise((resolve) => {
+
+          item  = JSON.stringify([item])
 
           console.log(item ,'put obj');
 
@@ -844,6 +842,8 @@ export default {
             // this.$swal.fire({ title: 'success', icon: 'success' })
 
           }).catch(error => {
+            console.log(error.response);    
+
             console.log(error.response.data.error);    
             // this.$swal.fire({ title: error.response.data.error, icon: 'error' })
         

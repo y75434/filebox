@@ -178,7 +178,7 @@
               class="bg-light text-dark border-0 p-0 d-flex"
               :style=" this.selectedNumber > 0 && this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
             >
-            <!--   :disabled="this.selectedTrue.length === 0 || this.firstPage"-->
+              <!--   :disabled="this.selectedTrue.length === 0 || this.firstPage"-->
               <img
                 src="@/assets/images/file/publiclink@2x.png"
                 class="nav-icon pe-1 mx-auto"
@@ -940,8 +940,6 @@ export default {
 
       });
         console.log(data);
-
-
   
       // ${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/View
 
