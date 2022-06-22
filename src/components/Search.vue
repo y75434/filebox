@@ -204,20 +204,18 @@ export default {
         cmqRequest.post(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/FolderTreeForAdminPage`,
         data).then((data) => { 
 
-          console.log(data.data, '215');
+          // console.log(data.data, 'search render');
         
 
            // include parent 傳給search
-
-
             this.FolderTree = data.data
-            console.log(this.FolderTree,'222');
+            console.log(this.FolderTree,'now');
 
 
 
           this.$bus.$on("passSideBar", item => {
      
-              console.log(item,'228');
+              console.log(item,'接收sidebar資料');
               this.arr = item
           });
     

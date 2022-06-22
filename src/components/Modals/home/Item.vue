@@ -74,11 +74,11 @@ export default {
               this.subitem.subFolders.forEach((item)=>{
 
                 item.parentId = this.subitem.folderId  
-                this.$bus.$emit("pass", item);
+                this.$bus.$emit("compare", item);
 
               })
               //根資料夾也順便傳
-              this.$bus.$emit("pass", this.subitem);
+              this.$bus.$emit("compare", this.subitem);
 
           }).catch(() => {
             //  console.log(error.response.data);        
@@ -97,11 +97,10 @@ export default {
     },   
     subClick(tree) {
       
-      //不能刪
-      this.$bus.$emit("notify:message", tree);
+      //傳給 TreeItem.vue 做資料過濾
+      this.$bus.$emit("sendTree", tree);
      
-      //要把sidebar的該資料夾樹狀  傳到search.vue
-      console.log(tree,'點擊sidebar 當前資料夾');        
+      // console.log(tree,'當前資料夾');        
     }, 
   }
 }

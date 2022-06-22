@@ -25,30 +25,35 @@ export default {
     return{
       trees:[],
       now:{},
-      compare: [], //subfolder ,
+      compare: [], //subfolder
       passLog: []
     }
   },
   created(){
    this.getRootFolder()
 
-    this.$bus.$on("notify:message", tree => {
+    //接收子層資料
+    this.$bus.$on("sendTree", tree => {
       // 檢查
       if(tree['parentId']){
         this.passLog = []
         this.checkFather(tree.parentId)
-        console.log('40');        
+        console.log('有father');        
       }else{    
         this.passLog = []
-        console.log('43', tree);        
+        this.checkFather(tree.folderId)
+
+        console.log('passLog = []', tree);        
       }
       this.passLog.push(tree)
+              console.log('this.passLog', this.passLog);        
+
       this.$emit('treeClick', tree);  //傳到home頁跑路徑
 
     });
 
     //子層傳來的值存放以方便做比較
-    this.$bus.$on("pass", subitem => {   
+    this.$bus.$on("compare", subitem => {   
       this.compare.push(subitem)
       console.log(this.compare);
     });
@@ -98,18 +103,28 @@ export default {
                          
               //比照compare紀錄
               this.now = this.compare.filter(i => i.folderId === this.now.folderId)
-         
+              console.log(this.now);        
+
 
               if(this.now[0]['parentId']){
-                // 有father
-                console.log('114');
+          
+                console.log('有father');
 
                 this.passLog.unshift(this.now[0])
 
                 this.checkFather(this.now[0].parentId)
-              }else{
+              //此條件為根資料夾第一次被點擊
+              }else if(this.now == null){
+                // console.log( '傳送到sidebar', this.passLog );
+
+                this.$bus.$emit("passSideBar", this.passLog); // include parent 傳給search
+                // this.passLog = []
+
+              }    
+              // 根資料夾先前已被點擊過
+              else{
                 this.passLog.unshift(this.now[0])
-                console.log( '123', this.passLog );
+                console.log( '傳送到sidebar', this.passLog );
 
                 this.$bus.$emit("passSideBar", this.passLog); // include parent 傳給search
                 this.passLog = []

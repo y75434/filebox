@@ -326,7 +326,8 @@
                       {{ $t("GENERAL.QUATA") }}
                     </p>
                     <div
-                      class="form-check"
+                      class="form-check overflow-scroll" 
+                      style="height:350px"                  
                     >
                       <input
                         type="checkbox"
@@ -395,8 +396,9 @@
                           class="form-check mx-2 "
                           :id="item.id"
                         >
+                          <!--   :disabled="item.inFather" -->
                           <input
-                            :disabled="!RESTRICT"
+                            :disabled="item.inFather"
                             type="checkbox"
                             class="form-check-input"
                             v-model="item.active"
@@ -507,6 +509,7 @@ export default {
             }else{        
 
               this.rootStorage.push(this.editSetting)
+              this.editSetting = this.$store.getters.liselected
               console.log(this.rootStorage,'加入',this.editSetting.name);
             }
 
@@ -543,6 +546,17 @@ export default {
                   // x.canDelete = false
     
                   console.log(x,'子資料夾有該用戶');
+                }else{
+                  //子資料夾無該用戶 直接加入子資料夾
+                  // let temp = JSON.parse(JSON.stringify(item));
+                  // temp.parent = temp.self
+                  // temp.self = {
+                  //   allowPermission: [],
+                  //   denialPermission: [],
+                  //   allowFileTypes: [],
+                  //   denialFileTypes: []
+                  // }
+                  // this.editSetting.settings.members.push(temp)
                 }
               })
             })
@@ -603,7 +617,9 @@ export default {
 
       this.FileTypes.map((x)=>{
         x.active = false;
-          return x;
+        x.inFather = false; 
+
+        return x;
       })
     },
     getFolderSettings(id){  
@@ -672,6 +688,8 @@ export default {
       if(item.active == true){
         this.nowUser.self.allowFileTypes.push(item.fileTypeId)
       }else{
+        console.log('delete filetype');  
+
         this.nowUser.self.allowFileTypes = this.nowUser.self.allowFileTypes.filter(x=>x !== item.fileTypeId); 
       }
      
@@ -715,72 +733,7 @@ export default {
       // console.log(this.unitId)
       
     },
-    putFolder(){
-
-      //傳送之前先檢查值 如果是null 轉為[]
-      console.log(this.editSetting.settings.members,'put method',this.editSetting);
-      
-      // this.editSetting.settings.members.forEach((x)=>{
-      //   //檢查self
-      //     let keys = Object.keys(x.self);
-      //     keys.forEach(key=>{
-      //       if(x.self[key] == null || x.self[key] == undefined) {
-      //         x.self[key] = [];
-      //       }
-      //     })
-      // });
-
-
-      //傳送前先檢查inherit ,inherit為true,把每個member的parent obj 刪掉
-      //並且和FolderSettings的做比較 self裏面的typeid 只留下和 FolderSettings 不重複的
-    if(!this.validateFather){
-
-       this.editSetting.settings.members.forEach(x=>{
-        //所有的parent 為空
-        delete x.parent    
-
-        });
-        console.log(this.editSetting.settings.members,'748');
-
-
-      }
-
-        console.log(this.editSetting.settings.members);
-
-
-      const data = JSON.stringify([
-        {
-          "folderId": this.editSetting.folderId,
-          "name": this.editSetting.name,
-          "description": this.editSetting.description,
-          "inherit": this.editSetting.inherit,
-          "settings":{
-            "storage":{ "space": this.space, "unitId": this.unitId },
-            "members": this.editSetting.settings.members
-          },
-          "editor": this.$store.getters.userId, 
-          "editorName":this.$store.getters.currentUser,
-        }
-      ])
-
-      console.log(data);
-
-      cmqRequest.patch(`${process.env.VUE_APP_FOLDER_APIPATH}/DocManagement/EditFolder`,
-        data).then((data) => { 
-
-          console.log(data);
-          this.$swal.fire({ title: 'success', icon: 'success' })
-
-        }).catch(error => {
-          console.log(error.response.data);    
-          this.$swal.fire({ title: error.response.data.error, icon: 'error' })
-      
-        })
-
-      this.editSetting = {}
-      
-
-    },
+    
      putTest(){
 
       //記得加入最後一次點擊的資料夾 並取代它在rootStorage的資料
@@ -794,29 +747,27 @@ export default {
       console.log(root,'root');
 
       let son = this.rootStorage.filter(x => x.folderId != this.FolderSettings.folderId)    
-        console.log(son,'son');
+      console.log(son,'son');
 
       son.forEach(x=>{
         //所有的parent 為空
-        delete x.settings.members.parent    
+        let temp = x.settings.members
+        // console.log(temp);
+
+        temp.forEach(item => {
+          let keys = Object.keys(item.parent);
+          keys.forEach(key=>{
+            item.parent[key] = [];
+            
+          })
+          // console.log(item,'816');
+
+        });
+            
       });
 
-      // console.log(son,'son');
+      console.log(son,'delete parent');
 
-      // const rootData = JSON.stringify([
-      //   {
-      //     "folderId": this.editSetting.folderId,
-      //     "name": this.editSetting.name,
-      //     "description": this.editSetting.description,
-      //     "inherit": this.editSetting.inherit,
-      //     "settings":{
-      //       "storage":{ "space": this.space, "unitId": this.unitId },
-      //       "members": this.editSetting.settings.members
-      //     },
-      //     "editor": this.$store.getters.userId, 
-      //     "editorName":this.$store.getters.currentUser,
-      //   }
-      // ])  
 
       son.push(root)
 
@@ -856,6 +807,7 @@ export default {
         console.log('loop finished');
       });
   
+      this.editSetting = {}
 
     },
     getUserTable(){  
@@ -890,15 +842,6 @@ export default {
       this.haveUser = true
       this.nowUser = item;
 
-      //把 null 改 []
-      // var self = Object.keys(this.nowUser.self);
-      // self.forEach(key=>{
-      //     if(this.nowUser.self[key] == null || this.nowUser.self[key] == undefined) {
-      //       this.nowUser.self[key] = [];
-      //     }
-      // })
-
-
       //依據繼承與否進行函式
       
       if(this.editSetting.inherit) {
@@ -914,7 +857,7 @@ export default {
     
     },
     inheritParent(){
-      console.log('inFather',this.nowUser);
+      // console.log('inFather',this.nowUser);
 
       this.PermissionTypes.map(x=>{
         //parent allow
@@ -941,27 +884,28 @@ export default {
         let selfdeny = this.nowUser.self.denialPermission.filter(permission=>permission==x.permissionTypeId);
           if(selfdeny.length > 0) {
             x.selected = 'deny';
+          }
+        return x;
+      })
 
+
+       this.FileTypes.map(x=>{
+        //parent file
+        let temps = this.nowUser.parent.allowFileTypes.filter(item=> item == x.fileTypeId);
+          if(temps.length > 0) {
+            x.active = true;
+            x.inFather = true;
           }
 
-          //來自根資料夾disable
-          // if(this.FolderSettings.settings.members.filter(x => x.memberId === this.nowUser.memberId).length != 0){
-          //    x.inFather = true;
-          //    console.log('inFather',this.nowUser.memberName);
-          // }
+        //self file
+        let selffile = this.nowUser.self.allowFileTypes.filter(item=> item == x.fileTypeId);
+          if(selffile.length > 0) {
+            x.active = true;
+          }
 
-          return x;
+        return x;
       })
-      console.log(this.PermissionTypes);
-
-
-      // radio匡全部disabled 
-      //  this.PermissionTypes.forEach(item=>{
-      //     item.inFather = true;
-      //  })
-
-
- 
+      console.log(this.PermissionTypes);   
 
     },
     notInherit(){ 

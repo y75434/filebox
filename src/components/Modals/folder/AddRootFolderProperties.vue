@@ -346,7 +346,8 @@
                       {{ $t("GENERAL.QUATA") }}
                     </p>
                     <div
-                      class="form-check"
+                      class="form-check overflow-scroll" 
+                      style="height:350px" 
                     >
                       <input
                         type="checkbox"
