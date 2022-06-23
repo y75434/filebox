@@ -52,7 +52,8 @@
               class="d-flex justify-content-between mb-5"
             >
               <span class="text-dark">
-                currentUser
+                {{ $t("GENERAL.USER") }}
+
               </span>
               <p class="mx-5 m-0 text-gray">
                 {{ this.$store.getters.currentUser }}

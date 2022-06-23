@@ -549,14 +549,14 @@ export default {
                 }else{
                   //子資料夾無該用戶 直接加入子資料夾
                   // let temp = JSON.parse(JSON.stringify(item));
-                  // temp.parent = temp.self
-                  // temp.self = {
-                  //   allowPermission: [],
-                  //   denialPermission: [],
-                  //   allowFileTypes: [],
-                  //   denialFileTypes: []
-                  // }
-                  // this.editSetting.settings.members.push(temp)
+                  item.parent = item.self
+                  item.self = {
+                    allowPermission: [],
+                    denialPermission: [],
+                    allowFileTypes: [],
+                    denialFileTypes: []
+                  }
+                  this.editSetting.settings.members.push(item)
                 }
               })
             })

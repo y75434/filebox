@@ -80,7 +80,7 @@
                 <label
                   for="tel"
                   class="col-form-label"
-                >telephone  <span class="text-danger">{{ $t("GENERAL.REQUIRE") }}</span></label>
+                >{{ $t("MODAL.TEL") }}  <span class="text-danger">{{ $t("GENERAL.REQUIRE") }}</span></label>
                   
                 <input
                   type="number"

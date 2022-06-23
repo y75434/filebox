@@ -90,6 +90,7 @@ export const locale = {
     USERNAME:'用戶名稱',
     FULLNAME:'全名',
     EMAIL:'電子信箱',
+    TEL:'電話',
     DESCRIPTION:'描述',
     CHANGEUSERPASSWORD:'更改用戶密碼',
     USERMUSTCHANGEPASSWORDATNEXTTIME:'用戶下次必須更改密碼',

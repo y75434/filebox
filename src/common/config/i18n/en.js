@@ -90,6 +90,7 @@ export const locale = {
     USERNAME:'User name',
     FULLNAME:'Full name',
     EMAIL:'Email',
+    TEL:'Telephone',
     DESCRIPTION:'Description',
     CHANGEUSERPASSWORD:'Change user password',
     USERMUSTCHANGEPASSWORDATNEXTTIME:'User must change password at next time',

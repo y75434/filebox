@@ -597,13 +597,13 @@ export default {
     selectMode: 'single',
     paneSize: 15,
     fileSelected: false,
-    selectedItems: [],//邊框
+    // selectedItems: [],//邊框
     treeItems: [
       { id: 0, name: 'Folder',pic: require('@/assets/images/file/single folder@2x.png'),extension:'.folder'},
     ],
     renderCheckboxs: false,
     treeSelected: null,
-    allSelected: false,
+    // allSelected: false,
     selectedTrue: [],// 勾選的放這
     allFiles:[],//所有檔案過濾後把id放入這個陣列
     extension: false,
@@ -661,7 +661,7 @@ export default {
   },
 
   methods: { 
-    //取消顯示checkbox 全選切換會失靈
+    //取消顯示checkbox
     selectAllCheckbox(){
       if(this.renderCheckboxs) {
         console.log('selectAllCheckbox')

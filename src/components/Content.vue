@@ -218,7 +218,7 @@
 
           <div class="d-flex flex-column">
             <div class="h-50" />
-            <button
+            <!-- <button
               type="button"
               id="button-addon2"
               class="btn btn-blue"
@@ -229,8 +229,16 @@
                 src="@/assets/images/icon/magnifier.png"
                 class="nav-icon"
               >
-            </button>
+            </button> -->
           </div>
+
+          <button
+            type="button"
+            class="btn btn-blue"
+            @click="clearDate"
+          >
+            clear
+          </button>
         </div>
       </div>
 
@@ -288,7 +296,7 @@
               @row-selected="selectMuti"
               @row-dblclicked="property"
               ref="selectableTable"
-              :select-mode="selectMode"
+              select-mode="multi"
               selectable
               hover
             >
@@ -342,7 +350,7 @@
               @row-selected="selectMuti"
               selectable
               ref="selectableTable"
-              :select-mode="selectMode"
+              select-mode="multi"
               hover
               :filter="filter"
               :per-page="perPage"
@@ -385,7 +393,7 @@
               @row-selected="selectMuti"
               selectable
               ref="selectableTable"
-              :select-mode="selectMode"
+              select-mode="single"
               hover
               :filter="filter"
               :per-page="perPage"
@@ -427,7 +435,7 @@
               @row-selected="selectMuti"
               selectable
               ref="selectableTable"
-              :select-mode="selectMode"
+              select-mode="single"
               hover
               :filter="filter"
               :per-page="perPage"
@@ -438,26 +446,20 @@
               </template>
 
               <template #cell()="data">  
-                <!-- 無法跳 -->
-
-                <!-- <img
-                  :src="require(`${data.item.pic}`)"
-                  class="icon32px"
-                > -->
-
                 <img
                   :src="require(`../assets/images/${data.item.pic}`)"
                   class="icon32px"
                 > 
-
-                <!-- 可以跳 但圖片無法顯示 -->
-                <!-- <img
-                  :src="(`@/assets/images/${data.item.pic}`)"
-                  class="icon32px"
-                > -->
-
                 {{ data.item.actionType }}
               </template>
+
+              <!-- {{ data.item }} -->
+
+              <template #cell(dateTime)="data">
+                {{ data.item.datetime }}
+              </template>
+
+              
               
               <template #cell(description)="data">
                 {{ data.item.description }}
@@ -497,7 +499,7 @@
               @row-selected="selectMuti"
               selectable
               ref="selectableTable"
-              :select-mode="selectMode"
+              select-mode="single"
               hover
               :filter="filter"
               :per-page="perPage"
@@ -762,6 +764,7 @@ data() {
     eventfields: [ 
       { key: 'actionType', label: this.$t('TABLE.ACTIONTYPE'), sortable: true },
       { key: 'user', label: this.$t('GENERAL.USER'), sortable: true },
+      { key: 'dateTime', label: this.$t('TABLE.CREATEDON')},
       { key: 'description', label: this.$t('MODAL.DESCRIPTION') },
     ],
     folderfields: [ 
@@ -803,7 +806,6 @@ data() {
     // selectedRow : null,
     selected: {},//單選
     mutiSelected:[],//多選
-    selectMode: 'multi',
     filter: null,
     sortDirection: 'All',
     events: [],//events api
@@ -941,7 +943,7 @@ methods: {
     this.$bvModal.show('ImportUser');
   },
   DeleteUser(){
-    if(this.mutiSelected.length>1){
+    if(this.mutiSelected.length > 1){
       this.$bvModal.show('DeleteMul');
     }else{
       this.$bvModal.show('modal-delete-user');
@@ -1054,6 +1056,48 @@ methods: {
       }).catch(() => {
         // console.log(error.response.data);        
       })
+  },
+  clearDate(){
+    this.startdate = ""
+    this.enddate = ""
+
+    let obj ={
+      "from": this.startdate,
+      "to": this.enddate,
+      "searchString": this.searchText,
+      "actionEventType": this.eventsSelected //[15,16] 
+    }
+
+        Object.keys(obj).forEach(key => obj[key] === "" ? delete obj[key]: {})
+      
+       const data = JSON.stringify(obj)
+        console.log(data);
+
+     cmqRequest.post(`${process.env.VUE_APP_EVENTS_APIPATH}/Log/GetAll`,
+        data)
+          .then(data => {  
+            console.log(data);        
+            this.eventsitems= data.data
+            this.count = this.eventsitems.length 
+            // this.$forceUpdate();
+ 
+          this.eventsitems.map(item =>{
+            let actionType = this.eventpics.filter(x=>x.actionType === item.actionType);
+            if(actionType.length>0) {
+              item.pic = actionType[0].pic;
+            } else {
+              item.pic = 'ERROR'
+            }
+            return item;
+          }) 
+
+
+          return this.eventsitems;
+
+
+          }).catch(error => {
+            console.log(error.response.data);        
+          })
   },
   //搜尋
   search(){

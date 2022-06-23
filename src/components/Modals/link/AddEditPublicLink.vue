@@ -287,18 +287,6 @@ export default {
 
     };
   },
-  // 無法馬上更新值
-  // computed:{
-  //   personData(){
-  //     return this.personData
-  //   }
-  // },
-  // watch: {
-  //   url:{
-  //     immediate: true
-
-  //   }
-  // },
   computed: {
 		pwValidity() {
       return this.personData.password !== this.cfpassword;

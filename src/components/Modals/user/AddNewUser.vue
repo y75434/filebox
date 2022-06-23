@@ -21,7 +21,7 @@
             <label
               for="Username"
               class=""
-            >{{ $t("MODAL.USERNAME") }}required</label>
+            >{{ $t("MODAL.USERNAME") }}<span class="text-danger">{{ $t("GENERAL.REQUIRE") }}</span></label>
             <input
               type="Username"
               class="form-control inline-block width-320"
@@ -78,7 +78,7 @@
             <label
               for="tel"
               class="col-form-label"
-            >telephone </label>
+            >{{ $t("MODAL.TEL") }} </label>
                   
             <input
               type="number"
@@ -111,7 +111,7 @@
 
           <div class="d-flex flex-column justify-content-between p-3">
             <div class="form-check mb-2">
-              <input
+              <!-- <input
                 class="form-check-input"
                 type="checkbox"
                 value=""
@@ -123,7 +123,7 @@
               >
                 {{ $t("MODAL.CHANGEUSERPASSWORD") }}
 
-              </label>
+              </label> -->
               <validation-provider
                 v-slot="{ errors,classes}"
                 :rules="{ required: true, regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).*$/, min:8,}"
@@ -133,7 +133,7 @@
                   <label
                     for="Password"
                     class="form-label"
-                  >{{ $t("GENERAL.PASSWORD") }}required</label>
+                  >{{ $t("GENERAL.PASSWORD") }}<span class="text-danger">{{ $t("GENERAL.REQUIRE") }}</span></label>
                   <input
                     type="Password"
                     class="form-control width-220"
@@ -153,7 +153,7 @@
                   <label
                     for="ConfirmPassword"
                     class="form-label"
-                  >{{ $t("GENERAL.CONFIRMPASSWORD") }}required</label>
+                  >{{ $t("GENERAL.CONFIRMPASSWORD") }}<span class="text-danger">{{ $t("GENERAL.REQUIRE") }}</span></label>
                   <input
                     type="Password"
                     class="form-control width-220"
