@@ -118,7 +118,7 @@ export default {
                 // console.log( '傳送到sidebar', this.passLog );
 
                 this.$bus.$emit("passSideBar", this.passLog); // include parent 傳給search
-                // this.passLog = []
+                 this.passLog = []
 
               }    
               // 根資料夾先前已被點擊過

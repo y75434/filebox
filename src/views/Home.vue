@@ -511,11 +511,13 @@
             class="icon24px"
           >{{ $t("HOME.DELETE") }}
         </li>
-        <li @click="view">
+        <li
+          @click="view"
+          v-if="this.selectedNumber > 0"
+        >
           <img
             src="@/assets/images/cmd/preview@2x.png"
             class="icon24px"
-            v-if="this.selectedNumber > 0"
           >
           {{ $t("GENERAL.PREVIEW") }}
         </li>

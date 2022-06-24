@@ -54,7 +54,7 @@
             <label
               for=""
               class="col-form-label"
-            >11/15/2021</label>
+            >{{ formateDateStr(tabData.datetime) }}</label>
           </div>
           <div class="w-50 d-flex align-items-center mb-2">
             <label
@@ -64,7 +64,7 @@
             <label
               for=""
               class="col-form-label"
-            >{{ tabData.datetime }}</label>
+            >{{ formateTimeStr(tabData.datetime) }}</label>
           </div>
         </div>
       </form>
@@ -133,6 +133,23 @@ export default {
       // this.$nextTick(() => {
       this.showModal = false;
       // });
+    },
+     formateDateStr(dateStr) {
+      if (dateStr === undefined || dateStr === null || dateStr === '') {
+        return ''
+      } else {
+        const date = new Date(dateStr + 'Z'); //.000+0000代表0时区
+        return `${(date.getDate()).toString().padStart(2, 0)}/${(date.getMonth() + 1).toString().padStart(2, 0)}/${date.getFullYear()}`
+      }
+    },
+
+    formateTimeStr(dateStr) {
+      if (dateStr === undefined || dateStr === null || dateStr === '') {
+        return ''
+      } else {
+        const date = new Date(dateStr + 'Z'); //.000+0000代表0时区
+        return `${(date.getHours()).toString().padStart(2, 0)}:${(date.getMinutes()).toString().padStart(2, 0)}:${(date.getSeconds()).toString().padStart(2, 0)} ${date.getHours() < 12 ? 'AM' : 'PM'}`
+      }
     },
   },
 };

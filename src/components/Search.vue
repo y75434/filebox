@@ -30,28 +30,7 @@
         class="nav-icon"
       >
     </button>
-    <div class="btn-group dropend">
-      <button
-        type="button"
-        class="btn dqbz-previous bg-light dropdown-toggle"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      />
-      <ul class="dropdown-menu">
-        <li>
-          <a
-            class="dropdown-item"
-            href="#"
-          >Another action</a>
-        </li>
-        <li>
-          <a
-            class="dropdown-item"
-            href="#"
-          >Something else here</a>
-        </li>
-      </ul>
-    </div>
+    
 
 
     <!-- <select
@@ -129,7 +108,6 @@
 
 <script>
 import cmqRequest from "@/http/cmqRequest"
-// import eventBus from "@/bus.js";
 
 
 export default {
@@ -207,21 +185,18 @@ export default {
           // console.log(data.data, 'search render');
         
 
-           // include parent 傳給search
-            this.FolderTree = data.data
-            console.log(this.FolderTree,'now');
-
-
+          // include parent 傳給search
+          this.FolderTree = data.data
+          console.log(this.FolderTree,'now');
 
           this.$bus.$on("passSideBar", item => {
      
-              console.log(item,'接收sidebar資料');
-              this.arr = item
+            console.log(item,'接收sidebar資料');
+            this.arr = item
           });
     
+          console.log(this.FolderTree.folderId,'198');
 
-
-         
 
           //刪除arr重複值
           this.arr = this.arr.filter(x=>x.folderId !== this.FolderTree.folderId);
