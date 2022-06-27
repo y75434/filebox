@@ -61,7 +61,7 @@
               <img
                 src="@/assets/images/cmd/delete@2x-2.png"
                 alt=""
-                :disabled="this.selectedTrue.length === 0 || this.firstPage"
+                :disabled="this.selectedTrue.length === 0 || this.firstPage === true"
                 @click="paste"
                 :style="this.selectedNumber > 0 && this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
               >
@@ -544,6 +544,7 @@
     />
     <manage-public-link
       ref="ManagePublicLink" 
+      :tab-data="nowSelected"
       @reload="reloadPage"
     />
     <AddEditPublicLink
@@ -719,7 +720,11 @@ export default {
         this.$bvModal.show('DeleteFolder');
       }
     },
-    ManagePublicLink(){this.$bvModal.show('ManagePublicLink');},
+    ManagePublicLink(){
+      this.$bvModal.show('ManagePublicLink');
+      this.$refs.ManagePublicLink.start()
+
+    },
     AddPublicLink(){ 
       this.$bvModal.show('AddEditPublicLink'); 
       this.$refs.AddEditPublicLink.GenerateURL()
@@ -812,7 +817,7 @@ export default {
     checkSelected(){
         if(this.selectedNumber === 0){
           this.selectedTrue = []
-          console.log('1');
+          // console.log('1');
           
         }else{
           this.selectedTrue = Object.entries(this.arr)
@@ -993,7 +998,7 @@ export default {
         }
       );
       
-      console.log(data,'paste  904');
+      console.log(data,'paste');
 
 
       if(this.copyFile){
@@ -1007,8 +1012,8 @@ export default {
             
 
           }).catch(error => {
-            console.log(error.response.data); 
             this.$swal.fire({ title: error.response.data.error, icon: 'error' })
+            console.log(error.response); 
       
           })
         

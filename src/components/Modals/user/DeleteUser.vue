@@ -148,11 +148,16 @@ export default {
         })
       },
       deleteUser(id) {  
-      // console.log('137',id);
-      // console.log('138',this.delData);  
+ 
+       const data = { 
+          "id": id, 
+          "editor": this.$store.getters.userId,
+          "editorName":this.$store.getters.currentUser,
+        }
+        console.log(data);
 
       cmqRequest.delete(`${process.env.VUE_APP_USER_APIPATH}/api/Users`
-      ,{data:{ "id": id,"editor":this.$store.getters.userId}})
+      ,data)
         .then(() => {
           this.$nextTick(() => { this.userInput = '';
           this.$bvModal.hide('modal-delete-user'); });
@@ -165,7 +170,7 @@ export default {
       },     
       deleteLink(id) {  
         //它不會刪除記錄，而只是將刪除標誌設置為打開或關閉
-        console.log('97',id);
+        // console.log('97',id);
 
         const data = { 
           "id": id, 

@@ -16,15 +16,16 @@
       class="modal-popout-bg bg-bgmodal p-3"
     >
       <div class="text-dark d-flex justify-content-between">
-        <!-- 會跳紅先註解 -->
-        <!-- <h4 class="fw-bold" v-if="linkitems[0].name !== undefined">
-          {{ linkitems[0].name }}
-        </h4> -->
+        <h4 class="fw-bold">
+          {{ tabData.name }}
+        </h4>
         <div class="d-flex align-items-center">
           <h5 class="fw-bold mx-2">
             {{ count }}
           </h5>
-          <h5>Public Links</h5>
+          <h5>
+            {{ this.$t('GENERAL.PUBLICLINK') }}
+          </h5>
         </div>
       </div>
       <div
@@ -38,23 +39,17 @@
           <thead>
             <tr class="modal-tr">
               <th scope="col">
-                Name
+                {{ this.$t('MODAL.NAMEINLINK') }}
               </th>
               <th scope="col">
-                Linked Item
+                {{ this.$t('MODAL.CREATOR') }}
               </th>
               <th scope="col">
-                Created By
+                Url
               </th>
-              <th scope="col">
-                Hit Count
-              </th>
-              <th scope="col">
-                Last Hit Time
-              </th>
-              <th scope="col">
-                Expiration
-              </th>
+              <!-- <th scope="col">
+                {{ this.$t('MODAL.PASSWORDSWILLEXPIRE') }}
+              </th> -->
             </tr>
           </thead>
           <tbody class="bg-white ">
@@ -67,11 +62,10 @@
               <th scope="row">
                 {{ item.name }}
               </th>
-              <td>{{ item.creator }}</td>
+              <td>{{ item.creatorName }}</td>
               <td>{{ item.url }}</td>
-              <td>{{ item.viewed }}</td>
-              <td>{{ item.dateModified }}</td>
-              <td>{{ item.expire }}</td>
+              <!-- <td>{{ item.viewed }}</td> -->
+              <!-- <td>{{ item.expire }}</td> -->
             </tr>
           </tbody>
         </table>
@@ -120,7 +114,8 @@ import cmqRequest from "@/http/cmqRequest"
 
 export default {
   name: 'ImportUser',
-  props: { title: { type: String, default: 'Manage Public Link' }, 
+  props: {
+    tabData: { type: Object , default() { return {} }}
   },
   components:{ 
     DeleteUser,
@@ -134,10 +129,7 @@ export default {
       linkitems: {},
       selected: {},
      }
-   },
-   created(){
-    this.getLinkTable()
-   },
+   },  
    methods: {
     handler(event) { event.preventDefault(); },
     operational(event) {
@@ -153,10 +145,16 @@ export default {
     showMenu(event) {
       this.$refs.menuLink.open(event);
     },
-    
-    getLinkTable(){
-      cmqRequest.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/GetAll`)
+    start(){
+      console.log(this.tabData);        
+      const id = this.tabData.id
+      this.getLinkTable(id)
+    },
+    getLinkTable(id){
+      cmqRequest.get(`${process.env.VUE_APP_LINKS_APIPATH}/api/Link/LinksByFile/${id}`)
         .then((data) => { 
+          console.log(data);        
+
           this.linkitems = data.data 
           this.count = this.linkitems.length
         }).catch(error => {

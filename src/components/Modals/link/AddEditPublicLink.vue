@@ -19,14 +19,15 @@
       >
         <form class=" p-3">
           <validation-provider
-            v-slot="{ errors,classes}"
+            v-slot="{ errors,classes }"
             rules="required"
           >
             <div class="w-100 d-flex align-items-center justify-content-between mb-2">
               <label
                 for="Name in link"
                 class=""
-              >{{ $t("MODAL.NAMEINLINK") }}</label>
+              >{{ $t("MODAL.NAMEINLINK") }}<span class="text-danger">{{ $t("GENERAL.REQUIRE") }}</span>
+              </label>
               <input
                 type="string"
                 class="form-control inline-block width-320"
@@ -253,7 +254,7 @@
           </b-button>
           <b-button
             variant="primary"
-            :disabled="pwValidity"
+            :disabled="pwValidity && password"
             @click="handleOk"
           >
             {{ $t("GENERAL.OK") }}
@@ -270,7 +271,6 @@ import cmqRequest from "@/http/cmqRequest"
 export default {
   name: "EditPublicLink",
   props: { 
-    // title: { type: String, default: "Rename Item" },
     tabData: { type: Object , default() { return {} }}
   },
  

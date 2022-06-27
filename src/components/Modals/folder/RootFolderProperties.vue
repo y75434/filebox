@@ -531,7 +531,7 @@ export default {
    },
    methods: { 
    
-    //inhert checkbox變動
+    //inherit checkbox變動
     checkInhert(e){
       if(e.target.checked){
 
@@ -540,23 +540,30 @@ export default {
             this.editSetting.settings.members.forEach(x=>{
               this.FolderSettings.settings.members.forEach(item=>{
                 
+
                 if(x.memberId == item.memberId) {
+
                   x.parent = item.self
                   // 子資料夾未繼承的成員
-                  // x.canDelete = false
     
-                  console.log(x,'子資料夾有該用戶');
+                  console.log(item.memberName,'子資料夾有該用戶');
                 }else{
                   //子資料夾無該用戶 直接加入子資料夾
-                  // let temp = JSON.parse(JSON.stringify(item));
-                  item.parent = item.self
-                  item.self = {
+                  let temp = JSON.parse(JSON.stringify(item));
+                  temp.parent = temp.self
+                  temp.self = {
                     allowPermission: [],
                     denialPermission: [],
                     allowFileTypes: [],
                     denialFileTypes: []
                   }
-                  this.editSetting.settings.members.push(item)
+
+                  console.log(temp,'change');
+                  // 過濾相同資料
+                  if(this.editSetting.settings.members.filter(x => x.memberId === item.memberId).length == 0){
+                    this.editSetting.settings.members.push(temp)
+                  }
+
                 }
               })
             })
