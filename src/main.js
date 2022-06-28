@@ -15,13 +15,12 @@ import 'splitpanes/dist/splitpanes.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import $ from 'jquery';
 import picture from '@/common/images';
-import VueSweetalert2 from 'vue-sweetalert2';
+import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 
 // If you don't need the styles, do not connect
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-Vue.use(VueSweetalert2);
 
 Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule])
@@ -33,6 +32,8 @@ Object.keys(rules).forEach((rule) => {
 window.$ = $;
 
 window.picture = picture;
+window.Swal =  Swal;
+
 
 Vue.component('ValidationObserver', ValidationObserver)
 Vue.component('ValidationProvider', ValidationProvider)

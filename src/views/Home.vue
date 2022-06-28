@@ -61,7 +61,7 @@
               <img
                 src="@/assets/images/cmd/delete@2x-2.png"
                 alt=""
-                :disabled="this.selectedTrue.length === 0 || this.firstPage === true"
+                :disabled="this.disBtn == true"
                 @click="paste"
                 :style="this.selectedNumber > 0 && this.firstPage == false ? {opacity:'1'} : {opacity:'0.3'}"
               >
@@ -660,7 +660,12 @@ export default {
         'width': '20px',
         'height': '20px'
       }
-    }
+    },
+    disBtn() {
+      console.log(this.selectedLength == 0);
+      
+      return this.selectedLength == 0
+    },
   },
 
   methods: { 
@@ -984,7 +989,8 @@ export default {
     //paste
     paste() {
       // this.checkSelected()
-      
+
+    
       if(this.$refs.menu.open){ this.$refs.menu.close(); }
 
       const data =  JSON.stringify(
@@ -1008,12 +1014,15 @@ export default {
           data)
           .then((data) => {  
             console.log(data);
-            this.$swal.fire({ title: data.status, icon: 'success' })
+           
+            Swal.fire({ title: 'Success',icon: 'success' })
             
 
-          }).catch(error => {
-            this.$swal.fire({ title: error.response.data.error, icon: 'error' })
-            console.log(error.response); 
+          }).catch(data => {
+            
+            Swal.fire({ title: data.data.error, icon: 'error' })
+
+            console.log(data.data.error); 
       
           })
         

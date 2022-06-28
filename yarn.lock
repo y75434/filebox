@@ -8416,10 +8416,10 @@
     "unquote" "~1.1.1"
     "util.promisify" "~1.0.0"
 
-"sweetalert2@^11.3.10", "sweetalert2@11.x":
-  "integrity" "sha512-/3nhG5QCREkPUndAbOF9h1IM7lgCIU/evsNXd/YUfa9eJ04M+hxksxIio8hhtH16UnWd2GvJ+zvFQ8H9hLRhsw=="
-  "resolved" "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.3.10.tgz"
-  "version" "11.3.10"
+"sweetalert2@^11.4.19", "sweetalert2@11.x":
+  "integrity" "sha512-N3GA2M/K6PFzLprKWENioL0ckXPHLiWwvMMAJSfGgxB+aptzQrElv6D+j3D++K9yXSjpTs3XqJHYUQpEUzpv/g=="
+  "resolved" "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.4.19.tgz"
+  "version" "11.4.19"
 
 "table@^5.2.3":
   "integrity" "sha1-EpLRlQDOP4YFOwXw6Ofko7shB54="

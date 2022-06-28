@@ -141,6 +141,8 @@
               type="text"
               :placeholder="$t( 'MODAL.PLEASEFILLOUTTHISFIELD')"
               class="form-control h-100"
+              v-model="searchFull"
+              @keyup="getUser()"
             >
           </div>
           <div class="d-flex flex-column">
@@ -152,6 +154,8 @@
               type="text"
               :placeholder="$t('MODAL.PLEASEFILLOUTTHISFIELD')"
               class="form-control h-100"
+              v-model="searchEmail"
+              @keyup="getUser()"
             >
           </div>
               
@@ -177,7 +181,7 @@
 
 
       <div class="w-100 mt-4 overflow-scroll height-200">
-        <table class="table ">
+        <table class="table">
           <thead>
             <tr class="modal-tr">
               <th scope="col ">
@@ -263,6 +267,8 @@ props: { title: { type: String, default: 'Import User' },
         port: "636" 
       },
       searchText:"",
+      searchFull:"",
+      searchEmail:"",
       addUser: []
     }
    },
@@ -273,7 +279,7 @@ props: { title: { type: String, default: 'Import User' },
      userSelected(item){
       if(item.active){
         this.addUser.push(item.userId)
-        console.log('import 274',this.addUser);
+        console.log('import',this.addUser);
       } else {
         this.addUser = this.addUser.filter(x=>x
           !==item.userId);
@@ -299,10 +305,8 @@ props: { title: { type: String, default: 'Import User' },
         setTimeout(() => {this.$emit('reload');},2000)
       },
       getUser(){
-                   console.log('302');
-
        
-        cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/AD/GetUsers?searchString=${this.searchText}`)
+        cmqRequest.get(`${process.env.VUE_APP_USER_APIPATH}/api/AD/GetUsers?SearchUsername=${this.searchFull}&SearchFullName=${this.searchText}&SearchEmail=${this.searchEmail}`)
         .then((data) => {  
           this.allUser = data.data
           //  console.log(this.allUser);
@@ -314,13 +318,18 @@ props: { title: { type: String, default: 'Import User' },
       connectAD() {
        
         const data = JSON.stringify(this.ad)
+        console.log(data);
+        
 
         cmqRequest.post(`${process.env.VUE_APP_USER_APIPATH}/api/AD/connectDynamicAD`,
         data)
           .then((data) => {
 
+          Swal.fire({ title: data.data.message })
 
           console.log(data);
+          console.log(data.data.message);
+
         }).catch(error => {
             console.log(error);          
           })
