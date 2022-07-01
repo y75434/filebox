@@ -885,12 +885,16 @@ export default {
         let selfallow = this.nowUser.self.allowPermission.filter(permission=>permission==x.permissionTypeId);
         if(selfallow.length > 0) {
           x.selected = 'allow';
+          x.inFather = false;
+
 
         }
 
         let selfdeny = this.nowUser.self.denialPermission.filter(permission=>permission==x.permissionTypeId);
           if(selfdeny.length > 0) {
             x.selected = 'deny';
+            x.inFather = false;
+
           }
         return x;
       })
@@ -931,7 +935,6 @@ export default {
         return x;
       })
 
-      console.log(this.nowUser);
 
       this.nowUser.self.allowPermission.forEach(x=>{
         this.PermissionTypes.forEach(permission=>{
@@ -964,6 +967,9 @@ export default {
        this.PermissionTypes.forEach(item=>{
           item.inFather = false;
        })
+
+      console.log(this.nowUser);
+
     },
     //左邊切換
     userSelected(item){

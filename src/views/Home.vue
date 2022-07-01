@@ -576,6 +576,7 @@ import ContextMenu from '@/components/ContextMenu.vue';
 import TreeItem from '@/components/Modals/home/TreeItem.vue';
 // import Detail from '../components/Display/Detail.vue';
 import cmqRequest from '@/http/cmqRequest'
+import Swal from 'sweetalert2/dist/sweetalert2.js'
 
 
 export default {
@@ -661,6 +662,7 @@ export default {
         'height': '20px'
       }
     },
+    //disable fail
     disBtn() {
       console.log(this.selectedLength == 0);
       
